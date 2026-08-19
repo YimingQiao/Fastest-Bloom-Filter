@@ -1,3 +1,5 @@
+
+
 # Fastest-Bloom-Filter
 
 Fastest-Bloom-Filter is a high-performance C++ library that implements various Bloom filter designs, each optimized for specific use cases. The library provides a unified interface for all Bloom filter implementations, enabling seamless integration and easy benchmarking.
@@ -111,13 +113,13 @@ int main() {
 The repository includes a benchmarking tool (`main_benchmark.cpp`) to evaluate the performance of different Bloom filter implementations. You can run the benchmark manually with the following command:
 
 ```bash
-./Fastest-Bloom-Filter <num_keys> <num_bits_per_key> <num_lookup_times>
+./build/main_benchmark <num_keys> <num_bits_per_key> <num_lookup_times>
 ```
 
 For example:
 
 ```bash
-./Fastest-Bloom-Filter 15 16 26
+./build/main_benchmark 15 16 26
 ```
 
 This command benchmarks the Bloom filters with 2<sup>15</sup> keys, 16 bits per key, and 2<sup>26</sup> lookup operations.
@@ -163,5 +165,3 @@ This project is licensed under the MIT License. See the [LICENSE](./LICENSE) fil
 This project is inspired by the techniques described in the following paper:
 
 **Harald Lang, Thomas Neumann, Alfons Kemper, and Peter Boncz**. *Performance-optimal filtering: Bloom overtakes Cuckoo at high throughput*. Proceedings of the VLDB Endowment, Vol. 12, No. 5, 2019, pp. 502–515. [Link to paper](https://doi.org/10.14778/3303753.3303757)
-
-
