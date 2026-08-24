@@ -1,5 +1,3 @@
-
-
 # Fastest-Bloom-Filter
 
 Fastest-Bloom-Filter is a high-performance C++ library that implements various Bloom filter designs, each optimized for specific use cases. The library provides a unified interface for all Bloom filter implementations, enabling seamless integration and easy benchmarking.
