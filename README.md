@@ -14,13 +14,18 @@ pinned FastFilter SIMD/classical variants, PageBloomFilter, Boost.Bloom 1.92,
 RocksDB FastLocalBloom core variants and explicit single-call controls.
 A separate [988-row exact-capacity screen](experiments/2026-10-29-exact-budget-range/screen/OBSERVATIONS.md)
 expands this to **68 external configurations, four production natives and two
-range-capacity experiments**, using actual backing-byte ceilings from12 to32 bits/key.
+range-capacity experiments**, using actual backing-byte ceilings from 12 to 32 bits/key.
 A separate native Rust suite includes
 pinned Bloomsday, fastbloom and [SBBF](benchmarks/rust-sbbf-external/README.md).
 Its [168-row SBBF screen](experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
 retains the small-filter singleton losses against Bloomsday.
 The [Rust public-call screen](experiments/2026-10-29-rust-visible-single/screen/RESULTS.md)
 lets the compiler see each public lookup; Bloomsday still wins several settings.
+The [132-row Independent32 Rust screen](experiments/2026-10-29-independent32-rust-analysis/FINDINGS.md)
+finds a promising strict-FPR singleton candidate: at 32 actual bits/key, its
+public hash+query API leads Bloomsday by 6–22% at the two measured sizes.
+The generic batch-one path still loses, and existing native layouts win several
+large-batch settings. This is one-seed prototype evidence pending confirmation.
 The separate [BlowChoc screen](experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
 compares eight upstream configurations using whole-array calls, with prehashed,
 fused-hash and staged-hash timings reported separately.
@@ -38,10 +43,10 @@ per configuration. In the C++ shortlist, our eligible query leaders are
 **1.10–1.73× faster** than the fastest eligible external configuration across the
 reported memory/FPR ceilings. This covers 65K–32M keys, 50% hits, batch 4096,
 and allocations up to 128 MiB on one Xeon Platinum 8474C core. This confirmation
-uses16/32-bpk allocation targets. The newer finer-capacity screen changes the
-large-table comparison: the production leader is4.4% slower than a24-bpk Boost
-filter in strict-FPR hash+query, while the loose-FPR production lead shrinks to0.5%.
-An isolated24-bpk Split64 range prototype leads that strict setting by4.2%,
+uses 16/32-bpk allocation targets. The newer finer-capacity screen changes the
+large-table comparison: the production leader is 4.4% slower than a 24-bpk Boost
+filter in strict-FPR hash+query, while the loose-FPR production lead shrinks to 0.5%.
+An isolated 24-bpk Split64 range prototype leads that strict setting by 4.2%,
 pending fresh-seed confirmation. These training results remain separate from
 the earlier three-seed confirmation.
 
