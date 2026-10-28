@@ -399,6 +399,8 @@ Inspired by Harald Lang, Thomas Neumann, Alfons Kemper, and Peter Boncz,
 (VLDB 2019). The optimization experiments also draw on
 [bbtree's cost-model approach](https://blog.xiangpeng.systems/posts/bbtree/): reduce
 cache misses, overlap independent memory accesses, and reduce instructions on hot data.
+See [how those ideas map to these filters](docs/bbtree-lessons.md), including
+cache-line ownership and the measured limits of instruction-level changes.
 
 [MIT license](LICENSE); ByteSplit's derived implementation is covered by the
 [Apache-2.0 component notice](third_party/FastFilter/NOTICE) and retained license.
