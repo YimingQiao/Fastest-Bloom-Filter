@@ -1,0 +1,16 @@
+Diff in /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-byte-inline-only/benchmark/src/main.rs:1:
+-use fastest_bloom_filter::{hash64, ByteSplitBloomFilter};
+ use byte_only_native::ByteSplitBloomFilter as ByteOnlyInlineV1;
+-use triple_hint_native::ByteSplitBloomFilter as ByteTripleHintControl;
++use fastest_bloom_filter::{hash64, ByteSplitBloomFilter};
+ use std::{
+     alloc::{alloc, dealloc, handle_alloc_error, Layout},
+     hint::black_box,
+Diff in /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-byte-inline-only/benchmark/src/main.rs:8:
+     ptr::NonNull,
+     time::Instant,
+ };
++use triple_hint_native::ByteSplitBloomFilter as ByteTripleHintControl;
+ 
+ // All three types call their unchanged public APIs; only source hints differ.
+ trait Filter: Sized {
