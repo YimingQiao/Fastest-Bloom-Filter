@@ -1,0 +1,24 @@
+    Checking cpufeatures v0.2.17
+    Checking fastrange-rs v0.1.0
+    Checking sbbf-rs v0.2.8
+    Checking libm v0.2.16
+    Checking portable-atomic v1.15.0
+    Checking siphasher v1.0.4
+    Checking foldhash v0.2.0
+    Checking xxhash-rust v0.8.19
+    Checking bloomsday v0.1.0 (https://github.com/sidd-27/Bloomsday.git?rev=11f16a91a1c8a20344cd263e908f957dac7cf5d0#11f16a91)
+    Checking fastbloom v0.17.0
+    Checking sbbf-rs-safe v0.3.2
+    Checking fastest-bloom-filter v0.1.0 (/home/yiming/projects/fastest-bf-lab/rust)
+    Checking fastest-bloom-filter-sbbf-external v0.1.0 (/home/yiming/projects/fastest-bf-lab/benchmarks/rust-sbbf-external)
+error: manual implementation of `.is_multiple_of()`
+  --> src/sbbf.rs:26:26
+   |
+26 |         if bytes == 0 || bytes % sbbf_rs::BUCKET_SIZE != 0 || bytes > (1 << 28) {
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: replace with: `!bytes.is_multiple_of(sbbf_rs::BUCKET_SIZE)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#manual_is_multiple_of
+   = note: `-D clippy::manual-is-multiple-of` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::manual_is_multiple_of)]`
+
+error: could not compile `fastest-bloom-filter-sbbf-external` (bin "compare_benchmark") due to 1 previous error
