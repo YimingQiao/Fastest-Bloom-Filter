@@ -3,7 +3,9 @@
 //! Pattern and seven-bit filters use different masks and are not interchangeable.
 use std::fmt;
 
+mod parallel;
 mod patterns;
+pub use parallel::AtomicFastPatternBloomFilter;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SizeError {
@@ -38,20 +40,7 @@ impl<const PATTERN: bool> BloomFilter<PATTERN> {
     /// Matches the C++ legacy strict-next-power-of-two sizing, up to 256 MiB.
     /// `bits_per_key` is a request: inspect `size_in_bytes()` for actual allocation.
     pub fn new(keys: usize, bits_per_key: u32) -> Result<Self, SizeError> {
-        if bits_per_key == 0 {
-            return Err(SizeError::InvalidSize);
-        }
-        let bits = keys
-            .checked_mul(bits_per_key as usize)
-            .ok_or(SizeError::InvalidSize)?
-            .max(512);
-        if bits >= 1usize << 31 {
-            return Err(SizeError::CapacityExceeded);
-        }
-        let mut words = 32;
-        while words <= bits / 32 {
-            words *= 2;
-        }
+        let words = Self::word_count(keys, bits_per_key)?;
         #[cfg(target_arch = "x86_64")]
         let avx512 = std::is_x86_feature_detected!("avx512f");
         #[cfg(not(target_arch = "x86_64"))]
@@ -66,6 +55,23 @@ impl<const PATTERN: bool> BloomFilter<PATTERN> {
                 &patterns::DENSE
             },
         })
+    }
+    fn word_count(keys: usize, bits_per_key: u32) -> Result<usize, SizeError> {
+        if bits_per_key == 0 {
+            return Err(SizeError::InvalidSize);
+        }
+        let bits = keys
+            .checked_mul(bits_per_key as usize)
+            .ok_or(SizeError::InvalidSize)?
+            .max(512);
+        if bits >= 1usize << 31 {
+            return Err(SizeError::CapacityExceeded);
+        }
+        let mut words = 32;
+        while words <= bits / 32 {
+            words *= 2;
+        }
+        Ok(words)
     }
     pub fn size_in_bytes(&self) -> usize {
         self.lines.len() * 64

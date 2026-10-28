@@ -16,7 +16,8 @@ ctest --test-dir build/native --output-on-failure
 `BF_NATIVE=ON` gives **all implementations** the same host instruction set. The resulting
 binary is specific to the build CPU. For an AVX2-only build, omit `BF_NATIVE`; for AVX-512,
 use `-DUSE_AVX512=ON`. These cache options now respect command-line values.
-The comparison currently targets x86 with AVX2 or newer; it is single-threaded.
+The comparison targets x86 with AVX2 or newer. `compare_benchmark` measures one
+thread; `parallel_benchmark` measures scaling across cores.
 
 ## Native Rust
 
@@ -46,6 +47,64 @@ The equivalent C++ type is `bloom_filters::FastPatternBF` in
 and `SizeInBytes` methods. The C++ implementation selects SIMD at compile time;
 it also has a scalar fallback when compiled without AVX-512. Performance claims
 must name the enabled instruction set.
+
+## Multithreading
+
+Both languages support parallel construction, parallel immutable queries, and a
+separate atomic filter for overlapping writers/readers.
+
+| Use case | C++ | Rust |
+| --- | --- | --- |
+| Exclusive parallel build, then read-only queries | `ParallelFastPatternBF` in `parallel_bloom.h` | `FastPatternBloomFilter::insert_hashes_parallel` |
+| Parallel read-only batch | `LookupParallel` | `lookup_hashes_parallel` |
+| Concurrent inserts and queries | `AtomicFastPatternBF` | `AtomicFastPatternBloomFilter` |
+
+```cpp
+#include "parallel_bloom.h" // compile/link with -pthread
+bloom_filters::ParallelFastPatternBF filter(num_keys, 16);
+filter.InsertParallel(num_keys, hashes, 8);
+filter.LookupParallel(num_queries, query_hashes, out, 8);
+```
+
+```rust
+let mut filter = FastPatternBloomFilter::new(hashes.len(), 16).unwrap();
+filter.insert_hashes_parallel(&hashes, 8);
+filter.lookup_hashes_parallel(&query_hashes, &mut out, 8);
+```
+
+The exclusive builder partitions hashes by complete cache lines, then gives each
+worker its own bitmap region. It uses approximately **8 bytes per input hash** of
+temporary storage plus small worker metadata, rather than one bitmap copy per thread.
+`BuildScratchBytes` / `build_scratch_bytes` expose explicit scratch bytes; allocator
+metadata and OS thread stacks are excluded. Partitioning and thread creation are
+included in the scaling benchmark. Small batches fall back to one worker; requested
+workers are capped by input size, bitmap partitions, and a limit of 1024. Zero means
+automatic selection (`hardware_concurrency` in C++, `available_parallelism` in Rust).
+The caller must grant exclusive access during non-atomic construction.
+
+The atomic type supports shared concurrent insertion and lookup, with atomic ORs
+and atomic reads for every bitmap access. A query overlapping an unfinished insert
+may miss that key. After joining or otherwise synchronizing completed writers,
+there are no false negatives. These relaxed atomics **do not publish other data**.
+The atomic type pays for stronger concurrency support and is benchmarked separately.
+No API supports deletion or concurrent resizing.
+
+```bash
+python3 scripts/run_parallel.py --output-dir results/scaling-cpp \
+  --cpus 2,4,6,8,10,12,14,16 --threads 1,2,4,8
+python3 scripts/run_parallel.py --output-dir results/scaling-rust \
+  --executable rust/target/release/parallel_benchmark \
+  --cpus 2,4,6,8,10,12,14,16 --threads 1,2,4,8
+python3 scripts/check_parallel_parity.py
+```
+
+Choose physical cores on one NUMA socket for an initial scaling study. The runner
+pins each process to the first T listed CPUs, records topology, and runs cases
+serially. Scaling is relative to the same FastPattern implementation's serial
+path. This measures wall-clock batch throughput, including thread startup, rather
+than per-operation latency or a warmed persistent thread pool. Atomic timing rows
+measure parallel build followed by read-only queries; overlapping reader/writer
+correctness is tested separately.
 
 ## Run a reproducible comparison
 
@@ -129,8 +188,7 @@ hashing in its lookup timing and has weaker timing and validation controls.
 ## API
 
 Inputs are **already hashed** integers. Output contains one `0` or `1` per input, in the
-same order; a positive means “possibly present.” These filters are append-only and do
-not support concurrent writes.
+same order; a positive means “possibly present.” These filters are append-only and require exclusive writes unless using the separate atomic type.
 
 ```cpp
 #include <vector>
@@ -162,7 +220,8 @@ cmake --build build/sanitize -j
 ctest --test-dir build/sanitize --output-on-failure
 ```
 
-Tests cover empty inputs, short and odd batches, unaligned inputs, repeated inserts,
+Tests cover concurrent readers/writers, non-power-of-two worker counts, colliding
+cache-line inserts, empty inputs, short and odd batches, unaligned inputs, repeated inserts,
 output bounds, batch/single-query agreement, and no false negatives. The comparison
 also fails on correctness errors before reporting timing results. Sanitized timings
 are for debugging only, never performance comparisons.

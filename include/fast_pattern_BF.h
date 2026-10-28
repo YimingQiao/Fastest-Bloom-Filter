@@ -20,14 +20,7 @@ namespace bloom_filters {
 class FastPatternBF {
 public:
 	explicit FastPatternBF(size_t keys, uint32_t bits_per_key) {
-		if (!bits_per_key || keys > std::numeric_limits<size_t>::max() / bits_per_key)
-			throw std::invalid_argument("invalid Bloom filter size");
-		const size_t bits = std::max<size_t>(512, keys * bits_per_key);
-		if (bits >= (size_t {1} << 31))
-			throw std::length_error("sectorized layout supports at most 256 MiB");
-		size_t words = 32;
-		while (words <= bits / 32)
-			words *= 2;
+		const size_t words = WordCount(keys, bits_per_key);
 		blocks_.resize(words);
 		block_mask_ = static_cast<uint32_t>(words - 1);
 		patterns_ = keys > words * 32 / 12 ? sparse_patterns_ : dense_patterns_;
@@ -50,6 +43,20 @@ public:
 	}
 
 private:
+	friend class ParallelFastPatternBF;
+	friend class AtomicFastPatternBF;
+	static size_t WordCount(size_t keys, uint32_t bits_per_key) {
+		if (!bits_per_key || keys > std::numeric_limits<size_t>::max() / bits_per_key)
+			throw std::invalid_argument("invalid Bloom filter size");
+		const size_t bits = std::max<size_t>(512, keys * bits_per_key);
+		if (bits >= (size_t {1} << 31))
+			throw std::length_error("sectorized layout supports at most 256 MiB");
+		size_t words = 32;
+		while (words <= bits / 32)
+			words *= 2;
+		return words;
+	}
+
 #if defined(__AVX512F__)
 	struct Probe {
 		__m512i index, mask;
