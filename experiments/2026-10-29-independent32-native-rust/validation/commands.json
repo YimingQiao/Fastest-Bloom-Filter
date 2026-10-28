@@ -1,0 +1,246 @@
+[
+  {
+    "name": "format",
+    "command": [
+      "rustfmt",
+      "--edition",
+      "2021",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/src/independent32.rs",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/src/independent32/tests.rs",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/src/bin/parity.rs",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/src/bin/codegen.rs"
+    ],
+    "env": {},
+    "returncode": 0,
+    "elapsed_seconds": 0.02345782145857811
+  },
+  {
+    "name": "source-copy",
+    "command": [
+      "python3",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/verify_copy.py"
+    ],
+    "env": {},
+    "returncode": 0,
+    "elapsed_seconds": 0.02211909182369709
+  },
+  {
+    "name": "normal-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--lib",
+      "independent32::tests",
+      "--features",
+      "validation"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/normal"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 3.449098205193877
+  },
+  {
+    "name": "disable-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--lib",
+      "independent32::tests",
+      "--features",
+      "validation,disable-avx512"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/disable"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 2.6286209989339113
+  },
+  {
+    "name": "asan-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--lib",
+      "independent32::tests",
+      "--target",
+      "x86_64-unknown-linux-gnu",
+      "--features",
+      "validation"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/asan",
+      "RUSTC_BOOTSTRAP": "1",
+      "RUSTFLAGS": "-Zsanitizer=address"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 7.9332794807851315
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--all-targets",
+      "--features",
+      "validation",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/normal"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 0.7153950147330761
+  },
+  {
+    "name": "normal-parity",
+    "command": [
+      "cargo",
+      "run",
+      "--quiet",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--features",
+      "validation",
+      "--bin",
+      "independent32-parity",
+      "--",
+      "--parity"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/normal"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 0.3031225148588419
+  },
+  {
+    "name": "disable-parity",
+    "command": [
+      "cargo",
+      "run",
+      "--quiet",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--features",
+      "validation,disable-avx512",
+      "--bin",
+      "independent32-parity",
+      "--",
+      "--parity"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/disable"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 0.2848649322986603
+  },
+  {
+    "name": "asan-parity",
+    "command": [
+      "cargo",
+      "run",
+      "--quiet",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--features",
+      "validation",
+      "--bin",
+      "independent32-parity",
+      "--target",
+      "x86_64-unknown-linux-gnu",
+      "--",
+      "--parity"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/asan",
+      "RUSTC_BOOTSTRAP": "1",
+      "RUSTFLAGS": "-Zsanitizer=address"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 0.32892562076449394
+  },
+  {
+    "name": "codegen-build",
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--features",
+      "validation",
+      "--bin",
+      "independent32-codegen"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/codegen",
+      "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 5.544358164072037
+  },
+  {
+    "name": "codegen-semantic-smoke",
+    "command": [
+      "/tmp/fastest-bf-independent32-rust/codegen/release/independent32-codegen"
+    ],
+    "env": {},
+    "returncode": 0,
+    "elapsed_seconds": 0.0009058471769094467
+  },
+  {
+    "name": "codegen-prehashed-assembly",
+    "command": [
+      "objdump",
+      "-d",
+      "-C",
+      "--no-show-raw-insn",
+      "--disassemble=independent32_public_prehashed",
+      "/tmp/fastest-bf-independent32-rust/codegen/release/independent32-codegen"
+    ],
+    "env": {},
+    "returncode": 0,
+    "elapsed_seconds": 0.0027341078966856003
+  },
+  {
+    "name": "codegen-fused-assembly",
+    "command": [
+      "objdump",
+      "-d",
+      "-C",
+      "--no-show-raw-insn",
+      "--disassemble=independent32_public_fused",
+      "/tmp/fastest-bf-independent32-rust/codegen/release/independent32-codegen"
+    ],
+    "env": {},
+    "returncode": 0,
+    "elapsed_seconds": 0.0024127699434757233
+  },
+  {
+    "name": "normal-full-library-tests",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-rust/native/Cargo.toml",
+      "--lib",
+      "--features",
+      "validation"
+    ],
+    "env": {
+      "CARGO_TARGET_DIR": "/tmp/fastest-bf-independent32-rust/normal"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 22.16816228814423
+  }
+]
