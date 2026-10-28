@@ -82,6 +82,20 @@ The external lockfile must still retain its transitive dependency revision.
   queries. Compare it on a separate sequence workload, preserving its streaming
   interface and error semantics. An ordinary random-hash result cannot establish
   a win over its intended workload.
+- [BloomCraft0.1.1](https://github.com/ZaudRehman/bloomcraft/tree/17acc9bb3f23e3ed9083fcc825dd4623fe6977c5)
+  adds another native Rust public-API baseline to investigate. At this pinned
+  revision, `RegisterBlockedBloomFilter` stores512-bit blocks in `Vec<u64>`;
+  its actual lookup is an early-exit double-hash loop. The register-blocked
+  module contains no explicit SIMD query path, despite broader library SIMD
+  descriptions. Its constructor rounds block count to a power of two and
+  chooses2–16 probes from the resulting capacity. Public `contains(&T)` hashes
+  the item; compare that cost as raw-key work and preserve upstream hashers
+  (default FNV-1a, optional WyHash/XXH3) as distinct configurations. Public
+  logical bit count alone is insufficient allocation evidence: verify actual
+  backing storage and alignment before ranking. This source audit is not a
+  speed result; no BloomCraft comparison has run yet. Sources:
+  [filter implementation](https://github.com/ZaudRehman/bloomcraft/blob/17acc9bb3f23e3ed9083fcc825dd4623fe6977c5/src/filters/register_blocked.rs),
+  [hash API](https://github.com/ZaudRehman/bloomcraft/blob/17acc9bb3f23e3ed9083fcc825dd4623fe6977c5/src/hash/mod.rs).
 - [cuSBF](https://github.com/tdortman/cuSBF) and GPU blocked Bloom filters change the
   hardware and host/device transfer contract. Their throughput belongs in a GPU
   track with transfer, memory and batching costs stated; they are not ruled out
