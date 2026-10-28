@@ -1,0 +1,144 @@
+{
+  "created_utc": "2026-10-28T18:39:56.549903+00:00",
+  "status": "Prespecified bounded screen, not held-out confirmation or README win claim.",
+  "framework_source_commit": "b437791b6edf23fe8725f87e62d21d638216861a",
+  "frozen_archive": "experiments/2026-10-29-external-parallel-query",
+  "archive_freeze_sha256": "aed94aa4a05a41a75f2e401d56ea8b8b3e863b40165aa2c8acc315893e3efa0e",
+  "binary": "build/external-parallel-query-full/benchmark",
+  "binary_sha256": "f39ddeab1538c812bea663110a4b1eba14eaf29694014533e3e9b08cacd3cbdb",
+  "shortlist_source": "results/2026-10-29-byte-confirmation-cpp/results.csv",
+  "shortlist_source_sha256": "4a361ce98aa52e26b1aa3e8032633993879acb72a95b4736ac10e7f3cb07dc36",
+  "filters": [
+    "Boost192Multi32K7",
+    "Boost192Multi32K8",
+    "Boost192Multi64K8",
+    "ByteSplitBloomFilter",
+    "FastFilterFixed16",
+    "FastFilterFixed16SingleV1",
+    "FastFilterFixed32",
+    "FastFilterFixed32Bulk",
+    "FastFilterFixed64",
+    "FastFilterSimdBlock",
+    "FastFilterSimdBlockSingleV1",
+    "FastPatternBF",
+    "FourSectorBloomFilter",
+    "PageBloom6Compact",
+    "RocksDBFastLocalBloom64",
+    "RocksDBFastLocalBloom64Batch32",
+    "RocksDBFastLocalBloom64K14",
+    "RocksDBFastLocalBloom64K14Batch32",
+    "RocksDBFastLocalBloom64K8",
+    "RocksDBFastLocalBloom64K8Batch32",
+    "RocksDBFastLocalBloom64K9",
+    "RocksDBFastLocalBloom64K9Batch32",
+    "Split64BloomFilter"
+  ],
+  "cases": [
+    {
+      "key_power": 25,
+      "requested_bpk": 8,
+      "threads": 1
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 16,
+      "threads": 8
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 8,
+      "threads": 1
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 16,
+      "threads": 4
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 16,
+      "threads": 1
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 8,
+      "threads": 4
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 8,
+      "threads": 8
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 16,
+      "threads": 4
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 16,
+      "threads": 8
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 16,
+      "threads": 1
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 8,
+      "threads": 4
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 8,
+      "threads": 8
+    }
+  ],
+  "expected_cases": 12,
+  "expected_rows": 276,
+  "query_power": 22,
+  "batch": 4096,
+  "hit_percent": 50,
+  "seed": 42,
+  "repeats": 3,
+  "calibration_power": 24,
+  "insert_batch": "whole input: 1 << key_power",
+  "cpus": [
+    3,
+    5,
+    7,
+    9,
+    11,
+    13,
+    15,
+    17
+  ],
+  "numa_node": 1,
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "thread_contract": "Caller is worker0; spawn T-1; exactly T pinned physical cores; one immutable bitmap; global batches preserved.",
+  "build_contract": "Serial build reported separately; whole input per insertion call, pure and hash builds in disjoint lifetimes; no parallel build claim.",
+  "ranking_metrics": [
+    "parallel_lookup_gated_ns",
+    "parallel_hash_lookup_gated_ns",
+    "parallel_lookup_end_to_end_ns",
+    "parallel_hash_lookup_end_to_end_ns"
+  ],
+  "eligibility": {
+    "actual_memory_caps_bpk": [
+      16,
+      32
+    ],
+    "fpr_targets": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "confidence": "Two-sided 95% Wilson upper bound from independent negative calibration only.",
+    "within_cap_selection": "Minimize measured median query ns over every eligible requested allocation under each cap, independently for our native family and all external rivals.",
+    "paired_cases": "Same n,q,T,batch,hit,seed,repeats,insert_batch and executable; compare each metric separately.",
+    "calibration_deduplication": "Identical filter/n/requested_bpk/actual_bytes/hash mode/seed/q/insert_batch defines one bitmap and negative stream; repeated T or batch rows must agree on count+FP and count once. Never pool different timing q/workloads.",
+    "scaling": "Separately report each fixed filter/allocation versus its own T1 row. Do not call this external superiority.",
+    "limits": "One screening seed and three repeats; descriptive median ratios only, no statistical fastest claim."
+  }
+}

@@ -1,0 +1,557 @@
+{
+  "utc_start": "2026-10-28T18:39:56Z",
+  "protocol": {
+    "created_utc": "2026-10-28T18:39:56.549903+00:00",
+    "status": "Prespecified bounded screen, not held-out confirmation or README win claim.",
+    "framework_source_commit": "b437791b6edf23fe8725f87e62d21d638216861a",
+    "frozen_archive": "experiments/2026-10-29-external-parallel-query",
+    "archive_freeze_sha256": "aed94aa4a05a41a75f2e401d56ea8b8b3e863b40165aa2c8acc315893e3efa0e",
+    "binary": "build/external-parallel-query-full/benchmark",
+    "binary_sha256": "f39ddeab1538c812bea663110a4b1eba14eaf29694014533e3e9b08cacd3cbdb",
+    "shortlist_source": "results/2026-10-29-byte-confirmation-cpp/results.csv",
+    "shortlist_source_sha256": "4a361ce98aa52e26b1aa3e8032633993879acb72a95b4736ac10e7f3cb07dc36",
+    "filters": [
+      "Boost192Multi32K7",
+      "Boost192Multi32K8",
+      "Boost192Multi64K8",
+      "ByteSplitBloomFilter",
+      "FastFilterFixed16",
+      "FastFilterFixed16SingleV1",
+      "FastFilterFixed32",
+      "FastFilterFixed32Bulk",
+      "FastFilterFixed64",
+      "FastFilterSimdBlock",
+      "FastFilterSimdBlockSingleV1",
+      "FastPatternBF",
+      "FourSectorBloomFilter",
+      "PageBloom6Compact",
+      "RocksDBFastLocalBloom64",
+      "RocksDBFastLocalBloom64Batch32",
+      "RocksDBFastLocalBloom64K14",
+      "RocksDBFastLocalBloom64K14Batch32",
+      "RocksDBFastLocalBloom64K8",
+      "RocksDBFastLocalBloom64K8Batch32",
+      "RocksDBFastLocalBloom64K9",
+      "RocksDBFastLocalBloom64K9Batch32",
+      "Split64BloomFilter"
+    ],
+    "cases": [
+      {
+        "key_power": 25,
+        "requested_bpk": 8,
+        "threads": 1
+      },
+      {
+        "key_power": 25,
+        "requested_bpk": 16,
+        "threads": 8
+      },
+      {
+        "key_power": 16,
+        "requested_bpk": 8,
+        "threads": 1
+      },
+      {
+        "key_power": 16,
+        "requested_bpk": 16,
+        "threads": 4
+      },
+      {
+        "key_power": 25,
+        "requested_bpk": 16,
+        "threads": 1
+      },
+      {
+        "key_power": 16,
+        "requested_bpk": 8,
+        "threads": 4
+      },
+      {
+        "key_power": 16,
+        "requested_bpk": 8,
+        "threads": 8
+      },
+      {
+        "key_power": 25,
+        "requested_bpk": 16,
+        "threads": 4
+      },
+      {
+        "key_power": 16,
+        "requested_bpk": 16,
+        "threads": 8
+      },
+      {
+        "key_power": 16,
+        "requested_bpk": 16,
+        "threads": 1
+      },
+      {
+        "key_power": 25,
+        "requested_bpk": 8,
+        "threads": 4
+      },
+      {
+        "key_power": 25,
+        "requested_bpk": 8,
+        "threads": 8
+      }
+    ],
+    "expected_cases": 12,
+    "expected_rows": 276,
+    "query_power": 22,
+    "batch": 4096,
+    "hit_percent": 50,
+    "seed": 42,
+    "repeats": 3,
+    "calibration_power": 24,
+    "insert_batch": "whole input: 1 << key_power",
+    "cpus": [
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17
+    ],
+    "numa_node": 1,
+    "socket_lock": "/tmp/fastest-bf-socket1.lock",
+    "thread_contract": "Caller is worker0; spawn T-1; exactly T pinned physical cores; one immutable bitmap; global batches preserved.",
+    "build_contract": "Serial build reported separately; whole input per insertion call, pure and hash builds in disjoint lifetimes; no parallel build claim.",
+    "ranking_metrics": [
+      "parallel_lookup_gated_ns",
+      "parallel_hash_lookup_gated_ns",
+      "parallel_lookup_end_to_end_ns",
+      "parallel_hash_lookup_end_to_end_ns"
+    ],
+    "eligibility": {
+      "actual_memory_caps_bpk": [
+        16,
+        32
+      ],
+      "fpr_targets": [
+        0.01,
+        0.001,
+        0.0001
+      ],
+      "confidence": "Two-sided 95% Wilson upper bound from independent negative calibration only.",
+      "within_cap_selection": "Minimize measured median query ns over every eligible requested allocation under each cap, independently for our native family and all external rivals.",
+      "paired_cases": "Same n,q,T,batch,hit,seed,repeats,insert_batch and executable; compare each metric separately.",
+      "calibration_deduplication": "Identical filter/n/requested_bpk/actual_bytes/hash mode/seed/q/insert_batch defines one bitmap and negative stream; repeated T or batch rows must agree on count+FP and count once. Never pool different timing q/workloads.",
+      "scaling": "Separately report each fixed filter/allocation versus its own T1 row. Do not call this external superiority.",
+      "limits": "One screening seed and three repeats; descriptive median ratios only, no statistical fastest claim."
+    }
+  },
+  "protocol_sha256": "421c5d3b74801317de7d436b2725fb78bb6255e696d7a4e773de08c1c4049f40",
+  "runner_sha256": "3bbc87c58881b3bc8717ec2b678173f3e8785b86b67842f891889a00868186bd",
+  "framework_freeze": {
+    "utc": "2026-10-28T18:37:00.803161+00:00",
+    "scope": "Validated isolated shared-bitmap external MT query harness, with full 56-config executable; no performance matrix.",
+    "files": {
+      "CMakeLists.txt": "40afa2935bdd7fc8a97f982da9d2dab8ccf080f34389f0ede9d4219394250124",
+      "DESIGN.md": "53e71e8d6effede375f016b08cd332c0de9bfe132650297baeea29323bd33d87",
+      "IMMUTABLE_AUDIT.md": "f1420e47903f4facf8ee9094727c90c52a64a99a32545038c1b9e6b64bc41480",
+      "README.md": "9f314dda6e16919ea280d6d93c3e10974c41df5bac05118f70a62a406131c77c",
+      "adapters.hpp": "58b597e753e954c5e938586c1a5a449fec8333e7e8354e005f0055eca29f3409",
+      "available_filters.txt": "4ad37ee5cef72ffc7a5b5b2b854a5c7227612a5ea70033377320a7065203bcfa",
+      "benchmark.cpp": "0cb04205257f37812cc728661a915bb0a61525bc6a713af4a3e5201da4d28ae1",
+      "benchmark.patch": "63ea0b7be628e61fbec3ef62db38ab6b26dc5a07bfa01b5e38ce9585762a8ff0",
+      "check_adapters.cpp": "9f5ae36616746dd43f3f7f5c3518a8f13a9df6cefad7f44efe6afecd8e8b5290",
+      "check_benchmark.py": "99c2140fe4a68159c740ebd831acea72cc7995a8eff181503c0c36485520ba4a",
+      "check_executor.cpp": "9a8d22ed3dadafe2a119d723123b2fe009d9527a70c2bc313da4b1e20ea8bb32",
+      "check_full.py": "b88155831b1c9413a49dc7656091e898695683ad8cdde319ec28de58f49c82a4",
+      "executor.hpp": "16ca4e827802a4f1814ab12bab0c43de40f81b6c29bdfb6cbb66bdd2cdec0d22",
+      "placement.hpp": "99b37a7346ce36ec40502bd723e4cc6c56967550f7aa6c631e7fd60a86986444",
+      "run.py": "92dbb71ab741978f0493151ad84eaeca2d09ec35cb737833edbbe8e7e54948d9",
+      "runner-smoke/metadata.json": "0859993733355836e3d34da631cd17e2a176385558c22769540adfe8e8f84242",
+      "runner-smoke/timing.csv": "07c2b35e4a77489c746c21ec22de15634db5f72bba6b2486cef697f0155f7b8a",
+      "snapshot/benchmarks/all-external/adapters.hpp": "195f26d311613bdf952aee673e0663b36965258875254c5cfab94e954b4933e6",
+      "snapshot/benchmarks/boost-external/adapters.hpp": "5bea71db4eb798d9577edeb264fec17dad8462159f1f0abbf73cfa0ef1d8bbd3",
+      "snapshot/benchmarks/cpp-external/adapters.hpp": "3c192e4a73312bd3015ba1f3b53f1f9a5cb098ba0c240ee91e757d00f177a603",
+      "snapshot/benchmarks/rocksdb-external/adapters.hpp": "404452b25e4a525750e188ea7a72ff7b3f70a9cacd0bd7bffa07a05b7e251a68",
+      "snapshot/include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+      "snapshot/include/byte_split_bloom.h": "46d285a1676b0613a0759d9786d2d8afe67d75b5fc64ca839305922627fa332f",
+      "snapshot/include/cache_sectorized_BF_32bit.h": "ee48aab598e0369fe92163dba420f42a51520a1e4792d61867c71dd52012a10a",
+      "snapshot/include/fast_pattern_BF.h": "d10bb646c6fd40ecdda02a0d6b51304ae62cbd978b0dc9e058601c13c6d2b87b",
+      "snapshot/include/four_sector_bloom.h": "127b46a8f065a34ce2028873a41476baccd5e68cfe2957ab3d0f5ef2d8900304",
+      "snapshot/include/impala_blocked_BF_64bit.h": "7c20f4f15155477b9865d91ce01723e6f1f9f6378c4973741ede7f56fd885d02",
+      "snapshot/include/impala_blocked_BF_64bit_avx512.h": "b088dcad98f5d9b18a010f5daf5e9b5d5fddacc744d17e8e0313fa71552ee452",
+      "snapshot/include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c",
+      "snapshot/include/new_cache_sectorized_BF_32bit.h": "cffa2fb61b1e38afb4c1bdc646219da3eb930a11ef1790dd8f4888de247bc769",
+      "snapshot/include/parallel_bloom.h": "7a1744d8689a344bcb8d0161f52e7d8999db52fca11bcc45953c9e4c4f0327cf",
+      "snapshot/include/parallel_layout_bloom.h": "7116b26a9d09f78be0a66daa990d3593a120ac5ce8c485eba89c8a06f82ba6e6",
+      "snapshot/include/register_blocked_BF_2x32bit.h": "2ce6e2bba2342a2e2f6964aa5fda8fe6c3bdd090e759d91ae46b18878566ddde",
+      "snapshot/include/register_blocked_BF_32bit.h": "aad3b10e1220d41ca06f818c4ded6b3b405a5c6f9cf7a31887cea58afeeaadd9",
+      "snapshot/include/register_blocked_BF_32bit_Masks.h": "595b0d5ad008ef3f2eb7008684b4e5ba4ef038dd8334fab938504da06559754c",
+      "snapshot/include/register_blocked_BF_64bit.h": "c64816638a58537ad3318e3707ec9ac3cd64732c1bd27f4347acbc70e6cad0c3",
+      "snapshot/include/register_blocked_BF_64bit_Masks.h": "d63ffa01485942d886bd22b883a637929683f20d3c5e20e31cb5130e3bab2ecd",
+      "snapshot/include/split64_bloom.h": "9b548e880b927ade57ef27c946f0105e9abe9c2b2436eecdbbbff0a22d30f429",
+      "snapshot/src/compare_benchmark.cpp": "95b54e3735404ed2e6b289a05b5aac10af17dd15aa129dd135351bf5535dba95",
+      "snapshot.json": "5173f371abc8271bd30b104cf41c497e064c3d943c5f21dfff7704a84f8533e6",
+      "validation.json": "d8f713bb88099151b19dca9d439caced5b553c1ce6211c768f17d66d05f07f27"
+    },
+    "binaries": {
+      "build/external-parallel-query/benchmark": "1f34c9bcfe25cca70d18c74b11dc8e09e73fc283fb5712d4cb7a53fa4e06ca87",
+      "build/external-parallel-query/check_adapters": "3ee40518cbfdfb0a243574b434a90cc44b6f1465b44399b99922eb989d91e30a",
+      "build/external-parallel-query/check_executor": "e9a1fbb826bd81b883a109eeeeaee0665e8d47bdbbd0e5f328d8e3af9c87c30f",
+      "build/external-parallel-query-asan/benchmark": "9987b0e7b4ce5e216a73f089df7eaa1a9933c56adead4582013849c5f7d455ef",
+      "build/external-parallel-query-asan/check_adapters": "c46b8792dae8889f1d964d6beb891dc3c4968fb84b5603c579ccae39d9a76888",
+      "build/external-parallel-query-asan/check_executor": "2357f955480ec8451416a077002662e5b63ef125a6cf1bc8048cd9e241e899da",
+      "build/external-parallel-query-tsan/benchmark": "8e573991c8c533a183f2ee3a17719e8bbd0391afee21560f7c0ff76c295d1f9f",
+      "build/external-parallel-query-tsan/check_adapters": "700e1f30640a3f83ca27876dab2f8e3e5e8787b47b1df469cd25f98d9aa1f97f",
+      "build/external-parallel-query-tsan/check_executor": "0a42e0d9c470fdc1e1d88afe0aa791fb75cc3e491e56c5f19a35a7463e49a58f",
+      "build/external-parallel-query-full/benchmark": "f39ddeab1538c812bea663110a4b1eba14eaf29694014533e3e9b08cacd3cbdb"
+    }
+  },
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  192\nOn-line CPU(s) list:                     0-191\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Xeon(R) Platinum 8474C\nCPU family:                              6\nModel:                                   143\nThread(s) per core:                      2\nCore(s) per socket:                      48\nSocket(s):                               2\nStepping:                                8\nBogoMIPS:                                4200.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cat_l2 cdp_l3 invpcid_single cdp_l2 ssbd mba ibrs ibpb stibp ibrs_enhanced tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb intel_pt avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local split_lock_detect avx_vnni avx512_bf16 wbnoinvd dtherm ida arat pln pts hfi avx512vbmi umip pku ospke waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg tme avx512_vpopcntdq la57 rdpid bus_lock_detect cldemote movdiri movdir64b enqcmd fsrm md_clear serialize tsxldtrk pconfig arch_lbr ibt amx_bf16 avx512_fp16 amx_tile amx_int8 flush_l1d arch_capabilities ibpb_exit_to_user\nVirtualization:                          VT-x\nL1d cache:                               4.5 MiB (96 instances)\nL1i cache:                               3 MiB (96 instances)\nL2 cache:                                192 MiB (96 instances)\nL3 cache:                                195 MiB (2 instances)\nNUMA node(s):                            2\nNUMA node0 CPU(s):                       0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178,180,182,184,186,188,190\nNUMA node1 CPU(s):                       1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179,181,183,185,187,189,191\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI BHI_DIS_S\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "cpu_topology": "CPU CORE SOCKET NODE\n  0    0      0    0\n  1    1      1    1\n  2    2      0    0\n  3    3      1    1\n  4    4      0    0\n  5    5      1    1\n  6    6      0    0\n  7    7      1    1\n  8    8      0    0\n  9    9      1    1\n 10   10      0    0\n 11   11      1    1\n 12   12      0    0\n 13   13      1    1\n 14   14      0    0\n 15   15      1    1\n 16   16      0    0\n 17   17      1    1\n 18   18      0    0\n 19   19      1    1\n 20   20      0    0\n 21   21      1    1\n 22   22      0    0\n 23   23      1    1\n 24   24      0    0\n 25   25      1    1\n 26   26      0    0\n 27   27      1    1\n 28   28      0    0\n 29   29      1    1\n 30   30      0    0\n 31   31      1    1\n 32   32      0    0\n 33   33      1    1\n 34   34      0    0\n 35   35      1    1\n 36   36      0    0\n 37   37      1    1\n 38   38      0    0\n 39   39      1    1\n 40   40      0    0\n 41   41      1    1\n 42   42      0    0\n 43   43      1    1\n 44   44      0    0\n 45   45      1    1\n 46   46      0    0\n 47   47      1    1\n 48   48      0    0\n 49   49      1    1\n 50   50      0    0\n 51   51      1    1\n 52   52      0    0\n 53   53      1    1\n 54   54      0    0\n 55   55      1    1\n 56   56      0    0\n 57   57      1    1\n 58   58      0    0\n 59   59      1    1\n 60   60      0    0\n 61   61      1    1\n 62   62      0    0\n 63   63      1    1\n 64   64      0    0\n 65   65      1    1\n 66   66      0    0\n 67   67      1    1\n 68   68      0    0\n 69   69      1    1\n 70   70      0    0\n 71   71      1    1\n 72   72      0    0\n 73   73      1    1\n 74   74      0    0\n 75   75      1    1\n 76   76      0    0\n 77   77      1    1\n 78   78      0    0\n 79   79      1    1\n 80   80      0    0\n 81   81      1    1\n 82   82      0    0\n 83   83      1    1\n 84   84      0    0\n 85   85      1    1\n 86   86      0    0\n 87   87      1    1\n 88   88      0    0\n 89   89      1    1\n 90   90      0    0\n 91   91      1    1\n 92   92      0    0\n 93   93      1    1\n 94   94      0    0\n 95   95      1    1\n 96    0      0    0\n 97    1      1    1\n 98    2      0    0\n 99    3      1    1\n100    4      0    0\n101    5      1    1\n102    6      0    0\n103    7      1    1\n104    8      0    0\n105    9      1    1\n106   10      0    0\n107   11      1    1\n108   12      0    0\n109   13      1    1\n110   14      0    0\n111   15      1    1\n112   16      0    0\n113   17      1    1\n114   18      0    0\n115   19      1    1\n116   20      0    0\n117   21      1    1\n118   22      0    0\n119   23      1    1\n120   24      0    0\n121   25      1    1\n122   26      0    0\n123   27      1    1\n124   28      0    0\n125   29      1    1\n126   30      0    0\n127   31      1    1\n128   32      0    0\n129   33      1    1\n130   34      0    0\n131   35      1    1\n132   36      0    0\n133   37      1    1\n134   38      0    0\n135   39      1    1\n136   40      0    0\n137   41      1    1\n138   42      0    0\n139   43      1    1\n140   44      0    0\n141   45      1    1\n142   46      0    0\n143   47      1    1\n144   48      0    0\n145   49      1    1\n146   50      0    0\n147   51      1    1\n148   52      0    0\n149   53      1    1\n150   54      0    0\n151   55      1    1\n152   56      0    0\n153   57      1    1\n154   58      0    0\n155   59      1    1\n156   60      0    0\n157   61      1    1\n158   62      0    0\n159   63      1    1\n160   64      0    0\n161   65      1    1\n162   66      0    0\n163   67      1    1\n164   68      0    0\n165   69      1    1\n166   70      0    0\n167   71      1    1\n168   72      0    0\n169   73      1    1\n170   74      0    0\n171   75      1    1\n172   76      0    0\n173   77      1    1\n174   78      0    0\n175   79      1    1\n176   80      0    0\n177   81      1    1\n178   82      0    0\n179   83      1    1\n180   84      0    0\n181   85      1    1\n182   86      0    0\n183   87      1    1\n184   88      0    0\n185   89      1    1\n186   90      0    0\n187   91      1    1\n188   92      0    0\n189   93      1    1\n190   94      0    0\n191   95      1    1\n",
+  "compile_commands": [
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full",
+      "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/benchmark.dir/benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full",
+      "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/check_adapters.dir/check_adapters.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full",
+      "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/check_executor.dir/check_executor.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp"
+    }
+  ],
+  "runs": [
+    {
+      "case": {
+        "key_power": 25,
+        "requested_bpk": 8,
+        "threads": 1
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "33554432",
+        "24",
+        "1",
+        "3"
+      ],
+      "seconds": 88.01037765853107,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "requested_bpk": 16,
+        "threads": 8
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "33554432",
+        "24",
+        "8",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "seconds": 126.3755964897573,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "requested_bpk": 8,
+        "threads": 1
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "65536",
+        "24",
+        "1",
+        "3"
+      ],
+      "seconds": 11.031080463901162,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "requested_bpk": 16,
+        "threads": 4
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "65536",
+        "24",
+        "4",
+        "3,5,7,9"
+      ],
+      "seconds": 8.35875996015966,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "requested_bpk": 16,
+        "threads": 1
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "33554432",
+        "24",
+        "1",
+        "3"
+      ],
+      "seconds": 135.32223249599338,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "requested_bpk": 8,
+        "threads": 4
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "65536",
+        "24",
+        "4",
+        "3,5,7,9"
+      ],
+      "seconds": 8.295391673222184,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "requested_bpk": 8,
+        "threads": 8
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "65536",
+        "24",
+        "8",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "seconds": 7.85548615641892,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "requested_bpk": 16,
+        "threads": 4
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "33554432",
+        "24",
+        "4",
+        "3,5,7,9"
+      ],
+      "seconds": 127.10313030332327,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "requested_bpk": 16,
+        "threads": 8
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "65536",
+        "24",
+        "8",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "seconds": 7.961321448907256,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "requested_bpk": 16,
+        "threads": 1
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "65536",
+        "24",
+        "1",
+        "3"
+      ],
+      "seconds": 11.061058362945914,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "requested_bpk": 8,
+        "threads": 4
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "33554432",
+        "24",
+        "4",
+        "3,5,7,9"
+      ],
+      "seconds": 82.84021579660475,
+      "rows": 23
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "requested_bpk": 8,
+        "threads": 8
+      },
+      "command": [
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full/benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "3",
+        "42",
+        "Boost192Multi32K7,Boost192Multi32K8,Boost192Multi64K8,ByteSplitBloomFilter,FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterFixed32,FastFilterFixed32Bulk,FastFilterFixed64,FastFilterSimdBlock,FastFilterSimdBlockSingleV1,FastPatternBF,FourSectorBloomFilter,PageBloom6Compact,RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,Split64BloomFilter",
+        "33554432",
+        "24",
+        "8",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "seconds": 81.86182363517582,
+      "rows": 23
+    }
+  ],
+  "utc_end": "2026-10-28T18:51:32Z",
+  "rows": 276,
+  "source_changes": [],
+  "binary_changed": false
+}
