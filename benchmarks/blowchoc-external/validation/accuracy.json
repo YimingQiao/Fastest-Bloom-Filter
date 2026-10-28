@@ -1,0 +1,550 @@
+{
+  "metadata": {
+    "arguments": {
+      "native": "build/blowchoc-bridge/libblowchoc_native.so",
+      "output": "build/blowchoc-bridge/accuracy.json",
+      "key_power": 10,
+      "query_power": 14,
+      "requested_bpk": 8,
+      "batch": 4096,
+      "hit": 50,
+      "seed": 42,
+      "construction_seed": 113,
+      "probes": 8,
+      "repeats": 6,
+      "calibration_power": 16,
+      "filters": "FastPatternBF,FourSectorBloomFilter,Split64BloomFilter,ByteSplitBloomFilter,BlowChocC1K8Random,BlowChocC1K8Distinct,BlowChocC2K8Random,BlowChocC2K8Distinct",
+      "measure": false
+    },
+    "python": "3.12.12 (main, Dec  9 2025, 19:02:36) [Clang 21.1.4 ]",
+    "numpy": "1.26.4",
+    "numba": "0.61.0",
+    "llvmlite": "0.44.0",
+    "platform": "Linux-6.1.0-45-amd64-x86_64-with-glibc2.36",
+    "affinity": [
+      3
+    ],
+    "jit_host_cpu": "sapphirerapids",
+    "jit_host_features": "+64bit,+adx,+aes,+amx-bf16,+amx-int8,+amx-tile,+avx,+avx2,+avx512bf16,+avx512bitalg,+avx512bw,+avx512cd,+avx512dq,-avx512er,+avx512f,+avx512fp16,+avx512ifma,-avx512pf,+avx512vbmi,+avx512vbmi2,+avx512vl,+avx512vnni,-avx512vp2intersect,+avx512vpopcntdq,+avxvnni,+bmi,+bmi2,+cldemote,+clflushopt,+clwb,-clzero,+cmov,+crc32,+cx16,+cx8,+enqcmd,+f16c,+fma,-fma4,+fsgsbase,+fxsr,+gfni,-hreset,+invpcid,-kl,-lwp,+lzcnt,+mmx,+movbe,+movdir64b,+movdiri,-mwaitx,+pclmul,+pconfig,+pku,+popcnt,-prefetchwt1,+prfchw,+ptwrite,+rdpid,-rdpru,+rdrnd,+rdseed,-rtm,+sahf,+serialize,+sgx,+sha,+shstk,+sse,+sse2,+sse3,+sse4.1,+sse4.2,-sse4a,+ssse3,-tbm,+tsxldtrk,+uintr,+vaes,+vpclmulqdq,+waitpkg,+wbnoinvd,-widekl,-xop,+xsave,+xsavec,+xsaveopt,+xsaves",
+    "llvm_version": [
+      15,
+      0,
+      7
+    ],
+    "numba_cpu_name": null,
+    "numba_cpu_features": null,
+    "native_library_sha256": "918700b94637757a04b06c08d1e08800db26008c57c61ff9d7aa634c135b0b5e",
+    "source_sha256": {
+      "CMakeLists.txt": "8d048e223224e3097d8c3fde0f9979a815f39aae870b8079160945aa46364a29",
+      "bridge.py": "53e51bc0f0c47671b0fed32d76bd72e7a00df9cbf70ab3e9577bb3709659e89d",
+      "check_bridge.py": "d70f04a312435a8997f384391aad3867edd8b2a77d952b7699810b2b25fd8fbe",
+      "check_native.cpp": "cb2690c72ca96f1160ee3b588762d84973660684624350005292ebc2624864fe",
+      "native-snapshot.json": "cd56831e94cbcdbedef4ed2c0a47b85adf7f753805f5dccc9ffe19f2b8858913",
+      "native.cpp": "3b8bd415780b1a431c68c25e9d3ec6fe6cde62e45e6f8c577d22b7a338a28174",
+      "oracle.py": "b1d7be33522e794e14f1498abdff9f83755627628d5e7cc7c1cfac2896f7e6a3",
+      "requirements.txt": "0cfda968e65568f6a90001bb630cc594406ceceeb61508bfbd969ad261e2a263",
+      "run.py": "7538c56af2f3b820edc430c1ff835342e75454933f5f06e04f2e5830105cd3ad",
+      "snapshot/LICENSE": "396b9a45f46ed8a8bcd7c1ac83d5af587240d2093e3a02275bfe486867df8177",
+      "snapshot/include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+      "snapshot/include/byte_split_bloom.h": "46d285a1676b0613a0759d9786d2d8afe67d75b5fc64ca839305922627fa332f",
+      "snapshot/include/cache_sectorized_BF_32bit.h": "ee48aab598e0369fe92163dba420f42a51520a1e4792d61867c71dd52012a10a",
+      "snapshot/include/fast_pattern_BF.h": "d10bb646c6fd40ecdda02a0d6b51304ae62cbd978b0dc9e058601c13c6d2b87b",
+      "snapshot/include/four_sector_bloom.h": "127b46a8f065a34ce2028873a41476baccd5e68cfe2957ab3d0f5ef2d8900304",
+      "snapshot/include/impala_blocked_BF_64bit.h": "7c20f4f15155477b9865d91ce01723e6f1f9f6378c4973741ede7f56fd885d02",
+      "snapshot/include/impala_blocked_BF_64bit_avx512.h": "b088dcad98f5d9b18a010f5daf5e9b5d5fddacc744d17e8e0313fa71552ee452",
+      "snapshot/include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c",
+      "snapshot/include/new_cache_sectorized_BF_32bit.h": "cffa2fb61b1e38afb4c1bdc646219da3eb930a11ef1790dd8f4888de247bc769",
+      "snapshot/include/parallel_bloom.h": "7a1744d8689a344bcb8d0161f52e7d8999db52fca11bcc45953c9e4c4f0327cf",
+      "snapshot/include/parallel_layout_bloom.h": "7116b26a9d09f78be0a66daa990d3593a120ac5ce8c485eba89c8a06f82ba6e6",
+      "snapshot/include/register_blocked_BF_2x32bit.h": "2ce6e2bba2342a2e2f6964aa5fda8fe6c3bdd090e759d91ae46b18878566ddde",
+      "snapshot/include/register_blocked_BF_32bit.h": "aad3b10e1220d41ca06f818c4ded6b3b405a5c6f9cf7a31887cea58afeeaadd9",
+      "snapshot/include/register_blocked_BF_32bit_Masks.h": "595b0d5ad008ef3f2eb7008684b4e5ba4ef038dd8334fab938504da06559754c",
+      "snapshot/include/register_blocked_BF_64bit.h": "c64816638a58537ad3318e3707ec9ac3cd64732c1bd27f4347acbc70e6cad0c3",
+      "snapshot/include/register_blocked_BF_64bit_Masks.h": "d63ffa01485942d886bd22b883a637929683f20d3c5e20e31cb5130e3bab2ecd",
+      "snapshot/include/split64_bloom.h": "9b548e880b927ade57ef27c946f0105e9abe9c2b2436eecdbbbff0a22d30f429",
+      "snapshot/third_party/FastFilter/LICENSE": "3f1c443ccd7c4e45549fb7f32e499fe63eab4a5876cf9772c185e087808f4957",
+      "snapshot/third_party/FastFilter/NOTICE": "0d0b4b56f3233314c0cc3309155dc83eea42960804f6ca1aa48b33d2fc103560",
+      "test_cli.py": "0aed9981394c89449475657de80093aa67858fb33c013966f03bd7db85535179",
+      "upstream.json": "d2c4aaf990587073cce23e15f22daa71d361bac4ad9ee05659c4a00912c59e20",
+      "vendor/LICENSE": "1b52f04847458fe4b7559a7e1486d1fcb22ee51c6b3eeb496ef3fce947f9ba8b",
+      "vendor/README.md": "894a4363a6e6a64dba62d487b3e721a463f770a487893a2b1fe32aa1cd5f3c8b",
+      "vendor/blowchoc/filter_bb_choices.py": "f85c95477076cec737f184f4c3a3ca7a90f2fec48cc6297ea4a3125f5b46447d",
+      "vendor/blowchoc/hashfunctions.py": "078bea4d7bac024dfe794e237ca0f9718c915320124cf3adba96905cc13c5f23",
+      "vendor/blowchoc/lowlevel/aligned_arrays.py": "d972e38842794fc15442b3f9813c35fbd371a1fd85f062ad9a4266878d06cd8a",
+      "vendor/blowchoc/lowlevel/bitarray.py": "88b0a3de562fe21ea34a0a2268b42a821199bbab9bab558c9a7e192a18fc00ea",
+      "vendor/blowchoc/lowlevel/debug.py": "01cf92c9aaa7225f9bee452db58180b24213aa7ea96d7da696463a10cf2d27a8",
+      "vendor/blowchoc/lowlevel/llvm.py": "dcb2a0eb30d9ca39f10b4600d910a0982f21bdb605b9225a540cd77c837ee5e1",
+      "vendor/blowchoc/mathutils.py": "d043e295f7089d3bb070e47b600dec9f1ea5e6a2548ecdc77e9591ca5be0923d",
+      "vendor/blowchoc/subtable_hashfunctions.py": "7a78a4db122a905f325c30cd566fe2a5bdaedd9f64f68a00e54b2bb0182d9e0c",
+      "vendor/environment.yml": "595b60c9d8c8bf43f1822779f52b33a0844e7b59959ba41b6d0b1fb94c89c4a2",
+      "vendor/pyproject.toml": "55b40d91b962e2b4b7ef0140163c67163bf23b0bd3628b540d87ce36f213b2d9",
+      "workload.py": "f08636ca0f6424bde4eb26608d5908f4f621012a0eb493b4991f4158feaa59bb"
+    },
+    "input_sha256": {
+      "raw_insert": "7a16f80f3020127af30a362159e57f59f5fb38712057d0c3ab5f104f3f1d07b0",
+      "raw_query": "9f12321dec27e6410edabc03e54b4a486e2d6054783b08483825d94e15a636d7"
+    },
+    "key_base": 1721924245,
+    "throughput_enabled": false,
+    "phase_orders": [
+      [
+        "prehashed",
+        "common-fused",
+        "common-staged"
+      ],
+      [
+        "prehashed",
+        "common-staged",
+        "common-fused"
+      ],
+      [
+        "common-fused",
+        "prehashed",
+        "common-staged"
+      ],
+      [
+        "common-fused",
+        "common-staged",
+        "prehashed"
+      ],
+      [
+        "common-staged",
+        "prehashed",
+        "common-fused"
+      ],
+      [
+        "common-staged",
+        "common-fused",
+        "prehashed"
+      ]
+    ]
+  },
+  "records": [
+    {
+      "filter": "ByteSplitBloomFilter",
+      "language": "cpp",
+      "keys": 1024,
+      "queries": 16384,
+      "requested_bpk": 8,
+      "filter_bytes": 2048,
+      "actual_bpk": 16.0,
+      "batch": 4096,
+      "seed": 42,
+      "input_mode": "common64",
+      "api_track": "compiled-visible-scalar",
+      "present_queries": 8200,
+      "absent_queries": 8184,
+      "false_positives": 44,
+      "result_checksum": 5216802124448966939,
+      "calibration_absent_queries": 65536,
+      "calibration_false_positives": 283,
+      "calibration_raw_interval": [
+        1721941653,
+        1722007189
+      ],
+      "build_trials": [],
+      "query_trials": [],
+      "filter_positions_scratch_bytes": 0,
+      "harness_hash_scratch_bytes": 32768,
+      "logical_bitmap_bytes": 2048
+    },
+    {
+      "filter": "FourSectorBloomFilter",
+      "language": "cpp",
+      "keys": 1024,
+      "queries": 16384,
+      "requested_bpk": 8,
+      "filter_bytes": 2048,
+      "actual_bpk": 16.0,
+      "batch": 4096,
+      "seed": 42,
+      "input_mode": "common64",
+      "api_track": "compiled-visible-scalar",
+      "present_queries": 8200,
+      "absent_queries": 8184,
+      "false_positives": 5,
+      "result_checksum": 10165827444811392396,
+      "calibration_absent_queries": 65536,
+      "calibration_false_positives": 75,
+      "calibration_raw_interval": [
+        1721941653,
+        1722007189
+      ],
+      "build_trials": [],
+      "query_trials": [],
+      "filter_positions_scratch_bytes": 0,
+      "harness_hash_scratch_bytes": 32768,
+      "logical_bitmap_bytes": 2048
+    },
+    {
+      "filter": "BlowChocC2K8Random",
+      "language": "numba",
+      "keys": 1024,
+      "queries": 16384,
+      "requested_bpk": 8,
+      "filter_bytes": 2048,
+      "actual_bpk": 16.0,
+      "batch": 4096,
+      "seed": 42,
+      "input_mode": "common64",
+      "api_track": "compiled-visible-scalar",
+      "present_queries": 8200,
+      "absent_queries": 8184,
+      "false_positives": 28,
+      "result_checksum": 15285287316620912405,
+      "calibration_absent_queries": 65536,
+      "calibration_false_positives": 186,
+      "calibration_raw_interval": [
+        1721941653,
+        1722007189
+      ],
+      "build_trials": [],
+      "query_trials": [],
+      "filter_positions_scratch_bytes": 16,
+      "harness_hash_scratch_bytes": 32768,
+      "logical_bitmap_bytes": 1600,
+      "spec": {
+        "universe": 18446744073709551616,
+        "nsubfilters": 1,
+        "nblocks": 25,
+        "nblocks_per_subfilter": 25,
+        "nchoices": 2,
+        "nbits": 8,
+        "bitversion": "random",
+        "beta": 1.618033988749895,
+        "mu": 1.0,
+        "subfilter_hashfuncs_str": [
+          "linear131234103"
+        ],
+        "bucket_hashfuncs_str": [
+          "linear2808315403",
+          "linear3726391089"
+        ],
+        "bit_hashfuncs_str": [
+          "linear3487078477",
+          "linear3101292855",
+          "linear1179609949",
+          "linear76767819",
+          "linear2054627587",
+          "linear2361958651",
+          "linear1494006463",
+          "linear1025108339"
+        ],
+        "construction_seed": 113
+      },
+      "cold_compile_ns": 1855522236,
+      "warmup_bitmap_released": true,
+      "jit_signatures": {
+        "(False, 0)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(False, 1)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(False, 2)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 0)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 1)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 2)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ]
+      }
+    },
+    {
+      "filter": "FastPatternBF",
+      "language": "cpp",
+      "keys": 1024,
+      "queries": 16384,
+      "requested_bpk": 8,
+      "filter_bytes": 2048,
+      "actual_bpk": 16.0,
+      "batch": 4096,
+      "seed": 42,
+      "input_mode": "common64",
+      "api_track": "compiled-visible-scalar",
+      "present_queries": 8200,
+      "absent_queries": 8184,
+      "false_positives": 15,
+      "result_checksum": 18142313802930488128,
+      "calibration_absent_queries": 65536,
+      "calibration_false_positives": 113,
+      "calibration_raw_interval": [
+        1721941653,
+        1722007189
+      ],
+      "build_trials": [],
+      "query_trials": [],
+      "filter_positions_scratch_bytes": 0,
+      "harness_hash_scratch_bytes": 32768,
+      "logical_bitmap_bytes": 2048
+    },
+    {
+      "filter": "BlowChocC1K8Random",
+      "language": "numba",
+      "keys": 1024,
+      "queries": 16384,
+      "requested_bpk": 8,
+      "filter_bytes": 2048,
+      "actual_bpk": 16.0,
+      "batch": 4096,
+      "seed": 42,
+      "input_mode": "common64",
+      "api_track": "compiled-visible-scalar",
+      "present_queries": 8200,
+      "absent_queries": 8184,
+      "false_positives": 24,
+      "result_checksum": 15243779353639877511,
+      "calibration_absent_queries": 65536,
+      "calibration_false_positives": 185,
+      "calibration_raw_interval": [
+        1721941653,
+        1722007189
+      ],
+      "build_trials": [],
+      "query_trials": [],
+      "filter_positions_scratch_bytes": 16,
+      "harness_hash_scratch_bytes": 32768,
+      "logical_bitmap_bytes": 1600,
+      "spec": {
+        "universe": 18446744073709551616,
+        "nsubfilters": 1,
+        "nblocks": 25,
+        "nblocks_per_subfilter": 25,
+        "nchoices": 1,
+        "nbits": 8,
+        "bitversion": "random",
+        "beta": 1.618033988749895,
+        "mu": 1.0,
+        "subfilter_hashfuncs_str": [
+          "linear131234103"
+        ],
+        "bucket_hashfuncs_str": [
+          "linear2808315403"
+        ],
+        "bit_hashfuncs_str": [
+          "linear3726391089",
+          "linear3487078477",
+          "linear3101292855",
+          "linear1179609949",
+          "linear76767819",
+          "linear2054627587",
+          "linear2361958651",
+          "linear1494006463"
+        ],
+        "construction_seed": 113
+      },
+      "cold_compile_ns": 1491097935,
+      "warmup_bitmap_released": true,
+      "jit_signatures": {
+        "(False, 0)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(False, 1)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(False, 2)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 0)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 1)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 2)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ]
+      }
+    },
+    {
+      "filter": "BlowChocC1K8Distinct",
+      "language": "numba",
+      "keys": 1024,
+      "queries": 16384,
+      "requested_bpk": 8,
+      "filter_bytes": 2048,
+      "actual_bpk": 16.0,
+      "batch": 4096,
+      "seed": 42,
+      "input_mode": "common64",
+      "api_track": "compiled-visible-scalar",
+      "present_queries": 8200,
+      "absent_queries": 8184,
+      "false_positives": 30,
+      "result_checksum": 6901113449690493391,
+      "calibration_absent_queries": 65536,
+      "calibration_false_positives": 229,
+      "calibration_raw_interval": [
+        1721941653,
+        1722007189
+      ],
+      "build_trials": [],
+      "query_trials": [],
+      "filter_positions_scratch_bytes": 16,
+      "harness_hash_scratch_bytes": 32768,
+      "logical_bitmap_bytes": 1600,
+      "spec": {
+        "universe": 18446744073709551616,
+        "nsubfilters": 1,
+        "nblocks": 25,
+        "nblocks_per_subfilter": 25,
+        "nchoices": 1,
+        "nbits": 8,
+        "bitversion": "distinct",
+        "beta": 1.618033988749895,
+        "mu": 1.0,
+        "subfilter_hashfuncs_str": [
+          "linear131234103"
+        ],
+        "bucket_hashfuncs_str": [
+          "linear2808315403"
+        ],
+        "bit_hashfuncs_str": [
+          "linear1695408149",
+          "linear832170673",
+          "linear2007663727",
+          "linear1650248747",
+          "linear4089078123",
+          "linear1341928597",
+          "linear3138557997",
+          "linear3660886403"
+        ],
+        "construction_seed": 113
+      },
+      "cold_compile_ns": 1756789032,
+      "warmup_bitmap_released": true,
+      "jit_signatures": {
+        "(False, 0)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(False, 1)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(False, 2)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 0)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 1)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 2)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ]
+      }
+    },
+    {
+      "filter": "BlowChocC2K8Distinct",
+      "language": "numba",
+      "keys": 1024,
+      "queries": 16384,
+      "requested_bpk": 8,
+      "filter_bytes": 2048,
+      "actual_bpk": 16.0,
+      "batch": 4096,
+      "seed": 42,
+      "input_mode": "common64",
+      "api_track": "compiled-visible-scalar",
+      "present_queries": 8200,
+      "absent_queries": 8184,
+      "false_positives": 19,
+      "result_checksum": 6612505322795210648,
+      "calibration_absent_queries": 65536,
+      "calibration_false_positives": 157,
+      "calibration_raw_interval": [
+        1721941653,
+        1722007189
+      ],
+      "build_trials": [],
+      "query_trials": [],
+      "filter_positions_scratch_bytes": 16,
+      "harness_hash_scratch_bytes": 32768,
+      "logical_bitmap_bytes": 1600,
+      "spec": {
+        "universe": 18446744073709551616,
+        "nsubfilters": 1,
+        "nblocks": 25,
+        "nblocks_per_subfilter": 25,
+        "nchoices": 2,
+        "nbits": 8,
+        "bitversion": "distinct",
+        "beta": 1.618033988749895,
+        "mu": 1.0,
+        "subfilter_hashfuncs_str": [
+          "linear131234103"
+        ],
+        "bucket_hashfuncs_str": [
+          "linear2808315403",
+          "linear3726391089"
+        ],
+        "bit_hashfuncs_str": [
+          "linear2235104625",
+          "linear1513467139",
+          "linear745016911",
+          "linear4157425019",
+          "linear2652249207",
+          "linear3267895741",
+          "linear943967661",
+          "linear2604314517"
+        ],
+        "construction_seed": 113
+      },
+      "cold_compile_ns": 2072702248,
+      "warmup_bitmap_released": true,
+      "jit_signatures": {
+        "(False, 0)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(False, 1)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(False, 2)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 0)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 1)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ],
+        "(True, 2)": [
+          "(Array(uint64, 1, 'C', False, aligned=True), Array(uint64, 1, 'C', False, aligned=True), Array(uint32, 1, 'C', False, aligned=True), int64, Array(uint64, 1, 'C', False, aligned=True), Array(uint16, 1, 'C', False, aligned=True))"
+        ]
+      }
+    },
+    {
+      "filter": "Split64BloomFilter",
+      "language": "cpp",
+      "keys": 1024,
+      "queries": 16384,
+      "requested_bpk": 8,
+      "filter_bytes": 2048,
+      "actual_bpk": 16.0,
+      "batch": 4096,
+      "seed": 42,
+      "input_mode": "common64",
+      "api_track": "compiled-visible-scalar",
+      "present_queries": 8200,
+      "absent_queries": 8184,
+      "false_positives": 5,
+      "result_checksum": 5668372297890772642,
+      "calibration_absent_queries": 65536,
+      "calibration_false_positives": 50,
+      "calibration_raw_interval": [
+        1721941653,
+        1722007189
+      ],
+      "build_trials": [],
+      "query_trials": [],
+      "filter_positions_scratch_bytes": 0,
+      "harness_hash_scratch_bytes": 32768,
+      "logical_bitmap_bytes": 2048
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+Using CPython 3.12.12 interpreter at: /home/yiming/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/bin/python3.12
+Creating virtual environment at: benchmarks/blowchoc-external/.venv
+Activate with: source benchmarks/blowchoc-external/.venv/bin/activate
+Using Python 3.12.12 environment at: benchmarks/blowchoc-external/.venv
+Resolved 3 packages in 1.13s
+Downloading numpy (17.1MiB)
+Downloading numba (3.7MiB)
+Downloading llvmlite (40.4MiB)
+ Downloaded numba
+ Downloaded numpy
+ Downloaded llvmlite
+Prepared 3 packages in 5.51s
+Installed 3 packages in 23ms
+ + llvmlite==0.44.0
+ + numba==0.61.0
+ + numpy==1.26.4
+-- The CXX compiler identification is Clang 23.0.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/yiming/projects/fastest-bf-lab/build/blowchoc-bridge
+[ 50%] Building CXX object CMakeFiles/blowchoc_native.dir/native.cpp.o
+In file included from /home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/native.cpp:3:
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:44:14: warning: use of bitwise '&' with boolean operands [-Wbitwise-instead-of-logical]
+   44 |                                 out[i] = ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((lo >> 20) & 7))] & m2) == m2);
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                    &&
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:44:14: note: cast one or both operands to int to silence this warning
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:225:8: warning: use of bitwise '&' with boolean operands [-Wbitwise-instead-of-logical]
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                       &&
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:225:8: note: cast one or both operands to int to silence this warning
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:225:8: warning: use of bitwise '&' with boolean operands [-Wbitwise-instead-of-logical]
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                       &&
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:49:4: note: in instantiation of function template specialization 'bloom_filters::FastPatternBF::LookupImpl<true>' requested here
+   49 |                         LookupImpl<true>(num, keys, out);
+      |                         ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:225:8: note: cast one or both operands to int to silence this warning
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:225:8: warning: use of bitwise '&' with boolean operands [-Wbitwise-instead-of-logical]
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                       &&
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:51:4: note: in instantiation of function template specialization 'bloom_filters::FastPatternBF::LookupImpl<false>' requested here
+   51 |                         LookupImpl<false>(num, keys, out);
+      |                         ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/snapshot/include/fast_pattern_BF.h:225:8: note: cast one or both operands to int to silence this warning
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^
+4 warnings generated.
+[100%] Linking CXX shared library libblowchoc_native.so
+[100%] Built target blowchoc_native
+Traceback (most recent call last):
+  File "/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/check_bridge.py", line 246, in <module>
+    main()
+  File "/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/check_bridge.py", line 238, in main
+    result["blowchoc"] = check_blows()
+                         ^^^^^^^^^^^^^
+  File "/home/yiming/projects/fastest-bf-lab/benchmarks/blowchoc-external/check_bridge.py", line 134, in check_blows
+    assert int(factory.descriptor.private.get_block(c, np.uint64(h))) == oracle.blocks(spec, h)[c]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
