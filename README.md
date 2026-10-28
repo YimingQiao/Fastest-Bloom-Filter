@@ -9,11 +9,12 @@ The project name is an ambition, not a claim that one implementation wins every 
 
 ## Modern external comparison
 
-The initial screen compared **43 C++ configurations in one shuffled process**:
-FastPattern, pinned FastFilter SIMD/classical variants, PageBloomFilter, and
-Boost.Bloom 1.92 with its native bulk APIs. The current executable adds native
-FourSector/Split64/ByteSplit, eight RocksDB FastLocalBloom core configurations,
-and two FastFilter single-call controls, for **56**.
+The shared C++ executable compares **56 configurations**: four native layouts,
+pinned FastFilter SIMD/classical variants, PageBloomFilter, Boost.Bloom 1.92,
+RocksDB FastLocalBloom core variants and explicit single-call controls.
+A separate [988-row exact-capacity screen](experiments/2026-10-29-exact-budget-range/screen/OBSERVATIONS.md)
+expands this to **68 external configurations, four production natives and two
+range-capacity experiments**, using actual backing-byte ceilings from12 to32 bits/key.
 A separate native Rust suite includes
 pinned Bloomsday, fastbloom and [SBBF](benchmarks/rust-sbbf-external/README.md).
 Its [168-row SBBF screen](experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
@@ -37,7 +38,12 @@ per configuration. In the C++ shortlist, our eligible query leaders are
 **1.10–1.73× faster** than the fastest eligible external configuration across the
 reported memory/FPR ceilings. This covers 65K–32M keys, 50% hits, batch 4096,
 and allocations up to 128 MiB on one Xeon Platinum 8474C core. This confirmation
-uses 16/32-bpk allocation targets; smaller intermediate budgets remain to be swept.
+uses16/32-bpk allocation targets. The newer finer-capacity screen changes the
+large-table comparison: the production leader is4.4% slower than a24-bpk Boost
+filter in strict-FPR hash+query, while the loose-FPR production lead shrinks to0.5%.
+An isolated24-bpk Split64 range prototype leads that strict setting by4.2%,
+pending fresh-seed confirmation. These training results remain separate from
+the earlier three-seed confirmation.
 
 ![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
 

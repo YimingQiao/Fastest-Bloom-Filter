@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 
 from summarize_exact_budget import (
@@ -99,6 +100,7 @@ def main():
     for i, n in enumerate(sizes):
         for j, tier in enumerate(tiers):
             ax = axes[i, j]
+            panel_values = []
             for origin, label, color, marker in groups:
                 points = [
                     item
@@ -111,6 +113,7 @@ def main():
                     item["winner"][metric] if item["winner"] else float("nan")
                     for item in points
                 ]
+                panel_values.extend(value for value in values if math.isfinite(value))
                 ax.plot(
                     caps,
                     values,
@@ -125,6 +128,11 @@ def main():
             ax.set_xticks(caps)
             ax.set_xlim(min(caps) - 0.6, max(caps) + 0.6)
             ax.set_yscale("log")
+            # A tightly cropped axis would exaggerate sub-percent differences.
+            # Preserve at least a twofold vertical span in every panel.
+            if panel_values and max(panel_values) / min(panel_values) < 2:
+                midpoint = math.sqrt(min(panel_values) * max(panel_values))
+                ax.set_ylim(midpoint / math.sqrt(2) * 0.95, midpoint * math.sqrt(2) * 1.05)
             ax.yaxis.set_major_formatter(ScalarFormatter())
             ax.yaxis.set_minor_formatter(ScalarFormatter())
             ax.grid(axis="y", which="both", alpha=0.18)

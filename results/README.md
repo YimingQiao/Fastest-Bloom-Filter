@@ -58,6 +58,16 @@ archives, including exact cross-language bitmaps and whole-cache-line parallel
 construction. These preflights establish correctness, not a speed result for
 the packaged implementations.
 
+The [988-row exact-capacity screen](../experiments/2026-10-29-exact-budget-range/screen/OBSERVATIONS.md)
+compares68 external configurations, four production natives and two range
+experiments at seven backing-byte ceilings. It exposes a large strict-FPR
+production loss to a smaller Boost allocation; narrow range-prototype leads
+remain training observations. The [capacity frontier](../experiments/2026-10-29-exact-budget-range/screen/CAPACITY-FRONTIER.md)
+shows all seven budgets as a supplementary descriptive view. Regenerate the
+main tables with `scripts/summarize_exact_budget.py` and the figure with
+`scripts/plot_exact_budget.py`; the former also supports `--verify-live` for
+checking every original executable and fetched build dependency.
+
 The external multithreaded archives live under `experiments/` because they freeze a
 separate shared-bitmap executor and retain both original serial and new parallel
 metrics. They are not merged with single-thread timings:
