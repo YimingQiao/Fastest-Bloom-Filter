@@ -1,9 +1,40 @@
 # Fastest Bloom Filter
 
-Native **C++17 and Rust** implementations for fast Bloom filter construction and batched membership queries.
+Native **C++17 and Rust** Bloom filters with **AVX-512 / AVX2**, parallel construction,
+parallel membership queries, and an atomic type for concurrent readers/writers.
 The new `FastPatternBF` / `FastPatternBloomFilter` uses small SIMD mask dictionaries and cache-sectorized storage. The C++ benchmark also includes register-blocked, cache-sectorized, and Impala-style split-block baselines.
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
+
+## Measured results
+
+![Measured single-thread throughput and parallel query scaling](docs/figures/throughput.svg)
+
+Measured on **Intel Xeon Platinum 8474C**, Clang 23 / Rust 1.92, AVX-512, with
+three seeds. Ratios below are medians of per-case speedups, not best repetitions.
+
+| Workload | Native C++ | Native Rust | Reference |
+| --- | --- | --- | --- |
+| Single-thread queries, 16 actual bits/key, 8 KiB–64 MiB | **1.10–1.49×** | **1.09–1.35×** | Faster original C++ sectorized filter at equal bytes |
+| 8-core build, 64 MiB bitmap | **2.31×** | **2.76×** | Same-language FastPattern serial |
+| 8-core queries, 64 MiB bitmap | **6.95×** | **6.98×** | Same-language FastPattern serial |
+| 32-core queries, 128 MiB bitmap | **14.40×** | **13.06×** | Same-language FastPattern serial |
+
+Single-thread queries use batch 4096 and hit rates 0/50/100%; scaling uses 50% hits.
+Hashing is excluded here; the full report also measures hash+query. Build scaling
+includes partitioning, scratch allocation, and thread startup. At 16 actual bits/key,
+pooled all-miss FPR is **0.2020%**, versus **0.2152%** for the original sectorized layout.
+
+**Tradeoffs remain:** small-filter insertion can be slower, small/irregular query
+batches do not always improve, and Rust's AVX2 path does not beat its original-layout
+baseline in every case. Other designs can be faster at higher FPR or more accurate
+at the same space. The optional `fastbloom 0.17.0` comparison explicitly reports
+its lower FPR alongside timing; it is not an equal-accuracy speed ranking.
+
+See the [full measured report](docs/results-2026-10-28.md), [raw data and provenance](results/README.md),
+and [external baseline adapter](benchmarks/rust-external/README.md). The report includes
+all three space budgets, AVX2 results, atomic overhead, 1–32 core scaling, and
+before/after experiments for false sharing and the AVX2 kernels.
 
 ## Build
 
@@ -236,9 +267,12 @@ ctest --test-dir build/sanitize --output-on-failure
 
 Tests cover concurrent readers/writers, non-power-of-two worker counts, colliding
 cache-line inserts, empty inputs, short and odd batches, unaligned inputs, repeated inserts,
-output bounds, batch/single-query agreement, and no false negatives. The comparison
+output bounds, SIMD/scalar agreement, batch/single-query agreement, and no false negatives. The comparison
 also fails on correctness errors before reporting timing results. Sanitized timings
 are for debugging only, never performance comparisons.
+
+[`scripts/ci-reference.yml`](scripts/ci-reference.yml) contains a CI template; it is
+not enabled as a GitHub workflow. The measured report records local validation.
 
 ## Optimization design
 
@@ -259,9 +293,8 @@ pairs and triples under cyclic rotation. The design requires uniformly hashed in
 Earlier interleaved, direct split-block, and smaller-dictionary prototypes live under
 [`experiments/2026-10-28-prototypes`](experiments/2026-10-28-prototypes). Enable them
 with `-DBF_EXPERIMENTS=ON` for ablation; they are not automatically better designs.
-The benchmark reports losses as well as improvements. Measured results will be
-recorded against a committed source revision, rather than presented as a universal
-“fastest filter” claim.
+The benchmark reports losses as well as improvements. Every published measurement
+records its source revision, build configuration, and raw counts.
 
 ## Background
 
