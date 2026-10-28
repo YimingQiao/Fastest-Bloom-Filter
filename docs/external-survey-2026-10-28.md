@@ -53,7 +53,7 @@ The external lockfile must still retain its transitive dependency revision.
 - [RocksDB FastLocalBloom](https://github.com/facebook/rocksdb/wiki/RocksDB-Bloom-Filter)
   is now integrated at [v11.12 / ef3dd12](https://github.com/facebook/rocksdb/tree/ef3dd12e9a6314aaf08fba6d5d445494eac9b253).
   The [adapter](../benchmarks/rocksdb-external/README.md) preserves its bitmap
-  primitives, eight-slot insertion pipeline and MultiGet32 query schedule. Five
+  primitives, eight-slot insertion pipeline and MultiGet32 query schedule. Eight
   configurations distinguish automatic/fixed probe counts and scalar/bulk APIs.
   These are prehashed core-filter comparisons; SST queues, serialized metadata,
   byte hashing, reader and database costs are explicitly excluded. Integration
