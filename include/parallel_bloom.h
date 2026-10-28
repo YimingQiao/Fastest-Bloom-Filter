@@ -76,7 +76,10 @@ public:
 		}
 		const unsigned line_shift = parallel_detail::Log2(filter_.blocks_.size() / 16);
 		const size_t stride = (workers + 7) & ~size_t {7};
-		std::vector<size_t> counts(workers * stride, 0), starts(workers + 1);
+		// Padding alone is insufficient: align the allocation too, otherwise
+		// adjacent histogram rows can still share a boundary cache line.
+		std::vector<size_t, AlignedAllocator<size_t, 64>> counts(workers * stride, 0);
+		std::vector<size_t> starts(workers + 1);
 		std::unique_ptr<uint64_t[]> partitioned(new uint64_t[n]);
 		auto shard = [&](uint64_t h) {
 			return ((uint64_t(filter_.Block(h)) >> 4) * workers) >> line_shift;

@@ -6,6 +6,12 @@ use std::mem::MaybeUninit;
 use std::sync::atomic::{AtomicU32, Ordering};
 use std::thread;
 
+const COUNTERS_PER_LINE: usize = 64 / std::mem::size_of::<usize>();
+// Align the allocation as well as the row stride to prevent boundary false sharing.
+#[repr(C, align(64))]
+#[derive(Clone)]
+struct HistogramLine([usize; COUNTERS_PER_LINE]);
+
 pub(crate) fn workers(items: usize, requested: usize, limit: usize) -> usize {
     if items < (1 << 14) {
         return 1;
@@ -59,12 +65,13 @@ impl<const P: bool> BloomFilter<P> {
     /// Explicit peak scratch allocation; excludes allocator metadata and OS thread stacks.
     pub fn build_scratch_bytes(&self, n: usize, requested: usize) -> usize {
         let w = self.build_workers(n, requested);
-        let stride = (w + 7) & !7;
+        let row_lines = w.div_ceil(COUNTERS_PER_LINE);
         if w == 1 {
             0
         } else {
             n * 8
-                + (w * stride + w + 1) * std::mem::size_of::<usize>()
+                + w * row_lines * 64
+                + (w + 1) * std::mem::size_of::<usize>()
                 + w * w * (std::mem::size_of::<&mut [u64]>() + std::mem::size_of::<usize>())
                 + 2 * w * std::mem::size_of::<Vec<usize>>()
         }
@@ -78,7 +85,7 @@ impl<const P: bool> BloomFilter<P> {
             self.insert_hashes(hashes);
             return;
         }
-        let stride = (w + 7) & !7;
+        let row_lines = w.div_ceil(COUNTERS_PER_LINE);
         let lines = self.lines.len();
         let line_shift = lines.trailing_zeros();
         let mask = self.block_mask;
@@ -87,14 +94,15 @@ impl<const P: bool> BloomFilter<P> {
         let use_simd = self.avx512;
         let shard =
             |h: u64| (((block::<P>(h, mask) >> 4) as u64 * w as u64) >> line_shift) as usize;
-        let mut counts = vec![0usize; w * stride];
+        let mut counts = vec![HistogramLine([0; COUNTERS_PER_LINE]); w * row_lines];
         thread::scope(|scope| {
-            for (worker, row) in counts.chunks_mut(stride).enumerate() {
+            for (worker, row) in counts.chunks_mut(row_lines).enumerate() {
                 let input = &hashes[hashes.len() * worker / w..hashes.len() * (worker + 1) / w];
                 let shard = &shard;
                 scope.spawn(move || {
                     for &h in input {
-                        row[shard(h)] += 1;
+                        let part = shard(h);
+                        row[part / COUNTERS_PER_LINE].0[part % COUNTERS_PER_LINE] += 1;
                     }
                 });
             }
@@ -103,7 +111,10 @@ impl<const P: bool> BloomFilter<P> {
         for part in 0..w {
             starts[part + 1] = starts[part]
                 + (0..w)
-                    .map(|worker| counts[worker * stride + part])
+                    .map(|worker| {
+                        counts[worker * row_lines + part / COUNTERS_PER_LINE].0
+                            [part % COUNTERS_PER_LINE]
+                    })
                     .sum::<usize>();
         }
         let mut partitioned_storage = Vec::with_capacity(hashes.len());
@@ -115,7 +126,10 @@ impl<const P: bool> BloomFilter<P> {
         let mut remaining = &mut partitioned_storage[..];
         for part in 0..w {
             for worker in 0..w {
-                let (piece, rest) = remaining.split_at_mut(counts[worker * stride + part]);
+                let (piece, rest) = remaining.split_at_mut(
+                    counts[worker * row_lines + part / COUNTERS_PER_LINE].0
+                        [part % COUNTERS_PER_LINE],
+                );
                 segments[worker].push(piece);
                 remaining = rest;
             }
