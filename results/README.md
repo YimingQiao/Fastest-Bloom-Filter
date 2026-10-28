@@ -41,10 +41,22 @@ seed42 exploration at actual16/32 bpk, not a new confirmation or a finer-capacit
 The [Rust public-call screen](../experiments/2026-10-29-rust-visible-single/screen/RESULTS.md)
 adds 28 rows with four balanced query modes and retains all native losses.
 Public-call visibility changes the caller contract; no native code changed in that screen.
+The [112-row leaf-inlining experiment](../experiments/2026-10-29-rust-leaf-inline/screen/DECISION.md)
+then tests three annotations in an isolated crate. ByteSplit's public-call gains
+come with observed short-batch regressions, so it remains unpromoted.
+A [separate assembly audit](../experiments/2026-10-29-rust-leaf-inline/post-screen-byte-bulk-audit/README.md)
+finds identical active Byte bulk instructions; fresh-seed confirmation is needed
+to distinguish repeatable regressions from placement and run-order effects.
 The [BlowChoc throughput screen](../experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
 contains 48 rows and 144 separate-contract timings for eight upstream configurations
 and four native controls. It uses input seed42 and construction seed113; its speed
 results are exploratory, while the separate held-out archive measures accuracy only.
+
+The native Independent32 packaging has separate [C++ correctness](../experiments/2026-10-29-independent32-native-cpp/README.md)
+and [Rust correctness](../experiments/2026-10-29-independent32-native-rust/README.md)
+archives, including exact cross-language bitmaps and whole-cache-line parallel
+construction. These preflights establish correctness, not a speed result for
+the packaged implementations.
 
 The external multithreaded archives live under `experiments/` because they freeze a
 separate shared-bitmap executor and retain both original serial and new parallel
