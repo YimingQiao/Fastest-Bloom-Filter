@@ -1,0 +1,49 @@
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/check.cpp:1:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/parallel_independent32.h:3:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/parallel_bloom.h:3:
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:44:14: error: use of bitwise '&' with boolean operands [-Werror,-Wbitwise-instead-of-logical]
+   44 |                                 out[i] = ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((lo >> 20) & 7))] & m2) == m2);
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                    &&
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:44:14: note: cast one or both operands to int to silence this warning
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:225:8: error: use of bitwise '&' with boolean operands [-Werror,-Wbitwise-instead-of-logical]
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                       &&
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:225:8: note: cast one or both operands to int to silence this warning
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/check.cpp:1:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/parallel_independent32.h:3:
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/parallel_bloom.h:164:13: error: use of bitwise '&' with boolean operands [-Werror,-Wbitwise-instead-of-logical]
+  164 |                         out[i] = ((lines_[a / 16].words[a % 16].load(std::memory_order_relaxed) & m1) == m1) &
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                                                              &&
+  165 |                                  ((lines_[b / 16].words[b % 16].load(std::memory_order_relaxed) & m2) == m2);
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/parallel_bloom.h:164:13: note: cast one or both operands to int to silence this warning
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/check.cpp:1:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/parallel_independent32.h:3:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/parallel_bloom.h:3:
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:225:8: error: use of bitwise '&' with boolean operands [-Werror,-Wbitwise-instead-of-logical]
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                       &&
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:49:4: note: in instantiation of function template specialization 'bloom_filters::FastPatternBF::LookupImpl<true>' requested here
+   49 |                         LookupImpl<true>(num, keys, out);
+      |                         ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:225:8: note: cast one or both operands to int to silence this warning
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:225:8: error: use of bitwise '&' with boolean operands [-Werror,-Wbitwise-instead-of-logical]
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                       &&
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:51:4: note: in instantiation of function template specialization 'bloom_filters::FastPatternBF::LookupImpl<false>' requested here
+   51 |                         LookupImpl<false>(num, keys, out);
+      |                         ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-native-cpp/../../include/fast_pattern_BF.h:225:8: note: cast one or both operands to int to silence this warning
+  225 |                             ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((static_cast<uint32_t>(h) >> 20) & 7))] & m2) == m2);
+      |                             ^
+5 errors generated.
+gmake[2]: *** [CMakeFiles/check.dir/build.make:76: CMakeFiles/check.dir/check.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/check.dir/all] Error 2
+gmake: *** [Makefile:101: all] Error 2
