@@ -1,0 +1,72 @@
+{
+  "status": "Prepared internal timing protocol; not executed or leased for performance.",
+  "purpose": "Same-bitmap query-kernel comparison; no FPR/layout novelty or strongest-external claim.",
+  "binary": "build/split64-bitshuffle-ktest-native/compare_benchmark",
+  "binary_sha256": "481f2978e6b38122dbce21c9a95702a134a1db731e768402fd2bd53868217411",
+  "correctness_freeze_sha256": "2265a85492f3aaf76e682dbb9ba48570e755709c074f758093a568fd0141561d",
+  "filters": [
+    "FastPatternBF",
+    "Split64Original",
+    "Split64BitShuffleHybrid",
+    "Split64BitShuffleNarrow",
+    "Split64BitShuffleWide",
+    "Split64BitShuffleHybridKtest"
+  ],
+  "key_powers": [
+    16,
+    25
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "actual_bpk": [
+    16,
+    32
+  ],
+  "batches": [
+    1,
+    3,
+    4,
+    8,
+    31,
+    4096
+  ],
+  "seed": 42,
+  "hit_percent": 50,
+  "query_power": 22,
+  "repeats": 5,
+  "calibration_power": 0,
+  "insert_batch": "whole input",
+  "cpu": 3,
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "full_workloads": 24,
+  "full_rows": 144,
+  "prespecified_stages": {
+    "small": {
+      "key_powers": [
+        16
+      ],
+      "workloads": 12,
+      "rows": 72
+    },
+    "large": {
+      "key_powers": [
+        25
+      ],
+      "workloads": 12,
+      "rows": 72
+    },
+    "full": {
+      "key_powers": [
+        16,
+        25
+      ],
+      "workloads": 24,
+      "rows": 144
+    }
+  },
+  "stage_policy": "Default full24. A root-approved small12 triage may reject further work; it must retain every small case and cannot support a full-size claim. Before promotion, complete both size stages on unchanged source/binary and then prespecify fresh held-out performance.",
+  "quality": "All five Split64 rows share the exact insertion, bitmap and probability distribution, independently verified. Require matching bytes/checksums/FP in every timing workload. FastPattern is a separate context control, never an accuracy-equivalent Split64 control. cal0 avoids redundant independent accuracy sampling for an exact query-only transformation.",
+  "analysis": "Report both lookup_ns and hash_lookup_ns for every case/control, with candidate/original latency ratios (<1 faster). Preserve all losses and min/max fields. Construction metrics are unchanged-source guards, not an optimization claim. No cross-executable/compiler/socket ratios."
+}

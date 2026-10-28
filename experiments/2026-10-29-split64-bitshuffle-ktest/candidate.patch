@@ -1,0 +1,30 @@
+--- v1/after.h
++++ ktest/after_ktest.h
+@@ -14,7 +14,7 @@
+ // shift construction, but eight 64-bit sectors instead of eight 32-bit sectors.
+ // This is not a Parquet-compatible layout or a claim of a new filter family.
+ namespace bloom_filters {
+-template <int PositionPolicy> class Split64BitShuffleCandidate {
++template <int PositionPolicy> class Split64BitShuffleKtestCandidate {
+ 	static constexpr size_t Prefetch = 32;
+ 	template <class>
+ 	friend class ParallelLayoutBloomFilter;
+@@ -93,7 +93,8 @@
+         // Each low selector byte addresses exactly one bit of its 64-bit word.
+         // Ignore the seven unused selectors per word through the output mask.
+         constexpr __mmask64 selected = 0x0101010101010101ULL;
+-        return _mm512_mask_bitshuffle_epi64_mask(selected, _mm512_load_si512(line.words), positions) == selected;
++        const __mmask64 result = _mm512_bitshuffle_epi64_mask(_mm512_load_si512(line.words), positions);
++        return _ktestc_mask64_u8(result, selected);
+     }
+ #endif
+ 	uint32_t LookupOne(uint64_t hash) const {
+@@ -136,7 +137,7 @@
+ 
+ public:
+ 	const uint8_t *Data() const { return reinterpret_cast<const uint8_t *>(lines_.data()); }
+-	explicit Split64BitShuffleCandidate(size_t n, uint32_t bpk)
++	explicit Split64BitShuffleKtestCandidate(size_t n, uint32_t bpk)
+ 	    : lines_(layout_detail::WordCount(n, bpk) / 16), block_mask_(lines_.size() - 1) {
+ 	}
+ 	size_t SizeInBytes() const {

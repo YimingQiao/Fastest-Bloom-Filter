@@ -1,0 +1,7 @@
+{
+  "compiler": "Clang23",
+  "disabled_bw_probe": "-march=x86-64 -mavx2 -mavx512f -mavx512bitalg -mno-avx512vl -mno-avx512bw -mno-avx512dq",
+  "disabled_bw_macros": ["__AVX2__", "__AVX512F__"],
+  "finding": "Disabling BW also disables BITALG in the compiler feature closure; no claim of BITALG without BW.",
+  "planned_minimum_test": "AVX2 + AVX512F + BW + BITALG, with VL and DQ disabled; BF_EXPECT_BITALG rejects silent fallback."
+}
