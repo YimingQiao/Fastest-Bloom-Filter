@@ -7,6 +7,9 @@ Four native layouts cover different throughput/accuracy tradeoffs: **FastPattern
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
 
+[Build](#build) · [Rust API](#native-rust) · [Multithreading](#multithreading) ·
+[Reproduce benchmarks](#run-a-reproducible-comparison) · [External evidence](#modern-external-comparison)
+
 ## Modern external comparison
 
 The shared C++ executable compares **56 configurations**: four native layouts,
@@ -32,9 +35,9 @@ A [six-seed ByteSplit confirmation](experiments/2026-10-29-rust-byte-leaf-analys
 supports exposing its public singleton body to the Rust compiler. The Rust library
 now includes the [minimal Byte-only inline hint](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md).
 Its isolated two-seed comparison improves public hash+query throughput by **16–38%**
-at batch1 across the four size/allocation settings, while some 32M-key,16-bpk
+at batch 1 across the four size/allocation settings, while some 32M-key, 16-bpk
 short-batch cases are **2–3% slower**. This is a measured API tradeoff; full outputs,
-allocation and FPR stay identical. The integration passes the existing29 library
+allocation and FPR stay identical. The integration passes the existing 29 library
 tests, Clippy and an actual public-caller assembly check. Earlier external
 comparisons and all generic-mode losses remain linked separately.
 The separate [BlowChoc screen](experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
