@@ -1,4 +1,4 @@
-#include "parallel_bloom.h"
+#include "parallel_layout_bloom.h"
 #include <algorithm>
 #include <chrono>
 #include <iostream>
@@ -21,15 +21,28 @@ double median(std::vector<double> v) {
 	std::sort(v.begin(), v.end());
 	return v.size() % 2 ? v[v.size() / 2] : (v[v.size() / 2 - 1] + v[v.size() / 2]) / 2;
 }
-struct Serial : FastPatternBF {
-	using FastPatternBF::FastPatternBF;
+template <class Filter>
+struct SerialLayout : Filter {
+	using Filter::Filter;
 	void InsertParallel(uint32_t n, const uint64_t *k, size_t) {
-		Insert(n, k);
+		this->Insert(n, k);
 	}
 	uint32_t LookupParallel(uint32_t n, const uint64_t *k, uint32_t *o, size_t) const {
-		return Lookup(n, k, o);
+		return this->Lookup(n, k, o);
 	}
 };
+using Serial = SerialLayout<FastPatternBF>;
+using FourSerial = SerialLayout<FourSectorBloomFilter>;
+using SplitSerial = SerialLayout<Split64BloomFilter>;
+template <class BF, class = void>
+struct HasBuildAccounting : std::false_type {};
+template <class BF>
+struct HasBuildAccounting<BF, std::void_t<decltype(std::declval<BF>().BuildWorkers(size_t {}, size_t {}))>>
+    : std::true_type {};
+template <class BF>
+struct IsSerial : std::false_type {};
+template <class BF>
+struct IsSerial<SerialLayout<BF>> : std::true_type {};
 template <class BF>
 void Run(const char *name, const std::vector<uint64_t> &keys, const std::vector<uint64_t> &query,
          const std::vector<uint8_t> &truth, uint32_t bpk, size_t threads, size_t reps, uint64_t seed, size_t hit) {
@@ -40,11 +53,11 @@ void Run(const char *name, const std::vector<uint64_t> &keys, const std::vector<
 	for (size_t r = 0; r < reps; ++r) {
 		BF bf(keys.size(), bpk);
 		bytes = bf.SizeInBytes();
-		if constexpr (std::is_same<BF, ParallelFastPatternBF>::value) {
+		if constexpr (HasBuildAccounting<BF>::value) {
 			scratch = bf.BuildScratchBytes(keys.size(), threads);
 			bw = bf.BuildWorkers(keys.size(), threads);
 		}
-		if constexpr (!std::is_same<BF, Serial>::value) {
+		if constexpr (!IsSerial<BF>::value) {
 			qw = parallel_detail::Workers(query.size(), threads);
 			if constexpr (std::is_same<BF, AtomicFastPatternBF>::value)
 				bw = parallel_detail::Workers(keys.size(), threads);
@@ -103,7 +116,7 @@ int main(int argc, char **argv) {
 		size_t kp = num(1, 20), bpk = num(2, 16), qp = num(3, 22), threads = num(4, 4), reps = num(5, 3),
 		       seed = num(6, 42), hit = num(7, 0);
 		if (kp < 5 || kp > 26 || qp < 12 || qp > 27 || bpk < 1 || bpk > 32 || threads > 1024 || !reps || hit > 100 ||
-		    argc > 8)
+		    argc > 9)
 			throw std::invalid_argument("invalid args");
 		size_t n = size_t {1} << kp, q = size_t {1} << qp;
 		if (n * bpk >= (size_t {1} << 31))
@@ -128,7 +141,20 @@ int main(int argc, char **argv) {
 		std::cout << "language,filter,keys,queries,requested_bpk,filter_bytes,threads,build_workers,query_workers,"
 		             "build_scratch_bytes,repeats,seed,hit_percent,insert_ns,lookup_ns,absent_queries,false_positives,"
 		             "fpr,result_checksum,insert_min_ns,insert_max_ns,lookup_min_ns,lookup_max_ns\n";
-		std::vector<unsigned> order {0, 1, 2};
+		const std::string selection = argc > 8 ? argv[8] : "FastPattern";
+		auto selected = [&](const char *family) {
+			return selection == "all" ||
+			       ("," + selection + ",").find(std::string(",") + family + ",") != std::string::npos;
+		};
+		std::vector<unsigned> order;
+		if (selected("FastPattern"))
+			order.insert(order.end(), {0, 1, 2});
+		if (selected("FourSector"))
+			order.insert(order.end(), {3, 4});
+		if (selected("Split64"))
+			order.insert(order.end(), {5, 6});
+		if (order.empty())
+			throw std::invalid_argument("no matching filter families");
 		for (size_t i = order.size(); i > 1; --i)
 			std::swap(order[i - 1], order[rng.next() % i]);
 		for (auto mode : order) {
@@ -138,6 +164,16 @@ int main(int argc, char **argv) {
 				Run<ParallelFastPatternBF>("FastPatternPartitioned", keys, query, truth, bpk, threads, reps, seed, hit);
 			if (mode == 2)
 				Run<AtomicFastPatternBF>("FastPatternAtomic", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 3)
+				Run<FourSerial>("FourSectorSerial", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 4)
+				Run<ParallelFourSectorBloomFilter>("FourSectorPartitioned", keys, query, truth, bpk, threads, reps,
+				                                   seed, hit);
+			if (mode == 5)
+				Run<SplitSerial>("Split64Serial", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 6)
+				Run<ParallelSplit64BloomFilter>("Split64Partitioned", keys, query, truth, bpk, threads, reps, seed,
+				                                hit);
 		}
 	} catch (const std::exception &e) {
 		std::cerr << e.what() << '\n';

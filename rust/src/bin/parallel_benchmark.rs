@@ -1,4 +1,7 @@
-use fastest_bloom_filter::{hash64, AtomicFastPatternBloomFilter, FastPatternBloomFilter};
+use fastest_bloom_filter::{
+    hash64, AtomicFastPatternBloomFilter, FastPatternBloomFilter, FourSectorBloomFilter,
+    Split64BloomFilter,
+};
 use std::{hint::black_box, time::Instant};
 struct Rng(u64);
 impl Rng {
@@ -33,48 +36,92 @@ fn workers(n: usize, t: usize) -> usize {
 }
 enum Filter {
     Plain(FastPatternBloomFilter),
+    Four(FourSectorBloomFilter),
+    Split(Split64BloomFilter),
     Atomic(AtomicFastPatternBloomFilter),
 }
 impl Filter {
     fn new(n: usize, bpk: u32, mode: usize) -> Self {
-        if mode == 2 {
-            Self::Atomic(AtomicFastPatternBloomFilter::new(n, bpk).unwrap())
-        } else {
-            Self::Plain(FastPatternBloomFilter::new(n, bpk).unwrap())
+        match mode {
+            0 | 1 => Self::Plain(FastPatternBloomFilter::new(n, bpk).unwrap()),
+            2 => Self::Atomic(AtomicFastPatternBloomFilter::new(n, bpk).unwrap()),
+            3 | 4 => Self::Four(FourSectorBloomFilter::new(n, bpk).unwrap()),
+            5 | 6 => Self::Split(Split64BloomFilter::new(n, bpk).unwrap()),
+            _ => unreachable!(),
         }
     }
     fn bytes(&self) -> usize {
         match self {
-            Self::Plain(bf) => bf.size_in_bytes(),
-            Self::Atomic(bf) => bf.size_in_bytes(),
+            Self::Plain(b) => b.size_in_bytes(),
+            Self::Four(b) => b.size_in_bytes(),
+            Self::Split(b) => b.size_in_bytes(),
+            Self::Atomic(b) => b.size_in_bytes(),
+        }
+    }
+    fn build_stats(&self, n: usize, t: usize) -> (usize, usize) {
+        match self {
+            Self::Plain(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
+            Self::Four(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
+            Self::Split(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
+            Self::Atomic(_) => (workers(n, t), 0),
         }
     }
     fn insert(&mut self, h: &[u64], mode: usize, t: usize) {
+        let partitioned = matches!(mode, 1 | 4 | 6);
         match self {
-            Self::Plain(bf) => {
-                if mode == 0 {
-                    bf.insert_hashes(h)
+            Self::Plain(b) => {
+                if partitioned {
+                    b.insert_hashes_parallel(h, t)
                 } else {
-                    bf.insert_hashes_parallel(h, t)
+                    b.insert_hashes(h)
                 }
             }
-            Self::Atomic(bf) => bf.insert_hashes_parallel(h, t),
+            Self::Four(b) => {
+                if partitioned {
+                    b.insert_hashes_parallel(h, t)
+                } else {
+                    b.insert_hashes(h)
+                }
+            }
+            Self::Split(b) => {
+                if partitioned {
+                    b.insert_hashes_parallel(h, t)
+                } else {
+                    b.insert_hashes(h)
+                }
+            }
+            Self::Atomic(b) => b.insert_hashes_parallel(h, t),
         }
     }
-    fn lookup(&self, h: &[u64], o: &mut [u32], mode: usize, t: usize) {
+    fn lookup(&self, h: &[u64], out: &mut [u32], mode: usize, t: usize) {
+        let parallel = matches!(mode, 1 | 2 | 4 | 6);
         match self {
-            Self::Plain(bf) => {
-                if mode == 0 {
-                    bf.lookup_hashes(h, o)
+            Self::Plain(b) => {
+                if parallel {
+                    b.lookup_hashes_parallel(h, out, t)
                 } else {
-                    bf.lookup_hashes_parallel(h, o, t)
+                    b.lookup_hashes(h, out)
                 }
             }
-            Self::Atomic(bf) => {
-                if mode == 0 {
-                    bf.lookup_hashes(h, o)
+            Self::Four(b) => {
+                if parallel {
+                    b.lookup_hashes_parallel(h, out, t)
                 } else {
-                    bf.lookup_hashes_parallel(h, o, t)
+                    b.lookup_hashes(h, out)
+                }
+            }
+            Self::Split(b) => {
+                if parallel {
+                    b.lookup_hashes_parallel(h, out, t)
+                } else {
+                    b.lookup_hashes(h, out)
+                }
+            }
+            Self::Atomic(b) => {
+                if parallel {
+                    b.lookup_hashes_parallel(h, out, t)
+                } else {
+                    b.lookup_hashes(h, out)
                 }
             }
         }
@@ -92,6 +139,10 @@ fn run(mode: usize, keys: &[u64], query: &[u64], truth: &[bool], c: &Config) {
         "FastPatternSerial",
         "FastPatternPartitioned",
         "FastPatternAtomic",
+        "FourSectorSerial",
+        "FourSectorPartitioned",
+        "Split64Serial",
+        "Split64Partitioned",
     ][mode];
     let mut out = vec![0; query.len()];
     let mut check = vec![0; 4096];
@@ -102,17 +153,9 @@ fn run(mode: usize, keys: &[u64], query: &[u64], truth: &[bool], c: &Config) {
     for _ in 0..c.reps {
         let mut bf = Filter::new(keys.len(), c.bpk, mode);
         bytes = bf.bytes();
-        if mode == 1 {
-            if let Filter::Plain(f) = &bf {
-                scratch = f.build_scratch_bytes(keys.len(), c.threads);
-                bw = f.build_workers(keys.len(), c.threads);
-            }
-        }
-        if mode != 0 {
+        if matches!(mode, 1 | 2 | 4 | 6) {
+            (bw, scratch) = bf.build_stats(keys.len(), c.threads);
             qw = workers(query.len(), c.threads);
-            if mode == 2 {
-                bw = workers(keys.len(), c.threads);
-            }
         }
         let a = Instant::now();
         bf.insert(keys, mode, c.threads);
@@ -195,7 +238,7 @@ fn main() {
             && threads <= 1024
             && reps > 0
             && hit <= 100
-            && args.len() <= 8
+            && args.len() <= 9
     );
     let n = 1usize << kp;
     let q = 1usize << qp;
@@ -224,7 +267,29 @@ fn main() {
         truth.swap(i - 1, j);
     }
     println!("language,filter,keys,queries,requested_bpk,filter_bytes,threads,build_workers,query_workers,build_scratch_bytes,repeats,seed,hit_percent,insert_ns,lookup_ns,absent_queries,false_positives,fpr,result_checksum,insert_min_ns,insert_max_ns,lookup_min_ns,lookup_max_ns");
-    let mut order = vec![0, 1, 2];
+    let selected = args.get(8).map(String::as_str).unwrap_or("FastPattern");
+    let selected = if selected.is_empty() {
+        "FastPattern"
+    } else {
+        selected
+    };
+    assert!(
+        selected == "all"
+            || selected
+                .split(',')
+                .all(|s| matches!(s, "FastPattern" | "FourSector" | "Split64")),
+        "unknown filter family"
+    );
+    let mut order = vec![];
+    for (family, modes) in [
+        ("FastPattern", &[0, 1, 2][..]),
+        ("FourSector", &[3, 4][..]),
+        ("Split64", &[5, 6][..]),
+    ] {
+        if selected == "all" || selected.split(',').any(|s| s == family) {
+            order.extend_from_slice(modes);
+        }
+    }
     for i in (2..=order.len()).rev() {
         order.swap(i - 1, (rng.next() % i as u64) as usize);
     }

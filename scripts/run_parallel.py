@@ -29,7 +29,23 @@ def main():
     p.add_argument("--seeds", type=numbers, default=[42, 43, 44])
     p.add_argument("--query-power", type=int, default=22)
     p.add_argument("--repeats", type=int, default=3)
+    p.add_argument(
+        "--filters",
+        default="FastPattern",
+        help="Comma-separated families: FastPattern,FourSector,Split64; or all",
+    )
     args = p.parse_args()
+    families = (
+        ["FastPattern", "FourSector", "Split64"]
+        if args.filters == "all"
+        else args.filters.split(",")
+    )
+    if len(set(families)) != len(families) or not set(families) <= {
+        "FastPattern",
+        "FourSector",
+        "Split64",
+    }:
+        p.error("invalid or duplicate filter families")
     if (
         min(args.threads) < 1
         or max(args.threads) > len(args.cpus)
@@ -81,6 +97,9 @@ def main():
                             str(seed),
                             str(hit),
                         ]
+                        # Preserve compatibility with older three-mode binaries.
+                        if args.filters != "FastPattern":
+                            cmd.append(args.filters)
                         print(
                             f"keys=2^{kp} threads={threads} hit={hit}% seed={seed}",
                             flush=True,
@@ -104,11 +123,32 @@ def main():
                         run.check_returncode()
                         reader = csv.DictReader(io.StringIO(run.stdout))
                         rows = list(reader)
+                        expected_names = {
+                            family + mode
+                            for family in families
+                            for mode in (
+                                ["Serial", "Partitioned", "Atomic"]
+                                if family == "FastPattern"
+                                else ["Serial", "Partitioned"]
+                            )
+                        }
                         if (
-                            len(rows) != 3
-                            or len({r["result_checksum"] for r in rows}) != 1
+                            len(rows) != len(expected_names)
+                            or {r["filter"] for r in rows} != expected_names
                         ):
-                            raise RuntimeError("parallel modes disagree")
+                            raise RuntimeError("missing or duplicate parallel modes")
+                        for family in families:
+                            rr = [r for r in rows if r["filter"].startswith(family)]
+                            for field in (
+                                "result_checksum",
+                                "filter_bytes",
+                                "absent_queries",
+                                "false_positives",
+                            ):
+                                if len({r[field] for r in rr}) != 1:
+                                    raise RuntimeError(
+                                        f"{family} parallel modes disagree on {field}"
+                                    )
                         if writer is None:
                             writer = csv.DictWriter(f, fieldnames=reader.fieldnames)
                             writer.writeheader()

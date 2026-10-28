@@ -11,6 +11,10 @@
 #include <string>
 #include <vector>
 #include "fast_pattern_BF.h"
+#ifndef BF_EXTERNAL_ONLY
+#include "four_sector_bloom.h"
+#include "split64_bloom.h"
+#endif
 #ifdef BF_EXPERIMENTS
 #include "direct_split_BF.h"
 #include "pattern_sectorized_BF.h"
@@ -304,6 +308,8 @@ int main(int argc, char **argv) {
 	    [&] { run<T, H>(#T, ins, query, bpk, hit, batch, repeats, seed, key_base, insert_batch, calibration_power); })
 
 #ifndef BF_EXTERNAL_ONLY
+		ADD(FourSectorBloomFilter, uint64_t);
+		ADD(Split64BloomFilter, uint64_t);
 		ADD(RegisterBlockedBF32Bit, uint32_t);
 		ADD(RegisterBlockedBF32BitMasks, uint32_t);
 		ADD(RegisterBlockedBF64Bit, uint64_t);

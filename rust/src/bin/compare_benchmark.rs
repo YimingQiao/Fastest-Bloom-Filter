@@ -1,4 +1,4 @@
-use fastest_bloom_filter::{hash64, BloomFilter};
+use fastest_bloom_filter::{hash64, BloomFilter, FourSectorBloomFilter, Split64BloomFilter};
 use std::{
     alloc::{alloc, dealloc, handle_alloc_error, Layout},
     hint::black_box,
@@ -6,6 +6,49 @@ use std::{
     ptr::NonNull,
     time::Instant,
 };
+
+// Monomorphized adapter keeps all native layouts on one timing/validation path.
+trait Filter: Sized {
+    fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>>;
+    fn size_in_bytes(&self) -> usize;
+    fn insert_hashes(&mut self, hashes: &[u64]);
+    fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]);
+}
+impl<const P: bool> Filter for BloomFilter<P> {
+    fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
+        Ok(BloomFilter::new(n, bpk)?)
+    }
+    fn size_in_bytes(&self) -> usize {
+        BloomFilter::size_in_bytes(self)
+    }
+    fn insert_hashes(&mut self, h: &[u64]) {
+        BloomFilter::insert_hashes(self, h)
+    }
+    fn lookup_hashes(&self, h: &[u64], out: &mut [u32]) {
+        BloomFilter::lookup_hashes(self, h, out)
+    }
+}
+
+macro_rules! native_filter {
+    ($filter:ty) => {
+        impl Filter for $filter {
+            fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
+                Ok(<$filter>::new(n, bpk)?)
+            }
+            fn size_in_bytes(&self) -> usize {
+                <$filter>::size_in_bytes(self)
+            }
+            fn insert_hashes(&mut self, h: &[u64]) {
+                <$filter>::insert_hashes(self, h)
+            }
+            fn lookup_hashes(&self, h: &[u64], out: &mut [u32]) {
+                <$filter>::lookup_hashes(self, h, out)
+            }
+        }
+    };
+}
+native_filter!(FourSectorBloomFilter);
+native_filter!(Split64BloomFilter);
 
 // Benchmark buffers use the same 4096-byte alignment and 64-byte output offset
 // as C++. This allocator is private to the benchmark, not part of the library.
@@ -74,11 +117,11 @@ fn median(v: &[f64]) -> f64 {
     }
 }
 #[inline(never)]
-fn lookup<const P: bool>(bf: &BloomFilter<P>, hashes: &[u64], out: &mut [u32]) {
+fn lookup<F: Filter>(bf: &F, hashes: &[u64], out: &mut [u32]) {
     bf.lookup_hashes(hashes, out);
 }
 #[inline(never)]
-fn insert<const P: bool>(bf: &mut BloomFilter<P>, hashes: &[u64]) {
+fn insert<F: Filter>(bf: &mut F, hashes: &[u64]) {
     bf.insert_hashes(hashes);
 }
 fn consume(out: &[u32]) {
@@ -90,14 +133,16 @@ struct Config {
     bpk: u32,
     hit: u64,
     batch: usize,
+    insert_batch: usize,
+    calibration_power: u32,
     repeats: usize,
     seed: u64,
     key_base: u64,
 }
-fn run<const P: bool>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config) {
+fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config) {
     let mut inserted = Aligned::<u64>::new(c.n);
     let mut hashes = Aligned::<u64>::new(c.q);
-    let mut scratch = Aligned::<u64>::new(c.batch);
+    let mut scratch = Aligned::<u64>::new(c.batch.max(c.insert_batch));
     for (h, &x) in inserted.iter_mut().zip(raw_insert) {
         *h = hash64(x);
     }
@@ -106,24 +151,53 @@ fn run<const P: bool>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Con
     }
     let mut output_storage = Aligned::<u32>::new(c.q.max(c.batch) + 32);
     let output = &mut output_storage[16..16 + c.q.max(c.batch)];
-    let mut bf = BloomFilter::<P>::new(c.n, c.bpk).unwrap();
+    // One bitmap per phase, with destruction and validation outside timing.
+    let validate_build = |filter: &F, output: &mut [u32], full: bool| {
+        let count = if full { c.n } else { c.n.min(c.batch) };
+        for chunk in inserted[..count].chunks(c.batch) {
+            lookup(filter, chunk, &mut output[..chunk.len()]);
+            assert!(
+                output[..chunk.len()].iter().all(|&x| x == 1),
+                "false negative in timed build"
+            );
+            consume(&output[..chunk.len()]);
+        }
+    };
     let mut insert_times = vec![];
     let mut build_times = vec![];
-    for _ in 0..c.repeats {
-        let a = Instant::now();
-        let mut fresh = BloomFilter::<P>::new(c.n, c.bpk).unwrap();
-        let ready = Instant::now();
-        for chunk in inserted.chunks(c.batch) {
-            insert(&mut fresh, chunk);
+    let mut hash_insert_times = vec![];
+    let mut hash_build_times = vec![];
+    for trial in 0..c.repeats {
+        {
+            let a = Instant::now();
+            let mut fresh = F::new(c.n, c.bpk).unwrap();
+            let ready = Instant::now();
+            for chunk in inserted.chunks(c.insert_batch) {
+                insert(&mut fresh, chunk);
+            }
+            let b = Instant::now();
+            insert_times.push((b - ready).as_secs_f64() * 1e9 / c.n as f64);
+            build_times.push((b - a).as_secs_f64() * 1e9 / c.n as f64);
+            validate_build(&fresh, output, trial == 0);
         }
-        let b = Instant::now();
-        insert_times.push((b - ready).as_secs_f64() * 1e9 / c.n as f64);
-        build_times.push((b - a).as_secs_f64() * 1e9 / c.n as f64);
-        let len = c.n.min(c.batch);
-        lookup(&fresh, &inserted[..len], &mut output[..len]);
-        consume(&output[..len]);
+        {
+            let a = Instant::now();
+            let mut fresh = F::new(c.n, c.bpk).unwrap();
+            let ready = Instant::now();
+            for chunk in raw_insert.chunks(c.insert_batch) {
+                for (h, &raw) in scratch.iter_mut().zip(chunk) {
+                    *h = hash64(raw);
+                }
+                insert(&mut fresh, &scratch[..chunk.len()]);
+            }
+            let b = Instant::now();
+            hash_insert_times.push((b - ready).as_secs_f64() * 1e9 / c.n as f64);
+            hash_build_times.push((b - a).as_secs_f64() * 1e9 / c.n as f64);
+            validate_build(&fresh, output, trial == 0);
+        }
     }
-    for chunk in inserted.chunks(c.batch) {
+    let mut bf = F::new(c.n, c.bpk).unwrap();
+    for chunk in inserted.chunks(c.insert_batch) {
         insert(&mut bf, chunk);
     }
     for chunk in inserted.chunks(c.batch) {
@@ -177,13 +251,36 @@ fn run<const P: bool>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Con
         total.push(start.elapsed().as_secs_f64() * 1e9 / c.q as f64);
         consume(&output[..c.q]);
     }
+    // Separate negative calibration runs after all timing, reusing only one
+    // query batch of scratch. Its raw-key range is disjoint from both insertion
+    // keys and timed queries, without changing the timed query working set.
+    let calibration_queries = if c.calibration_power == 0 {
+        0
+    } else {
+        1usize << c.calibration_power
+    };
+    let mut calibration_fp = 0usize;
+    for i in (0..calibration_queries).step_by(c.batch) {
+        let len = c.batch.min(calibration_queries - i);
+        for (j, hash) in scratch[..len].iter_mut().enumerate() {
+            let raw = c.key_base + c.n as u64 + c.q as u64 + (i + j) as u64;
+            *hash = hash64(raw);
+        }
+        lookup(&bf, &scratch[..len], &mut output[..len]);
+        for &answer in &output[..len] {
+            assert!(answer <= 1, "invalid calibration output");
+            calibration_fp += answer as usize;
+        }
+    }
+    let hash_lookup_min = total.iter().copied().fold(f64::INFINITY, f64::min);
+    let hash_lookup_max = total.iter().copied().fold(0.0, f64::max);
     let fpr = if absent == 0 {
         "nan".to_owned()
     } else {
         (fp as f64 / absent as f64).to_string()
     };
     println!(
-        "rust,{name},{},{},{},{},{},64,{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}",
+        "rust,{name},{},{},{},{},{},64,{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},prehashed,{},{},{},{hash_lookup_min},{hash_lookup_max},{calibration_queries},{calibration_fp}",
         c.n,
         c.q,
         c.bpk,
@@ -203,7 +300,10 @@ fn run<const P: bool>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Con
         fpr,
         times.iter().copied().fold(f64::INFINITY, f64::min),
         times.iter().copied().fold(0.0, f64::max),
-        checksum
+        checksum,
+        median(&hash_insert_times),
+        median(&hash_build_times),
+        c.insert_batch
     );
 }
 fn main() {
@@ -226,6 +326,8 @@ fn main() {
     let batch = number(5, 4096);
     let repeats = number(6, 5);
     let seed = number(7, 42);
+    let insert_batch = number(9, batch);
+    let calibration_power = number(10, 0);
     assert!(
         (5..=26).contains(&power)
             && (12..=27).contains(&qp)
@@ -234,7 +336,10 @@ fn main() {
             && batch > 0
             && batch <= 1 << qp
             && repeats > 0
-            && args.len() <= 9,
+            && insert_batch > 0
+            && insert_batch <= (1 << 26)
+            && (calibration_power == 0 || (12..=27).contains(&calibration_power))
+            && args.len() <= 11,
         "invalid arguments"
     );
     let n = 1usize << power;
@@ -261,25 +366,34 @@ fn main() {
         bpk: bpk as u32,
         hit,
         batch: batch as usize,
+        insert_batch: insert_batch as usize,
+        calibration_power: calibration_power as u32,
         repeats: repeats as usize,
         seed,
         key_base,
     };
-    println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum");
+    println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,allocate_hash_insert_ns,insert_batch,hash_lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives");
     let selection = args.get(8).map(String::as_str).unwrap_or("");
     let mut jobs = vec![];
-    for (name, pattern) in [("CacheSectorizedBF32Bit", false), ("FastPatternBF", true)] {
+    for name in [
+        "CacheSectorizedBF32Bit",
+        "FastPatternBF",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+    ] {
         if selection.is_empty() || selection.split(',').any(|x| x == name) {
-            jobs.push((name, pattern));
+            jobs.push(name);
         }
     }
     assert!(!jobs.is_empty(), "no matching filters");
     shuffle(&mut jobs, &mut rng);
-    for (name, pattern) in jobs {
-        if pattern {
-            run::<true>(name, &inserted, &query, &c);
-        } else {
-            run::<false>(name, &inserted, &query, &c);
+    for name in jobs {
+        match name {
+            "CacheSectorizedBF32Bit" => run::<BloomFilter<false>>(name, &inserted, &query, &c),
+            "FastPatternBF" => run::<BloomFilter<true>>(name, &inserted, &query, &c),
+            "FourSectorBloomFilter" => run::<FourSectorBloomFilter>(name, &inserted, &query, &c),
+            "Split64BloomFilter" => run::<Split64BloomFilter>(name, &inserted, &query, &c),
+            _ => unreachable!(),
         }
     }
 }

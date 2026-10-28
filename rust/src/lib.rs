@@ -1,11 +1,16 @@
 //! Native, append-only Bloom filters over uniformly hashed u64 inputs.
 //! Construction requires exclusive access; immutable filters support concurrent reads.
-//! Pattern and seven-bit filters use different masks and are not interchangeable.
+//! Each filter layout has its own bitmap mapping; layouts are not interchangeable.
 use std::fmt;
 
+mod four_sector;
+mod layout_parallel;
 mod parallel;
 mod patterns;
+mod split64;
+pub use four_sector::FourSectorBloomFilter;
 pub use parallel::AtomicFastPatternBloomFilter;
+pub use split64::Split64BloomFilter;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SizeError {
