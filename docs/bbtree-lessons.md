@@ -32,3 +32,24 @@ cross-language parity. These are practical checks, not a claim that this Bloom
 filter project has bbtree's formal-verification coverage. The shared benchmark
 also checks that the requested implementations actually ran and that first-timed
 outputs match the verified warm-up outside the timers.
+
+## What the later experiments showed
+
+The instruction-count lesson is useful only alongside the space/quality gate.
+A cyclic probe mask needed fewer vector instructions but increased false
+positives; compensating with a larger bitmap lost15 of16 eligible external
+comparison views. It was [rejected](../experiments/2026-10-29-cyclic-split64-analysis/FINDINGS.md).
+A fixed multiply-code mask keeps a short dependency chain while passing the
+first16/24-bpk quality gates; its [accuracy pilot](../experiments/2026-10-29-multiply-code-split64-analysis/REPORT.md)
+is complete, but its speed and fresh-seed robustness remain unproven.
+
+Compiler boundaries also matter. Exposing Rust ByteSplit's public singleton
+body removed a hot per-key call and improved fused throughput16–38% in the
+isolated comparison, with2–3% losses in some short batches. The
+[minimal hint](../experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md)
+is integrated with that tradeoff documented. Conversely, a four-line
+Independent32 shortcut made the compiler save six registers instead of one
+and was rejected after batch regressions. Its next isolated revision restores
+the smaller prologue; [actual assembly](../experiments/2026-10-29-independent32-rust-scalar-inline-screen/EVIDENCE.md)
+supports testing it, not assuming a speedup. Source brevity and instruction
+counts alone are insufficient evidence.
