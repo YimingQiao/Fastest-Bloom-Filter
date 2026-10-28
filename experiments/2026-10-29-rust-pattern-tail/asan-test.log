@@ -1,0 +1,33 @@
+warning: binary `compare_benchmark` should have a kebab-case name
+  |
+1 | /tmp/fastest-bf-rust-pattern-tail-asan/.../compare_benchmark
+  |                                            ^^^^^^^^^^^^^^^^^
+  |
+  = note: `cargo::non_kebab_case_bins` is set to `warn` by default
+help: to change the binary name to `compare-benchmark`, convert `bin.name`
+ --> Cargo.toml:7:6
+  |
+7 - name="compare_benchmark"
+7 + name="compare-benchmark"
+  |
+warning: `fastest-bloom-rust-pattern-tail` (manifest) generated 1 warning
+   Compiling fastest-bloom-rust-pattern-tail v0.1.0 (/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-pattern-tail/benchmark)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.02s
+     Running unittests src/main.rs (/tmp/fastest-bf-rust-pattern-tail-asan/x86_64-unknown-linux-gnu/debug/build/fastest-bloom-rust-pattern-tail/3122b5d1a42e9c8a/out/compare_benchmark-3122b5d1a42e9c8a)
+
+running 6 tests
+test after::tests::colliding_inserts ... ok
+test after::tests::masked_tails_match_scalar_and_frozen_before ... ok
+test after::tests::output_length - should panic ... 
+thread 'after::tests::output_length' (3666744) panicked at src/after.rs:171:9:
+assertion `left == right` failed: one output is required per input
+  left: 1
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test after::tests::pattern ... ok
+test after::tests::sectorized ... ok
+test after::tests::sizes ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 1.42s
+

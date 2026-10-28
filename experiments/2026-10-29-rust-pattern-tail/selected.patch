@@ -1,0 +1,94 @@
+--- before.rs
++++ selected.rs
+@@ -498,6 +498,41 @@
+             );
+             i += 8;
+         }
++        // Four to seven remaining keys use masked AVX512F-only input/gathers/stores.
++        // Both sector lanes for every active key are loaded, with no tail overread.
++        let remaining = hashes.len() - i;
++        if PATTERN && i != 0 && remaining >= 4 {
++            debug_assert!(remaining < 8);
++            let valid = ((1u16 << remaining) - 1) as u8;
++            let lanes = ((1u32 << (2 * remaining)) - 1) as u16;
++            let h = _mm512_maskz_loadu_epi64(valid, hashes.as_ptr().add(i).cast());
++            let a = _mm512_and_si512(
++                _mm512_shuffle_epi32::<0xf5>(h),
++                _mm512_set1_epi32(self.block_mask as i32),
++            );
++            let delta = _mm512_or_si512(
++                _mm512_set1_epi64(8i64 << 32),
++                _mm512_and_si512(_mm512_slli_epi64::<12>(h), _mm512_set1_epi64(7i64 << 32)),
++            );
++            let index = _mm512_xor_si512(a, delta);
++            let code = _mm512_srlv_epi32(
++                _mm512_shuffle_epi32::<0xa0>(h),
++                _mm512_set1_epi64(10i64 << 32),
++            );
++            let mask = _mm512_rolv_epi32(
++                _mm512_permutex2var_epi32(table0, code, table1),
++                _mm512_srli_epi32::<5>(code),
++            );
++            let value =
++                _mm512_mask_i32gather_epi32::<4>(_mm512_setzero_si512(), lanes, index, base);
++            let pass = _mm512_cmpeq_epi64_mask(_mm512_and_si512(value, mask), mask) & valid;
++            _mm512_mask_storeu_epi32(
++                out.as_mut_ptr().add(i).cast(),
++                valid as u16,
++                _mm512_maskz_set1_epi32(pass as u16, 1),
++            );
++            i += remaining;
++        }
+         for j in i..hashes.len() {
+             out[j] = self.contains_hash(hashes[j]) as u32;
+         }
+@@ -599,4 +634,49 @@
+             .unwrap()
+             .lookup_hashes(&[0], &mut []);
+     }
++    #[test]
++    fn masked_tails_match_scalar_and_frozen_before() {
++        for (n, bpk) in [(65539, 4), (65539, 8), (1 << 20, 16)] {
++            let mut old = crate::before::BloomFilter::<true>::new(n, bpk).unwrap();
++            let mut new = BloomFilter::<true>::new(n, bpk).unwrap();
++            let mut inserted: Vec<_> = (0..65539).map(hash64).collect();
++            inserted.extend((0..1024).map(|i| (7u64 << 32) | (hash64(i) & 0xffff_ffff)));
++            inserted.extend([0, u64::MAX]);
++            old.insert_hashes(&inserted);
++            new.insert_hashes(&inserted);
++            let bitmap: Vec<_> = new.lines.iter().flat_map(|line| line.0).collect();
++            assert!(inserted.iter().all(|&h| new.contains_hash(h)));
++            for len in (0..=131).chain([4096, 4097, 4100, 4103]) {
++                for offset in 0..16 {
++                    let input: Vec<_> = (0..len + offset)
++                        .map(|i| {
++                            if i % 3 == 0 {
++                                inserted[i % inserted.len()]
++                            } else {
++                                hash64(1_000_000 + i as u64)
++                            }
++                        })
++                        .collect();
++                    let input = &input[offset..];
++                    let mut actual = vec![0xfeed; len + 2];
++                    let mut expected = vec![0xfeed; len + 2];
++                    old.lookup_hashes(input, &mut expected[1..len + 1]);
++                    new.lookup_hashes(input, &mut actual[1..len + 1]);
++                    assert_eq!(
++                        actual, expected,
++                        "n={n} bpk={bpk} len={len} offset={offset}"
++                    );
++                    assert_eq!(actual[0], 0xfeed);
++                    assert_eq!(actual[len + 1], 0xfeed);
++                    for (&h, &v) in input.iter().zip(&actual[1..len + 1]) {
++                        assert_eq!(v, new.contains_hash(h) as u32);
++                    }
++                }
++            }
++            assert_eq!(
++                bitmap,
++                new.lines.iter().flat_map(|line| line.0).collect::<Vec<_>>()
++            );
++        }
++    }
+ }
