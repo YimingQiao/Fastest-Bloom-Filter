@@ -33,7 +33,13 @@ def main():
             records.append(r)
     # Never collapse different binaries into one algorithm and silently pick its best timings.
     def config(r):
-        return tuple(r.get(k, '') for k in ('series', 'language', 'filter', 'keys', 'requested_bpk', 'filter_bytes', 'input_mode'))
+        return tuple(r.get(k, '') for k in ('series', 'language', 'filter', 'keys', 'requested_bpk', 'filter_bytes', 'input_mode', 'queries', 'repeats'))
+    seen = set()
+    for r in records:
+        identity = (config(r), r['hit_percent'], r['batch'], r.get('insert_batch', r['batch']), r['seed'])
+        if identity in seen:
+            raise ValueError(f'Duplicate timing case: {identity}')
+        seen.add(identity)
     negatives = defaultdict(dict)
     for r in records:
         if r['hit_percent'] == '0':
@@ -52,7 +58,14 @@ def main():
         bucket = (config(r), r['hit_percent'], r['batch'], r.get('insert_batch', r['batch']))
         timings[bucket].append(r)
     contenders = defaultdict(list)
+    seed_sets = {}
     for (cfg, hit, batch, ins_batch), rr in timings.items():
+        seeds = {r['seed'] for r in rr}
+        signature = (rr[0]['keys'], rr[0]['queries'], rr[0]['repeats'], hit, batch, ins_batch)
+        if seed_sets.setdefault(signature, seeds) != seeds:
+            raise ValueError(f'Incomparable timing seed sets: {signature}')
+        if set(negatives[cfg]) != seeds:
+            raise ValueError(f'Calibration and timing seed sets differ: {cfg}')
         counts = negatives[cfg].values()
         fp = sum(x[0] for x in counts)
         nq = sum(x[1] for x in counts)
@@ -63,7 +76,7 @@ def main():
             continue
         for target in map(float, args.fpr_targets.split(',')):
             if bound <= target:
-                scenario = (r['keys'], hit, batch, ins_batch, target)
+                scenario = (r['keys'], hit, batch, ins_batch, target, r['queries'], r['repeats'])
                 contenders[scenario].append({
                     'series': cfg[0], 'language':r['language'], 'filter':r['filter'],
                     'requested_bpk':r['requested_bpk'], 'filter_bytes':r['filter_bytes'],
@@ -72,7 +85,7 @@ def main():
                     'timing_cases':len(rr), 'metric':args.metric,
                     'ns_per_key':median(float(x[args.metric]) for x in rr),
                 })
-    fields = ['keys','hit_percent','batch','insert_batch','fpr_target','rank','series','language','filter',
+    fields = ['keys','hit_percent','batch','insert_batch','fpr_target','queries','repeats','rank','series','language','filter',
               'requested_bpk','filter_bytes','memory_ceiling_bytes','fpr_observed','fpr_upper95',
               'negative_samples','timing_cases','metric','ns_per_key','relative_to_fastest']
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -83,7 +96,7 @@ def main():
             candidates.sort(key=lambda c: c['ns_per_key'])
             best = candidates[0]['ns_per_key']
             for rank, candidate in enumerate(candidates, 1):
-                row = dict(zip(fields[:5], scenario))
+                row = dict(zip(fields[:7], scenario))
                 row.update(candidate, rank=rank, relative_to_fastest=candidate['ns_per_key']/best)
                 writer.writerow(row)
     print(f'Wrote {len(contenders)} screened scenarios to {args.output}. Selection and timing use the supplied seeds; confirm winners with new seeds.')

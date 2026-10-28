@@ -34,7 +34,7 @@ def main():
     parser.add_argument('--repeats', type=int, default=5)
     parser.add_argument('--cpu', type=int, default=min(os.sched_getaffinity(0)))
     parser.add_argument('--filters', default='', help='Comma-separated exact class names; empty selects all')
-    parser.add_argument('--insert-batch', type=int, default=None, help='C++ harness only: independent build batch size; default equals query batch')
+    parser.add_argument('--insert-batch', type=int, default=None, help='C++ harness only: independent build batch size; 0=all inserted keys; default equals query batch')
     args = parser.parse_args()
     if args.cpu not in os.sched_getaffinity(0):
         parser.error('CPU is not in the allowed affinity set')
@@ -74,7 +74,7 @@ def main():
                                    str(hit), str(args.query_power), str(batch), str(args.repeats), str(seed),
                                    args.filters]
                             if args.insert_batch is not None:
-                                cmd.append(str(args.insert_batch))
+                                cmd.append(str(args.insert_batch or (1 << n)))
                             print(f'keys=2^{n} bpk={bits} hit={hit}% batch={batch} seed={seed}', flush=True)
                             started = time.monotonic()
                             run = subprocess.run(cmd, text=True, capture_output=True)

@@ -38,6 +38,18 @@ template <class BF, class = void>
 struct RawKeyApi : std::false_type {};
 template <class BF>
 struct RawKeyApi<BF, std::void_t<decltype(BF::kRawKeyApi)>> : std::integral_constant<bool, BF::kRawKeyApi> {};
+template <class BF, class = void>
+struct BuildScratch {
+	static size_t bytes(const BF &) {
+		return 0;
+	}
+};
+template <class BF>
+struct BuildScratch<BF, std::void_t<decltype(std::declval<const BF &>().BuildScratchBytes())>> {
+	static size_t bytes(const BF &bf) {
+		return bf.BuildScratchBytes();
+	}
+};
 using Clock = std::chrono::steady_clock;
 static volatile uint64_t sink;
 static double ns(Clock::time_point a, Clock::time_point b) {
@@ -194,10 +206,17 @@ void run(const char *name, const std::vector<uint64_t> &raw_insert, const std::v
 		std::cout << double(false_positives) / absent;
 	else
 		std::cout << "nan";
-	std::cout << ',' << *std::min_element(lookup.begin(), lookup.end()) << ','
-	          << *std::max_element(lookup.begin(), lookup.end()) << ',' << result_checksum << ','
-	          << (RawKeyApi<BF>::value ? "raw_bytes" : "prehashed") << ',' << median(hash_insert_times) << ','
-	          << median(hash_build_times) << ',' << insert_batch << '\n';
+	std::cout << ','
+	          << (RawKeyApi<BF>::value ? std::numeric_limits<double>::quiet_NaN()
+	                                   : *std::min_element(lookup.begin(), lookup.end()))
+	          << ','
+	          << (RawKeyApi<BF>::value ? std::numeric_limits<double>::quiet_NaN()
+	                                   : *std::max_element(lookup.begin(), lookup.end()))
+	          << ',' << result_checksum << ',' << (RawKeyApi<BF>::value ? "raw_bytes" : "prehashed") << ','
+	          << median(hash_insert_times) << ',' << median(hash_build_times) << ',' << insert_batch << ','
+	          << BuildScratch<BF>::bytes(bf) << ',' << sizeof(Hash) * scratch.size() << ','
+	          << *std::min_element(total.begin(), total.end()) << ',' << *std::max_element(total.begin(), total.end())
+	          << '\n';
 }
 int main(int argc, char **argv) {
 	try {
@@ -240,7 +259,8 @@ int main(int argc, char **argv) {
 		std::cout << "language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_"
 		             "queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,"
 		             "false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,"
-		             "allocate_hash_insert_ns,insert_batch\n";
+		             "allocate_hash_insert_ns,insert_batch,filter_build_scratch_bytes,harness_hash_scratch_bytes,hash_"
+					 "lookup_min_ns,hash_lookup_max_ns\n";
 		std::string selection = argc > 8 ? argv[8] : "";
 		std::vector<std::function<void()>> jobs;
 #define ADD(T, H)                                                                                                      \

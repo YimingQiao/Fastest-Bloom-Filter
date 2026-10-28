@@ -55,6 +55,45 @@ impl Filter for Fastbloom017 {
     }
 }
 
+struct BloomsdayPinned {
+    filter: bloomsday::BlockedBloomFilter,
+    bytes: usize,
+}
+impl Filter for BloomsdayPinned {
+    fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
+        let mut bytes = 128;
+        while bytes <= ((n * bpk as usize).max(512) / 8) {
+            bytes *= 2;
+        }
+        // The pinned upstream constructor computes ceil(-ln(fpr)/ln(2)^2)
+        // bits/key, then ceil(n*bits_per_key/256) 32-byte blocks. Choose the
+        // midpoint of the rounding interval, not a claimed target FPR.
+        let bits_per_key = bytes * 8 / n;
+        let sizing_fpr = (-(bits_per_key as f64 - 0.5) * std::f64::consts::LN_2.powi(2)).exp();
+        let rounded_bpk = (-sizing_fpr.ln() / std::f64::consts::LN_2.powi(2)).ceil() as usize;
+        assert_eq!(rounded_bpk, bits_per_key);
+        assert_eq!((n * rounded_bpk).div_ceil(256) * 32, bytes);
+        Ok(Self {
+            filter: bloomsday::BlockedBloomFilter::new_with_seed(n, sizing_fpr, 0),
+            bytes,
+        })
+    }
+    fn size_in_bytes(&self) -> usize {
+        self.bytes
+    }
+    fn insert_hashes(&mut self, hashes: &[u64]) {
+        for &hash in hashes {
+            self.filter.insert_hash(hash);
+        }
+    }
+    fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
+        assert_eq!(hashes.len(), out.len());
+        for (&hash, result) in hashes.iter().zip(out.iter_mut()) {
+            *result = self.filter.may_match_hash(hash) as u32;
+        }
+    }
+}
+
 // Benchmark buffers use the same 4096-byte alignment and 64-byte output offset
 // as C++. This allocator is private to the benchmark, not part of the library.
 struct Aligned<T: Copy + Default> {
@@ -138,6 +177,7 @@ struct Config {
     bpk: u32,
     hit: u64,
     batch: usize,
+    insert_batch: usize,
     repeats: usize,
     seed: u64,
     key_base: u64,
@@ -145,7 +185,7 @@ struct Config {
 fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config) {
     let mut inserted = Aligned::<u64>::new(c.n);
     let mut hashes = Aligned::<u64>::new(c.q);
-    let mut scratch = Aligned::<u64>::new(c.batch);
+    let mut scratch = Aligned::<u64>::new(c.batch.max(c.insert_batch));
     for (h, &x) in inserted.iter_mut().zip(raw_insert) {
         *h = hash64(x);
     }
@@ -157,11 +197,13 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
     let mut bf = F::new(c.n, c.bpk).unwrap();
     let mut insert_times = vec![];
     let mut build_times = vec![];
+    let mut hash_insert_times = vec![];
+    let mut hash_build_times = vec![];
     for _ in 0..c.repeats {
         let a = Instant::now();
         let mut fresh = F::new(c.n, c.bpk).unwrap();
         let ready = Instant::now();
-        for chunk in inserted.chunks(c.batch) {
+        for chunk in inserted.chunks(c.insert_batch) {
             insert(&mut fresh, chunk);
         }
         let b = Instant::now();
@@ -170,8 +212,22 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
         let len = c.n.min(c.batch);
         lookup(&fresh, &inserted[..len], &mut output[..len]);
         consume(&output[..len]);
+        let a = Instant::now();
+        let mut fresh = F::new(c.n, c.bpk).unwrap();
+        let ready = Instant::now();
+        for chunk in raw_insert.chunks(c.insert_batch) {
+            for (h, &raw) in scratch.iter_mut().zip(chunk) {
+                *h = hash64(raw);
+            }
+            insert(&mut fresh, &scratch[..chunk.len()]);
+        }
+        let b = Instant::now();
+        hash_insert_times.push((b - ready).as_secs_f64() * 1e9 / c.n as f64);
+        hash_build_times.push((b - a).as_secs_f64() * 1e9 / c.n as f64);
+        lookup(&fresh, &inserted[..len], &mut output[..len]);
+        consume(&output[..len]);
     }
-    for chunk in inserted.chunks(c.batch) {
+    for chunk in inserted.chunks(c.insert_batch) {
         insert(&mut bf, chunk);
     }
     for chunk in inserted.chunks(c.batch) {
@@ -231,7 +287,7 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
         (fp as f64 / absent as f64).to_string()
     };
     println!(
-        "rust,{name},{},{},{},{},{},64,{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}",
+        "rust,{name},{},{},{},{},{},64,{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},prehashed,{},{},{}",
         c.n,
         c.q,
         c.bpk,
@@ -251,7 +307,10 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
         fpr,
         times.iter().copied().fold(f64::INFINITY, f64::min),
         times.iter().copied().fold(0.0, f64::max),
-        checksum
+        checksum,
+        median(&hash_insert_times),
+        median(&hash_build_times),
+        c.insert_batch
     );
 }
 fn main() {
@@ -274,6 +333,7 @@ fn main() {
     let batch = number(5, 4096);
     let repeats = number(6, 5);
     let seed = number(7, 42);
+    let insert_batch = number(9, batch);
     assert!(
         (5..=26).contains(&power)
             && (12..=27).contains(&qp)
@@ -282,7 +342,9 @@ fn main() {
             && batch > 0
             && batch <= 1 << qp
             && repeats > 0
-            && args.len() <= 9,
+            && insert_batch > 0
+            && insert_batch <= (1 << 26)
+            && args.len() <= 10,
         "invalid arguments"
     );
     let n = 1usize << power;
@@ -309,25 +371,27 @@ fn main() {
         bpk: bpk as u32,
         hit,
         batch: batch as usize,
+        insert_batch: insert_batch as usize,
         repeats: repeats as usize,
         seed,
         key_base,
     };
-    println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum");
+    println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,allocate_hash_insert_ns,insert_batch");
     let selection = args.get(8).map(String::as_str).unwrap_or("");
     let mut jobs = vec![];
-    for (name, pattern) in [("Fastbloom017", false), ("FastPatternBF", true)] {
+    for name in ["Fastbloom017", "FastPatternBF", "BloomsdayPinned"] {
         if selection.is_empty() || selection.split(',').any(|x| x == name) {
-            jobs.push((name, pattern));
+            jobs.push(name);
         }
     }
     assert!(!jobs.is_empty(), "no matching filters");
     shuffle(&mut jobs, &mut rng);
-    for (name, pattern) in jobs {
-        if pattern {
-            run::<BloomFilter<true>>(name, &inserted, &query, &c);
-        } else {
-            run::<Fastbloom017>(name, &inserted, &query, &c);
+    for name in jobs {
+        match name {
+            "FastPatternBF" => run::<BloomFilter<true>>(name, &inserted, &query, &c),
+            "Fastbloom017" => run::<Fastbloom017>(name, &inserted, &query, &c),
+            "BloomsdayPinned" => run::<BloomsdayPinned>(name, &inserted, &query, &c),
+            _ => unreachable!(),
         }
     }
 }
