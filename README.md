@@ -60,6 +60,11 @@ and the large-filter 1% band in that metric. Rust also retains small-filter loss
 against Bloomsday. These results supersede the prototype's roughly 8% end-to-end
 gain as evidence for the native port; optimization continues from the losses.
 
+A separate [240-row public single-call screen](experiments/2026-10-29-inline-single-query/screen/RESULTS.md)
+lets the compiler optimize across successive calls and keeps the original batch-one
+measurements alongside it. Calling convention changes the ranking: the native
+strict-accuracy small-filter loss remains. This is a one-seed screen, pending confirmation.
+
 The new [eight-core external confirmation](docs/external-parallel-confirmation-2026-10-29.md)
 compares the same 23 shortlisted configurations on identical physical cores and a
 shared immutable bitmap. Across three fresh seeds, our per-scenario leaders are

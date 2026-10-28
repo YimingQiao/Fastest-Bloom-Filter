@@ -25,6 +25,12 @@ The binary SHA-256 is retained independently of later source edits.
 | [byte-confirmation-cpp](2026-10-29-byte-confirmation-cpp) | 23 candidates including native ByteSplit and stronger FastFilter single-call controls; three held-out seeds, batch 1 | 12 | 276 |
 | [byte-confirmation-rust](2026-10-29-byte-confirmation-rust) | Four native layouts, two frozen controls and two external families on matching inputs | 12 | 96 |
 
+The [public single-call screen](../experiments/2026-10-29-inline-single-query/screen/RESULTS.md)
+adds four cases / 240 rows across 60 C++ configurations. Its four balanced query
+modes retain both the original batch-one wrapper and compiler-visible per-key
+calls, with separate prehashed/raw-key rankings. Seed42 is exploratory; this
+screen does not supersede the three-seed native confirmation. Every timed output
+is checked, and the archive freezes the binary, source provenance and analysis.
 
 The external multithreaded archives live under `experiments/` because they freeze a
 separate shared-bitmap executor and retain both original serial and new parallel
