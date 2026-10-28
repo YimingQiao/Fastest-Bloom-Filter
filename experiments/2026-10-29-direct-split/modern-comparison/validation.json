@@ -1,0 +1,17 @@
+{
+  "utc": "2026-10-28T17:09:03.069966+00:00",
+  "cpu": 3,
+  "source_snapshot": "snapshot.json",
+  "checks": [
+    "18 mixed-hit/batch same-input preflight scenarios, all18 expected rows, equal bytes, expected exact FastFilter/RocksDB output/calibration pairs",
+    "144 timed rows with independent calibration; source drift empty",
+    "All expected FastFilter/RocksDB semantic pair checks passed on final timing rows"
+  ],
+  "commands": [
+    "taskset -c 3 cmake --build build/direct-split-modern --parallel 1",
+    "python3 experiments/2026-10-29-direct-split/modern-comparison/check.py build/direct-split-modern/compare_benchmark",
+    "python3 experiments/2026-10-29-direct-split/modern-comparison/summarize.py experiments/2026-10-29-direct-split/modern-comparison/heldout/timing.csv"
+  ],
+  "prototype_correctness": "Parent validation.json; native/scalar full bitmap/query oracle and ASan/UBSan passed before both timing phases.",
+  "cli_selection_note": "Archived harness predates strict name parsing. Runner and preflight independently assert all18 correctly spelled selected rows; correct native name FastPatternBF is included."
+}
