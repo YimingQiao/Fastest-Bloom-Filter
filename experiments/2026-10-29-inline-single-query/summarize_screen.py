@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Keep generic batch-one and optimizer-visible singleton rankings separate."""
 import csv
+import hashlib
 import json
 import math
 from pathlib import Path
 import run_screen
+from screen_guard import validate_metadata
 
 HERE = Path(__file__).resolve().parent
 NATIVE = {
@@ -69,6 +71,22 @@ def main():
         rows = list(csv.DictReader(stream))
     registry = json.loads((HERE / "registry.json").read_text())["filters"]
     run_screen.validate(rows, registry)
+    validate_metadata(rows)
+    (HERE / "screen/analysis-validation.json").write_text(
+        json.dumps(
+            {
+                "rows": len(rows),
+                "old_and_inline_timing_fields_validated": True,
+                "payload_accounting_validated": True,
+                "analysis_sources": {
+                    name: hashlib.sha256((HERE / name).read_bytes()).hexdigest()
+                    for name in ("summarize_screen.py", "screen_guard.py", "test_screen_guard.py")
+                },
+                "note": "Additional analysis guards leave the measured benchmark and original runner unchanged.",
+            },
+            indent=2,
+        ) + "\n"
+    )
     for r in rows:
         name = r["filter"]
         r["family"] = (
@@ -219,6 +237,7 @@ def main():
         "Speed ratios are descriptive; pointwise FPR bounds are not simultaneous selection guarantees. "
         "The frozen correctness/assembly inventory and `screen/validation.json` identify the exact executable. "
         "No production source was changed by this harness experiment.",
+        "Five focused analysis regression tests reject invalid old-path timings, raw-only pure-query values and impossible allocation metadata before ranking.",
         "",
     ]
     (HERE / "screen/RESULTS.md").write_text("\n".join(lines))
