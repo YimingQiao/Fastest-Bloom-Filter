@@ -26,6 +26,8 @@ finds a promising strict-FPR singleton candidate: at 32 actual bits/key, its
 public hash+query API leads Bloomsday by 6–22% at the two measured sizes.
 The generic batch-one path still loses, and existing native layouts win several
 large-batch settings. This is one-seed prototype evidence pending confirmation.
+A subsequent [192-row singleton-branch experiment](experiments/2026-10-29-independent32-rust-singleton-analysis/FINDINGS.md)
+was rejected after short batches regressed; the candidate remains isolated.
 A [six-seed ByteSplit confirmation](experiments/2026-10-29-rust-byte-leaf-analysis/report/DECISION.md)
 supports exposing its public singleton body to the Rust compiler. The Rust library
 now includes the [minimal Byte-only inline hint](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md).
@@ -61,6 +63,9 @@ hash+query latency** on all three, with its worst FPR upper bound close to the
 ceiling. FourSector at 16 bpk fails the small-table 0.1% quality gate on one seed;
 its timing advantage does not count as a qualifying win. These results preserve
 fixed candidates and failures, and remain separate from the earlier confirmation.
+A [62-row cyclic-mask experiment](experiments/2026-10-29-cyclic-split64-analysis/FINDINGS.md)
+also stays experimental: fewer mask instructions raised the required space,
+and it lost 15 of 16 eligible views against the retained external leaders.
 
 ![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
 
