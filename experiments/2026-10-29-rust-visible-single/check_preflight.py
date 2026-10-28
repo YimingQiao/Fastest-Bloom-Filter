@@ -19,9 +19,26 @@ SEMANTICS = ("keys", "queries", "requested_bpk", "filter_bytes", "actual_bpk", "
 METRICS = ("lookup", "hash_lookup", "inline_lookup", "inline_hash_lookup")
 
 
+def expected_phase_order(seed, repeats):
+    """Independent unsigned-integer implementation of the frozen label shuffle."""
+    mask = (1 << 64) - 1
+    state = seed ^ 0x6a09e667f3bcc909
+    labels = [0, 1, 2, 3]
+    for width in (4, 3, 2):
+        state = (state + 0x9e3779b97f4a7c15) & mask
+        value = ((state ^ (state >> 30)) * 0xbf58476d1ce4e5b9) & mask
+        value = ((value ^ (value >> 27)) * 0x94d049bb133111eb) & mask
+        value ^= value >> 31
+        index = value % width
+        labels[width - 1], labels[index] = labels[index], labels[width - 1]
+    schedule = ((0, 1, 3, 2), (1, 2, 0, 3), (2, 3, 1, 0), (3, 0, 2, 1))
+    return ";".join("|".join(str(labels[mode]) for mode in schedule[trial % 4]) for trial in range(repeats))
+
+
 def validate_row(row):
     assert row["scalar_track"] == "optimizer_visible_public_single"
     repeats = int(row["repeats"])
+    assert row["query_phase_order"] == expected_phase_order(int(row["seed"]), repeats)
     orders = [[int(value) for value in order.split("|")] for order in row["query_phase_order"].split(";")]
     assert len(orders) == repeats
     positions = collections.Counter()

@@ -63,6 +63,22 @@ class Guards(unittest.TestCase):
         with self.assertRaises(AssertionError):
             self.check(rows)
 
+    def test_balanced_but_wrong_seed_order(self):
+        from check_preflight import validate_row
+        rows = copy.deepcopy(self.rows)
+        original = rows[0]["query_phase_order"]
+        # Rotating the four labels preserves every balance count, but violates seed42.
+        rows[0]["query_phase_order"] = ";".join(
+            "|".join(str((int(value) + 1) % 4) for value in order.split("|"))
+            for order in original.split(";")
+        )
+        self.assertNotEqual(rows[0]["query_phase_order"], original)
+        with self.assertRaises(AssertionError):
+            self.check(rows)
+        # The preserved original producer rows all satisfy the independent seed oracle.
+        for row in self.rows:
+            validate_row(row)
+
     def test_invalid_build_time(self):
         rows = copy.deepcopy(self.rows)
         rows[0]["allocate_insert_ns"] = "0"
