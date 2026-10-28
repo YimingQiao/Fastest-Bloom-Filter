@@ -1,0 +1,73 @@
+--- cpp/cyclic_split64.h
++++ cpp/multiply_code_split64.h
+@@ -10,11 +10,11 @@
+ #include <immintrin.h>
+ #endif
+ 
+-// Experimental cyclic low32 masks in eight u64 sectors. Adjacent sectors
+-// share two position bits; accuracy is NOT equivalent to multiply-shift Split64.
+-// High32 range addressing remains independent of every mask input bit.
++// Experimental fixed low32-to-u64 multiplication, then eight six-bit byte fields.
++// The sector positions share only32 input bits and are NOT assumed independent.
++// High32 range addressing remains disjoint from every mask input bit.
+ namespace bloom_filters {
+-class CyclicSplit64Range {
++class MultiplyCodeSplit64Range {
+ 	static constexpr size_t Prefetch = 32;
+ 	friend struct RangeLayoutInspector;
+ public:
+@@ -30,27 +30,30 @@
+ 	};
+ 	std::vector<Line, AlignedAllocator<Line, 64>> lines_;
+ 	uint32_t block_count_;
++    inline static constexpr uint64_t multiplier_ = 0x9e3779b97f4a7c15ULL;
++    static uint64_t Code(uint64_t hash) {
++        return uint64_t(uint32_t(hash)) * multiplier_;
++    }
+     static uint32_t Position(uint64_t hash, size_t sector) {
+-        const uint64_t repeated = uint64_t(uint32_t(hash)) * 0x100000001ULL;
+-        return (repeated >> (sector * 4)) & 63;
++        return (Code(hash) >> (sector * 8)) & 63;
+     }
+ 	uint32_t Block(uint64_t hash) const {
+ 		return (uint64_t(static_cast<uint32_t>(hash >> 32)) * block_count_) >> 32;
+ 	}
+ #if defined(__AVX512F__)
+     static __m512i Mask(uint64_t hash) {
+-        const __m512i repeated = _mm512_set1_epi32(static_cast<uint32_t>(hash));
+-        const __m512i positions = _mm512_srlv_epi64(repeated, _mm512_setr_epi64(0,4,8,12,16,20,24,28));
+-        // VPROLVQ masks the rotate count modulo64, so no explicit AND is needed.
++        const __m512i code = _mm512_set1_epi64(static_cast<long long>(Code(hash)));
++        const __m512i positions = _mm512_srlv_epi64(code, _mm512_setr_epi64(0,8,16,24,32,40,48,56));
++        // VPROLVQ reduces the count modulo64; explicit AND is unnecessary here.
+         return _mm512_rolv_epi64(_mm512_set1_epi64(1), positions);
+     }
+     static __m512i WideMask(uint64_t hash) { return Mask(hash); }
+ #endif
+ #if defined(__AVX2__) && !defined(__AVX512F__)
+     static void Mask256(uint64_t hash, __m256i &low, __m256i &high) {
+-        const __m256i repeated = _mm256_set1_epi32(static_cast<uint32_t>(hash));
+-        const __m256i a = _mm256_and_si256(_mm256_srlv_epi64(repeated, _mm256_setr_epi64x(0,4,8,12)), _mm256_set1_epi64x(63));
+-        const __m256i b = _mm256_and_si256(_mm256_srlv_epi64(repeated, _mm256_setr_epi64x(16,20,24,28)), _mm256_set1_epi64x(63));
++        const __m256i code = _mm256_set1_epi64x(static_cast<long long>(Code(hash)));
++        const __m256i a = _mm256_and_si256(_mm256_srlv_epi64(code, _mm256_setr_epi64x(0,8,16,24)), _mm256_set1_epi64x(63));
++        const __m256i b = _mm256_and_si256(_mm256_srlv_epi64(code, _mm256_setr_epi64x(32,40,48,56)), _mm256_set1_epi64x(63));
+         low = _mm256_sllv_epi64(_mm256_set1_epi64x(1), a);
+         high = _mm256_sllv_epi64(_mm256_set1_epi64x(1), b);
+     }
+@@ -107,12 +110,12 @@
+ 	}
+ 
+ public:
+-	explicit CyclicSplit64Range(RangeBytes budget)
++	explicit MultiplyCodeSplit64Range(RangeBytes budget)
+ 	    : lines_(range_detail::LineCount(budget.bytes)), block_count_(lines_.size()) {
+ 		if (SizeInBytes() > budget.bytes) throw std::length_error("actual backing exceeds budget");
+ 	}
+-	explicit CyclicSplit64Range(size_t n, uint32_t bpk)
+-	    : CyclicSplit64Range(RangeBytes{range_detail::BudgetBytes(n, bpk)}) {
++	explicit MultiplyCodeSplit64Range(size_t n, uint32_t bpk)
++	    : MultiplyCodeSplit64Range(RangeBytes{range_detail::BudgetBytes(n, bpk)}) {
+ 	}
+ 	size_t SizeInBytes() const {
+ 		return lines_.capacity() * sizeof(Line);

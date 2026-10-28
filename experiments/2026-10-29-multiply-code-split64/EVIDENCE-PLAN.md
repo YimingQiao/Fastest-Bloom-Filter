@@ -1,0 +1,17 @@
+# Fixed multiply-code Split64 range hypothesis
+
+The initial source-only preparation is preserved in `PREPARATION.json`. The root has reviewed the fixed mapping and independent oracle and authorized six-mode correctness validation on CPU3/socket1. Accuracy has not started; production and prior frozen experiments remain unchanged.
+
+The candidate computes `code = uint64_t(uint32_t(h)) * 0x9e3779b97f4a7c15` modulo2^64. Sector j uses `(code >> (8*j)) &63`. The fixed constant was specified before candidate data; there is no search. The line index still uses independent high32 multiply-high range reduction. All source capacity, allocation, insertion/update ordering, prefetch32 and public query routing outside mask construction are inherited unchanged from the pinned cyclic source.
+
+AVX512F construction is one scalar multiply followed by broadcastq, variable right shifts at0/8/16/24/32/40/48/56, and variable rotate of one. Rotate counts reduce modulo64. AVX2 explicitly masks counts with63 before shifts; scalar code uses exactly the same bit mapping. Fewer vector operations could shorten the mask dependency chain, following the bbtree lesson of measuring instruction dependencies and memory access. The extra scalar multiply, broadcast latency and compiler choices may offset that benefit. No source instruction count is a speed result.
+
+Although the eight six-bit windows do not overlap in the multiplied word, the entire code derives from only32 input bits. Sector positions are correlated; uniform marginal probabilities, Split64-equivalent FPR, and strict qualification are not assumed. This is a mask-distribution experiment, not a new native/public filter family.
+
+The unchanged Split64Range and current CyclicSplit64Range headers, range sizing and allocator are local exact copies of commit63d108e4f97e1b1f72ce73088ebb51ce49551d09. Copied source hashes are in provenance.json. A local parent-quality CSV is a semantic reproduction reference for the two controls, not extra calibration data.
+
+Correctness must precede accuracy: independent128-bit multiplication and bit extraction, direct SIMD/scalar masks, full three-mapping bitmap/output oracles, arbitrary line-count boundaries, collisions and duplicates, essential-bit removal, invalid allocation inputs, query immutability, and guarded tails. Six configurations are prescribed: native AVX512F, AVX2-only, scalar, each with and without ASan/UBSan. Source backend assertions prevent an accidentally different path. Build scripts must use an explicit inherited CPU/socket lease and retain failed attempts.
+
+The fixed accuracy-only matrix has24 rows:65,536/33,554,432 inserted keys, actual16/24/28/32bpk, seed42,2^24 disjoint negatives, all three configurations. The unique counter streams and bijective common64 hash exactly match the cyclic pilot. Every inserted key is checked; every query output is dense and guard-checked. Actual allocated bitmap bytes, FP count, dense checksum and pointwise two-sided95% Wilson endpoints are reported. The controls must reproduce their pinned parent results. No speed columns, pooled reused streams, post-data retuning, Rust port or promotion are allowed at this stage.
+
+The correctness-only operation holds the entire socket1 flock on CPU3. Accuracy remains unauthorized until the final source/binary freeze is reviewed and committed. Correctness results and any failed attempts are retained separately; this protocol does not authorize throughput measurement.
