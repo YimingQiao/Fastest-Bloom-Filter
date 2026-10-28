@@ -33,3 +33,11 @@ timing; complete commands/logs are retained in `validation.json` and `*.log`.
 all four old/new query kernels, confirming `vpmultishiftqb` in the new native
 path. The validation was performed with
 `flock /tmp/fastest-bf-socket0.lock python3 experiments/2026-10-29-independent-vbmi/validate.py`.
+
+The [completed 132-row screen](screen/report.md) retains both gains and losses.
+At 65K keys and actual 32 bits/key, single-key pure query improves 1.149× over
+the original independent mask and beats the strongest tested FastFilter control
+1.108×. Hash+query still loses to that control (4.485 versus 4.315 ns/key), and
+the small-filter 4096-key batch regresses against the original mask. The layout
+passes the strict 0.01% FPR gate at 32 bits/key, but is not ready for promotion.
+Regenerate the complete screen report with `python3 experiments/2026-10-29-independent-vbmi/summarize.py`.
