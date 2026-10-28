@@ -1,0 +1,41 @@
+warning: binary `compare_benchmark` should have a kebab-case name
+  |
+1 | /tmp/fastest-bf-rust-byte-asan/.../compare_benchmark
+  |                                    ^^^^^^^^^^^^^^^^^
+  |
+  = note: `cargo::non_kebab_case_bins` is set to `warn` by default
+help: to change the binary name to `compare-benchmark`, convert the file stem
+  |
+1 - src/bin/compare_benchmark.rs
+1 + src/bin/compare-benchmark.rs
+  |
+warning: binary `parallel_benchmark` should have a kebab-case name
+  |
+1 | /tmp/fastest-bf-rust-byte-asan/.../parallel_benchmark
+  |                                    ^^^^^^^^^^^^^^^^^^
+  |
+help: to change the binary name to `parallel-benchmark`, convert the file stem
+  |
+1 - src/bin/parallel_benchmark.rs
+1 + src/bin/parallel-benchmark.rs
+  |
+warning: `fastest-bloom-filter` (manifest) generated 2 warnings
+   Compiling fastest-bloom-filter v0.1.0 (/home/yiming/projects/fastest-bf-lab/rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.16s
+     Running unittests src/lib.rs (/tmp/fastest-bf-rust-byte-asan/x86_64-unknown-linux-gnu/debug/build/fastest-bloom-filter/e8934549ac13f140/out/fastest_bloom_filter-e8934549ac13f140)
+
+running 5 tests
+test byte_split::tests::complete_bitmap_collisions_and_query_tails ... ok
+test byte_split::tests::mismatched_output_is_rejected_before_writing ... 
+thread 'byte_split::tests::mismatched_output_is_rejected_before_writing' (3636515) panicked at src/byte_split.rs:141:9:
+assertion `left == right` failed: one output is required per input
+  left: 2
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test byte_split::tests::parallel_owns_whole_lines_and_matches_serial ... ok
+test byte_split::tests::scalar_and_simd_masks_match_independent_oracle ... ok
+test byte_split::tests::sizing_alignment_and_limits ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 18.02s
+
