@@ -59,6 +59,14 @@ and the large-filter 1% band in that metric. Rust also retains small-filter loss
 against Bloomsday. These results supersede the prototype's roughly 8% end-to-end
 gain as evidence for the native port; optimization continues from the losses.
 
+The new [eight-core external confirmation](docs/external-parallel-confirmation-2026-10-29.md)
+compares the same 23 shortlisted configurations on identical physical cores and a
+shared immutable bitmap. Across three fresh seeds, our per-scenario leaders are
+**1.06–1.59× faster including hashing, fresh thread startup and joining** at batch
+4096, 50% hits and 65K/32M keys. Memory caps and measured FPR ceilings still apply;
+individual ByteSplit/Split64 losses remain in the report. This is a C++ external
+comparison; Rust's separately reported scaling uses its own serial baseline.
+
 ## Native layouts
 
 | Layout | C++ header/type | Rust type | Observed FPR at 16 actual bits/key |

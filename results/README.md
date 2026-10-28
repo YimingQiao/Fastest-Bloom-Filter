@@ -25,6 +25,21 @@ The binary SHA-256 is retained independently of later source edits.
 | [byte-confirmation-cpp](2026-10-29-byte-confirmation-cpp) | 23 candidates including native ByteSplit and stronger FastFilter single-call controls; three held-out seeds, batch 1 | 12 | 276 |
 | [byte-confirmation-rust](2026-10-29-byte-confirmation-rust) | Four native layouts, two frozen controls and two external families on matching inputs | 12 | 96 |
 
+
+The external multithreaded archives live under `experiments/` because they freeze a
+separate shared-bitmap executor and retain both original serial and new parallel
+metrics. They are not merged with single-thread timings:
+
+| Archive | Purpose | Cases | Rows |
+| --- | --- | --- | --- |
+| [External parallel screen](../experiments/2026-10-29-external-parallel-query/screening) | Same 23-configuration shortlist at 1/4/8 physical cores; seed 42 | 12 | 276 |
+| [External eight-core confirmation](../experiments/2026-10-29-external-parallel-query/confirmation8) | Three new seeds, eight physical cores, batch 4096; full trial decomposition and quality bounds | 12 | 276 |
+
+The [eight-core report](../docs/external-parallel-confirmation-2026-10-29.md) is generated
+by `scripts/summarize_external_parallel.py`, which verifies the frozen archive before
+publishing the tables and plot. Its Wilson upper is the two-sided 95% interval endpoint;
+earlier single-thread reports use a one-sided 95% upper bound.
+
 See the [modern confirmation report](../docs/modern-confirmation-2026-10-28.md).
 Generate its rankings with `scripts/rank_external.py` at 16/32 bits/key and zero
 allocation slack, then render the report/figure with `scripts/summarize_modern.py`
