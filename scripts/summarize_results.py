@@ -7,6 +7,20 @@ from statistics import median
 
 ROOT = Path(__file__).resolve().parents[1]
 DAY = "2026-10-28"
+HISTORICAL_SERIES = (
+    "cpp",
+    "rust",
+    "parallel-cpp",
+    "parallel-rust",
+    "small-batches-cpp",
+    "small-batches-rust",
+    "avx2-cpp",
+    "avx2-rust",
+    "external",
+    "before-alignment-cpp",
+    "before-alignment-rust",
+    "before-avx2-cpp",
+)
 
 
 def rows(name):
@@ -53,7 +67,10 @@ def speed(x):
 def main():
     checks = {}
     total = 0
-    for path in sorted((ROOT / "results").glob("*/results.csv")):
+    # This report describes a frozen campaign. Later modern layouts have
+    # different bitmaps and must not enter its historical parity/count totals.
+    for name in HISTORICAL_SERIES:
+        path = ROOT / "results" / f"{DAY}-{name}" / "results.csv"
         data = list(csv.DictReader(path.open()))
         metadata = json.loads((path.parent / "metadata.json").read_text())
         assert metadata["runs"] and all(r["returncode"] == 0 for r in metadata["runs"])

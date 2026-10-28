@@ -17,6 +17,10 @@ def main():
     p.add_argument("--executable", default="build/native/parallel_benchmark")
     p.add_argument("--output-dir", required=True)
     p.add_argument(
+        "--binary-source-revision",
+        help="Source commit for an already-built frozen executable",
+    )
+    p.add_argument(
         "--cpus",
         type=numbers,
         required=True,
@@ -57,6 +61,23 @@ def main():
     out = Path(args.output_dir)
     out.mkdir(parents=True, exist_ok=False)
     repo = Path(__file__).resolve().parents[1]
+    binary_revision = None
+    if args.binary_source_revision:
+        if not (7 <= len(args.binary_source_revision) <= 40) or any(
+            c not in "0123456789abcdefABCDEF" for c in args.binary_source_revision
+        ):
+            p.error("--binary-source-revision must be a commit hash")
+        binary_revision = subprocess.check_output(
+            [
+                "git",
+                "-C",
+                str(repo),
+                "rev-parse",
+                "--verify",
+                args.binary_source_revision + "^{commit}",
+            ],
+            text=True,
+        ).strip()
     metadata = {
         "arguments": vars(args),
         "revision": capture(["git", "-C", str(repo), "rev-parse", "HEAD"]),
@@ -65,6 +86,8 @@ def main():
         "topology": capture(["lscpu", "-p=CPU,CORE,SOCKET,NODE"]),
         "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "executable_sha256": hashlib.sha256(exe.read_bytes()).hexdigest(),
+        "binary_source_revision": binary_revision,
+        "RUSTFLAGS": os.environ.get("RUSTFLAGS", ""),
         "rustc": capture(["rustc", "-Vv"]),
         "clang": capture(["clang++", "--version"]),
         "rust_build_fingerprints": {
@@ -151,7 +174,7 @@ def main():
                                         f"{family} parallel modes disagree on {field}"
                                     )
                         if writer is None:
-                            writer = csv.DictWriter(f, fieldnames=reader.fieldnames)
+                            writer = csv.DictWriter(f, fieldnames=reader.fieldnames, lineterminator="\n")
                             writer.writeheader()
                         writer.writerows(rows)
                         f.flush()

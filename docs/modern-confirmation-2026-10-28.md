@@ -29,7 +29,7 @@ Pointwise bounds are not simultaneous confidence guarantees for every selected r
 
 ![C++ query speedup against the fastest eligible external baseline](figures/modern-confirmation.svg)
 
-## CPP large-batch queries
+## C++ large-batch queries
 
 Each row chooses the lowest median hash+query time among eligible configurations.
 The external reference is the fastest eligible external configuration in this suite.
@@ -50,7 +50,7 @@ Rust has two external families; C++ has the broader baseline set. A large Rust-o
 ratio can result from fastbloom being the only eligible external family at 16 bits/key
 and 0.1% FPR. It does not mean that Rust beats the fastest C++ baseline by that ratio.
 
-## RUST large-batch queries
+## Rust large-batch queries
 
 Each row chooses the lowest median hash+query time among eligible configurations.
 The external reference is the fastest eligible external configuration in this suite.

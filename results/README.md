@@ -18,12 +18,17 @@ The binary SHA-256 is retained independently of later source edits.
 | [page-aes-screen](2026-10-28-page-aes-screen) | PageBloom optional AES hashing, separate cohort | 4 | 28 |
 | [modern-confirmation-cpp](2026-10-28-modern-confirmation-cpp) | Frozen 13-candidate large-batch shortlist, three new seeds | 18 | 234 |
 | [modern-confirmation-rust](2026-10-28-modern-confirmation-rust) | Five native Rust candidates on the same confirmation inputs | 18 | 90 |
+| [single-screen](2026-10-28-single-screen) | 47 configurations at batch 1, exploratory seed 42 | 4 | 188 |
+| [layout-parallel-cpp](2026-10-28-layout-parallel-cpp) | Native FourSector/Split64, serial and partitioned, 1–8 physical cores | 24 | 96 |
+| [layout-parallel-rust](2026-10-28-layout-parallel-rust) | Same new-layout scaling matrix in Rust | 24 | 96 |
 
 See the [modern confirmation report](../docs/modern-confirmation-2026-10-28.md).
 Generate its rankings with `scripts/rank_external.py` at 16/32 bits/key and zero
 allocation slack, then render the report/figure with `scripts/summarize_modern.py`
-(matplotlib required). Single-key screening and new-layout scaling are separate
-stages and must not be represented as completed by the large-batch result.
+(matplotlib required). Single-key screening and new-layout scaling have separate
+reports and must not be inferred from the large-batch result. Regenerate the
+[layout scaling report](../docs/layout-parallel-2026-10-28.md) with
+`scripts/summarize_layout_parallel.py`.
 
 | Directory | Purpose | Cases | Rows |
 | --- | --- | --- | --- |

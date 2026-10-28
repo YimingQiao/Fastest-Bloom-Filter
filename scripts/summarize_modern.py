@@ -62,7 +62,7 @@ def main():
                         )
                     )
         sections.append(
-            f"## {language.upper()} large-batch queries\n\n"
+            f"## {('C++' if language == 'cpp' else 'Rust')} large-batch queries\n\n"
             "Each row chooses the lowest median hash+query time among eligible configurations.\n"
             "The external reference is the fastest eligible external configuration in this suite.\n\n"
             "| Keys | Memory ceiling, bits/key | FPR ceiling | Our candidate | ns/key | External reference | ns/key | Speedup |\n"
@@ -162,6 +162,7 @@ PageBloom AES screen is retained separately and is not mixed into these medians.
     import matplotlib
 
     matplotlib.use("Agg")
+    matplotlib.rcParams["svg.hashsalt"] = "modern-confirmation-2026-10-28"
     import matplotlib.pyplot as plt
 
     fig, axes = plt.subplots(1, 3, figsize=(11, 3.3), sharey=True)
@@ -181,7 +182,13 @@ PageBloom AES screen is retained separately and is not mixed into these medians.
     )
     fig.tight_layout()
     for suffix in ("svg", "png"):
-        fig.savefig(ROOT / f"docs/figures/modern-confirmation.{suffix}", dpi=160)
+        path = ROOT / f"docs/figures/modern-confirmation.{suffix}"
+        fig.savefig(path, dpi=160, metadata={"Date": None} if suffix == "svg" else None)
+        if suffix == "svg":
+            path.write_text(
+                "\n".join(line.rstrip() for line in path.read_text().splitlines())
+                + "\n"
+            )
     print("Wrote confirmation report and figure")
 
 

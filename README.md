@@ -9,13 +9,15 @@ The project name is an ambition, not a claim that one implementation wins every 
 
 ## Modern external comparison
 
-The broader campaign now compares **43 C++ configurations in one shuffled process**:
+The initial screen compared **43 C++ configurations in one shuffled process**:
 FastPattern, pinned FastFilter SIMD/classical variants, PageBloomFilter, and
-Boost.Bloom 1.92 with its native bulk APIs. A separate native Rust suite includes
+Boost.Bloom 1.92 with its native bulk APIs. The current executable adds native
+FourSector/Split64 and eight RocksDB FastLocalBloom core configurations, for **53**.
+A separate native Rust suite includes
 pinned Bloomsday and fastbloom. See the [survey](docs/external-survey-2026-10-28.md)
 and [shared-harness instructions](benchmarks/all-external/README.md).
 
-Ranking constrains **actual resident allocation and observed FPR**, distinguishing
+Ranking constrains **measured filter payload allocation and observed FPR**, distinguishing
 prehashed kernels from raw-key end-to-end work. Build batches are independently
 configurable, temporary build allocations are reported, and timed construction
 holds only one bitmap at a time. Screening uses explicit error ceilings and a
@@ -37,7 +39,9 @@ and allocations up to 128 MiB on one Xeon Platinum 8474C core.
 
 Eligibility uses a pointwise 95% FPR upper bound; exact allocations remain visible.
 This is a query result within the stated contract. FourSector still has construction
-and short-batch losses, and single-key comparisons are being expanded. The wider
+and short-batch losses. In the separate [47-configuration single-key screen](docs/single-screen-2026-10-28.md),
+FastFilter wins the shown 1% and 0.01% bands; Split64 wins 0.1% at 16 bits/key.
+That screen is exploratory and single-key optimization continues. The wider
 mask dictionary in the report remains experimental. See the
 [complete confirmation, including Rust and build timings](docs/modern-confirmation-2026-10-28.md),
 [screening results](docs/modern-screen-2026-10-28.md), and
@@ -161,6 +165,12 @@ For FourSector and Split64, C++ provides `ParallelFourSectorBloomFilter` and
 by its layout's actual cache-line index; it does not replicate the bitmap per worker.
 The overlapping reader/writer atomic type is currently FastPattern only.
 
+The new-layout [1–8 core measurements](docs/layout-parallel-2026-10-28.md) cover
+16M/32M keys at 16 actual bits/key. Eight-core query speedups are **6.97–7.41× in C++**
+and **7.07–7.60× in Rust** against each layout's own serial version. Build speedups
+are **2.27–3.01× / 2.30–3.30×**, including partitioning, scratch and thread startup.
+These are scaling results, separately scoped from the external single-thread comparison.
+
 | Use case | C++ | Rust |
 | --- | --- | --- |
 | Exclusive parallel build, then read-only queries | `ParallelFastPatternBF` in `parallel_bloom.h` | `FastPatternBloomFilter::insert_hashes_parallel` |
@@ -212,7 +222,7 @@ python3 scripts/run_parallel.py --output-dir results/layout-scaling \
 
 Choose physical cores on one NUMA socket for an initial scaling study. The runner
 pins each process to the first T listed CPUs, records topology, and runs cases
-serially. Scaling is relative to the same FastPattern implementation's serial
+serially. Scaling is relative to each selected layout's own serial
 path. This measures wall-clock batch throughput, including thread startup, rather
 than per-operation latency or a warmed persistent thread pool. Atomic timing rows
 measure parallel build followed by read-only queries; overlapping reader/writer

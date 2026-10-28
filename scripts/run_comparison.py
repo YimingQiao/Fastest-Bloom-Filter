@@ -98,7 +98,7 @@ def main():
                             run.check_returncode()
                             reader = csv.DictReader(io.StringIO(run.stdout))
                             if writer is None:
-                                writer = csv.DictWriter(f, fieldnames=reader.fieldnames)
+                                writer = csv.DictWriter(f, fieldnames=reader.fieldnames, lineterminator='\n')
                                 writer.writeheader()
                             for row in reader:
                                 writer.writerow(row)
