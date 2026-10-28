@@ -31,6 +31,9 @@ The generic batch-one path still loses, and existing native layouts win several
 large-batch settings. This is one-seed prototype evidence pending confirmation.
 A subsequent [192-row singleton-branch experiment](experiments/2026-10-29-independent32-rust-singleton-analysis/FINDINGS.md)
 was rejected after short batches regressed; the candidate remains isolated.
+Its [208-row scalar-inline follow-up](experiments/2026-10-29-independent32-rust-scalar-inline-analysis/FINDINGS.md)
+improves generic batch-one prehashed throughput by 10–20%, but small-table
+batch-two queries regress by 16.6%. It also remains isolated.
 A [six-seed ByteSplit confirmation](experiments/2026-10-29-rust-byte-leaf-analysis/report/DECISION.md)
 supports exposing its public singleton body to the Rust compiler. The Rust library
 now includes the [minimal Byte-only inline hint](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md).

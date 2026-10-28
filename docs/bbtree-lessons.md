@@ -50,6 +50,7 @@ isolated comparison, with2–3% losses in some short batches. The
 is integrated with that tradeoff documented. Conversely, a four-line
 Independent32 shortcut made the compiler save six registers instead of one
 and was rejected after batch regressions. Its next isolated revision restores
-the smaller prologue; [actual assembly](../experiments/2026-10-29-independent32-rust-scalar-inline-screen/EVIDENCE.md)
-supports testing it, not assuming a speedup. Source brevity and instruction
-counts alone are insufficient evidence.
+the smaller prologue. The [208-row comparison](../experiments/2026-10-29-independent32-rust-scalar-inline-analysis/FINDINGS.md)
+improves batch-one throughput10–20% but still loses16.6% on small batch-two
+queries, despite matching the original's bulk-loop instructions. It remains
+isolated. Source brevity and instruction counts alone are insufficient evidence.
