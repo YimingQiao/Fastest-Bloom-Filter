@@ -27,6 +27,9 @@ public:
 	}
 
 public:
+    size_t SizeInBytes() const { return blocks_.size() * sizeof(blocks_[0]); }
+
+public:
 	inline uint32_t Lookup(uint32_t num, uint64_t *key, uint32_t *out) {
 		return CacheSectorizedLookup(num, key, blocks_.data(), out);
 	}
@@ -75,12 +78,15 @@ private:
 
 	uint32_t CacheSectorizedLookup(int num, const uint64_t *BF_RESTRICT key64, const uint32_t *BF_RESTRICT bf,
 	                               uint32_t *BF_RESTRICT out) const {
+		if (num == 0) return 0;
 		const uint32_t *BF_RESTRICT key = reinterpret_cast<const uint32_t * BF_RESTRICT>(key64);
 
-		size_t unaligned_num = (SIMD_ALIGNMENT - size_t(key) % SIMD_ALIGNMENT) / sizeof(uint64_t);
+		size_t unaligned_num = std::min<size_t>(num,
+            ((SIMD_ALIGNMENT - size_t(key) % SIMD_ALIGNMENT) % SIMD_ALIGNMENT) / sizeof(uint64_t));
 		for (size_t i = 0; i < unaligned_num; i++) {
 			out[i] = LookupOne(key[i * 2], key[i * 2 + 1], bf);
 		}
+		if (unaligned_num == static_cast<size_t>(num)) return num;
 		size_t aligned_end = (num - unaligned_num) / SIMD_BATCH_SIZE * SIMD_BATCH_SIZE + unaligned_num;
 		uint32_t *BF_RESTRICT aligned_key =
 		    reinterpret_cast<uint32_t * BF_RESTRICT>(__builtin_assume_aligned(&key[unaligned_num * 2], SIMD_ALIGNMENT));
@@ -107,12 +113,15 @@ private:
 	}
 
 	inline void CacheSectorizedInsert(size_t num, uint64_t *BF_RESTRICT key64, uint32_t *BF_RESTRICT bf) {
+		if (num == 0) return;
 		uint32_t *BF_RESTRICT key = reinterpret_cast<uint32_t * BF_RESTRICT>(key64);
 
-		size_t unaligned_num = (SIMD_ALIGNMENT - size_t(key) % SIMD_ALIGNMENT) / sizeof(uint64_t);
+		size_t unaligned_num = std::min<size_t>(num,
+            ((SIMD_ALIGNMENT - size_t(key) % SIMD_ALIGNMENT) % SIMD_ALIGNMENT) / sizeof(uint64_t));
 		for (size_t i = 0; i < unaligned_num; i++) {
 			InsertOne(key[i * 2], key[i * 2 + 1], bf);
 		}
+		if (unaligned_num == num) return;
 		size_t aligned_end = (num - unaligned_num) / SIMD_BATCH_SIZE * SIMD_BATCH_SIZE + unaligned_num;
 		uint32_t *BF_RESTRICT aligned_key =
 		    reinterpret_cast<uint32_t * BF_RESTRICT>(__builtin_assume_aligned(&key[unaligned_num * 2], SIMD_ALIGNMENT));

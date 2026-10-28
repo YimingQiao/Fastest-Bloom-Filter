@@ -1,167 +1,135 @@
-# Fastest-Bloom-Filter
+# Fastest Bloom Filter
 
-Fastest-Bloom-Filter is a high-performance C++ library that implements various Bloom filter designs, each optimized for specific use cases. The library provides a unified interface for all Bloom filter implementations, enabling seamless integration and easy benchmarking.
+A C++17 playground for **fast Bloom filter construction and batched membership queries**.
+It includes register-blocked, cache-sectorized, and Impala-style split-block filters.
+The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
+The project name is an ambition, not a claim that one implementation wins every workload.
 
-## Features
+## Build
 
-- **Multiple Implementations**: Includes a variety of Bloom filter designs optimized for different performance and memory trade-offs.
-- **Unified Interface**: All implementations share a common interface for ease of use and interchangeability.
-- **High Performance**: Designed for speed and low memory usage.
-- **Configurable Parameters**: Supports tuning of false positive rates and memory usage.
+```bash
+cmake -S . -B build/native -DCMAKE_CXX_COMPILER=clang++ -DBF_NATIVE=ON
+cmake --build build/native -j
+ctest --test-dir build/native --output-on-failure
+```
 
-## Shared Interface
+`BF_NATIVE=ON` gives **all implementations** the same host instruction set. The resulting
+binary is specific to the build CPU. For an AVX2-only build, omit `BF_NATIVE`; for AVX-512,
+use `-DUSE_AVX512=ON`. These cache options now respect command-line values.
+The comparison currently targets x86 with AVX2 or newer; it is single-threaded.
 
-All Bloom filters in this repository implement the following interface:
+## Run a reproducible comparison
 
-- **Constructor**: Initializes the Bloom filter with the number of keys and bits per key.
-  ```cpp
-  BloomFilterType(size_t num_keys, uint32_t num_bits_per_key);
-  ```
+```bash
+python3 scripts/run_comparison.py \
+  --executable build/native/compare_benchmark \
+  --cpu 2 --output-dir results/my-run \
+  --key-powers 12,16,20,24,25 --bits-per-key 16 \
+  --hits 0,50,100 --batches 4096 --seeds 42,43,44
+```
 
-- **Insert**: Inserts a batch of hashed keys into the Bloom filter.
-  ```cpp
-  void Insert(uint32_t num, uint64_t *key);
-  ```
+Choose a CPU allowed by your environment. The runner executes serially on that CPU,
+shuffles implementation order per seed, and saves CSV rows, exact commands, compiler
+flags, CPU information, executable hash, revision, and tracked source changes.
+Use a new output directory for each run. Run from a committed checkout for reproducibility.
 
-- **Lookup**: Checks the membership of a batch of hashed keys and outputs the results.
-  ```cpp
-  uint32_t Lookup(uint32_t num, uint64_t *key, uint32_t *out);
-  ```
+A single case is also available:
 
-This shared interface allows you to easily switch between different Bloom filter implementations without modifying your application logic.
+```bash
+# key power, requested bits/key, hit %, query power, batch size, repetitions, seed
+./build/native/compare_benchmark 16 16 0 22 4096 5 42
+# Optional final argument: comma-separated exact filter class names.
+```
 
-## Build Instructions
+Try `--batches 1,31,4096` to distinguish single-key calls, irregular tails, and large
+batches. Large filters should be tested beyond the machine's last-level cache as well
+as in cache. The default queries stream through 2^22 entries; filters and inputs are
+warmed before timed queries. This measures sustained throughput, not cold-start latency.
 
-To build the project, follow these steps:
+### What the numbers mean
 
-1. Clone the repository:
+| Metric | What is measured |
+| --- | --- |
+| `filter_bytes`, `actual_bpk` | Actual filter payload allocation, not the requested budget |
+| `insert_ns` | Median insertion time per key into a fresh, allocated filter; hashing excluded |
+| `allocate_insert_ns` | Median constructor + insertion time per key; hashing excluded |
+| `lookup_ns` | Median query time per key with precomputed hashes |
+| `hash_lookup_ns` | Median hashing + query time per key, using batch-sized scratch storage |
+| `lookup_min_ns`, `lookup_max_ns` | Spread across repetitions, in addition to the median |
+| `absent_queries`, `false_positives`, `fpr` | False positives divided by genuinely absent queries; `nan` when there are none |
+| `hash_bits`, `present_queries` | Hash width and actual number of present queries |
 
-   ```bash
-   git clone https://github.com/YimingQiao/Fastest-Bloom-Filter.git
-   cd Fastest-Bloom-Filter
-   ```
+Each implementation receives the same shuffled raw keys and hit/miss workload. Present
+and absent raw-key sets are disjoint. Hashing uses the existing `HashVector` overload for
+that implementation: **32-bit and 64-bit hash costs differ**, so both pure query and
+hash-plus-query timings are reported. Timing uses `steady_clock` and the actual number
+of operations. Every timed output is consumed outside the timed region. Every inserted
+key is checked for false negatives; a failure terminates the benchmark.
 
-2. Create a build directory and navigate into it:
+**Compare speed together with space and FPR.** Legacy constructors round upward, even
+when a requested size is already a power of two. Some also cap their allocations:
+32-bit register filters at 512 KiB, and `NewCacheSectorizedBF32Bit` at 64 MiB. A tiny,
+saturated filter must not win a large-filter comparison by returning mostly positives.
+The mask-table implementations additionally share small static mask tables (132 or
+136 bytes), excluded from `filter_bytes`; object and allocator overhead are also excluded.
 
-   ```bash
-   mkdir build
-   cd build
-   ```
+Equal bytes do not imply equal FPR. Use a bits/key sweep to find comparable error-rate
+budgets, and retain negative-query sample counts: a zero observed false-positive count
+is not proof of zero FPR. Do not rank incomparable rows as an overall winner. Results
+also depend on CPU, compiler, cache size, batch size, and hit rate. Repeat across seeds
+and machines before making broader claims.
 
-3. Configure the project using CMake. To enable or disable AVX-512 optimizations, modify the `USE_AVX512` option directly in the `CMakeLists.txt` file:
+The original `main_benchmark` and `scripts/run_benchmarks.py` remain for historical
+reproduction. Use `compare_benchmark` for new comparisons; the legacy program includes
+hashing in its lookup timing and has weaker timing and validation controls.
 
-   ```cmake
-   # In CMakeLists.txt
-   option(USE_AVX512 "Enable AVX-512 optimizations" ON) # Set to OFF to disable
-   ```
+## API
 
-   After modifying the file, run:
-
-   ```bash
-   cmake ..
-   ```
-
-4. Build the project:
-
-   ```bash
-   cmake --build .
-   ```
-
-## Usage
-
-After building the project, you can use any of the Bloom filter implementations in your C++ code. Below is an example using the `CacheSectorizedBF32Bit` implementation:
+Inputs are **already hashed** integers. Output contains one `0` or `1` per input, in the
+same order; a positive means “possibly present.” These filters are append-only and do
+not support concurrent writes.
 
 ```cpp
+#include <vector>
 #include "cache_sectorized_BF_32bit.h"
 
-#include <cstdint>
-#include <iostream>
-
 int main() {
-  using bloom_filters::CacheSectorizedBF32Bit;
-
-  // Initialize the Bloom filter with 1000 keys and 10 bits per key.
-  CacheSectorizedBF32Bit bloom_filter(/*num_keys=*/1000, /*num_bits_per_key=*/10);
-
-  // Example keys.
-  uint64_t keys[] = {0x123456789ABCDEF0, 0x0FEDCBA987654321};
-  uint32_t results[2] = {0};
-
-  // Insert keys into the Bloom filter.
-  bloom_filter.Insert(/*num=*/2, /*key=*/keys);
-
-  // Lookup keys in the Bloom filter.
-  bloom_filter.Lookup(/*num=*/2, /*key=*/keys, /*out=*/results);
-
-  // Check results.
-  for (int i = 0; i < 2; ++i) {
-    if (results[i]) {
-      std::cout << "Key " << i << " is in the set.\n";
-    } else {
-      std::cout << "Key " << i << " is not in the set.\n";
-    }
-  }
-
-  return 0;
+    bloom_filters::CacheSectorizedBF32Bit filter(1000, 16);
+    uint64_t raw[] = {123, 456};
+    uint64_t hashes[2];
+    bloom_filters::HashVector(2, raw, hashes);
+    filter.Insert(2, hashes);
+    uint32_t present[2];
+    filter.Lookup(2, hashes, present); // both entries are 1
+    return !(present[0] && present[1]);
 }
 ```
 
-## Benchmarking
+`SizeInBytes()` exposes actual payload bytes. Most implementations take 64-bit hashes;
+`RegisterBlockedBF32Bit` and its masks variant take 32-bit hashes. The benchmark rejects
+sizes that would overflow legacy constructors. The historical sectorized implementations
+use type-punned loads, so the supplied build applies `-fno-strict-aliasing` uniformly.
 
-The repository includes a benchmarking tool (`main_benchmark.cpp`) to evaluate the performance of different Bloom filter implementations. You can run the benchmark manually with the following command:
-
-```bash
-./Fastest-Bloom-Filter <num_keys> <num_bits_per_key> <num_lookup_times>
-```
-
-For example:
+## Correctness checks
 
 ```bash
-./Fastest-Bloom-Filter 15 16 26
+cmake -S . -B build/sanitize -DCMAKE_CXX_COMPILER=clang++ \
+  -DBF_NATIVE=ON -DBF_SANITIZERS=ON -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/sanitize -j
+ctest --test-dir build/sanitize --output-on-failure
 ```
 
-This command benchmarks the Bloom filters with 2<sup>15</sup> keys, 16 bits per key, and 2<sup>26</sup> lookup operations.
+Tests cover empty inputs, short and odd batches, unaligned inputs, repeated inserts,
+output bounds, batch/single-query agreement, and no false negatives. The comparison
+also fails on correctness errors before reporting timing results. Sanitized timings
+are for debugging only, never performance comparisons.
 
-### Automated Benchmarking Script
+## Background
 
-To simplify running benchmarks with multiple parameter combinations, the repository provides an automated script: `scripts/run_benchmarks.py`. This script runs the benchmarks with predefined parameter ranges and saves the results to a specified directory.
+Inspired by Harald Lang, Thomas Neumann, Alfons Kemper, and Peter Boncz,
+[Performance-optimal filtering: Bloom overtakes Cuckoo at high throughput](https://doi.org/10.14778/3303753.3303757)
+(VLDB 2019). The optimization experiments also draw on
+[bbtree's cost-model approach](https://blog.xiangpeng.systems/posts/bbtree/): reduce
+cache misses, overlap independent memory accesses, and reduce instructions on hot data.
 
-#### Usage
-
-1. Ensure the benchmark executable is built and available (e.g., `./build/main_benchmark`).
-2. Run the script:
-
-   ```bash
-   python3 scripts/run_benchmarks.py --executable ./build/main_benchmark --output-dir benchmark_results
-   ```
-
-   - `--executable`: Path to the benchmark executable (default: `./build/main_benchmark`).
-   - `--output-dir`: Directory to save the benchmark results (default: `benchmark_results`).
-
-#### Example Output
-
-The script will generate result files in the specified output directory, named according to the parameters used (e.g., `keys_12_bits_32_lookups_24.txt`).
-
-#### Customizing Parameters
-
-You can modify the parameter ranges in the script by editing the following variables:
-
-- `num_keys_powers`: Powers of 2 for the number of keys (e.g., `[12, 14, 16, 18]`).
-- `bits_per_key`: Number of bits per key (e.g., `[32]`).
-- `lookup_powers`: Powers of 2 for the number of lookups (e.g., `[24]`).
-
-## Contributing
-
-Contributions are welcome! If you would like to contribute, please fork the repository, create a feature branch, and submit a pull request. Ensure your code adheres to the project's coding standards and includes appropriate tests.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
-## Reference
-
-This project is inspired by the techniques described in the following paper:
-
-**Harald Lang, Thomas Neumann, Alfons Kemper, and Peter Boncz**. *Performance-optimal filtering: Bloom overtakes Cuckoo at high throughput*. Proceedings of the VLDB Endowment, Vol. 12, No. 5, 2019, pp. 502–515. [Link to paper](https://doi.org/10.14778/3303753.3303757)
-
-
+[MIT license](LICENSE).
