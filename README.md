@@ -18,6 +18,11 @@ A separate native Rust suite includes
 pinned Bloomsday, fastbloom and [SBBF](benchmarks/rust-sbbf-external/README.md).
 Its [168-row SBBF screen](experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
 retains the small-filter singleton losses against Bloomsday.
+The [Rust public-call screen](experiments/2026-10-29-rust-visible-single/screen/RESULTS.md)
+lets the compiler see each public lookup; Bloomsday still wins several settings.
+The separate [BlowChoc screen](experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
+compares eight upstream configurations using whole-array calls, with prehashed,
+fused-hash and staged-hash timings reported separately.
 See the [survey](docs/external-survey-2026-10-28.md)
 and [shared-harness instructions](benchmarks/all-external/README.md).
 

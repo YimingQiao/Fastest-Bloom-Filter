@@ -38,6 +38,14 @@ with an explicit public singleton control. Four API rankings retain native losse
 and distinguish production paths from experimental native controls. This is
 seed42 exploration at actual16/32 bpk, not a new confirmation or a finer-capacity sweep.
 
+The [Rust public-call screen](../experiments/2026-10-29-rust-visible-single/screen/RESULTS.md)
+adds 28 rows with four balanced query modes and retains all native losses.
+Public-call visibility changes the caller contract; no native code changed in that screen.
+The [BlowChoc throughput screen](../experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
+contains 48 rows and 144 separate-contract timings for eight upstream configurations
+and four native controls. It uses input seed42 and construction seed113; its speed
+results are exploratory, while the separate held-out archive measures accuracy only.
+
 The external multithreaded archives live under `experiments/` because they freeze a
 separate shared-bitmap executor and retain both original serial and new parallel
 metrics. They are not merged with single-thread timings:
