@@ -1,0 +1,162 @@
+{
+  "framework_source_commit": "b437791b6edf23fe8725f87e62d21d638216861a",
+  "frozen_archive": "experiments/2026-10-29-external-parallel-query",
+  "archive_freeze_sha256": "aed94aa4a05a41a75f2e401d56ea8b8b3e863b40165aa2c8acc315893e3efa0e",
+  "binary": "build/external-parallel-query-full/benchmark",
+  "binary_sha256": "f39ddeab1538c812bea663110a4b1eba14eaf29694014533e3e9b08cacd3cbdb",
+  "shortlist_source": "results/2026-10-29-byte-confirmation-cpp/results.csv",
+  "shortlist_source_sha256": "4a361ce98aa52e26b1aa3e8032633993879acb72a95b4736ac10e7f3cb07dc36",
+  "filters": [
+    "Boost192Multi32K7",
+    "Boost192Multi32K8",
+    "Boost192Multi64K8",
+    "ByteSplitBloomFilter",
+    "FastFilterFixed16",
+    "FastFilterFixed16SingleV1",
+    "FastFilterFixed32",
+    "FastFilterFixed32Bulk",
+    "FastFilterFixed64",
+    "FastFilterSimdBlock",
+    "FastFilterSimdBlockSingleV1",
+    "FastPatternBF",
+    "FourSectorBloomFilter",
+    "PageBloom6Compact",
+    "RocksDBFastLocalBloom64",
+    "RocksDBFastLocalBloom64Batch32",
+    "RocksDBFastLocalBloom64K14",
+    "RocksDBFastLocalBloom64K14Batch32",
+    "RocksDBFastLocalBloom64K8",
+    "RocksDBFastLocalBloom64K8Batch32",
+    "RocksDBFastLocalBloom64K9",
+    "RocksDBFastLocalBloom64K9Batch32",
+    "Split64BloomFilter"
+  ],
+  "query_power": 22,
+  "batch": 4096,
+  "hit_percent": 50,
+  "calibration_power": 24,
+  "insert_batch": "whole input: 1 << key_power",
+  "cpus": [
+    3,
+    5,
+    7,
+    9,
+    11,
+    13,
+    15,
+    17
+  ],
+  "numa_node": 1,
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "thread_contract": "Caller is worker0; spawn T-1; exactly T pinned physical cores; one immutable bitmap; global batches preserved.",
+  "build_contract": "Serial build reported separately; whole input per insertion call, pure and hash builds in disjoint lifetimes; no parallel build claim.",
+  "ranking_metrics": [
+    "parallel_lookup_gated_ns",
+    "parallel_hash_lookup_gated_ns",
+    "parallel_lookup_end_to_end_ns",
+    "parallel_hash_lookup_end_to_end_ns"
+  ],
+  "created_utc": "2026-10-28T19:00:11.701622+00:00",
+  "status": "Fresh-seed confirmation scoped to T8 and batch4096; T1/T4 remain screening-only.",
+  "cases": [
+    {
+      "key_power": 25,
+      "requested_bpk": 16,
+      "threads": 8,
+      "seed": 19867
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 16,
+      "threads": 8,
+      "seed": 19867
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 16,
+      "threads": 8,
+      "seed": 45631
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 8,
+      "threads": 8,
+      "seed": 93187
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 8,
+      "threads": 8,
+      "seed": 19867
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 8,
+      "threads": 8,
+      "seed": 93187
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 16,
+      "threads": 8,
+      "seed": 45631
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 16,
+      "threads": 8,
+      "seed": 93187
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 8,
+      "threads": 8,
+      "seed": 19867
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 16,
+      "threads": 8,
+      "seed": 93187
+    },
+    {
+      "key_power": 16,
+      "requested_bpk": 8,
+      "threads": 8,
+      "seed": 45631
+    },
+    {
+      "key_power": 25,
+      "requested_bpk": 8,
+      "threads": 8,
+      "seed": 45631
+    }
+  ],
+  "seeds": [
+    19867,
+    45631,
+    93187
+  ],
+  "repeats": 5,
+  "expected_cases": 12,
+  "expected_rows": 276,
+  "screen_protocol_sha256": "421c5d3b74801317de7d436b2725fb78bb6255e696d7a4e773de08c1c4049f40",
+  "eligibility": {
+    "actual_memory_caps_bpk": [
+      16,
+      32
+    ],
+    "fpr_targets": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "calibration": "First deduplicate each same logical negative stream across T/batch, then pool the three distinct seed streams within each exact filter/allocation/n/q/insert-batch configuration. Expected 50,331,648 negatives per configuration. Seed42 is excluded.",
+    "confidence": "Two-sided95% Wilson upper from the pooled new-seed calibration; also report each seed upper bound and qualification stability.",
+    "within_cap_selection": "Consider both measured requested allocations under each actual-byte cap, for native and external independently.",
+    "aggregate_performance": "For each metric choose fixed filter/allocation configurations by the median of three seed medians. Compare the chosen native/external pair on the same seed; report all ratios and min/max.",
+    "conservative_check": "Also compare the selected native configuration against the fastest eligible external independently in each seed, retaining rival identities.",
+    "scaling": "Use direct serial lookup_ns/hash_lookup_ns from the SAME T8 row and seed, separately for pure/hash and gated/end-to-end. Do not reuse T1/4 screening timings.",
+    "limits": "Only eight physical cores, batch4096, these two data sizes, this host, and this23-configuration shortlist. No global fastest claim."
+  }
+}
