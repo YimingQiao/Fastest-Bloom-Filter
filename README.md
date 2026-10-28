@@ -26,6 +26,11 @@ finds a promising strict-FPR singleton candidate: at 32 actual bits/key, its
 public hash+query API leads Bloomsday by 6–22% at the two measured sizes.
 The generic batch-one path still loses, and existing native layouts win several
 large-batch settings. This is one-seed prototype evidence pending confirmation.
+A [six-seed ByteSplit confirmation](experiments/2026-10-29-rust-byte-leaf-analysis/report/DECISION.md)
+finds consistent gains from exposing its singleton body to the Rust compiler.
+The small 16-bpk public hash+query call averages 1.655 ns/key versus Bloomsday's
+2.145 ns/key; the large-table margin is only about 2.8%, with one losing seed.
+Generic batch calls retain losses. A minimal Byte-only port is being validated.
 The separate [BlowChoc screen](experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
 compares eight upstream configurations using whole-array calls, with prehashed,
 fused-hash and staged-hash timings reported separately.
@@ -117,6 +122,12 @@ The constructor's bits/key parameter preserves the repository's **strict next
 power-of-two** allocation rule: for a power-of-two key count, requesting 8 yields
 16 actual bits/key. Check `SizeInBytes()` / `size_in_bytes()` for real allocation.
 All layouts accept prehashed 64-bit keys and support incremental insertion.
+
+An isolated [Split64 range-capacity prototype](experiments/2026-10-29-split64-range-native/VALIDATION.md)
+now has native C++/Rust implementations with exclusive parallel construction.
+It accepts arbitrary complete cache-line budgets; full bitmaps match across
+languages and backend/sanitizer checks pass. Its Rust and parallel performance
+remain to be measured before production integration.
 
 ## Historical comparison and FastPattern scaling
 
