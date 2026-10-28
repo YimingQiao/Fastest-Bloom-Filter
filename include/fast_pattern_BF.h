@@ -98,6 +98,31 @@ private:
 			for (size_t j = 0; j < 16; ++j)
 				blocks_[indexes[j]] |= masks[j];
 		}
+#elif defined(__AVX2__)
+		alignas(32) uint32_t indexes[8], masks[8];
+		for (; i + 4 <= num; i += 4) {
+			if constexpr (Prefetch) {
+				if (i + 68 <= num)
+					for (size_t j = 0; j < 4; ++j)
+						__builtin_prefetch(blocks_.data() + Block(keys[i + 64 + j]), 1, 1);
+			}
+			const __m256i h = _mm256_loadu_si256(reinterpret_cast<const __m256i *>(keys + i));
+			const __m256i a = _mm256_and_si256(_mm256_shuffle_epi32(h, 0xf5), _mm256_set1_epi32(block_mask_));
+			const __m256i delta =
+			    _mm256_or_si256(_mm256_set1_epi64x(uint64_t {8} << 32),
+				                _mm256_and_si256(_mm256_slli_epi64(h, 12), _mm256_set1_epi64x(uint64_t {7} << 32)));
+			const __m256i code =
+			    _mm256_srlv_epi32(_mm256_shuffle_epi32(h, 0xa0), _mm256_set1_epi64x(uint64_t {10} << 32));
+			const __m256i v = _mm256_i32gather_epi32(reinterpret_cast<const int *>(patterns_),
+			                                         _mm256_and_si256(code, _mm256_set1_epi32(31)), 4);
+			const __m256i r = _mm256_and_si256(_mm256_srli_epi32(code, 5), _mm256_set1_epi32(31));
+			const __m256i mask = _mm256_or_si256(_mm256_sllv_epi32(v, r),
+			                                     _mm256_srlv_epi32(v, _mm256_sub_epi32(_mm256_set1_epi32(32), r)));
+			_mm256_store_si256(reinterpret_cast<__m256i *>(indexes), _mm256_xor_si256(a, delta));
+			_mm256_store_si256(reinterpret_cast<__m256i *>(masks), mask);
+			for (size_t j = 0; j < 8; ++j)
+				blocks_[indexes[j]] |= masks[j];
+		}
 #endif
 		for (; i < num; ++i) {
 			const uint64_t h = keys[i];
@@ -137,6 +162,39 @@ private:
 			const __mmask16 pass = _mm512_cmpeq_epi32_mask(_mm512_and_si512(v1, m1), m1) &
 			                       _mm512_cmpeq_epi32_mask(_mm512_and_si512(v2, m2), m2);
 			_mm512_storeu_si512(out + i, _mm512_maskz_set1_epi32(pass, 1));
+		}
+#elif defined(__AVX2__)
+		const __m256i order = _mm256_setr_epi32(0, 2, 4, 6, 1, 3, 5, 7);
+		const __m256i ones = _mm256_set1_epi32(1);
+		for (; i + 8 <= num; i += 8) {
+			if constexpr (Prefetch) {
+				if (i + 72 <= num)
+					for (size_t j = 0; j < 8; ++j)
+						__builtin_prefetch(blocks_.data() + Block(keys[i + 64 + j]), 0, 3);
+			}
+			const __m256i x =
+			    _mm256_permutevar8x32_epi32(_mm256_loadu_si256(reinterpret_cast<const __m256i *>(keys + i)), order);
+			const __m256i y =
+			    _mm256_permutevar8x32_epi32(_mm256_loadu_si256(reinterpret_cast<const __m256i *>(keys + i + 4)), order);
+			const __m256i lo = _mm256_permute2x128_si256(x, y, 0x20);
+			const __m256i hi = _mm256_permute2x128_si256(x, y, 0x31);
+			const __m256i a = _mm256_and_si256(hi, _mm256_set1_epi32(block_mask_));
+			const __m256i b =
+			    _mm256_xor_si256(a, _mm256_or_si256(_mm256_set1_epi32(8),
+				                                    _mm256_and_si256(_mm256_srli_epi32(lo, 20), _mm256_set1_epi32(7))));
+			auto pattern = [&](const __m256i code) {
+				const __m256i v = _mm256_i32gather_epi32(reinterpret_cast<const int *>(patterns_),
+				                                         _mm256_and_si256(code, _mm256_set1_epi32(31)), 4);
+				const __m256i r = _mm256_and_si256(_mm256_srli_epi32(code, 5), _mm256_set1_epi32(31));
+				return _mm256_or_si256(_mm256_sllv_epi32(v, r),
+				                       _mm256_srlv_epi32(v, _mm256_sub_epi32(_mm256_set1_epi32(32), r)));
+			};
+			const __m256i m1 = pattern(lo), m2 = pattern(_mm256_srli_epi32(lo, 10));
+			const __m256i v1 = _mm256_i32gather_epi32(reinterpret_cast<const int *>(blocks_.data()), a, 4);
+			const __m256i v2 = _mm256_i32gather_epi32(reinterpret_cast<const int *>(blocks_.data()), b, 4);
+			const __m256i pass = _mm256_and_si256(_mm256_cmpeq_epi32(_mm256_and_si256(v1, m1), m1),
+			                                      _mm256_cmpeq_epi32(_mm256_and_si256(v2, m2), m2));
+			_mm256_storeu_si256(reinterpret_cast<__m256i *>(out + i), _mm256_and_si256(pass, ones));
 		}
 #endif
 		for (; i < num; ++i) {

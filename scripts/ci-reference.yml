@@ -29,6 +29,7 @@ jobs:
           components: rustfmt, clippy
       - run: cargo fmt --check --manifest-path rust/Cargo.toml
       - run: cargo test --locked --manifest-path rust/Cargo.toml
+      - run: cargo test --locked --manifest-path rust/Cargo.toml --features disable-avx512
       - run: cargo clippy --locked --manifest-path rust/Cargo.toml --all-targets -- -D warnings
       - run: cargo build --release --locked --manifest-path rust/Cargo.toml
       - run: cmake -S . -B build/native -DCMAKE_CXX_COMPILER=clang++ -DBF_NATIVE=ON

@@ -22,8 +22,21 @@ thread; `parallel_benchmark` measures scaling across cores.
 ## Native Rust
 
 The Rust library has no C/C++ dependency or FFI, and no third-party dependencies.
-It detects AVX-512 once at construction and uses a portable scalar path otherwise.
+It detects AVX-512 / AVX2 once at construction and uses a portable scalar path
+when neither is available.
 Rust 1.89 or later is required for the stable AVX-512 intrinsics.
+To test or deploy the AVX2 path on an AVX-512 host, use the `disable-avx512`
+Cargo feature and a separate target directory:
+
+```bash
+CARGO_TARGET_DIR=build/rust-avx2 RUSTFLAGS="-C target-cpu=x86-64-v3" \
+  cargo build --release --manifest-path rust/Cargo.toml --features disable-avx512
+python3 scripts/check_cross_language.py --cpp build/gcc-avx2/compare_benchmark \
+  --rust build/rust-avx2/release/compare_benchmark
+```
+
+The `x86-64-v3` build targets AVX2-capable CPUs. A default portable Rust build
+continues to choose the supported backend at runtime.
 
 ```bash
 cargo test --manifest-path rust/Cargo.toml
@@ -45,7 +58,7 @@ assert_eq!(present, [1, 1]);
 The equivalent C++ type is `bloom_filters::FastPatternBF` in
 [`include/fast_pattern_BF.h`](include/fast_pattern_BF.h), with `Insert`, `Lookup`,
 and `SizeInBytes` methods. The C++ implementation selects SIMD at compile time;
-it also has a scalar fallback when compiled without AVX-512. Performance claims
+it has an AVX2 path and a scalar fallback when compiled without SIMD. Performance claims
 must name the enabled instruction set.
 
 ## Multithreading
@@ -72,7 +85,8 @@ filter.insert_hashes_parallel(&hashes, 8);
 filter.lookup_hashes_parallel(&query_hashes, &mut out, 8);
 ```
 
-The exclusive builder partitions hashes by complete cache lines, then gives each
+The exclusive builder aligns histogram rows to 64 bytes to avoid false sharing,
+partitions hashes by complete cache lines, then gives each
 worker its own bitmap region. It uses approximately **8 bytes per input hash** of
 temporary storage plus small worker metadata, rather than one bitmap copy per thread.
 `BuildScratchBytes` / `build_scratch_bytes` expose explicit scratch bytes; allocator
@@ -192,10 +206,10 @@ same order; a positive means “possibly present.” These filters are append-on
 
 ```cpp
 #include <vector>
-#include "cache_sectorized_BF_32bit.h"
+#include "fast_pattern_BF.h"
 
 int main() {
-    bloom_filters::CacheSectorizedBF32Bit filter(1000, 16);
+    bloom_filters::FastPatternBF filter(1000, 16);
     uint64_t raw[] = {123, 456};
     uint64_t hashes[2];
     bloom_filters::HashVector(2, raw, hashes);
@@ -231,7 +245,9 @@ are for debugging only, never performance comparisons.
 FastPattern keeps both sector reads in one 64-byte cache line. Independent hash
 fields select the first word, its partner, and two rotated masks. AVX-512 lookup
 handles 16 keys at once; mask generation uses two register-resident tables and
-vector rotates. Large filters prefetch future independent queries. Inserts compute
+vector rotates. The AVX2 path processes eight queries, gathers its tiny mask
+dictionary from L1, and implements rotates with variable shifts. Large filters
+prefetch future independent queries. Inserts compute
 masks in batches but apply OR updates sequentially, preserving colliding keys.
 
 The filter selects three bits per sector below 12 actual bits/key, and four otherwise.

@@ -34,6 +34,7 @@ pub struct BloomFilter<const PATTERN: bool = true> {
     lines: Vec<Line>,
     block_mask: u32,
     avx512: bool,
+    avx2: bool,
     patterns: &'static [u32; 32],
 }
 impl<const PATTERN: bool> BloomFilter<PATTERN> {
@@ -42,13 +43,18 @@ impl<const PATTERN: bool> BloomFilter<PATTERN> {
     pub fn new(keys: usize, bits_per_key: u32) -> Result<Self, SizeError> {
         let words = Self::word_count(keys, bits_per_key)?;
         #[cfg(target_arch = "x86_64")]
-        let avx512 = std::is_x86_feature_detected!("avx512f");
+        let avx512 = !cfg!(feature = "disable-avx512") && std::is_x86_feature_detected!("avx512f");
         #[cfg(not(target_arch = "x86_64"))]
         let avx512 = false;
+        #[cfg(target_arch = "x86_64")]
+        let avx2 = std::is_x86_feature_detected!("avx2");
+        #[cfg(not(target_arch = "x86_64"))]
+        let avx2 = false;
         Ok(Self {
             lines: vec![Line::default(); words / 16],
             block_mask: (words - 1) as u32,
             avx512,
+            avx2,
             patterns: if keys > words * 32 / 12 {
                 &patterns::SPARSE
             } else {
@@ -79,6 +85,8 @@ impl<const PATTERN: bool> BloomFilter<PATTERN> {
     pub fn backend(&self) -> &'static str {
         if self.avx512 {
             "avx512"
+        } else if self.avx2 {
+            "avx2"
         } else {
             "scalar"
         }
@@ -137,6 +145,18 @@ impl<const PATTERN: bool> BloomFilter<PATTERN> {
             }
             return;
         }
+        #[cfg(target_arch = "x86_64")]
+        if PATTERN && self.avx2 {
+            // SAFETY: feature detection, valid slices and bounded bitmap indices.
+            unsafe {
+                if self.size_in_bytes() > (1 << 21) {
+                    self.insert_avx2::<true>(hashes);
+                } else {
+                    self.insert_avx2::<false>(hashes);
+                }
+            }
+            return;
+        }
         for &h in hashes {
             self.insert_hash(h);
         }
@@ -163,8 +183,156 @@ impl<const PATTERN: bool> BloomFilter<PATTERN> {
             }
             return;
         }
+        #[cfg(target_arch = "x86_64")]
+        if self.avx2 {
+            // SAFETY: runtime feature detection; output length checked above.
+            unsafe {
+                if self.size_in_bytes() > (1 << 21) {
+                    self.lookup_avx2::<true>(hashes, out);
+                } else {
+                    self.lookup_avx2::<false>(hashes, out);
+                }
+            }
+            return;
+        }
         for (&h, v) in hashes.iter().zip(out.iter_mut()) {
             *v = self.contains_hash(h) as u32;
+        }
+    }
+
+    #[cfg(target_arch = "x86_64")]
+    #[target_feature(enable = "avx2")]
+    unsafe fn insert_avx2<const PREFETCH: bool>(&mut self, hashes: &[u64]) {
+        use std::arch::x86_64::*;
+        let base = self.lines.as_mut_ptr().cast::<u32>();
+        let mut i = 0;
+        while i + 4 <= hashes.len() {
+            if PREFETCH && i + 68 <= hashes.len() {
+                for j in 0..4 {
+                    _mm_prefetch::<_MM_HINT_T2>(base.add(self.block(hashes[i + 64 + j])).cast());
+                }
+            }
+            let h = _mm256_loadu_si256(hashes.as_ptr().add(i).cast());
+            let a = _mm256_and_si256(
+                _mm256_shuffle_epi32::<0xf5>(h),
+                _mm256_set1_epi32(self.block_mask as i32),
+            );
+            let delta = _mm256_or_si256(
+                _mm256_set1_epi64x(8i64 << 32),
+                _mm256_and_si256(_mm256_slli_epi64::<12>(h), _mm256_set1_epi64x(7i64 << 32)),
+            );
+            let code = _mm256_srlv_epi32(
+                _mm256_shuffle_epi32::<0xa0>(h),
+                _mm256_set1_epi64x(10i64 << 32),
+            );
+            let v = _mm256_i32gather_epi32::<4>(
+                self.patterns.as_ptr().cast(),
+                _mm256_and_si256(code, _mm256_set1_epi32(31)),
+            );
+            let r = _mm256_and_si256(_mm256_srli_epi32::<5>(code), _mm256_set1_epi32(31));
+            let mask = _mm256_or_si256(
+                _mm256_sllv_epi32(v, r),
+                _mm256_srlv_epi32(v, _mm256_sub_epi32(_mm256_set1_epi32(32), r)),
+            );
+            let indexes: [u32; 8] = std::mem::transmute(_mm256_xor_si256(a, delta));
+            let masks: [u32; 8] = std::mem::transmute(mask);
+            for j in 0..8 {
+                *base.add(indexes[j] as usize) |= masks[j];
+            }
+            i += 4;
+        }
+        for &h in &hashes[i..] {
+            self.insert_hash(h);
+        }
+    }
+
+    #[cfg(target_arch = "x86_64")]
+    #[target_feature(enable = "avx2")]
+    unsafe fn lookup_avx2<const PREFETCH: bool>(&self, hashes: &[u64], out: &mut [u32]) {
+        use std::arch::x86_64::*;
+        let order = _mm256_setr_epi32(0, 2, 4, 6, 1, 3, 5, 7);
+        let one = _mm256_set1_epi32(1);
+        let low5 = _mm256_set1_epi32(31);
+        let base = self.lines.as_ptr().cast::<i32>();
+        let mut i = 0;
+        while i + 8 <= hashes.len() {
+            if PREFETCH && i + 72 <= hashes.len() {
+                for j in 0..8 {
+                    _mm_prefetch::<_MM_HINT_T0>(base.add(self.block(hashes[i + 64 + j])).cast());
+                }
+            }
+            let x = _mm256_permutevar8x32_epi32(
+                _mm256_loadu_si256(hashes.as_ptr().add(i).cast()),
+                order,
+            );
+            let y = _mm256_permutevar8x32_epi32(
+                _mm256_loadu_si256(hashes.as_ptr().add(i + 4).cast()),
+                order,
+            );
+            let lo = _mm256_permute2x128_si256::<0x20>(x, y);
+            let hi = _mm256_permute2x128_si256::<0x31>(x, y);
+            let a = if PATTERN {
+                _mm256_and_si256(hi, _mm256_set1_epi32(self.block_mask as i32))
+            } else {
+                _mm256_and_si256(
+                    _mm256_set1_epi32(self.block_mask as i32),
+                    _mm256_or_si256(
+                        _mm256_and_si256(lo, _mm256_set1_epi32((1 << 17) - 1)),
+                        _mm256_and_si256(_mm256_slli_epi32::<14>(hi), _mm256_set1_epi32(511 << 17)),
+                    ),
+                )
+            };
+            let sector = if PATTERN {
+                _mm256_srli_epi32::<20>(lo)
+            } else {
+                hi
+            };
+            let b = _mm256_xor_si256(
+                a,
+                _mm256_or_si256(
+                    _mm256_set1_epi32(8),
+                    _mm256_and_si256(sector, _mm256_set1_epi32(7)),
+                ),
+            );
+            let (m1, m2) = if PATTERN {
+                let pattern = |code| {
+                    let v = _mm256_i32gather_epi32::<4>(
+                        self.patterns.as_ptr().cast(),
+                        _mm256_and_si256(code, low5),
+                    );
+                    let r = _mm256_and_si256(_mm256_srli_epi32::<5>(code), low5);
+                    _mm256_or_si256(
+                        _mm256_sllv_epi32(v, r),
+                        _mm256_srlv_epi32(v, _mm256_sub_epi32(_mm256_set1_epi32(32), r)),
+                    )
+                };
+                (pattern(lo), pattern(_mm256_srli_epi32::<10>(lo)))
+            } else {
+                let mask = |v, shift| {
+                    _mm256_sllv_epi32(
+                        one,
+                        _mm256_and_si256(_mm256_srlv_epi32(v, _mm256_set1_epi32(shift)), low5),
+                    )
+                };
+                (
+                    _mm256_or_si256(mask(lo, 17), _mm256_or_si256(mask(lo, 22), mask(lo, 27))),
+                    _mm256_or_si256(
+                        _mm256_or_si256(mask(hi, 12), mask(hi, 17)),
+                        _mm256_or_si256(mask(hi, 22), mask(hi, 27)),
+                    ),
+                )
+            };
+            let v1 = _mm256_i32gather_epi32::<4>(base, a);
+            let v2 = _mm256_i32gather_epi32::<4>(base, b);
+            let pass = _mm256_and_si256(
+                _mm256_cmpeq_epi32(_mm256_and_si256(v1, m1), m1),
+                _mm256_cmpeq_epi32(_mm256_and_si256(v2, m2), m2),
+            );
+            _mm256_storeu_si256(out.as_mut_ptr().add(i).cast(), _mm256_and_si256(pass, one));
+            i += 8;
+        }
+        for j in i..hashes.len() {
+            out[j] = self.contains_hash(hashes[j]) as u32;
         }
     }
 
@@ -345,6 +513,9 @@ mod tests {
             let mut scalar = vector.clone();
             bf.lookup_hashes(&query, &mut vector);
             bf.avx512 = false;
+            bf.lookup_hashes(&query, &mut scalar);
+            assert_eq!(scalar, vector);
+            bf.avx2 = false;
             bf.lookup_hashes(&query, &mut scalar);
             assert_eq!(scalar, vector);
         }
