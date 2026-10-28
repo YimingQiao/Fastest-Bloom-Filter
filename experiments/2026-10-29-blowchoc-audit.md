@@ -60,3 +60,21 @@ actual frozen hash functions, then cross-check raw/prehashed outputs and measure
 accuracy. Only after that should this baseline enter a throughput table. Its
 native upstream hash/probe work remains inside timing, like the other adapters.
 This audit does not establish a win or loss against BlowChoc.
+
+## Chosen bridge for the next implementation stage
+
+Use a Python driver that times one compiled whole-query loop per trial for each
+implementation. C++ can export typed whole-loop operations through a shared
+library; Numba compiles its loop around the unmodified upstream lookup. Both
+write the same dense u32 output array. Python and FFI crossings occur once per
+trial, outside per-key work. A C++ adapter calling a JIT function pointer for
+each key would add a different opaque-call boundary, so it is not the selected
+way to compare natural scalar API throughput.
+
+This belongs with the separate optimizer-visible single-key track. Retain the
+existing generic batch-API measurements independently. Warm the JIT functions
+once per immutable parameter set; reuse compiled functions with newly allocated
+bitmap arrays for construction trials. The compiled methods already accept the
+bitmap explicitly. Verify that no warm-up bitmap remains retained by a Python
+closure or descriptor while a measured bitmap is live. Preserve actual NumPy
+backing allocation and record cold compilation separately.
