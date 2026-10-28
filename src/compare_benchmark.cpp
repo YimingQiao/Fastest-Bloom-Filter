@@ -7,6 +7,7 @@
 #include <limits>
 #include <type_traits>
 #include <random>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -188,6 +189,16 @@ void run(const char *name, const std::vector<uint64_t> &raw_insert, const std::v
 		}
 	}
 	std::vector<double> lookup, total;
+	auto validate_timed_output = [&](const char *phase) {
+		uint64_t checksum = 14695981039346656037ULL;
+		for (size_t i = 0; i < q; ++i) {
+			if (output[i] > 1)
+				throw std::runtime_error(std::string("invalid output in ") + phase);
+			checksum = (checksum ^ output[i]) * 1099511628211ULL;
+		}
+		if (checksum != result_checksum)
+			throw std::runtime_error(std::string("query output mismatch in ") + phase);
+	};
 	for (unsigned r = 0; r < repeats; ++r) {
 		auto start = Clock::now();
 		for (size_t i = 0; i < q; i += batch)
@@ -195,6 +206,8 @@ void run(const char *name, const std::vector<uint64_t> &raw_insert, const std::v
 		auto end = Clock::now();
 		lookup.push_back(ns(start, end) / q);
 		sink = std::accumulate(output, output + q, uint64_t {0});
+		if (r == 0)
+			validate_timed_output("timed prehashed lookup");
 		start = Clock::now();
 		for (size_t i = 0; i < q; i += batch) {
 			size_t len = std::min(batch, q - i);
@@ -208,6 +221,8 @@ void run(const char *name, const std::vector<uint64_t> &raw_insert, const std::v
 		end = Clock::now();
 		total.push_back(ns(start, end) / q);
 		sink = std::accumulate(output, output + q, uint64_t {0});
+		if (r == 0)
+			validate_timed_output("timed hash+lookup");
 	}
 	// Independent negative calibration after all timed phases. Stream probes to
 	// increase FPR resolution without changing the timed query working set.
@@ -286,24 +301,30 @@ int main(int argc, char **argv) {
 		size_t n = size_t {1} << power, q = size_t {1} << qp;
 		if (n * bpk >= (size_t {1} << 31))
 			throw std::invalid_argument("legacy size overflow");
-		// Permuted unique integers give disjoint hit/miss sets; hashing is separately timed.
-		std::vector<uint64_t> ins(n), query(q);
-		SplitMix64 rng {seed};
-		const uint64_t key_base = rng() % ((uint64_t {1} << 32) - n - q);
-		std::iota(ins.begin(), ins.end(), key_base);
-		shuffle(ins, rng);
-		for (size_t i = 0; i < q; ++i)
-			query[i] = key_base + ((i % 100 < hit) ? rng() % n : n + i);
-		shuffle(query, rng);
-		std::cout << "language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_"
-		             "queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,"
-		             "false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,"
-		             "allocate_hash_insert_ns,insert_batch,filter_build_scratch_bytes,harness_hash_scratch_bytes,hash_"
-		             "lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives\n";
 		std::string selection = argc > 8 ? argv[8] : "";
+		std::set<std::string> requested;
+		if (!selection.empty()) {
+			size_t begin = 0;
+			for (;;) {
+				const size_t end = selection.find(',', begin);
+				const std::string name = selection.substr(begin, end == std::string::npos ? end : end - begin);
+				if (name.empty())
+					throw std::invalid_argument("empty filter name in selection");
+				if (!requested.insert(name).second)
+					throw std::invalid_argument("duplicate filter name: " + name);
+				if (end == std::string::npos)
+					break;
+				begin = end + 1;
+			}
+		}
+		std::set<std::string> unmatched = requested;
+		// Register and validate the complete selection before allocating workloads
+		// or running any jobs, so a typo cannot silently benchmark a partial suite.
+		std::vector<uint64_t> ins, query;
+		uint64_t key_base = 0;
 		std::vector<std::function<void()>> jobs;
 #define ADD(T, H)                                                                                                      \
-	if (selection.empty() || ("," + selection + ",").find("," #T ",") != std::string::npos)                            \
+	if (selection.empty() || unmatched.erase(#T))                                                                        \
 	jobs.emplace_back(                                                                                                 \
 	    [&] { run<T, H>(#T, ins, query, bpk, hit, batch, repeats, seed, key_base, insert_batch, calibration_power); })
 
@@ -341,8 +362,25 @@ int main(int argc, char **argv) {
 #endif
 #endif
 #undef ADD
+		if (!unmatched.empty())
+			throw std::invalid_argument("unknown filter name: " + *unmatched.begin());
 		if (jobs.empty())
 			throw std::invalid_argument("no matching filters");
+		// Permuted unique integers give disjoint hit/miss sets; hashing is separately timed.
+		ins.resize(n);
+		query.resize(q);
+		SplitMix64 rng {seed};
+		key_base = rng() % ((uint64_t {1} << 32) - n - q);
+		std::iota(ins.begin(), ins.end(), key_base);
+		shuffle(ins, rng);
+		for (size_t i = 0; i < q; ++i)
+			query[i] = key_base + ((i % 100 < hit) ? rng() % n : n + i);
+		shuffle(query, rng);
+		std::cout << "language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_"
+		             "queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,"
+		             "false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,"
+		             "allocate_hash_insert_ns,insert_batch,filter_build_scratch_bytes,harness_hash_scratch_bytes,hash_"
+		             "lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives\n";
 		shuffle(jobs, rng);
 		for (auto &job : jobs)
 			job();

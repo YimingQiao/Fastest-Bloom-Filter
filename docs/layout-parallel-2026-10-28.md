@@ -33,9 +33,10 @@ machines, sizes or query distributions.
 
 Partitioning needs eight bytes per input hash plus aligned counters and worker
 metadata, about 128/256 MiB scratch at these input sizes. It does not allocate one
-bitmap per worker. C++ and Rust report their own explicit scratch bytes; Rust's safe
-scatter-slice descriptors add a small amount. Allocator metadata and OS thread
-stacks are excluded. The CSV retains exact values and trial minimum/maximum times.
+bitmap per worker. C++ and Rust report their own partitioning data scratch bytes;
+Rust's safe scatter-slice descriptors add a small amount. Allocator metadata,
+thread launch bookkeeping, and OS thread stacks are excluded. The CSV retains
+exact values and trial minimum/maximum times.
 
 This stage does not compare atomic and exclusive-build semantics as interchangeable.
 It also does not establish a speedup for tiny filters, where startup can dominate.

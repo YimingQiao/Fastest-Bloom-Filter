@@ -43,7 +43,9 @@ harness does not currently emit those fields.
 | `FourSector16K8Experimental` | Four 32-bit words in one cache line, two bits/word from a 16-entry rotation dictionary | Four-gather AVX-512 queries and prepared four-key insertion, or scalar |
 
 Split64 matches C++ `Split64P32`; FourSector matches C++ `FourSector16K8`.
-Both remain private benchmark modules, with no new native-library API.
+These frozen versions remain private benchmark modules. The main Rust library
+separately exposes production `Split64BloomFilter` and `FourSectorBloomFilter`
+types, including parallel construction/query APIs and later query optimizations.
 They use runtime CPU detection. Their current alternative to AVX-512 is scalar;
 the native library's `disable-avx512` feature does not control these private
 modules. FourSector prefetches 64 future keys only when its bitmap exceeds 2 MiB.

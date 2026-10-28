@@ -21,6 +21,37 @@ def numbers(value):
     return [int(x) for x in value.split(',')]
 
 
+def selected_filters(value):
+    if not value:
+        return None
+    names = value.split(',')
+    if any(not name or name != name.strip() for name in names):
+        raise ValueError('filter names must be nonempty and have no surrounding whitespace')
+    if len(set(names)) != len(names):
+        raise ValueError('duplicate filter name')
+    return set(names)
+
+
+def validate_rows(rows, expected_filters, expected_fields):
+    """Reject incomplete selections and mismatched workloads before aggregation."""
+    if not rows:
+        raise ValueError('benchmark returned no result rows')
+    names = [row['filter'] for row in rows]
+    if len(set(names)) != len(names):
+        raise ValueError('benchmark returned duplicate filter rows')
+    if len({row['language'] for row in rows}) != 1:
+        raise ValueError('one executable must return one language')
+    actual = set(names)
+    if expected_filters is not None and actual != expected_filters:
+        raise ValueError(f'filter selection mismatch: missing={sorted(expected_filters - actual)}, '
+                         f'unexpected={sorted(actual - expected_filters)}')
+    for row in rows:
+        for field, expected in expected_fields.items():
+            if int(row[field]) != expected:
+                raise ValueError(f'{row["filter"]}: {field}={row[field]}, expected {expected}')
+    return actual
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--executable', default='build/native/compare_benchmark')
@@ -38,6 +69,10 @@ def main():
     parser.add_argument('--insert-batch', type=int, default=None, help='Independent build batch size; 0=all inserted keys; default equals query batch')
     parser.add_argument('--calibration-power', type=int, default=0, help='Extra untimed disjoint negative probes; 0=disabled; requires a current calibrated harness')
     args = parser.parse_args()
+    try:
+        expected_filters = selected_filters(args.filters)
+    except ValueError as error:
+        parser.error(str(error))
     if args.cpu not in os.sched_getaffinity(0):
         parser.error('CPU is not in the allowed affinity set')
     executable = Path(args.executable).resolve()
@@ -97,10 +132,19 @@ def main():
                             (output / 'metadata.json').write_text(json.dumps(metadata, indent=2)+'\n')
                             run.check_returncode()
                             reader = csv.DictReader(io.StringIO(run.stdout))
+                            rows = list(reader)
+                            expected = {'keys': 1 << n, 'queries': 1 << args.query_power,
+                                        'requested_bpk': bits, 'hit_percent': hit, 'batch': batch,
+                                        'repeats': args.repeats, 'seed': seed}
+                            if args.insert_batch is not None:
+                                expected['insert_batch'] = args.insert_batch or (1 << n)
+                            if args.calibration_power:
+                                expected['calibration_absent_queries'] = 1 << args.calibration_power
+                            expected_filters = validate_rows(rows, expected_filters, expected)
                             if writer is None:
                                 writer = csv.DictWriter(f, fieldnames=reader.fieldnames, lineterminator='\n')
                                 writer.writeheader()
-                            for row in reader:
+                            for row in rows:
                                 writer.writerow(row)
                             f.flush()
 

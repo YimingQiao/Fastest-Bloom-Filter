@@ -194,8 +194,9 @@ The exclusive builder aligns histogram rows to 64 bytes to avoid false sharing,
 partitions hashes by complete cache lines, then gives each
 worker its own bitmap region. It uses approximately **8 bytes per input hash** of
 temporary storage plus small worker metadata, rather than one bitmap copy per thread.
-`BuildScratchBytes` / `build_scratch_bytes` expose explicit scratch bytes; allocator
-metadata and OS thread stacks are excluded. Partitioning and thread creation are
+`BuildScratchBytes` / `build_scratch_bytes` expose partitioning data scratch bytes;
+allocator metadata, thread launch bookkeeping, and OS thread stacks are excluded.
+Partitioning and thread creation are
 included in the scaling benchmark. Small batches fall back to one worker; requested
 workers are capped by input size, bitmap partitions, and a limit of 1024. Zero means
 automatic selection (`hardware_concurrency` in C++, `available_parallelism` in Rust).
@@ -254,13 +255,18 @@ A single case is also available:
 ```bash
 # key power, requested bits/key, hit %, query power, batch size, repetitions, seed
 ./build/native/compare_benchmark 16 16 0 22 4096 5 42
-# Optional final argument: comma-separated exact filter class names.
+# Optional arguments 8–10: exact filter names, insertion batch, calibration power.
+# Example: FastPatternBF,Split64BloomFilter 65536 24
 ```
 
 Try `--batches 1,31,4096` to distinguish single-key calls, irregular tails, and large
 batches. Large filters should be tested beyond the machine's last-level cache as well
 as in cache. The default queries stream through 2^22 entries; filters and inputs are
 warmed before timed queries. This measures sustained throughput, not cold-start latency.
+Unknown or duplicate filter names are rejected. The runner also checks that every
+requested implementation and workload appears in the returned rows. The first
+timed prehashed and hash+query outputs are checked against the complete warm-up
+checksum outside the timers.
 
 ### What the numbers mean
 
