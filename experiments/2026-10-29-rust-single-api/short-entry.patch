@@ -1,0 +1,46 @@
+--- rust/src/byte_split.rs
++++ native-short/src/byte_split.rs
+@@ -137,7 +137,20 @@
+         Self::insert_into(&mut self.lines, 0, self.bucket_mask, self.avx2, hashes);
+     }
+     /// Writes one 0/1 per input; rejects mismatched lengths before writing.
++    #[inline]
+     pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
++        assert_eq!(hashes.len(), out.len(), "one output is required per input");
++        if hashes.len() == 1 {
++            out[0] = self.contains_hash(hashes[0]) as u32;
++        } else {
++            self.lookup_hashes_bulk(hashes, out);
++        }
++    }
++    // Experimental production-shaped split: retain the entire original body.
++    // Its assertion/singleton branch are redundant through the public entry,
++    // but preserving them isolates entry shape from bulk-kernel changes.
++    #[inline(never)]
++    fn lookup_hashes_bulk(&self, hashes: &[u64], out: &mut [u32]) {
+         assert_eq!(hashes.len(), out.len(), "one output is required per input");
+         if hashes.len() == 1 {
+             out[0] = self.contains_hash(hashes[0]) as u32;
+--- rust/src/split64.rs
++++ native-short/src/split64.rs
+@@ -119,7 +119,20 @@
+         );
+     }
+     /// Writes one 0/1 per input; panics before writing when lengths differ.
++    #[inline]
+     pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
++        assert_eq!(hashes.len(), out.len(), "one output is required per input");
++        if hashes.len() == 1 {
++            out[0] = self.contains_hash(hashes[0]) as u32;
++        } else {
++            self.lookup_hashes_bulk(hashes, out);
++        }
++    }
++    // Experimental production-shaped split: retain the entire original body.
++    // Its assertion/singleton branch are redundant through the public entry,
++    // but preserving them isolates entry shape from bulk-kernel changes.
++    #[inline(never)]
++    fn lookup_hashes_bulk(&self, hashes: &[u64], out: &mut [u32]) {
+         assert_eq!(hashes.len(), out.len(), "one output is required per input");
+         if hashes.len() == 1 {
+             #[cfg(target_arch = "x86_64")]

@@ -1,0 +1,20 @@
+--- rust/src/byte_split.rs
++++ native-inline/src/byte_split.rs
+@@ -137,6 +137,7 @@
+         Self::insert_into(&mut self.lines, 0, self.bucket_mask, self.avx2, hashes);
+     }
+     /// Writes one 0/1 per input; rejects mismatched lengths before writing.
++    #[inline]
+     pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
+         assert_eq!(hashes.len(), out.len(), "one output is required per input");
+         if hashes.len() == 1 {
+--- rust/src/split64.rs
++++ native-inline/src/split64.rs
+@@ -119,6 +119,7 @@
+         );
+     }
+     /// Writes one 0/1 per input; panics before writing when lengths differ.
++    #[inline]
+     pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
+         assert_eq!(hashes.len(), out.len(), "one output is required per input");
+         if hashes.len() == 1 {

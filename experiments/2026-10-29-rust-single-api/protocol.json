@@ -1,0 +1,60 @@
+{
+  "utc": "2026-10-28T18:19:18Z",
+  "hypotheses": [
+    "The native Byte/Split public bulk methods impose an indirect tail jump and six-register prologue even for len1 in the frozen primary executable.",
+    "ByteNativeSingleApiV1 calls the existing public contains_hash forlen1, retaining the same detected SIMD mask/address and bulk otherwise.",
+    "SplitNativeSingleApiV1 also changes from SIMD dispatch to scalar-source contains_hash; label kernel choice separately from wrapper overhead.",
+    "ByteInlineLookupV1 and SplitInlineLookupV1 change only #[inline] on copied native public lookup_hashes; measure whether compiler removes forwarding/prologue overhead."
+  ],
+  "production_changes": false,
+  "initial": {
+    "key_powers": [
+      16,
+      25
+    ],
+    "requested_bpk": [
+      8,
+      16
+    ],
+    "batches": [
+      1,
+      4096
+    ],
+    "seeds": [
+      42
+    ],
+    "query_power": 22,
+    "repeats": 5,
+    "hit_percent": 50,
+    "insert_batch": "all",
+    "calibration_power": 24
+  },
+  "expansion_if_worthwhile": {
+    "batches": [
+      3,
+      4,
+      8,
+      31
+    ],
+    "seeds": [
+      42
+    ],
+    "same_other_parameters": true
+  },
+  "heldout_seeds": "Choose and preregister after initial selection; exclude primary seeds2309/6311/10007.",
+  "filters": [
+    "Fastbloom017",
+    "FastPatternBF",
+    "BloomsdayPinned",
+    "Split64Experimental",
+    "FourSector16K8Experimental",
+    "ByteSplitBloomFilter",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter",
+    "ByteNativeSingleApiV1",
+    "ByteInlineLookupV1",
+    "SplitNativeSingleApiV1",
+    "SplitInlineLookupV1"
+  ],
+  "scope": "All original baseline configurations remain in same-process job order randomization; no previous binary overwritten; root CPU2/socket0 exclusive heavy-work lease with flock."
+}
