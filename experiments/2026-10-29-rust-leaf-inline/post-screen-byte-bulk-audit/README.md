@@ -1,0 +1,11 @@
+# Post-screen Byte batch3 machine-code check
+
+Read-only audit of the exact measured executable, after the initial 112-row screen; no new benchmark or compilation. The frozen preflight and screen archives remain unchanged. Reproduce with `python3 audit.py`; the script checks the executable SHA first.
+
+The original public `ByteSplitBloomFilter::lookup_hashes` starts at ELF virtual address0x629d0 and the clone at0x65fb0. Both contain500 bytes. The AVX2 n=3 route selects the same prologue and length checks, two-key-unrolled probe loop, odd-key tail and epilogue. The selected79 instructions are identical after resolving RIP-relative constant references and converting internal branch targets to local offsets. No opcode, register, ordinary operand or instruction-order normalization is applied. Both versions load the same salt and shuffle tables at0x8db0 and0x8708. The scalar fallback blocks and cold panic metadata are outside this active-path comparison.
+
+There is no separate out-of-line `lookup_avx2` in this build: its body is inside the public lookup. Both monomorphized harness `lookup` wrappers have one six-byte indirect tail jump. ELF relocations at0xaa028/0xaa010 resolve to the original/candidate public functions respectively.
+
+The code placement differs: the original loop starts at0x62a90, 16 bytes into a64-byte line, and the candidate at0x66070, 48 bytes into a line. That can change frontend placement effects, but this audit does not prove it caused the observed regression. Bitmap allocation/physical placement, cache or frequency state, and row-order effects also remain possible; this screen did not record enough evidence to separate them. The original and clone build separate bitmaps from identical inputs, rather than querying the same allocation.
+
+The precise result is therefore **no additional bulk instructions on the measured AVX2 n=3 path**, not a causal rejection of Byte's public-singleton annotation. Keep the initial large actual32-bpk batch3 loss. A next experiment can use the unchanged source/binary with fresh seeds, Byte-only original/clone rows, explicitly balanced filter order or repeated paired processes, and retained batch1/3/31/4096 guards. Such a follow-up requires its own frozen protocol; this audit authorizes no timing or production change.
