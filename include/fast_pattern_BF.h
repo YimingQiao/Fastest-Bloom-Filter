@@ -163,6 +163,16 @@ private:
 			                       _mm512_cmpeq_epi32_mask(_mm512_and_si512(v2, m2), m2);
 			_mm512_storeu_si512(out + i, _mm512_maskz_set1_epi32(pass, 1));
 		}
+		// Eight remaining keys fit one paired-sector gather. Comparing 64-bit
+		// lanes combines both 32-bit sector tests without a mask-pack instruction.
+		if (i + 8 <= num) {
+			const Probe p = Prepare(keys + i);
+			const __m512i v = _mm512_i32gather_epi32(p.index, blocks_.data(), 4);
+			const __mmask8 pass = _mm512_cmpeq_epi64_mask(_mm512_and_si512(v, p.mask), p.mask);
+			_mm256_storeu_si256(reinterpret_cast<__m256i *>(out + i),
+			                    _mm512_castsi512_si256(_mm512_maskz_set1_epi32(pass, 1)));
+			i += 8;
+		}
 #elif defined(__AVX2__)
 		const __m256i order = _mm256_setr_epi32(0, 2, 4, 6, 1, 3, 5, 7);
 		const __m256i ones = _mm256_set1_epi32(1);

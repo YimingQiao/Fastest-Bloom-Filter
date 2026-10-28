@@ -34,6 +34,7 @@ def main():
     parser.add_argument('--repeats', type=int, default=5)
     parser.add_argument('--cpu', type=int, default=min(os.sched_getaffinity(0)))
     parser.add_argument('--filters', default='', help='Comma-separated exact class names; empty selects all')
+    parser.add_argument('--insert-batch', type=int, default=None, help='C++ harness only: independent build batch size; default equals query batch')
     args = parser.parse_args()
     if args.cpu not in os.sched_getaffinity(0):
         parser.error('CPU is not in the allowed affinity set')
@@ -53,6 +54,9 @@ def main():
     commands = executable.parent / 'compile_commands.json'
     if commands.exists():
         (output / 'compile_commands.json').write_bytes(commands.read_bytes())
+    upstreams = executable.parent / 'upstreams.json'
+    if upstreams.exists():
+        metadata['upstreams'] = json.loads(upstreams.read_text())
     metadata['RUSTFLAGS'] = os.environ.get('RUSTFLAGS', '')
     metadata['rustc'] = capture(['rustc', '-Vv'])
     metadata['cargo'] = capture(['cargo', '--version'])
@@ -69,6 +73,8 @@ def main():
                             cmd = ['taskset', '-c', str(args.cpu), str(executable), str(n), str(bits),
                                    str(hit), str(args.query_power), str(batch), str(args.repeats), str(seed),
                                    args.filters]
+                            if args.insert_batch is not None:
+                                cmd.append(str(args.insert_batch))
                             print(f'keys=2^{n} bpk={bits} hit={hit}% batch={batch} seed={seed}', flush=True)
                             started = time.monotonic()
                             run = subprocess.run(cmd, text=True, capture_output=True)

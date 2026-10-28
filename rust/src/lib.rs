@@ -463,6 +463,36 @@ impl<const PATTERN: bool> BloomFilter<PATTERN> {
             );
             i += 16;
         }
+        // Pair the two sectors in adjacent lanes for a final group of eight.
+        // A 64-bit equality comparison checks both sectors of each key at once.
+        // Every load/store stays inside the checked input/output slices.
+        if PATTERN && i + 8 <= hashes.len() {
+            let h = _mm512_loadu_si512(hashes.as_ptr().add(i).cast());
+            let a = _mm512_and_si512(
+                _mm512_shuffle_epi32::<0xf5>(h),
+                _mm512_set1_epi32(self.block_mask as i32),
+            );
+            let delta = _mm512_or_si512(
+                _mm512_set1_epi64(8i64 << 32),
+                _mm512_and_si512(_mm512_slli_epi64::<12>(h), _mm512_set1_epi64(7i64 << 32)),
+            );
+            let index = _mm512_xor_si512(a, delta);
+            let code = _mm512_srlv_epi32(
+                _mm512_shuffle_epi32::<0xa0>(h),
+                _mm512_set1_epi64(10i64 << 32),
+            );
+            let mask = _mm512_rolv_epi32(
+                _mm512_permutex2var_epi32(table0, code, table1),
+                _mm512_srli_epi32::<5>(code),
+            );
+            let v = _mm512_i32gather_epi32::<4>(index, base);
+            let pass = _mm512_cmpeq_epi64_mask(_mm512_and_si512(v, mask), mask);
+            _mm256_storeu_si256(
+                out.as_mut_ptr().add(i).cast(),
+                _mm512_castsi512_si256(_mm512_maskz_set1_epi32(pass as u16, 1)),
+            );
+            i += 8;
+        }
         for j in i..hashes.len() {
             out[j] = self.contains_hash(hashes[j]) as u32;
         }
