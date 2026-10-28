@@ -1,0 +1,17 @@
+[package]
+name = "fastest-bloom-filter-external"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "compare_benchmark"
+path = "src/main.rs"
+
+[dependencies]
+fastest-bloom-filter = { path = "../../rust" }
+fastbloom = { version = "=0.17.0", default-features = false, features = ["std"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
