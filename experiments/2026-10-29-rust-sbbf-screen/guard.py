@@ -100,7 +100,9 @@ def wilson(fp, count):
     center = p + zz / (2 * count)
     spread = Z * math.sqrt((p * (1 - p) + zz / (4 * count)) / count)
     divisor = 1 + zz / count
-    return max(0.0, (center - spread) / divisor), min(1.0, (center + spread) / divisor)
+    lower = 0.0 if fp == 0 else max(0.0, (center - spread) / divisor)
+    upper = 1.0 if fp == count else min(1.0, (center + spread) / divisor)
+    return lower, upper
 
 
 def quality_rows(rows, registry):
