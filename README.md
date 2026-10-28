@@ -6,6 +6,22 @@ The new `FastPatternBF` / `FastPatternBloomFilter` uses small SIMD mask dictiona
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
 
+## Modern external comparison (active)
+
+The broader campaign now compares **43 C++ configurations in one shuffled process**:
+FastPattern, pinned FastFilter SIMD/classical variants, PageBloomFilter, and
+Boost.Bloom 1.92 with its native bulk APIs. A separate native Rust suite includes
+pinned Bloomsday and fastbloom. See the [survey](docs/external-survey-2026-10-28.md)
+and [shared-harness instructions](benchmarks/all-external/README.md).
+
+Ranking constrains **actual resident allocation and observed FPR**, distinguishing
+prehashed kernels from raw-key end-to-end work. Build batches are independently
+configurable, temporary build allocations are reported, and timed construction
+holds only one bitmap at a time. Screening uses explicit error ceilings and a
+pointwise 95% Wilson bound; final candidates need held-out confirmation.
+This campaign is ongoing: the historical results below compare the original
+repository baselines and are not an external or global-fastest claim.
+
 ## Measured results
 
 ![Measured single-thread throughput and parallel query scaling](docs/figures/throughput.svg)
@@ -281,7 +297,8 @@ fields select the first word, its partner, and two rotated masks. AVX-512 lookup
 handles 16 keys at once; mask generation uses two register-resident tables and
 vector rotates. The AVX2 path processes eight queries, gathers its tiny mask
 dictionary from L1, and implements rotates with variable shifts. Large filters
-prefetch future independent queries. Inserts compute
+prefetch future independent queries. An eight-key AVX-512 tail handles short
+batches before the remaining scalar tail. Inserts compute
 masks in batches but apply OR updates sequentially, preserving colliding keys.
 
 The filter selects three bits per sector below 12 actual bits/key, and four otherwise.
