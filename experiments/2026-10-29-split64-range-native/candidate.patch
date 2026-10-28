@@ -1,0 +1,794 @@
+--- rust/src/split64.rs
++++ rust/src/split64_range.rs
+@@ -1,6 +1,6 @@
+ //! Eight 64-bit split-block sectors in one cache line. This widens the public
+ //! Parquet/Impala multiply-shift construction and is not Parquet-compatible.
+-use crate::{layout_parallel, SizeError};
++use crate::{layout_parallel, range_parallel, SizeError};
+ 
+ const SALTS: [u32; 8] = [
+     0x47b6_137b,
+@@ -21,31 +21,56 @@
+ /// Writes require exclusive access; immutable filters support concurrent reads.
+ /// Its bitmap mapping differs from both Parquet and `FastPatternBloomFilter`.
+ #[derive(Clone)]
+-pub struct Split64BloomFilter {
++pub struct Split64RangeBloomFilter {
+     lines: Vec<Line>,
+-    block_mask: u32,
++    block_count: u32,
+     avx512: bool,
+     avx2: bool,
+ }
+-impl Split64BloomFilter {
+-    fn line_count(n: usize, bpk: u32) -> Result<usize, SizeError> {
+-        layout_parallel::line_count(n, bpk)
+-    }
+-    /// Native strict-next-power-of-two sizing, with a 128-byte minimum and 256 MiB maximum.
+-    /// Inspect `size_in_bytes()` for actual allocation instead of assuming requested bits/key.
+-    pub fn new(n: usize, bpk: u32) -> Result<Self, SizeError> {
+-        let count = Self::line_count(n, bpk)?;
++impl Split64RangeBloomFilter {
++    /// Allocate complete 64-byte lines within the supplied byte ceiling.
++    /// Bounds are 128 bytes through 256 MiB, inclusive. This mapping differs
++    /// from the original power-of-two type even at an equal allocation.
++    pub fn with_byte_budget(bytes: usize) -> Result<Self, SizeError> {
++        if bytes < 128 {
++            return Err(SizeError::InvalidSize);
++        }
++        if bytes > (1usize << 28) {
++            return Err(SizeError::CapacityExceeded);
++        }
++        let count = bytes / 64;
+         let (avx512, avx2) = layout_parallel::backends();
++        let lines = vec![Line::default(); count];
++        if lines
++            .capacity()
++            .checked_mul(64)
++            .ok_or(SizeError::CapacityExceeded)?
++            > bytes
++        {
++            return Err(SizeError::CapacityExceeded);
++        }
+         Ok(Self {
+-            lines: vec![Line::default(); count],
+-            block_mask: (count - 1) as u32,
++            lines,
++            block_count: count as u32,
+             avx512,
+             avx2,
+         })
+     }
++    /// Use floor(n * bpk / 8) as an at-most byte budget, without rounding up.
++    pub fn new(n: usize, bpk: u32) -> Result<Self, SizeError> {
++        if n == 0 || bpk == 0 {
++            return Err(SizeError::InvalidSize);
++        }
++        let bits = n.checked_mul(bpk as usize).ok_or(SizeError::InvalidSize)?;
++        Self::with_byte_budget(bits / 8)
++    }
+     /// Bitmap bytes, excluding object fields and allocator metadata.
+     pub fn size_in_bytes(&self) -> usize {
+-        self.lines.len() * 64
++        self.lines.capacity() * 64
++    }
++    #[cfg(feature = "validation")]
++    pub fn validation_words(&self) -> Vec<u64> {
++        self.lines.iter().flat_map(|line| line.0).collect()
+     }
+     /// Runtime batch backend; `disable-avx512` retains AVX2/scalar dispatch.
+     pub fn backend(&self) -> &'static str {
+@@ -53,11 +78,11 @@
+     }
+     #[inline]
+     fn block(&self, h: u64) -> usize {
+-        ((h >> 32) as u32 & self.block_mask) as usize
+-    }
+-    #[inline]
+-    fn insert_one_scalar(lines: &mut [Line], begin: usize, mask: u32, h: u64) {
+-        let index = ((h >> 32) as u32 & mask) as usize - begin;
++        (((h >> 32) * self.block_count as u64) >> 32) as usize
++    }
++    #[inline]
++    fn insert_one_scalar(lines: &mut [Line], begin: usize, count: u32, h: u64) {
++        let index = (((h >> 32) * count as u64) >> 32) as usize - begin;
+         for (word, salt) in lines[index].0.iter_mut().zip(SALTS) {
+             *word |= 1u64 << ((h as u32).wrapping_mul(salt) >> 26);
+         }
+@@ -73,7 +98,7 @@
+     /// Sets the eight bits for one hash; duplicate insertion is idempotent.
+     #[inline]
+     pub fn insert_hash(&mut self, h: u64) {
+-        Self::insert_one_scalar(&mut self.lines, 0, self.block_mask, h);
++        Self::insert_one_scalar(&mut self.lines, 0, self.block_count, h);
+     }
+     /// Returns false for definitely absent, true for possibly present.
+     #[inline]
+@@ -83,7 +108,7 @@
+     fn insert_into(
+         lines: &mut [Line],
+         begin: usize,
+-        mask: u32,
++        count: u32,
+         avx512: bool,
+         avx2: bool,
+         hashes: &[u64],
+@@ -92,19 +117,19 @@
+         {
+             if avx512 {
+                 // SAFETY: backend detected at construction; every hash belongs to owned lines.
+-                unsafe { Self::insert_avx512(lines, begin, mask, hashes) };
++                unsafe { Self::insert_avx512(lines, begin, count, hashes) };
+                 return;
+             }
+             if avx2 {
+                 // SAFETY: backend detected at construction; owned lines are disjoint and aligned.
+-                unsafe { Self::insert_avx2(lines, begin, mask, hashes) };
++                unsafe { Self::insert_avx2(lines, begin, count, hashes) };
+                 return;
+             }
+         }
+         #[cfg(not(target_arch = "x86_64"))]
+         let _ = (avx512, avx2);
+         for &hash in hashes {
+-            Self::insert_one_scalar(lines, begin, mask, hash);
++            Self::insert_one_scalar(lines, begin, count, hash);
+         }
+     }
+     /// Exclusive bulk insertion, preserving duplicates and same-block collisions.
+@@ -112,7 +137,7 @@
+         Self::insert_into(
+             &mut self.lines,
+             0,
+-            self.block_mask,
++            self.block_count,
+             self.avx512,
+             self.avx2,
+             hashes,
+@@ -173,15 +198,11 @@
+     }
+     /// Exclusive cache-line-partitioned construction, including partitioning and thread launch.
+     pub fn insert_hashes_parallel(&mut self, hashes: &[u64], requested: usize) {
+-        let mask = self.block_mask;
++        let count = self.block_count;
+         let (avx512, avx2) = (self.avx512, self.avx2);
+-        layout_parallel::insert(
+-            &mut self.lines,
+-            hashes,
+-            requested,
+-            |h| ((h >> 32) as u32 & mask) as usize,
+-            |lines, begin, input| Self::insert_into(lines, begin, mask, avx512, avx2, input),
+-        );
++        range_parallel::insert(&mut self.lines, hashes, requested, |lines, begin, input| {
++            Self::insert_into(lines, begin, count, avx512, avx2, input)
++        });
+     }
+     /// Parallel immutable queries. Concurrent read-only batches are supported.
+     pub fn lookup_hashes_parallel(&self, hashes: &[u64], out: &mut [u32], requested: usize) {
+@@ -190,7 +211,7 @@
+ }
+ 
+ #[cfg(target_arch = "x86_64")]
+-impl Split64BloomFilter {
++impl Split64RangeBloomFilter {
+     #[inline]
+     #[target_feature(enable = "avx2,avx512f")]
+     unsafe fn mask(hash: u64) -> std::arch::x86_64::__m512i {
+@@ -244,9 +265,9 @@
+     }
+     #[inline]
+     #[target_feature(enable = "avx2,avx512f")]
+-    unsafe fn insert_one_avx512(lines: &mut [Line], begin: usize, mask: u32, h: u64) {
+-        use std::arch::x86_64::*;
+-        let index = ((h >> 32) as u32 & mask) as usize - begin;
++    unsafe fn insert_one_avx512(lines: &mut [Line], begin: usize, count: u32, h: u64) {
++        use std::arch::x86_64::*;
++        let index = (((h >> 32) * count as u64) >> 32) as usize - begin;
+         debug_assert!(index < lines.len());
+         let line = lines.as_mut_ptr().add(index).cast();
+         _mm512_store_si512(
+@@ -255,24 +276,24 @@
+         );
+     }
+     #[target_feature(enable = "avx2,avx512f")]
+-    unsafe fn insert_avx512(lines: &mut [Line], begin: usize, mask: u32, hashes: &[u64]) {
++    unsafe fn insert_avx512(lines: &mut [Line], begin: usize, count: u32, hashes: &[u64]) {
+         use std::arch::x86_64::*;
+         let prefetched = hashes.len().saturating_sub(PREFETCH);
+         for (i, &h) in hashes[..prefetched].iter().enumerate() {
+-            let future = ((hashes[i + PREFETCH] >> 32) as u32 & mask) as usize - begin;
++            let future = (((hashes[i + PREFETCH] >> 32) * count as u64) >> 32) as usize - begin;
+             debug_assert!(future < lines.len());
+             _mm_prefetch::<_MM_HINT_T0>(lines.as_ptr().add(future).cast());
+-            Self::insert_one_avx512(lines, begin, mask, h);
++            Self::insert_one_avx512(lines, begin, count, h);
+         }
+         for &h in &hashes[prefetched..] {
+-            Self::insert_one_avx512(lines, begin, mask, h);
+-        }
+-    }
+-    #[inline]
+-    #[target_feature(enable = "avx2")]
+-    unsafe fn insert_one_avx2(lines: &mut [Line], begin: usize, mask: u32, h: u64) {
+-        use std::arch::x86_64::*;
+-        let index = ((h >> 32) as u32 & mask) as usize - begin;
++            Self::insert_one_avx512(lines, begin, count, h);
++        }
++    }
++    #[inline]
++    #[target_feature(enable = "avx2")]
++    unsafe fn insert_one_avx2(lines: &mut [Line], begin: usize, count: u32, h: u64) {
++        use std::arch::x86_64::*;
++        let index = (((h >> 32) * count as u64) >> 32) as usize - begin;
+         debug_assert!(index < lines.len());
+         let line = lines.as_mut_ptr().add(index).cast::<__m256i>();
+         let (a, b) = Self::masks_avx2(h);
+@@ -283,17 +304,17 @@
+         );
+     }
+     #[target_feature(enable = "avx2")]
+-    unsafe fn insert_avx2(lines: &mut [Line], begin: usize, mask: u32, hashes: &[u64]) {
++    unsafe fn insert_avx2(lines: &mut [Line], begin: usize, count: u32, hashes: &[u64]) {
+         use std::arch::x86_64::*;
+         let prefetched = hashes.len().saturating_sub(PREFETCH);
+         for (i, &h) in hashes[..prefetched].iter().enumerate() {
+-            let future = ((hashes[i + PREFETCH] >> 32) as u32 & mask) as usize - begin;
++            let future = (((hashes[i + PREFETCH] >> 32) * count as u64) >> 32) as usize - begin;
+             debug_assert!(future < lines.len());
+             _mm_prefetch::<_MM_HINT_T0>(lines.as_ptr().add(future).cast());
+-            Self::insert_one_avx2(lines, begin, mask, h);
++            Self::insert_one_avx2(lines, begin, count, h);
+         }
+         for &h in &hashes[prefetched..] {
+-            Self::insert_one_avx2(lines, begin, mask, h);
++            Self::insert_one_avx2(lines, begin, count, h);
+         }
+     }
+     #[inline]
+@@ -359,263 +380,4 @@
+ }
+ 
+ #[cfg(test)]
+-mod tests {
+-    use super::*;
+-    use crate::hash64;
+-
+-    #[test]
+-    fn allocation_and_alignment_match_cpp() {
+-        for (n, bpk, bytes) in [
+-            (0, 1, 128),
+-            (1, 16, 128),
+-            (64, 8, 128),
+-            (64, 16, 256),
+-            (65, 16, 256),
+-            (1024, 8, 2048),
+-            (1024, 16, 4096),
+-        ] {
+-            let bf = Split64BloomFilter::new(n, bpk).unwrap();
+-            assert_eq!(bf.size_in_bytes(), bytes);
+-            assert_eq!(bf.lines.as_ptr() as usize % 64, 0);
+-        }
+-        assert_eq!(
+-            Split64BloomFilter::line_count(1, 0),
+-            Err(SizeError::InvalidSize)
+-        );
+-        assert_eq!(
+-            Split64BloomFilter::line_count(usize::MAX, 2),
+-            Err(SizeError::InvalidSize)
+-        );
+-        assert_eq!(
+-            Split64BloomFilter::line_count(1 << 27, 16),
+-            Err(SizeError::CapacityExceeded)
+-        );
+-    }
+-
+-    #[test]
+-    fn scalar_and_runtime_paths_match_at_batch_boundaries() {
+-        for n in [0, 1, 31, 32, 33, 64, 65, 4099] {
+-            let inserted: Vec<_> = (0..n).map(hash64).collect();
+-            let mut scalar = Split64BloomFilter::new(n as usize, 8).unwrap();
+-            scalar.avx512 = false;
+-            scalar.avx2 = false;
+-            scalar.avx2 = false;
+-            scalar.insert_hashes(&inserted);
+-            let mut runtime = Split64BloomFilter::new(n as usize, 8).unwrap();
+-            for batch in [1, 31, 32, 33, 4096] {
+-                runtime.lines.fill(Line::default());
+-                for chunk in inserted.chunks(batch) {
+-                    runtime.insert_hashes(chunk);
+-                }
+-                assert_eq!(
+-                    scalar.lines.iter().map(|line| line.0).collect::<Vec<_>>(),
+-                    runtime.lines.iter().map(|line| line.0).collect::<Vec<_>>()
+-                );
+-                runtime.insert_hashes(&inserted);
+-                assert_eq!(
+-                    scalar.lines.iter().map(|line| line.0).collect::<Vec<_>>(),
+-                    runtime.lines.iter().map(|line| line.0).collect::<Vec<_>>()
+-                );
+-            }
+-            let mut answers = vec![0; inserted.len()];
+-            runtime.lookup_hashes(&inserted, &mut answers);
+-            assert!(answers.iter().all(|&answer| answer == 1));
+-
+-            let queries: Vec<_> = (0..8192).map(hash64).collect();
+-            for len in 0..=131 {
+-                for offset in 0..8 {
+-                    let slice = &queries[offset..offset + len];
+-                    let mut actual = vec![0xfeed; len + 2];
+-                    runtime.lookup_hashes(slice, &mut actual[1..1 + len]);
+-                    assert_eq!(actual[0], 0xfeed);
+-                    assert_eq!(actual[len + 1], 0xfeed);
+-                    for (&hash, &answer) in slice.iter().zip(&actual[1..1 + len]) {
+-                        assert_eq!(answer, scalar.contains_scalar(hash) as u32);
+-                    }
+-                }
+-            }
+-            let mut actual = vec![0; queries.len()];
+-            runtime.lookup_hashes(&queries, &mut actual);
+-            assert!(queries
+-                .iter()
+-                .zip(actual)
+-                .all(|(&hash, answer)| answer == scalar.contains_scalar(hash) as u32));
+-        }
+-    }
+-
+-    #[test]
+-    #[should_panic(expected = "one output is required per input")]
+-    fn rejects_mismatched_output_before_writing() {
+-        let bf = Split64BloomFilter::new(1, 8).unwrap();
+-        bf.lookup_hashes(&[hash64(1)], &mut []);
+-    }
+-    #[test]
+-    fn all_backends_parallel_match_serial() {
+-        fn shareable<T: Send + Sync>() {}
+-        shareable::<Split64BloomFilter>();
+-        for backend in 0..3 {
+-            for hot in [false, true] {
+-                let mut inserted: Vec<_> = (0..65539)
+-                    .map(|i| {
+-                        if hot {
+-                            (7u64 << 32) | (hash64(i) & 0xffff_ffff)
+-                        } else {
+-                            hash64(i)
+-                        }
+-                    })
+-                    .collect();
+-                inserted[0] = 0;
+-                inserted[1] = u64::MAX;
+-                for bpk in [4, 16] {
+-                    let mut serial = Split64BloomFilter::new(65539, bpk).unwrap();
+-                    serial.avx512 = false;
+-                    serial.avx2 = false;
+-                    serial.insert_hashes(&inserted);
+-                    for workers in [1, 2, 3, 7, 8] {
+-                        let mut parallel = Split64BloomFilter::new(65539, bpk).unwrap();
+-                        if backend < 2 {
+-                            parallel.avx512 = false;
+-                        }
+-                        if backend == 0 {
+-                            parallel.avx2 = false;
+-                        }
+-                        parallel.insert_hashes_parallel(&inserted, workers);
+-                        assert_eq!(serial.lines, parallel.lines);
+-                        parallel.insert_hashes_parallel(&inserted, workers);
+-                        assert_eq!(serial.lines, parallel.lines);
+-                        for &h in &inserted {
+-                            assert!(parallel.contains_hash(h));
+-                        }
+-                        let query: Vec<_> = (0..131083).map(hash64).collect();
+-                        let mut out = vec![0; query.len()];
+-                        parallel.lookup_hashes_parallel(&query, &mut out, workers);
+-                        assert!(query
+-                            .iter()
+-                            .zip(&out)
+-                            .all(|(&h, &v)| v == serial.contains_hash(h) as u32));
+-                        assert_eq!(parallel.build_scratch_bytes(inserted.len(), 1), 0);
+-                        if workers > 1 {
+-                            assert!(
+-                                parallel.build_scratch_bytes(inserted.len(), workers)
+-                                    >= inserted.len() * 8
+-                            );
+-                        }
+-                    }
+-                }
+-            }
+-        }
+-    }
+-
+-    #[test]
+-    fn empty_small_and_large_owned_slices() {
+-        for n in [0usize, 1, 3, 4, 7, 8, 15, 16, 17, 31, 32, 33] {
+-            let hashes: Vec<_> = (0..n as u64).map(hash64).collect();
+-            let mut bf = Split64BloomFilter::new(n, 8).unwrap();
+-            bf.insert_hashes_parallel(&hashes, 0);
+-            let mut out = vec![0; n];
+-            bf.lookup_hashes_parallel(&hashes, &mut out, 8);
+-            assert!(out.iter().all(|&v| v == 1));
+-            assert_eq!(bf.build_workers(n, 8), 1);
+-        }
+-        let hashes: Vec<_> = (0..65539).map(hash64).collect();
+-        for backend in 0..3 {
+-            let mut serial = Split64BloomFilter::new(1 << 21, 16).unwrap();
+-            serial.avx512 = false;
+-            serial.avx2 = false;
+-            serial.insert_hashes(&hashes);
+-            let mut parallel = Split64BloomFilter::new(1 << 21, 16).unwrap();
+-            if backend < 2 {
+-                parallel.avx512 = false;
+-            }
+-            if backend == 0 {
+-                parallel.avx2 = false;
+-            }
+-            parallel.insert_hashes_parallel(&hashes, 2);
+-            assert_eq!(serial.lines, parallel.lines);
+-        }
+-        let mut bf = Split64BloomFilter::new(1, 8).unwrap();
+-        bf.insert_hash(0);
+-        bf.insert_hash(u64::MAX);
+-        assert!(bf.contains_hash(0) && bf.contains_hash(u64::MAX));
+-        if cfg!(feature = "disable-avx512") {
+-            assert_ne!(bf.backend(), "avx512");
+-        }
+-    }
+-    #[test]
+-    fn short_queries_match_scalar_and_previous_kernel() {
+-        let mut inserted: Vec<_> = (0..65539).map(hash64).collect();
+-        inserted[0] = 0;
+-        inserted[1] = u64::MAX;
+-        for (keys, bpk) in [(65539, 8), (1 << 20, 16)] {
+-            for backend in 0..3 {
+-                let mut filter = Split64BloomFilter::new(keys, bpk).unwrap();
+-                if backend < 2 {
+-                    filter.avx512 = false;
+-                }
+-                if backend == 0 {
+-                    filter.avx2 = false;
+-                }
+-                filter.insert_hashes(&inserted);
+-                let bitmap = filter.lines.clone();
+-                for len in 0..=131 {
+-                    for offset in 0..16 {
+-                        let input: Vec<_> = (0..len + offset)
+-                            .map(|j| {
+-                                if j % 11 == 0 {
+-                                    0
+-                                } else if j % 13 == 0 {
+-                                    u64::MAX
+-                                } else if j % 2 == 0 {
+-                                    inserted[(j * 71) % inserted.len()]
+-                                } else {
+-                                    hash64(1_000_000 + j as u64)
+-                                }
+-                            })
+-                            .collect();
+-                        let hashes = &input[offset..];
+-                        let mut actual = vec![0xfeed; len + 2];
+-                        filter.lookup_hashes(hashes, &mut actual[1..len + 1]);
+-                        assert_eq!(actual[0], 0xfeed);
+-                        assert_eq!(actual[len + 1], 0xfeed);
+-                        for (&h, &v) in hashes.iter().zip(&actual[1..len + 1]) {
+-                            assert_eq!(v, filter.contains_scalar(h) as u32);
+-                        }
+-                        #[cfg(target_arch = "x86_64")]
+-                        if filter.avx512 {
+-                            let mut old = vec![0xfeed; len + 2];
+-                            // SAFETY: runtime backend verified, matched slices, old bounded kernel.
+-                            unsafe {
+-                                filter.lookup_avx512(hashes, &mut old[1..len + 1]);
+-                            }
+-                            assert_eq!(actual, old);
+-                        }
+-                    }
+-                }
+-                assert_eq!(bitmap, filter.lines);
+-                assert!(inserted.iter().all(|&h| filter.contains_hash(h)));
+-            }
+-        }
+-    }
+-    #[test]
+-    #[cfg(target_arch = "x86_64")]
+-    fn wide_mask_is_identical_to_original_and_scalar() {
+-        if !layout_parallel::backends().0 {
+-            return;
+-        }
+-        use std::arch::x86_64::*;
+-        let special = [0, u64::MAX, 0x8000_0000, 0xffff_ffff, 0x1_0000_0000];
+-        for h in special.into_iter().chain((0..65536).map(hash64)) {
+-            let mut old = [0u64; 8];
+-            let mut wide = [0u64; 8];
+-            // SAFETY: detected backend; both complete 64-byte output arrays are writable.
+-            unsafe {
+-                _mm512_storeu_si512(old.as_mut_ptr().cast(), Split64BloomFilter::mask(h));
+-                _mm512_storeu_si512(wide.as_mut_ptr().cast(), Split64BloomFilter::wide_mask(h));
+-            }
+-            assert_eq!(old, wide);
+-            for j in 0..8 {
+-                assert_eq!(wide[j], 1u64 << ((h as u32).wrapping_mul(SALTS[j]) >> 26));
+-            }
+-        }
+-    }
+-}
++mod tests;
+--- rust/src/layout_parallel.rs
++++ rust/src/range_parallel.rs
+@@ -1,5 +1,5 @@
+ //! Shared scheduling for layouts whose writes stay within one cache line.
+-use crate::{parallel::workers, BloomFilter, SizeError};
++use crate::layout_parallel::build_workers;
+ use std::{mem::MaybeUninit, thread};
+ 
+ const COUNTERS_PER_LINE: usize = 64 / std::mem::size_of::<usize>();
+@@ -12,75 +12,12 @@
+     (n / parts) * part + (n % parts) * part / parts
+ }
+ 
+-pub(crate) fn line_count(n: usize, bpk: u32) -> Result<usize, SizeError> {
+-    Ok(BloomFilter::<true>::word_count(n, bpk)? / 16)
+-}
+-
+-pub(crate) fn backends() -> (bool, bool) {
+-    #[cfg(target_arch = "x86_64")]
+-    {
+-        let avx2 = std::is_x86_feature_detected!("avx2");
+-        let avx512 =
+-            !cfg!(feature = "disable-avx512") && avx2 && std::is_x86_feature_detected!("avx512f");
+-        (avx512, avx2)
+-    }
+-    #[cfg(not(target_arch = "x86_64"))]
+-    {
+-        (false, false)
+-    }
+-}
+-
+-pub(crate) fn backend(avx512: bool, avx2: bool) -> &'static str {
+-    if avx512 {
+-        "avx512"
+-    } else if avx2 {
+-        "avx2"
+-    } else {
+-        "scalar"
+-    }
+-}
+-
+-pub(crate) fn build_workers(n: usize, requested: usize, lines: usize) -> usize {
+-    workers(n, requested, lines)
+-}
+-
+-pub(crate) fn scratch_bytes(n: usize, requested: usize, lines: usize) -> usize {
+-    let w = build_workers(n, requested, lines);
+-    if w == 1 {
+-        return 0;
+-    }
+-    let row_lines = w.div_ceil(COUNTERS_PER_LINE);
+-    let bytes = || -> Option<usize> {
+-        let hashes = n.checked_mul(8)?;
+-        let counts = w.checked_mul(row_lines)?.checked_mul(64)?;
+-        let starts = w
+-            .checked_add(1)?
+-            .checked_mul(std::mem::size_of::<usize>())?;
+-        let descriptors =
+-            std::mem::size_of::<&mut [u64]>().checked_add(std::mem::size_of::<usize>())?;
+-        let scatter = w.checked_mul(w)?.checked_mul(descriptors)?;
+-        let vectors = w
+-            .checked_mul(2)?
+-            .checked_mul(std::mem::size_of::<Vec<usize>>())?;
+-        [hashes, counts, starts, scatter, vectors]
+-            .into_iter()
+-            .try_fold(0usize, usize::checked_add)
+-    };
+-    bytes().expect("build scratch size overflow")
+-}
+-
+-// `line_of` must be the global cache-line index of every write performed for h.
++// Only for layouts whose cache line is high32(hash) * lines >> 32.
+ // `insert` receives only hashes belonging to its exclusive owned line slice.
+ // Concrete layout modules keep these closures private; no public unsafe contract.
+-pub(crate) fn insert<L, Index, Insert>(
+-    lines: &mut [L],
+-    hashes: &[u64],
+-    requested: usize,
+-    line_of: Index,
+-    insert: Insert,
+-) where
++pub(crate) fn insert<L, Insert>(lines: &mut [L], hashes: &[u64], requested: usize, insert: Insert)
++where
+     L: Send,
+-    Index: Fn(u64) -> usize + Sync,
+     Insert: Fn(&mut [L], usize, &[u64]) + Sync,
+ {
+     let w = build_workers(hashes.len(), requested, lines.len());
+@@ -89,9 +26,8 @@
+         return;
+     }
+     let line_count = lines.len();
+-    debug_assert!(line_count.is_power_of_two());
+-    let line_shift = line_count.trailing_zeros();
+-    let shard = |hash| ((line_of(hash) as u64 * w as u64) >> line_shift) as usize;
++    let partition = Partition::new(line_count, w);
++    let shard = |hash| partition.owner(hash);
+     let row_lines = w.div_ceil(COUNTERS_PER_LINE);
+     let mut counts = vec![HistogramLine([0; COUNTERS_PER_LINE]); w * row_lines];
+     thread::scope(|scope| {
+@@ -164,63 +100,30 @@
+     });
+ }
+ 
+-pub(crate) fn lookup<Lookup>(hashes: &[u64], out: &mut [u32], requested: usize, lookup: Lookup)
+-where
+-    Lookup: Fn(&[u64], &mut [u32]) + Sync,
+-{
+-    assert_eq!(hashes.len(), out.len(), "one output is required per input");
+-    let w = workers(hashes.len(), requested, usize::MAX);
+-    if w == 1 {
+-        lookup(hashes, out);
+-        return;
++// Divisible line counts have exact equal-sized shards. In that case nested
++// floors simplify to a single multiply-high; see OWNERSHIP.md for the proof.
++#[derive(Clone, Copy)]
++pub(crate) struct Partition {
++    lines: u64,
++    workers: u64,
++    divisible: bool,
++}
++impl Partition {
++    pub(crate) fn new(lines: usize, workers: usize) -> Self {
++        assert!(lines > 0 && lines <= 1 << 22 && workers > 0 && workers <= lines);
++        Self {
++            lines: lines as u64,
++            workers: workers as u64,
++            divisible: lines.is_multiple_of(workers),
++        }
+     }
+-    thread::scope(|scope| {
+-        let mut remaining = out;
+-        for worker in 0..w {
+-            let begin = split_point(hashes.len(), worker, w);
+-            let end = split_point(hashes.len(), worker + 1, w);
+-            let (owned, rest) = remaining.split_at_mut(end - begin);
+-            remaining = rest;
+-            let input = &hashes[begin..end];
+-            let lookup = &lookup;
+-            scope.spawn(move || lookup(input, owned));
+-        }
+-    });
+-}
+-
+-#[cfg(test)]
+-mod tests {
+-    use super::*;
+-    use crate::{FourSectorBloomFilter, Split64BloomFilter};
+-
+-    #[test]
+-    fn scratch_estimate_checks_multiplication_and_total() {
+-        let overhead = scratch_bytes(16384, 2, 2) - 16384 * 8;
+-        let largest = (usize::MAX - overhead) / 8;
+-        assert_eq!(scratch_bytes(largest, 2, 2), largest * 8 + overhead);
+-        // The element array still fits at largest+1; adding metadata overflows.
+-        assert!((largest + 1).checked_mul(8).is_some());
+-        assert!(std::panic::catch_unwind(|| scratch_bytes(largest + 1, 2, 2)).is_err());
+-        assert!(std::panic::catch_unwind(|| scratch_bytes(usize::MAX, 2, 2)).is_err());
+-        assert_eq!(scratch_bytes(usize::MAX, 1, 2), 0);
+-    }
+-
+-    #[test]
+-    fn public_scratch_overflow_has_explicit_panic() {
+-        let split = Split64BloomFilter::new(1, 8).unwrap();
+-        let four = FourSectorBloomFilter::new(1, 8).unwrap();
+-        for failure in [
+-            std::panic::catch_unwind(|| split.build_scratch_bytes(usize::MAX, 2)),
+-            std::panic::catch_unwind(|| four.build_scratch_bytes(usize::MAX, 2)),
+-        ] {
+-            let error = failure.expect_err("overflow must not wrap into a small estimate");
+-            assert_eq!(
+-                error
+-                    .downcast_ref::<String>()
+-                    .map(String::as_str)
+-                    .or_else(|| error.downcast_ref::<&str>().copied()),
+-                Some("build scratch size overflow")
+-            );
++    #[inline]
++    pub(crate) fn owner(self, hash: u64) -> usize {
++        let high = hash >> 32;
++        if self.divisible {
++            ((high * self.workers) >> 32) as usize
++        } else {
++            ((((high * self.lines) >> 32) * self.workers) / self.lines) as usize
+         }
+     }
+ }
+--- include/parallel_layout_bloom.h
++++ cpp/parallel_split64_range.h
+@@ -1,22 +1,35 @@
+ #pragma once
+ #include "parallel_bloom.h"
+-#include "four_sector_bloom.h"
+ #include "split64_bloom.h"
+-#include "byte_split_bloom.h"
+ 
+ namespace bloom_filters {
++struct RangePartition {
++    const uint64_t lines, workers;
++    const bool divisible;
++    RangePartition(size_t l, size_t w) : lines(l), workers(w), divisible(w && l % w == 0) {
++        if (!l || l > (size_t{1} << 22) || !w || w > l)
++            throw std::invalid_argument("invalid range partition");
++    }
++    size_t Owner(uint64_t hash) const {
++        const uint64_t high = hash >> 32;
++        return divisible ? (high * workers >> 32) : ((high * lines >> 32) * workers / lines);
++    }
++};
++
+ // Exclusive construction assigns complete cache lines to workers. Different
+ // layouts supply their own line index; their bucket/word addressing differs.
+ // Thread creation, partitioning and scratch allocation are included in build work.
+-template <class Filter>
+-class ParallelLayoutBloomFilter {
++class ParallelSplit64RangeBloomFilter {
++	using Filter = Split64Range;
+ 	static constexpr size_t CountersPerLine = 64 / sizeof(size_t);
+ 	static size_t CounterStride(size_t workers) {
+ 		return ((workers + CountersPerLine - 1) / CountersPerLine) * CountersPerLine;
+ 	}
+ 
+ public:
+-	ParallelLayoutBloomFilter(size_t keys, uint32_t bits_per_key) : filter_(keys, bits_per_key) {
++	explicit ParallelSplit64RangeBloomFilter(RangeBytes bytes) : filter_(bytes) {}
++	const void *Data() const { return filter_.Data(); }
++	ParallelSplit64RangeBloomFilter(size_t keys, uint32_t bits_per_key) : filter_(keys, bits_per_key) {
+ 	}
+ 	size_t SizeInBytes() const {
+ 		return filter_.SizeInBytes();
+@@ -45,7 +58,7 @@
+ 			filter_.Insert(n, keys);
+ 			return;
+ 		}
+-		const unsigned line_shift = parallel_detail::Log2(filter_.CacheLineCount());
++		const RangePartition partition(filter_.CacheLineCount(), workers);
+ 		const size_t stride = CounterStride(workers);
+ 		// Padding alone is insufficient: align the allocation too, otherwise
+ 		// adjacent histogram rows can still share a boundary cache line.
+@@ -53,7 +66,7 @@
+ 		std::vector<size_t> starts(workers + 1);
+ 		std::unique_ptr<uint64_t[]> partitioned(new uint64_t[n]);
+ 		auto shard = [&](uint64_t h) {
+-			return (uint64_t(filter_.CacheLineIndex(h)) * workers) >> line_shift;
++			return partition.Owner(h);
+ 		};
+ 		parallel_detail::For(workers, [&](size_t worker) {
+ 			for (size_t i = uint64_t(n) * worker / workers; i < uint64_t(n) * (worker + 1) / workers; ++i)
+@@ -95,7 +108,4 @@
+ 	Filter filter_;
+ };
+ 
+-using ParallelFourSectorBloomFilter = ParallelLayoutBloomFilter<FourSectorBloomFilter>;
+-using ParallelSplit64BloomFilter = ParallelLayoutBloomFilter<Split64BloomFilter>;
+-using ParallelByteSplitBloomFilter = ParallelLayoutBloomFilter<ByteSplitBloomFilter>;
+ } // namespace bloom_filters
+--- experiments/2026-10-29-range-layouts/split64_bloom.h
++++ cpp/split64_bloom.h
+@@ -17,12 +17,14 @@
+ class Split64Range {
+ 	static constexpr size_t Prefetch = 32;
+ 	friend struct RangeLayoutInspector;
++public:
+ 	size_t CacheLineCount() const {
+ 		return lines_.size();
+ 	}
+ 	size_t CacheLineIndex(uint64_t hash) const {
+ 		return Block(hash);
+ 	}
++private:
+ 	struct alignas(64) Line {
+ 		uint64_t words[8] {};
+ 	};
+@@ -122,6 +124,8 @@
+ 	size_t SizeInBytes() const {
+ 		return lines_.capacity() * sizeof(Line);
+ 	}
++	bool ContainsHash(uint64_t hash) const { return LookupOne(hash); }
++	const void *Data() const { return lines_.front().words; }
+ 	void Insert(uint32_t n, const uint64_t *hashes) {
+ 		size_t i = 0;
+ 		if constexpr (Prefetch) {
