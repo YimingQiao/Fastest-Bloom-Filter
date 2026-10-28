@@ -50,9 +50,14 @@ mask dictionary in the report remains experimental. See the
 
 A newer [240-row RocksDB-inclusive screen](docs/rocksdb-screen-2026-10-29.md)
 retains large-batch leads while exposing remaining single-key and short-batch
-losses. ByteSplit's [prototype comparison](experiments/2026-10-29-direct-split/modern-comparison/README.md)
-found about an 8% small-filter single-key gain; the native C++/Rust port has a
-[separate confirmation protocol](docs/byte-split-confirmation-protocol-2026-10-29.md).
+losses. The completed [native single-key confirmation](docs/byte-confirmation-2026-10-29.md)
+adds **276 C++ / 96 Rust rows** with three held-out seeds and stronger FastFilter
+single-call controls. C++ ByteSplit's small-filter prehashed query is **7–8% faster**,
+but its hash+query advantage shrinks to **0.5–0.9%**. Split64 leads the C++ 0.1% FPR
+band by **1.10–1.20×** in hash+query; FastFilter still wins the strict 0.01% band
+and the large-filter 1% band in that metric. Rust also retains small-filter losses
+against Bloomsday. These results supersede the prototype's roughly 8% end-to-end
+gain as evidence for the native port; optimization continues from the losses.
 
 ## Native layouts
 
