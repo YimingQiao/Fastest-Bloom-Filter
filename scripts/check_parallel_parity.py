@@ -3,26 +3,64 @@
 import csv
 import io
 import subprocess
+import argparse
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--cpp", default="build/native/parallel_benchmark")
+parser.add_argument("--rust", default="rust/target/release/parallel_benchmark")
+parser.add_argument("--families", default="all")
+args = parser.parse_args()
+families = (
+    ["FastPattern", "FourSector", "Split64"]
+    if args.families == "all"
+    else args.families.split(",")
+)
+if not set(families) <= {"FastPattern", "FourSector", "Split64"} or len(
+    set(families)
+) != len(families):
+    parser.error("invalid or duplicate families")
+expected = {
+    family + mode
+    for family in families
+    for mode in (
+        ["Serial", "Partitioned", "Atomic"]
+        if family == "FastPattern"
+        else ["Serial", "Partitioned"]
+    )
+}
 
 for threads in [1, 3, 8]:
     for bpk in [4, 16]:
         for hit in [0, 50, 100]:
             params = ["16", str(bpk), "16", str(threads), "1", "42", str(hit)]
+            if args.families != "FastPattern":
+                params.append(args.families)
 
             def run(exe):
                 result = subprocess.run(
                     [exe] + params, text=True, capture_output=True, check=True
                 )
-                return list(csv.DictReader(io.StringIO(result.stdout)))
+                rows = list(csv.DictReader(io.StringIO(result.stdout)))
+                assert (
+                    len(rows) == len(expected)
+                    and {r["filter"] for r in rows} == expected
+                )
+                return rows
 
-            rows = run("build/native/parallel_benchmark") + run(
-                "rust/target/release/parallel_benchmark"
-            )
-            for field in [
-                "result_checksum",
-                "false_positives",
-                "absent_queries",
-                "filter_bytes",
-            ]:
-                assert len({r[field] for r in rows}) == 1, (params, field, rows)
-print("All three modes agree within and across C++/Rust for 18 parallel workloads.")
+            rows = run(args.cpp) + run(args.rust)
+            for family in families:
+                rr = [r for r in rows if r["filter"].startswith(family)]
+                for field in [
+                    "result_checksum",
+                    "false_positives",
+                    "absent_queries",
+                    "filter_bytes",
+                ]:
+                    assert len({r[field] for r in rr}) == 1, (params, family, field, rr)
+            for name in expected:
+                rr = [r for r in rows if r["filter"] == name]
+                for field in ["build_workers", "query_workers"]:
+                    assert len({r[field] for r in rr}) == 1, (params, name, field, rr)
+print(
+    f"{len(expected)} modes agree within and across C++/Rust for 18 parallel workloads; scratch is reported separately."
+)

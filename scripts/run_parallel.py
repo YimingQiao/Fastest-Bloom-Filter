@@ -49,9 +49,10 @@ def main():
     if (
         min(args.threads) < 1
         or max(args.threads) > len(args.cpus)
+        or len(set(args.cpus)) != len(args.cpus)
         or not set(args.cpus) <= os.sched_getaffinity(0)
     ):
-        p.error("provide enough allowed CPUs for the requested threads")
+        p.error("provide enough distinct allowed CPUs for the requested threads")
     exe = Path(args.executable).resolve()
     out = Path(args.output_dir)
     out.mkdir(parents=True, exist_ok=False)

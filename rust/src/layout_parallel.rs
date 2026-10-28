@@ -50,11 +50,23 @@ pub(crate) fn scratch_bytes(n: usize, requested: usize, lines: usize) -> usize {
         return 0;
     }
     let row_lines = w.div_ceil(COUNTERS_PER_LINE);
-    n * 8
-        + w * row_lines * 64
-        + (w + 1) * std::mem::size_of::<usize>()
-        + w * w * (std::mem::size_of::<&mut [u64]>() + std::mem::size_of::<usize>())
-        + 2 * w * std::mem::size_of::<Vec<usize>>()
+    let bytes = || -> Option<usize> {
+        let hashes = n.checked_mul(8)?;
+        let counts = w.checked_mul(row_lines)?.checked_mul(64)?;
+        let starts = w
+            .checked_add(1)?
+            .checked_mul(std::mem::size_of::<usize>())?;
+        let descriptors =
+            std::mem::size_of::<&mut [u64]>().checked_add(std::mem::size_of::<usize>())?;
+        let scatter = w.checked_mul(w)?.checked_mul(descriptors)?;
+        let vectors = w
+            .checked_mul(2)?
+            .checked_mul(std::mem::size_of::<Vec<usize>>())?;
+        [hashes, counts, starts, scatter, vectors]
+            .into_iter()
+            .try_fold(0usize, usize::checked_add)
+    };
+    bytes().expect("build scratch size overflow")
 }
 
 // `line_of` must be the global cache-line index of every write performed for h.
@@ -174,4 +186,41 @@ where
             scope.spawn(move || lookup(input, owned));
         }
     });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{FourSectorBloomFilter, Split64BloomFilter};
+
+    #[test]
+    fn scratch_estimate_checks_multiplication_and_total() {
+        let overhead = scratch_bytes(16384, 2, 2) - 16384 * 8;
+        let largest = (usize::MAX - overhead) / 8;
+        assert_eq!(scratch_bytes(largest, 2, 2), largest * 8 + overhead);
+        // The element array still fits at largest+1; adding metadata overflows.
+        assert!((largest + 1).checked_mul(8).is_some());
+        assert!(std::panic::catch_unwind(|| scratch_bytes(largest + 1, 2, 2)).is_err());
+        assert!(std::panic::catch_unwind(|| scratch_bytes(usize::MAX, 2, 2)).is_err());
+        assert_eq!(scratch_bytes(usize::MAX, 1, 2), 0);
+    }
+
+    #[test]
+    fn public_scratch_overflow_has_explicit_panic() {
+        let split = Split64BloomFilter::new(1, 8).unwrap();
+        let four = FourSectorBloomFilter::new(1, 8).unwrap();
+        for failure in [
+            std::panic::catch_unwind(|| split.build_scratch_bytes(usize::MAX, 2)),
+            std::panic::catch_unwind(|| four.build_scratch_bytes(usize::MAX, 2)),
+        ] {
+            let error = failure.expect_err("overflow must not wrap into a small estimate");
+            assert_eq!(
+                error
+                    .downcast_ref::<String>()
+                    .map(String::as_str)
+                    .or_else(|| error.downcast_ref::<&str>().copied()),
+                Some("build scratch size overflow")
+            );
+        }
+    }
 }

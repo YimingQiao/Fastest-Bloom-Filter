@@ -76,6 +76,7 @@ impl FourSectorBloomFilter {
         layout_parallel::build_workers(n, requested, self.lines.len())
     }
     /// Peak explicit construction scratch, excluding allocator metadata and OS thread stacks.
+    /// Panics with `build scratch size overflow` if a multiworker estimate cannot fit in `usize`.
     pub fn build_scratch_bytes(&self, n: usize, requested: usize) -> usize {
         layout_parallel::scratch_bytes(n, requested, self.lines.len())
     }
