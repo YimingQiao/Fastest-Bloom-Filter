@@ -1,6 +1,6 @@
 use fastest_bloom_filter::{
-    hash64, AtomicFastPatternBloomFilter, FastPatternBloomFilter, FourSectorBloomFilter,
-    Split64BloomFilter,
+    hash64, AtomicFastPatternBloomFilter, ByteSplitBloomFilter, FastPatternBloomFilter,
+    FourSectorBloomFilter, Split64BloomFilter,
 };
 use std::{hint::black_box, time::Instant};
 struct Rng(u64);
@@ -38,6 +38,7 @@ enum Filter {
     Plain(FastPatternBloomFilter),
     Four(FourSectorBloomFilter),
     Split(Split64BloomFilter),
+    Byte(ByteSplitBloomFilter),
     Atomic(AtomicFastPatternBloomFilter),
 }
 impl Filter {
@@ -47,6 +48,7 @@ impl Filter {
             2 => Self::Atomic(AtomicFastPatternBloomFilter::new(n, bpk).unwrap()),
             3 | 4 => Self::Four(FourSectorBloomFilter::new(n, bpk).unwrap()),
             5 | 6 => Self::Split(Split64BloomFilter::new(n, bpk).unwrap()),
+            7 | 8 => Self::Byte(ByteSplitBloomFilter::new(n, bpk).unwrap()),
             _ => unreachable!(),
         }
     }
@@ -55,6 +57,7 @@ impl Filter {
             Self::Plain(b) => b.size_in_bytes(),
             Self::Four(b) => b.size_in_bytes(),
             Self::Split(b) => b.size_in_bytes(),
+            Self::Byte(b) => b.size_in_bytes(),
             Self::Atomic(b) => b.size_in_bytes(),
         }
     }
@@ -63,11 +66,12 @@ impl Filter {
             Self::Plain(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
             Self::Four(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
             Self::Split(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
+            Self::Byte(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
             Self::Atomic(_) => (workers(n, t), 0),
         }
     }
     fn insert(&mut self, h: &[u64], mode: usize, t: usize) {
-        let partitioned = matches!(mode, 1 | 4 | 6);
+        let partitioned = matches!(mode, 1 | 4 | 6 | 8);
         match self {
             Self::Plain(b) => {
                 if partitioned {
@@ -84,6 +88,13 @@ impl Filter {
                 }
             }
             Self::Split(b) => {
+                if partitioned {
+                    b.insert_hashes_parallel(h, t)
+                } else {
+                    b.insert_hashes(h)
+                }
+            }
+            Self::Byte(b) => {
                 if partitioned {
                     b.insert_hashes_parallel(h, t)
                 } else {
@@ -94,7 +105,7 @@ impl Filter {
         }
     }
     fn lookup(&self, h: &[u64], out: &mut [u32], mode: usize, t: usize) {
-        let parallel = matches!(mode, 1 | 2 | 4 | 6);
+        let parallel = matches!(mode, 1 | 2 | 4 | 6 | 8);
         match self {
             Self::Plain(b) => {
                 if parallel {
@@ -111,6 +122,13 @@ impl Filter {
                 }
             }
             Self::Split(b) => {
+                if parallel {
+                    b.lookup_hashes_parallel(h, out, t)
+                } else {
+                    b.lookup_hashes(h, out)
+                }
+            }
+            Self::Byte(b) => {
                 if parallel {
                     b.lookup_hashes_parallel(h, out, t)
                 } else {
@@ -143,6 +161,8 @@ fn run(mode: usize, keys: &[u64], query: &[u64], truth: &[bool], c: &Config) {
         "FourSectorPartitioned",
         "Split64Serial",
         "Split64Partitioned",
+        "ByteSplitSerial",
+        "ByteSplitPartitioned",
     ][mode];
     let mut out = vec![0; query.len()];
     let mut check = vec![0; 4096];
@@ -153,7 +173,7 @@ fn run(mode: usize, keys: &[u64], query: &[u64], truth: &[bool], c: &Config) {
     for _ in 0..c.reps {
         let mut bf = Filter::new(keys.len(), c.bpk, mode);
         bytes = bf.bytes();
-        if matches!(mode, 1 | 2 | 4 | 6) {
+        if matches!(mode, 1 | 2 | 4 | 6 | 8) {
             (bw, scratch) = bf.build_stats(keys.len(), c.threads);
             qw = workers(query.len(), c.threads);
         }
@@ -214,6 +234,9 @@ fn run(mode: usize, keys: &[u64], query: &[u64], truth: &[bool], c: &Config) {
         lookup.iter().copied().fold(0.0, f64::max)
     );
 }
+#[path = "support/filter_selection.rs"]
+mod filter_selection;
+
 fn main() {
     let args: Vec<_> = std::env::args().collect();
     let num = |i: usize, d: u64| {
@@ -240,6 +263,19 @@ fn main() {
             && hit <= 100
             && args.len() <= 9
     );
+    let selection = args.get(8).map(String::as_str).unwrap_or("FastPattern");
+    if selection.is_empty() {
+        eprintln!("parallel filter family selection must not be empty");
+        std::process::exit(2);
+    }
+    let families = filter_selection::select_filters(
+        if selection == "all" { "" } else { selection },
+        &["FastPattern", "FourSector", "Split64", "ByteSplit"],
+    )
+    .unwrap_or_else(|error| {
+        eprintln!("{error}");
+        std::process::exit(2);
+    });
     let n = 1usize << kp;
     let q = 1usize << qp;
     assert!(n * (bpk as usize) < (1usize << 31));
@@ -267,26 +303,14 @@ fn main() {
         truth.swap(i - 1, j);
     }
     println!("language,filter,keys,queries,requested_bpk,filter_bytes,threads,build_workers,query_workers,build_scratch_bytes,repeats,seed,hit_percent,insert_ns,lookup_ns,absent_queries,false_positives,fpr,result_checksum,insert_min_ns,insert_max_ns,lookup_min_ns,lookup_max_ns");
-    let selected = args.get(8).map(String::as_str).unwrap_or("FastPattern");
-    let selected = if selected.is_empty() {
-        "FastPattern"
-    } else {
-        selected
-    };
-    assert!(
-        selected == "all"
-            || selected
-                .split(',')
-                .all(|s| matches!(s, "FastPattern" | "FourSector" | "Split64")),
-        "unknown filter family"
-    );
     let mut order = vec![];
     for (family, modes) in [
         ("FastPattern", &[0, 1, 2][..]),
         ("FourSector", &[3, 4][..]),
         ("Split64", &[5, 6][..]),
+        ("ByteSplit", &[7, 8][..]),
     ] {
-        if selected == "all" || selected.split(',').any(|s| s == family) {
+        if families.contains(&family) {
             order.extend_from_slice(modes);
         }
     }

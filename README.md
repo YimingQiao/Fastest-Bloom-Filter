@@ -2,8 +2,8 @@
 
 Native **C++17 and Rust** Bloom filters with **AVX-512 / AVX2**, parallel construction,
 parallel membership queries, and an atomic FastPattern type for concurrent readers/writers.
-Three native layouts cover different throughput/accuracy tradeoffs: **FastPattern**,
-**FourSector**, and **Split64**. Each keeps a key's probes within one cache line.
+Four native layouts cover different throughput/accuracy tradeoffs: **FastPattern**,
+**FourSector**, **Split64**, and **ByteSplit**. Each keeps a key's probes within one cache line.
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
 
@@ -12,7 +12,8 @@ The project name is an ambition, not a claim that one implementation wins every 
 The initial screen compared **43 C++ configurations in one shuffled process**:
 FastPattern, pinned FastFilter SIMD/classical variants, PageBloomFilter, and
 Boost.Bloom 1.92 with its native bulk APIs. The current executable adds native
-FourSector/Split64 and eight RocksDB FastLocalBloom core configurations, for **53**.
+FourSector/Split64/ByteSplit, eight RocksDB FastLocalBloom core configurations,
+and two FastFilter single-call controls, for **56**.
 A separate native Rust suite includes
 pinned Bloomsday and fastbloom. See the [survey](docs/external-survey-2026-10-28.md)
 and [shared-harness instructions](benchmarks/all-external/README.md).
@@ -47,6 +48,12 @@ mask dictionary in the report remains experimental. See the
 [screening results](docs/modern-screen-2026-10-28.md), and
 [frozen protocol](docs/confirmation-protocol-2026-10-28.md).
 
+A newer [240-row RocksDB-inclusive screen](docs/rocksdb-screen-2026-10-29.md)
+retains large-batch leads while exposing remaining single-key and short-batch
+losses. ByteSplit's [prototype comparison](experiments/2026-10-29-direct-split/modern-comparison/README.md)
+found about an 8% small-filter single-key gain; the native C++/Rust port has a
+[separate confirmation protocol](docs/byte-split-confirmation-protocol-2026-10-29.md).
+
 ## Native layouts
 
 | Layout | C++ header/type | Rust type | Observed FPR at 16 actual bits/key |
@@ -54,13 +61,18 @@ mask dictionary in the report remains experimental. See the
 | FastPattern | `fast_pattern_BF.h` / `FastPatternBF` | `FastPatternBloomFilter` | About 0.20% |
 | FourSector | `four_sector_bloom.h` / `FourSectorBloomFilter` | `FourSectorBloomFilter` | About 0.098% |
 | Split64 | `split64_bloom.h` / `Split64BloomFilter` | `Split64BloomFilter` | About 0.091% |
+| ByteSplit | `byte_split_bloom.h` / `ByteSplitBloomFilter` | `ByteSplitBloomFilter` | About 0.55% |
 
 These FPRs are measured on uniform hashes, not hard guarantees for arbitrary inputs.
 FourSector sets two bits in each of four 32-bit sectors; Split64 sets one in each
 of eight 64-bit sectors. Both have native scalar, AVX2 and AVX-512 query paths,
 with matching C++/Rust bitmaps, exclusive parallel construction and parallel reads.
 Rust detects CPU support at runtime; C++ selects its backend at compilation.
-The `disable-avx512` Rust feature applies to all three native layouts.
+The `disable-avx512` Rust feature disables AVX-512 in the first three layouts.
+ByteSplit uses 128-bit SIMD (SSSE3/SSE4.1 in C++, runtime AVX2-gated in Rust),
+with a scalar fallback. It adapts FastFilter's Fixed16 mask with direct addressing;
+four 16-byte buckets share each aligned cache line. It also supports exclusive
+parallel construction and parallel immutable queries, with matching C++/Rust bitmaps.
 
 The constructor's bits/key parameter preserves the repository's **strict next
 power-of-two** allocation rule: for a power-of-two key count, requesting 8 yields
@@ -158,8 +170,8 @@ must name the enabled instruction set.
 Both languages support parallel construction, parallel immutable queries, and a
 separate atomic filter for overlapping writers/readers.
 
-For FourSector and Split64, C++ provides `ParallelFourSectorBloomFilter` and
-`ParallelSplit64BloomFilter` in `parallel_layout_bloom.h`, with the same
+For FourSector, Split64 and ByteSplit, C++ provides `ParallelFourSectorBloomFilter`,
+`ParallelSplit64BloomFilter` and `ParallelByteSplitBloomFilter` in `parallel_layout_bloom.h`, with the same
 `InsertParallel` / `LookupParallel` interface shown below. Their Rust types expose
 `insert_hashes_parallel` / `lookup_hashes_parallel` directly. Each builder partitions
 by its layout's actual cache-line index; it does not replicate the bitmap per worker.
@@ -388,4 +400,5 @@ Inspired by Harald Lang, Thomas Neumann, Alfons Kemper, and Peter Boncz,
 [bbtree's cost-model approach](https://blog.xiangpeng.systems/posts/bbtree/): reduce
 cache misses, overlap independent memory accesses, and reduce instructions on hot data.
 
-[MIT license](LICENSE).
+[MIT license](LICENSE); ByteSplit's derived implementation is covered by the
+[Apache-2.0 component notice](third_party/FastFilter/NOTICE) and retained license.

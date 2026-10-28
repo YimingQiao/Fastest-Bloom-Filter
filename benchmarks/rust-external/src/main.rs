@@ -1,4 +1,6 @@
-use fastest_bloom_filter::{hash64, BloomFilter};
+use fastest_bloom_filter::{
+    hash64, BloomFilter, ByteSplitBloomFilter, FourSectorBloomFilter, Split64BloomFilter,
+};
 mod four_sector;
 mod split64;
 use std::{
@@ -30,6 +32,28 @@ impl<const P: bool> Filter for BloomFilter<P> {
         BloomFilter::lookup_hashes(self, h, out)
     }
 }
+macro_rules! native_filter {
+    ($filter:ty) => {
+        impl Filter for $filter {
+            fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
+                Ok(<$filter>::new(n, bpk)?)
+            }
+            fn size_in_bytes(&self) -> usize {
+                <$filter>::size_in_bytes(self)
+            }
+            fn insert_hashes(&mut self, hashes: &[u64]) {
+                <$filter>::insert_hashes(self, hashes)
+            }
+            fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
+                <$filter>::lookup_hashes(self, hashes, out)
+            }
+        }
+    };
+}
+native_filter!(ByteSplitBloomFilter);
+native_filter!(FourSectorBloomFilter);
+native_filter!(Split64BloomFilter);
+
 struct Fastbloom017(fastbloom::BloomFilter);
 impl Filter for Fastbloom017 {
     fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
@@ -369,6 +393,9 @@ const FILTER_NAMES: &[&str] = &[
     "BloomsdayPinned",
     "Split64Experimental",
     "FourSector16K8Experimental",
+    "ByteSplitBloomFilter",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter",
 ];
 
 fn main() {
@@ -450,6 +477,9 @@ fn main() {
     for name in jobs {
         match name {
             "FastPatternBF" => run::<BloomFilter<true>>(name, &inserted, &query, &c),
+            "ByteSplitBloomFilter" => run::<ByteSplitBloomFilter>(name, &inserted, &query, &c),
+            "FourSectorBloomFilter" => run::<FourSectorBloomFilter>(name, &inserted, &query, &c),
+            "Split64BloomFilter" => run::<Split64BloomFilter>(name, &inserted, &query, &c),
             "Fastbloom017" => run::<Fastbloom017>(name, &inserted, &query, &c),
             "BloomsdayPinned" => run::<BloomsdayPinned>(name, &inserted, &query, &c),
             "Split64Experimental" => {

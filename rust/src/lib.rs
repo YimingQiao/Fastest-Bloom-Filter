@@ -3,11 +3,13 @@
 //! Each filter layout has its own bitmap mapping; layouts are not interchangeable.
 use std::fmt;
 
+mod byte_split;
 mod four_sector;
 mod layout_parallel;
 mod parallel;
 mod patterns;
 mod split64;
+pub use byte_split::ByteSplitBloomFilter;
 pub use four_sector::FourSectorBloomFilter;
 pub use parallel::AtomicFastPatternBloomFilter;
 pub use split64::Split64BloomFilter;

@@ -21,7 +21,7 @@ for bpk in [4, 8, 16]:
     for hit in [0, 50, 100]:
         rows = run(bpk, hit, 1024)
         partial = run(bpk, hit, 31)
-        assert len(rows) == 24, len(rows)
+        assert len(rows) == 26, len(rows)
         present = sum(i % 100 < hit for i in range(4096))
         assert len({r["filter_bytes"] for r in rows.values()}) == 1
         for name, row in rows.items():
@@ -48,6 +48,8 @@ for bpk in [4, 8, 16]:
                 assert float(row["insert_ns"]) > 0
                 assert float(row["lookup_ns"]) > 0
         for a, b in [
+            ("FastFilterFixed16", "FastFilterFixed16SingleV1"),
+            ("FastFilterSimdBlock", "FastFilterSimdBlockSingleV1"),
             ("FastFilterFixed32", "FastFilterFixed32Bulk"),
             ("FastFilterClassic6", "FastFilterClassic6Bulk"),
             ("FastFilterClassic11", "FastFilterClassic11Bulk"),
@@ -57,6 +59,17 @@ for bpk in [4, 8, 16]:
             ("FastFilterClassic22", "FastFilterClassic22Branchless"),
         ]:
             assert rows[a]["result_checksum"] == rows[b]["result_checksum"], (a, b)
+# The added controls specifically specialize n=1, so validate that path as well.
+for batch in (1, 7):
+    paired = subprocess.check_output(
+        [exe, "10", "8", "50", "12", str(batch), "1", "731",
+         "FastFilterFixed16,FastFilterFixed16SingleV1,FastFilterSimdBlock,FastFilterSimdBlockSingleV1", "1024", "12"],
+        text=True,
+    )
+    paired = {r["filter"]: r for r in csv.DictReader(io.StringIO(paired))}
+    for base in ("FastFilterFixed16", "FastFilterSimdBlock"):
+        for field in ("filter_bytes", "result_checksum", "false_positives", "calibration_false_positives"):
+            assert paired[base][field] == paired[base + "SingleV1"][field]
 # Exercise upstream AddAll block-buffer flushes, not only the short-buffer path.
 large = subprocess.check_output(
     [
@@ -80,5 +93,5 @@ for a, b in [
 ]:
     assert large[a]["result_checksum"] == large[b]["result_checksum"]
 print(
-    "24 adapters: space, no-false-negative validation, raw/prehash accounting, bulk/loop parity passed."
+    "26 adapters: space, no-false-negative validation, raw/prehash accounting, bulk/loop and single-control parity passed."
 )

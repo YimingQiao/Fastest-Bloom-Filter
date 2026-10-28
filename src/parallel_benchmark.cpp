@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <numeric>
+#include <set>
 #include <stdexcept>
 #include <vector>
 using namespace bloom_filters;
@@ -34,6 +35,7 @@ struct SerialLayout : Filter {
 using Serial = SerialLayout<FastPatternBF>;
 using FourSerial = SerialLayout<FourSectorBloomFilter>;
 using SplitSerial = SerialLayout<Split64BloomFilter>;
+using ByteSerial = SerialLayout<ByteSplitBloomFilter>;
 template <class BF, class = void>
 struct HasBuildAccounting : std::false_type {};
 template <class BF>
@@ -121,6 +123,23 @@ int main(int argc, char **argv) {
 		size_t n = size_t {1} << kp, q = size_t {1} << qp;
 		if (n * bpk >= (size_t {1} << 31))
 			throw std::invalid_argument("capacity exceeded");
+		const std::string selection = argc > 8 ? argv[8] : "FastPattern";
+		const std::set<std::string> available {"FastPattern", "FourSector", "Split64", "ByteSplit"};
+		std::set<std::string> families;
+		if (selection == "all") {
+			families = available;
+		} else {
+			size_t begin = 0;
+			for (;;) {
+				const size_t end = selection.find(',', begin);
+				const auto family = selection.substr(begin, end == std::string::npos ? end : end - begin);
+				if (!available.count(family) || !families.insert(family).second)
+					throw std::invalid_argument("unknown, empty or duplicate filter family: " + family);
+				if (end == std::string::npos)
+					break;
+				begin = end + 1;
+			}
+		}
 		RNG rng {seed};
 		uint64_t base = rng.next() % ((uint64_t {1} << 32) - n - q);
 		std::vector<uint64_t> keys(n), query(q);
@@ -141,10 +160,8 @@ int main(int argc, char **argv) {
 		std::cout << "language,filter,keys,queries,requested_bpk,filter_bytes,threads,build_workers,query_workers,"
 		             "build_scratch_bytes,repeats,seed,hit_percent,insert_ns,lookup_ns,absent_queries,false_positives,"
 		             "fpr,result_checksum,insert_min_ns,insert_max_ns,lookup_min_ns,lookup_max_ns\n";
-		const std::string selection = argc > 8 ? argv[8] : "FastPattern";
 		auto selected = [&](const char *family) {
-			return selection == "all" ||
-			       ("," + selection + ",").find(std::string(",") + family + ",") != std::string::npos;
+			return families.count(family) != 0;
 		};
 		std::vector<unsigned> order;
 		if (selected("FastPattern"))
@@ -153,6 +170,8 @@ int main(int argc, char **argv) {
 			order.insert(order.end(), {3, 4});
 		if (selected("Split64"))
 			order.insert(order.end(), {5, 6});
+		if (selected("ByteSplit"))
+			order.insert(order.end(), {7, 8});
 		if (order.empty())
 			throw std::invalid_argument("no matching filter families");
 		for (size_t i = order.size(); i > 1; --i)
@@ -174,6 +193,10 @@ int main(int argc, char **argv) {
 			if (mode == 6)
 				Run<ParallelSplit64BloomFilter>("Split64Partitioned", keys, query, truth, bpk, threads, reps, seed,
 				                                hit);
+			if (mode == 7)
+				Run<ByteSerial>("ByteSplitSerial", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 8)
+				Run<ParallelByteSplitBloomFilter>("ByteSplitPartitioned", keys, query, truth, bpk, threads, reps, seed, hit);
 		}
 	} catch (const std::exception &e) {
 		std::cerr << e.what() << '\n';

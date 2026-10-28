@@ -2,10 +2,11 @@
 #include "parallel_bloom.h"
 #include "four_sector_bloom.h"
 #include "split64_bloom.h"
+#include "byte_split_bloom.h"
 
 namespace bloom_filters {
 // Exclusive construction assigns complete cache lines to workers. Different
-// layouts supply their own line index; Split64 and FourSector map hashes differently.
+// layouts supply their own line index; their bucket/word addressing differs.
 // Thread creation, partitioning and scratch allocation are included in build work.
 template <class Filter>
 class ParallelLayoutBloomFilter {
@@ -96,4 +97,5 @@ private:
 
 using ParallelFourSectorBloomFilter = ParallelLayoutBloomFilter<FourSectorBloomFilter>;
 using ParallelSplit64BloomFilter = ParallelLayoutBloomFilter<Split64BloomFilter>;
+using ParallelByteSplitBloomFilter = ParallelLayoutBloomFilter<ByteSplitBloomFilter>;
 } // namespace bloom_filters

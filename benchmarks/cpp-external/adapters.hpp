@@ -219,6 +219,20 @@ public:
 		return n;
 	}
 };
+
+// Versioned adapter-only control: give the unchanged public upstream API a
+// compile-time length of one. Keep the generic row too: the two call shapes can
+// trade prehashed throughput against hashing-plus-query throughput.
+template <class Base>
+class SingleShortcutV1 : public Base {
+public:
+	using Base::Base;
+	uint32_t Lookup(uint32_t n, const uint64_t *hashes, uint32_t *out) const {
+		if (n == 1)
+			return Base::Lookup(1, hashes, out);
+		return Base::Lookup(n, hashes, out);
+	}
+};
 } // namespace external_bloom
 
 using FastFilterSimdBlock = external_bloom::SimdBlock;
@@ -226,6 +240,8 @@ using FastFilterFixed32 = external_bloom::Fixed32<false>;
 using FastFilterFixed32Bulk = external_bloom::Fixed32<true>;
 using FastFilterFixed64 = external_bloom::Fixed64;
 using FastFilterFixed16 = external_bloom::Fixed16;
+using FastFilterFixed16SingleV1 = external_bloom::SingleShortcutV1<FastFilterFixed16>;
+using FastFilterSimdBlockSingleV1 = external_bloom::SingleShortcutV1<FastFilterSimdBlock>;
 using FastFilterClassic4 = external_bloom::Classical<4>;
 using FastFilterClassic6 = external_bloom::Classical<6>;
 using FastFilterClassic8 = external_bloom::Classical<8>;
@@ -251,6 +267,8 @@ using PageBloom8Compact = external_bloom::Page<8, true>;
 	ADD(FastFilterFixed32Bulk, uint64_t);                                                                              \
 	ADD(FastFilterFixed64, uint64_t);                                                                                  \
 	ADD(FastFilterFixed16, uint64_t);                                                                                  \
+	ADD(FastFilterFixed16SingleV1, uint64_t);                                                                          \
+	ADD(FastFilterSimdBlockSingleV1, uint64_t);                                                                        \
 	ADD(FastFilterClassic4, uint64_t);                                                                                 \
 	ADD(FastFilterClassic6, uint64_t);                                                                                 \
 	ADD(FastFilterClassic8, uint64_t);                                                                                 \

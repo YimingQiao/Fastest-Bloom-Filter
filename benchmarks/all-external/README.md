@@ -1,7 +1,7 @@
 # Unified modern Bloom filter comparison
 
-This executable now runs **53 configurations** by default: three native layouts
-and 50 pinned FastFilter, PageBloomFilter, Boost.Bloom and RocksDB core configurations.
+This executable now runs **56 configurations** by default: four native layouts
+and 52 pinned FastFilter, PageBloomFilter, Boost.Bloom and RocksDB core configurations.
 They run in one process, with shuffled implementation order,
 identical inputs, compiler flags, timing loops and validation. It compiles the
 shared `src/compare_benchmark.cpp`; it does not copy a separate timing harness.
@@ -22,7 +22,7 @@ The default uses the build CPU instruction set for every implementation.
 benchmarked AES hash mode (different bitmap/FPR). Pins and archive SHA-256 hashes
 are recorded in `upstreams.json` and the component manifests. Upstream sources
 are fetched unchanged. Licenses are copied beside the binary.
-`BF_NATIVE_LAYOUTS=OFF` omits the new native FourSector/Split64 types;
+`BF_NATIVE_LAYOUTS=OFF` omits the native FourSector/Split64/ByteSplit types;
 `BF_ROCKSDB=OFF` omits the eight RocksDB core configurations. The original screen
 used the earlier 43-configuration executable; later additions do not alter those
 historical rows or their claimed baseline set.

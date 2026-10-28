@@ -9,11 +9,14 @@
 #ifdef BF_NATIVE_LAYOUTS
 #include "../../include/four_sector_bloom.h"
 #include "../../include/split64_bloom.h"
+#include "../../include/byte_split_bloom.h"
 using FourSectorBloomFilter = bloom_filters::FourSectorBloomFilter;
 using Split64BloomFilter = bloom_filters::Split64BloomFilter;
+using ByteSplitBloomFilter = bloom_filters::ByteSplitBloomFilter;
 #define BF_REGISTER_NATIVE_LAYOUT_FILTERS(ADD) \
     ADD(FourSectorBloomFilter, uint64_t); \
-    ADD(Split64BloomFilter, uint64_t)
+    ADD(Split64BloomFilter, uint64_t); \
+    ADD(ByteSplitBloomFilter, uint64_t)
 #else
 #define BF_REGISTER_NATIVE_LAYOUT_FILTERS(ADD)
 #endif

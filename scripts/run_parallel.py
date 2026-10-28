@@ -36,11 +36,11 @@ def main():
     p.add_argument(
         "--filters",
         default="FastPattern",
-        help="Comma-separated families: FastPattern,FourSector,Split64; or all",
+        help="Comma-separated families: FastPattern,FourSector,Split64,ByteSplit; or all",
     )
     args = p.parse_args()
     families = (
-        ["FastPattern", "FourSector", "Split64"]
+        ["FastPattern", "FourSector", "Split64", "ByteSplit"]
         if args.filters == "all"
         else args.filters.split(",")
     )
@@ -48,6 +48,7 @@ def main():
         "FastPattern",
         "FourSector",
         "Split64",
+        "ByteSplit",
     }:
         p.error("invalid or duplicate filter families")
     if (

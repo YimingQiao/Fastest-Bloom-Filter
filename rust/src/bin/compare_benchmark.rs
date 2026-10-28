@@ -1,4 +1,6 @@
-use fastest_bloom_filter::{hash64, BloomFilter, FourSectorBloomFilter, Split64BloomFilter};
+use fastest_bloom_filter::{
+    hash64, BloomFilter, ByteSplitBloomFilter, FourSectorBloomFilter, Split64BloomFilter,
+};
 use std::{
     alloc::{alloc, dealloc, handle_alloc_error, Layout},
     hint::black_box,
@@ -49,6 +51,7 @@ macro_rules! native_filter {
 }
 native_filter!(FourSectorBloomFilter);
 native_filter!(Split64BloomFilter);
+native_filter!(ByteSplitBloomFilter);
 
 // Benchmark buffers use the same 4096-byte alignment and 64-byte output offset
 // as C++. This allocator is private to the benchmark, not part of the library.
@@ -322,6 +325,7 @@ const FILTER_NAMES: &[&str] = &[
     "FastPatternBF",
     "FourSectorBloomFilter",
     "Split64BloomFilter",
+    "ByteSplitBloomFilter",
 ];
 
 fn main() {
@@ -406,6 +410,7 @@ fn main() {
             "FastPatternBF" => run::<BloomFilter<true>>(name, &inserted, &query, &c),
             "FourSectorBloomFilter" => run::<FourSectorBloomFilter>(name, &inserted, &query, &c),
             "Split64BloomFilter" => run::<Split64BloomFilter>(name, &inserted, &query, &c),
+            "ByteSplitBloomFilter" => run::<ByteSplitBloomFilter>(name, &inserted, &query, &c),
             _ => unreachable!(),
         }
     }

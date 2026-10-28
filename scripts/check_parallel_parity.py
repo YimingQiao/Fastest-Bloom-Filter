@@ -11,11 +11,11 @@ parser.add_argument("--rust", default="rust/target/release/parallel_benchmark")
 parser.add_argument("--families", default="all")
 args = parser.parse_args()
 families = (
-    ["FastPattern", "FourSector", "Split64"]
+    ["FastPattern", "FourSector", "Split64", "ByteSplit"]
     if args.families == "all"
     else args.families.split(",")
 )
-if not set(families) <= {"FastPattern", "FourSector", "Split64"} or len(
+if not set(families) <= {"FastPattern", "FourSector", "Split64", "ByteSplit"} or len(
     set(families)
 ) != len(families):
     parser.error("invalid or duplicate families")

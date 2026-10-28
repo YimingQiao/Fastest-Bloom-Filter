@@ -39,6 +39,7 @@ bytes, and classical AddAll uses
 | `FastFilterClassicK` | Ordinary Bloom, explicit K=4/6/8/11/16/22 | Common prehashed u64 |
 | `...Branchless` | Upstream three-probe initial branchless query variant | Common prehashed u64 |
 | `...Bulk` | Unchanged upstream `AddAll` builder; same query algorithm | Common prehashed u64 |
+| `FastFilterFixed16SingleV1` / `FastFilterSimdBlockSingleV1` | Public single-query shortcut for count 1; original query loop otherwise | Common prehashed u64 |
 | `PageBloom{4,6,8}{Default,Compact}` | PageBloomFilter, fixed probe count and page policy | Raw 8-byte little-endian integers |
 
 FastFilter exposes a public hash-family template parameter. The adapter supplies
@@ -48,6 +49,9 @@ It avoids a randomized second hash pass and makes inputs identical to native BF.
 `hash_lookup_ns` and `hash_insert_ns` include the common hash finalizer for these rows.
 The adapters prevent copying/moving upstream owning objects; benchmark construction
 uses C++17 guaranteed copy elision.
+The versioned single-call controls expose a constant count of one to the unchanged
+upstream adapter. They can improve prehashed queries while slowing hash+query due
+to compiler code generation, so both the original and shortcut paths remain.
 
 PageBloom's public API always hashes raw bytes internally. Its rows therefore
 report **`nan` for prehashed `insert_ns`, `allocate_insert_ns`, and `lookup_ns`**.
@@ -89,7 +93,7 @@ every inserted key and consumes every timed query output.
 ## Validation
 
 The contract test exercises three space budgets, all-miss/mixed/all-hit queries,
-short and whole-input insert batches, and all 24 registered rows. It checks actual
+short and whole-input insert batches, and all 26 registered rows. It checks actual
 space, false-negative failures, FPR accounting, raw/prehash columns, and exact
 query-output parity between loop and bulk builders and branch variants.
 Use `-DBF_SANITIZERS=ON -DCMAKE_BUILD_TYPE=Debug` in a separate build for ASan/UBSan.

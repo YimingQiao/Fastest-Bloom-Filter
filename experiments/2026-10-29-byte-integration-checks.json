@@ -1,0 +1,81 @@
+{
+  "description": "Root integration checks after native ByteSplit ports, before primary performance confirmation. Commands completed successfully; console output was observed, not archived as log files.",
+  "launch_parent_revision": "9071afb16f61ba2fdcaabfd753654de9658ef3d9",
+  "commands": [
+    {
+      "argv": [
+        "taskset",
+        "-c",
+        "2",
+        "ctest",
+        "--test-dir",
+        "build/byte-native",
+        "--output-on-failure"
+      ],
+      "result": "15/15 passed"
+    },
+    {
+      "argv": [
+        "taskset",
+        "-c",
+        "2",
+        "python3",
+        "scripts/check_parallel_parity.py",
+        "--cpp",
+        "build/byte-native/parallel_benchmark",
+        "--rust",
+        "/tmp/fastest-bf-rust-byte-native/release/parallel_benchmark"
+      ],
+      "result": "9 modes agree within and across C++/Rust across18 workloads"
+    },
+    {
+      "argv": [
+        "taskset",
+        "-c",
+        "2",
+        "python3",
+        "tests/test_parallel_selection.py",
+        "build/byte-native/parallel_benchmark",
+        "/tmp/fastest-bf-rust-byte-native/release/parallel_benchmark"
+      ],
+      "result": "Both executable contracts pass"
+    },
+    {
+      "argv": [
+        "taskset",
+        "-c",
+        "2",
+        "build/byte-all-external/compare_benchmark",
+        "10",
+        "8",
+        "50",
+        "12",
+        "31",
+        "1",
+        "42",
+        "",
+        "1024",
+        "12"
+      ],
+      "result": "56 unique configurations, including ByteSplit and both FastFilter SingleV1 controls"
+    }
+  ],
+  "binary_sha256": {
+    "build/byte-native/compare_benchmark": "4a7fd65768e5e3dccb00816729ee2a62174ea09c8294a07f0856561167e2119b",
+    "build/byte-native/parallel_benchmark": "c07981b6cd84a9235855692d27c31f33acbbf7c57497a2d0a9cc63c66942ff13",
+    "build/byte-all-external/compare_benchmark": "7be6bb987344d2e9b9a918fcd65c29d7b145a60b006acb6361f101bb2a83ae39",
+    "/tmp/fastest-bf-rust-byte-native/release/parallel_benchmark": "9f98e6e5b05f89202c31f448125454a04f2640a197de70390b62eefc20eaaecf",
+    "/tmp/fastest-bf-rust-byte-external/release/compare_benchmark": "1feb195b8123bb480131836c95b90350f8a67170f7e03d9212b13420ab0f92de"
+  },
+  "source_sha256": {
+    "include/byte_split_bloom.h": "46d285a1676b0613a0759d9786d2d8afe67d75b5fc64ca839305922627fa332f",
+    "src/compare_benchmark.cpp": "95b54e3735404ed2e6b289a05b5aac10af17dd15aa129dd135351bf5535dba95",
+    "src/parallel_benchmark.cpp": "6bc09175370dd39b624114cee1f80b56e3597207194995cfb0d81ea3c1cbdee4",
+    "rust/src/byte_split.rs": "27b505ece8af4e82b18d4bc56765d8a8e6e6eaf4c075e178de013cadaeb09bef",
+    "rust/src/bin/compare_benchmark.rs": "df2072a1f899e18a032f70b55b64d0e601fe004bfbdf3a1ce9940638309e715c",
+    "rust/src/bin/parallel_benchmark.rs": "34fe22cac785bac441080c829e97e3c4adb3920c3e3bea9e3cf9b6c0fba30509",
+    "benchmarks/all-external/adapters.hpp": "195f26d311613bdf952aee673e0663b36965258875254c5cfab94e954b4933e6",
+    "benchmarks/cpp-external/adapters.hpp": "3c192e4a73312bd3015ba1f3b53f1f9a5cb098ba0c240ee91e757d00f177a603",
+    "benchmarks/rust-external/src/main.rs": "82820430359b1ede37e113db202d9a292bf0d33da5283e2ba08ee3830110c3fa"
+  }
+}

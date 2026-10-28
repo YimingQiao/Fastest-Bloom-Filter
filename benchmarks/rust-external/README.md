@@ -3,7 +3,8 @@
 This separate, unpublished crate compares native Rust implementations of
 [fastbloom 0.17.0](https://docs.rs/fastbloom/0.17.0/fastbloom/),
 [Bloomsday](https://github.com/sidd-27/Bloomsday/tree/11f16a91a1c8a20344cd263e908f957dac7cf5d0),
-FastPattern, and the experimental Split64 and FourSector layouts. The core
+the four current native layouts, and frozen experimental Split64/FourSector
+versions, for eight configurations. The core
 library remains dependency-free.
 `Cargo.lock` pins the dependency graph; build with `--locked`.
 
@@ -32,13 +33,16 @@ keys are checked for false negatives before results are accepted. The C++ harnes
 also emits construction/hashing scratch-allocation fields; the Rust external
 harness does not currently emit those fields.
 
-## Experimental configurations
+## Configurations
 
 | Exact filter name | Configuration | Native batch implementation |
 | --- | --- | --- |
 | `FastPatternBF` | Native library's adaptive six/eight-bit, two-word pattern layout | AVX-512, AVX2 or scalar |
 | `Fastbloom017` | Pinned fastbloom 0.17.0, probe count chosen from expected items | Loop over upstream scalar public methods |
 | `BloomsdayPinned` | Pinned eight-sector, 32-byte split-block layout | Loop over upstream public methods |
+| `FourSectorBloomFilter` | Current native library four-word layout | AVX-512, AVX2 or scalar |
+| `Split64BloomFilter` | Current native library eight-u64 layout | AVX-512, AVX2 or scalar |
+| `ByteSplitBloomFilter` | Current native library 16-byte split-block layout | Runtime AVX2-gated 128-bit SIMD or scalar |
 | `Split64Experimental` | Eight 64-bit sectors, eight bits/key, Parquet multiply-shift salts, prefetch distance 32 | Horizontal AVX-512 or scalar |
 | `FourSector16K8Experimental` | Four 32-bit words in one cache line, two bits/word from a 16-entry rotation dictionary | Four-gather AVX-512 queries and prepared four-key insertion, or scalar |
 
