@@ -231,6 +231,8 @@ def plot(data):
         ROOT / "docs/figures/external-parallel-confirmation.svg",
         metadata={"Date": None},
     )
+    svg = ROOT / "docs/figures/external-parallel-confirmation.svg"
+    svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n")
     plt.close(fig)
 
 
