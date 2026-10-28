@@ -1,0 +1,78 @@
+{
+  "decision": "Reject current BITALG/KTEST query replacement; keep original Split64 kernel.",
+  "source_commit": "0f7303b9e473e49ec89714c729fec7e5b4f8ff30",
+  "workloads": 24,
+  "rows": 144,
+  "heldout_performance_run": false,
+  "production_changed": false,
+  "rust_ported": false,
+  "source_and_binary_unchanged": true,
+  "ktest_aggregates": [
+    {
+      "filter": "Split64BitShuffleHybridKtest",
+      "metric": "lookup_ns",
+      "cases": 24,
+      "geomean_latency_ratio": 1.0174789274394274,
+      "faster_cases": 2,
+      "slower_cases": 22,
+      "min_latency_ratio": 0.9755741961562374,
+      "max_latency_ratio": 1.0723974865091375,
+      "best_case": {
+        "keys": 33554432,
+        "requested_bpk": 8,
+        "actual_bpk": 16.0,
+        "batch": 3,
+        "filter": "Split64BitShuffleHybridKtest",
+        "metric": "lookup_ns",
+        "candidate_ns": 6.32335,
+        "original_ns": 6.48167,
+        "candidate_over_original_latency": 0.9755741961562374
+      },
+      "worst_case": {
+        "keys": 65536,
+        "requested_bpk": 16,
+        "actual_bpk": 32.0,
+        "batch": 1,
+        "filter": "Split64BitShuffleHybridKtest",
+        "metric": "lookup_ns",
+        "candidate_ns": 2.82788,
+        "original_ns": 2.63697,
+        "candidate_over_original_latency": 1.0723974865091375
+      }
+    },
+    {
+      "filter": "Split64BitShuffleHybridKtest",
+      "metric": "hash_lookup_ns",
+      "cases": 24,
+      "geomean_latency_ratio": 1.0159506461539982,
+      "faster_cases": 7,
+      "slower_cases": 17,
+      "min_latency_ratio": 0.9755269594618898,
+      "max_latency_ratio": 1.1012769830209608,
+      "best_case": {
+        "keys": 33554432,
+        "requested_bpk": 8,
+        "actual_bpk": 16.0,
+        "batch": 3,
+        "filter": "Split64BitShuffleHybridKtest",
+        "metric": "hash_lookup_ns",
+        "candidate_ns": 8.6786,
+        "original_ns": 8.89632,
+        "candidate_over_original_latency": 0.9755269594618898
+      },
+      "worst_case": {
+        "keys": 65536,
+        "requested_bpk": 8,
+        "actual_bpk": 16.0,
+        "batch": 31,
+        "filter": "Split64BitShuffleHybridKtest",
+        "metric": "hash_lookup_ns",
+        "candidate_ns": 2.32332,
+        "original_ns": 2.10966,
+        "candidate_over_original_latency": 1.1012769830209608
+      }
+    }
+  ],
+  "all_candidate_metric_regressions_retained": 172,
+  "interpretation": "KTEST removes most V1 mask-reduction overhead but does not provide a consistent gain against original. One-seed descriptive observations do not establish statistical speed bounds or an overall fastest filter."
+}

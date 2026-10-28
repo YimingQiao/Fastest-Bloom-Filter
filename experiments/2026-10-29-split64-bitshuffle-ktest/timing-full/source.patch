@@ -1,0 +1,14 @@
+diff --git a/experiments/2026-10-29-inline-single-query/summarize_screen.py b/experiments/2026-10-29-inline-single-query/summarize_screen.py
+index 8d7d1fd..e7e24f7 100644
+--- a/experiments/2026-10-29-inline-single-query/summarize_screen.py
++++ b/experiments/2026-10-29-inline-single-query/summarize_screen.py
+@@ -189,7 +189,8 @@ def main():
+         "All 60 configurations ran on CPU2: four native layouts, four project experiments and 52 external configurations. "
+         "Four workloads / 240 rows use seed42, 2^22 queries, eight balanced repetitions, full-input serial construction "
+         "and 2^24 independent calibration negatives. Every timed phase validates complete dense output. "
+-        "This is exploratory throughput evidence, not a dependent-latency measurement or held-out claim.",
++        "This is exploratory throughput evidence, not a dependent-latency measurement or held-out claim. "
++        "The runner pins CPU2 on socket0 but does not force a NUMA memory policy.",
+         "",
+         "Native leaders below exclude the independent-layout experiments. All external configurations remain eligible "
+         "rivals, subject to exact allocation and the two-sided95 Wilson FPR upper. Page's native raw-hash path can "
