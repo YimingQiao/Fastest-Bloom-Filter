@@ -54,8 +54,9 @@ report **`nan` for prehashed `insert_ns`, `allocate_insert_ns`, and `lookup_ns`*
 Use `hash_lookup_ns`, `hash_insert_ns`, and `allocate_hash_insert_ns` for comparisons
 with PageBloom: these operate on exactly the same raw keys, and include each
 implementation's hash function. No common hash is applied before PageBloom's hash.
-The ordinary query min/max fields for these rows describe raw-key timing; `input_mode`
-records this distinction. The underlying upstream `pbf.cc` and `hash.cc` are included
+The raw-key bounds are `hash_lookup_min_ns` and `hash_lookup_max_ns`; the prehashed
+`lookup_min_ns` and `lookup_max_ns` fields are `nan`. `input_mode` records this
+distinction. The underlying upstream `pbf.cc` and `hash.cc` are included
 unchanged in the benchmark translation unit, giving the optimizer the same visibility
 as header-only competitors and allowing specialization for the public 8-byte input.
 
