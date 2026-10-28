@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "status": "Source-only preparation; no timing before review and source commit",
+  "parent_source_commit": "d70077b28fb3cd5821ae471f185e98393423ec64",
+  "training_archive_commit": "758499c63c5397cd64c9d67cdecab7e0388e774a",
+  "binary": "build/exact-budget-range-native/benchmark",
+  "cpu": 3,
+  "lease": "socket1",
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "key_powers": [
+    16,
+    25
+  ],
+  "batch": 4096,
+  "hit_percent": 50,
+  "query_power": 22,
+  "query_repeats": 6,
+  "calibration_power": 24,
+  "measurement_mode": "query_only",
+  "build_repeats": 0,
+  "insert_batch": "all inserted keys",
+  "seeds": [
+    7562001474399208876,
+    3054562362472030614,
+    6571923779321589834
+  ],
+  "selected_configurations": 54,
+  "selected_aliases": 15,
+  "planned_cases": 39,
+  "expected_rows": 162,
+  "quality_caps": [
+    0.01,
+    0.001,
+    0.0001
+  ],
+  "main_memory_caps_bpk": [
+    16,
+    32
+  ],
+  "supplementary_memory_caps_bpk": [
+    12,
+    14,
+    16,
+    20,
+    24,
+    28,
+    32
+  ],
+  "quality_rule": "For each calibration identity and seed, compute the upper endpoint of the two-sided 95% Wilson interval (z=1.959963984540054). A fixed configuration qualifies only if every seed upper bound meets the target; report the worst bound. Never pool counts across API aliases or seeds. These pointwise bounds are not simultaneous confidence guarantees.",
+  "frozen_comparison_rule": "Keep every training-selected leader and null slot. For each frozen comparison and metric retain all three candidate/external ratios and qualify each side independently. A failed quality gate remains a failure, with observed timing reported descriptively; do not substitute another configuration or rank on held-out timings.",
+  "aggregation_rule": "Report per-seed ratios candidate_latency/external_latency (<1 favors candidate) and the median plus worst ratio. Main/frontier overlaps remain labeled; never count them as independent evidence. No CPU2 training/CPU3 confirmation latency ratio.",
+  "phase_order": "Unchanged parent binary: H>P when (seed+r) is odd, P>H otherwise, with six even query repeats. Same per-seed schedule for every filter; every timed output and guard validated outside the timer.",
+  "raw_Page": "No Page configuration was selected, but the unchanged parent validator preserves raw-only contracts and NaN pure metrics.",
+  "selection_rule": "Union every non-null external/production/range training leader in all 24 main rankings and 126 frontier records, plus every original production-native geometry. Preserve each original n and canonical requested budget; no Cartesian expansion across n, holdout replacement, or repeated nominal geometry.",
+  "scope": "Fresh-seed confirmation of fixed training winners and native controls, not an exhaustive new ranking or an overall-fastest claim. All per-seed losses and quality failures retained.",
+  "no_code_change": "Use the unchanged d70077 frozen74 executable and dependencies. No constructor, mask, dispatch, compiler, or build changes."
+}
