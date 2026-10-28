@@ -34,8 +34,8 @@ def main():
     parser.add_argument('--repeats', type=int, default=5)
     parser.add_argument('--cpu', type=int, default=min(os.sched_getaffinity(0)))
     parser.add_argument('--filters', default='', help='Comma-separated exact class names; empty selects all')
-    parser.add_argument('--insert-batch', type=int, default=None, help='C++ harness only: independent build batch size; 0=all inserted keys; default equals query batch')
-    parser.add_argument('--calibration-power', type=int, default=0, help='C++ only: extra untimed disjoint negative probes; 0=disabled')
+    parser.add_argument('--insert-batch', type=int, default=None, help='C++ and external Rust harnesses: independent build batch size; 0=all inserted keys; default equals query batch')
+    parser.add_argument('--calibration-power', type=int, default=0, help='C++ and external Rust harnesses: extra untimed disjoint negative probes; 0=disabled')
     args = parser.parse_args()
     if args.cpu not in os.sched_getaffinity(0):
         parser.error('CPU is not in the allowed affinity set')

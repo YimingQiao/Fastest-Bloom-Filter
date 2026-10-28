@@ -1,4 +1,6 @@
 use fastest_bloom_filter::{hash64, BloomFilter};
+mod four_sector;
+mod split64;
 use std::{
     alloc::{alloc, dealloc, handle_alloc_error, Layout},
     hint::black_box,
@@ -178,6 +180,7 @@ struct Config {
     hit: u64,
     batch: usize,
     insert_batch: usize,
+    calibration_power: u32,
     repeats: usize,
     seed: u64,
     key_base: u64,
@@ -294,13 +297,36 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
         total.push(start.elapsed().as_secs_f64() * 1e9 / c.q as f64);
         consume(&output[..c.q]);
     }
+    // Separate negative calibration runs after all timing, reusing only one
+    // query batch of scratch. Its raw-key range is disjoint from both insertion
+    // keys and timed queries, without changing the timed query working set.
+    let calibration_queries = if c.calibration_power == 0 {
+        0
+    } else {
+        1usize << c.calibration_power
+    };
+    let mut calibration_fp = 0usize;
+    for i in (0..calibration_queries).step_by(c.batch) {
+        let len = c.batch.min(calibration_queries - i);
+        for (j, hash) in scratch[..len].iter_mut().enumerate() {
+            let raw = c.key_base + c.n as u64 + c.q as u64 + (i + j) as u64;
+            *hash = hash64(raw);
+        }
+        lookup(&bf, &scratch[..len], &mut output[..len]);
+        for &answer in &output[..len] {
+            assert!(answer <= 1, "invalid calibration output");
+            calibration_fp += answer as usize;
+        }
+    }
+    let hash_lookup_min = total.iter().copied().fold(f64::INFINITY, f64::min);
+    let hash_lookup_max = total.iter().copied().fold(0.0, f64::max);
     let fpr = if absent == 0 {
         "nan".to_owned()
     } else {
         (fp as f64 / absent as f64).to_string()
     };
     println!(
-        "rust,{name},{},{},{},{},{},64,{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},prehashed,{},{},{}",
+        "rust,{name},{},{},{},{},{},64,{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},prehashed,{},{},{},{hash_lookup_min},{hash_lookup_max},{calibration_queries},{calibration_fp}",
         c.n,
         c.q,
         c.bpk,
@@ -347,6 +373,7 @@ fn main() {
     let repeats = number(6, 5);
     let seed = number(7, 42);
     let insert_batch = number(9, batch);
+    let calibration_power = number(10, 0);
     assert!(
         (5..=26).contains(&power)
             && (12..=27).contains(&qp)
@@ -357,7 +384,8 @@ fn main() {
             && repeats > 0
             && insert_batch > 0
             && insert_batch <= (1 << 26)
-            && args.len() <= 10,
+            && (calibration_power == 0 || (12..=27).contains(&calibration_power))
+            && args.len() <= 11,
         "invalid arguments"
     );
     let n = 1usize << power;
@@ -385,14 +413,21 @@ fn main() {
         hit,
         batch: batch as usize,
         insert_batch: insert_batch as usize,
+        calibration_power: calibration_power as u32,
         repeats: repeats as usize,
         seed,
         key_base,
     };
-    println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,allocate_hash_insert_ns,insert_batch");
+    println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,allocate_hash_insert_ns,insert_batch,hash_lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives");
     let selection = args.get(8).map(String::as_str).unwrap_or("");
     let mut jobs = vec![];
-    for name in ["Fastbloom017", "FastPatternBF", "BloomsdayPinned"] {
+    for name in [
+        "Fastbloom017",
+        "FastPatternBF",
+        "BloomsdayPinned",
+        "Split64Experimental",
+        "FourSector16K8Experimental",
+    ] {
         if selection.is_empty() || selection.split(',').any(|x| x == name) {
             jobs.push(name);
         }
@@ -404,6 +439,12 @@ fn main() {
             "FastPatternBF" => run::<BloomFilter<true>>(name, &inserted, &query, &c),
             "Fastbloom017" => run::<Fastbloom017>(name, &inserted, &query, &c),
             "BloomsdayPinned" => run::<BloomsdayPinned>(name, &inserted, &query, &c),
+            "Split64Experimental" => {
+                run::<split64::Split64Experimental>(name, &inserted, &query, &c)
+            }
+            "FourSector16K8Experimental" => {
+                run::<four_sector::FourSector16K8Experimental>(name, &inserted, &query, &c)
+            }
             _ => unreachable!(),
         }
     }

@@ -73,3 +73,11 @@ the ranker uses these counts instead of timed all-miss workload counts. Probes
 start after both inserted keys and the timed query interval. The input remains
 uniformly source-hashed. Use new insertion seeds for confirmation, not merely
 more negatives against the filter used to select the candidate.
+
+## Experimental layouts and frozen confirmation
+
+`BF_WIDE_EXPERIMENTS=ON` adds the AVX-512 64/128-entry mask dictionaries.
+`BF_LAYOUT_EXPERIMENTS=ON` adds `FourSector16K8` and `Split64P32` from the
+recorded experiment sources. They are candidates, not public library types.
+The [confirmation protocol](../../docs/confirmation-protocol-2026-10-28.md)
+freezes the shortlist and workload before measuring new seeds in this executable.

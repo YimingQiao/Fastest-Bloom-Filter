@@ -27,6 +27,7 @@ Speed is median **hash+query ns/key**, including PageBloom's own raw-key hash.
 | 65,536 | 1% | FastPatternBF | 131,072 B | 1.073 |
 | 65,536 | 0.1% | FastPatternBF | 262,144 B | 1.133 |
 | 65,536 | 0.01% | FastFilterSimdBlock | 262,144 B | 1.664 |
+
 FastPattern leads the 1% and 0.1% ceilings in this screen. The 0.01% ceiling is
 led by FastFilter SIMD blocked at 65,536 keys and Boost Multi32K8 at 16,777,216 keys.
 FastPattern's 2^20-negative samples do not establish a sufficiently low upper bound
