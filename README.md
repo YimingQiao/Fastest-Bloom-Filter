@@ -1,7 +1,7 @@
 # Fastest Bloom Filter
 
-A C++17 playground for **fast Bloom filter construction and batched membership queries**.
-It includes register-blocked, cache-sectorized, and Impala-style split-block filters.
+Native **C++17 and Rust** implementations for fast Bloom filter construction and batched membership queries.
+The new `FastPatternBF` / `FastPatternBloomFilter` uses small SIMD mask dictionaries and cache-sectorized storage. The C++ benchmark also includes register-blocked, cache-sectorized, and Impala-style split-block baselines.
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
 
@@ -18,6 +18,35 @@ binary is specific to the build CPU. For an AVX2-only build, omit `BF_NATIVE`; f
 use `-DUSE_AVX512=ON`. These cache options now respect command-line values.
 The comparison currently targets x86 with AVX2 or newer; it is single-threaded.
 
+## Native Rust
+
+The Rust library has no C/C++ dependency or FFI, and no third-party dependencies.
+It detects AVX-512 once at construction and uses a portable scalar path otherwise.
+Rust 1.89 or later is required for the stable AVX-512 intrinsics.
+
+```bash
+cargo test --manifest-path rust/Cargo.toml
+RUSTFLAGS="-C target-cpu=native" cargo build --release --manifest-path rust/Cargo.toml
+python3 scripts/check_cross_language.py
+```
+
+```rust
+use fastest_bloom_filter::{hash64, FastPatternBloomFilter};
+
+let mut filter = FastPatternBloomFilter::new(1000, 16).unwrap();
+let hashes = [hash64(123), hash64(456)];
+filter.insert_hashes(&hashes);
+let mut present = [0; 2];
+filter.lookup_hashes(&hashes, &mut present);
+assert_eq!(present, [1, 1]);
+```
+
+The equivalent C++ type is `bloom_filters::FastPatternBF` in
+[`include/fast_pattern_BF.h`](include/fast_pattern_BF.h), with `Insert`, `Lookup`,
+and `SizeInBytes` methods. The C++ implementation selects SIMD at compile time;
+it also has a scalar fallback when compiled without AVX-512. Performance claims
+must name the enabled instruction set.
+
 ## Run a reproducible comparison
 
 ```bash
@@ -32,6 +61,12 @@ Choose a CPU allowed by your environment. The runner executes serially on that C
 shuffles implementation order per seed, and saves CSV rows, exact commands, compiler
 flags, CPU information, executable hash, revision, and tracked source changes.
 Use a new output directory for each run. Run from a committed checkout for reproducibility.
+
+To run the same workload in Rust, use
+`--executable rust/target/release/compare_benchmark` with a different output directory.
+The two binaries share SplitMix64/Fisher–Yates workload generation and the same
+64-bit hash finalizer. `check_cross_language.py` compares space, FPR counts, and
+full-output checksums across both implementations.
 
 A single case is also available:
 
@@ -58,6 +93,13 @@ warmed before timed queries. This measures sustained throughput, not cold-start 
 | `lookup_min_ns`, `lookup_max_ns` | Spread across repetitions, in addition to the median |
 | `absent_queries`, `false_positives`, `fpr` | False positives divided by genuinely absent queries; `nan` when there are none |
 | `hash_bits`, `present_queries` | Hash width and actual number of present queries |
+| `result_checksum` | FNV-1a over the entire warmed output, for cross-language validation |
+
+Pure-query and hash-plus-query paths call the same non-inlined query kernel to
+avoid differences from call-site-specific code generation. Hash buffers are aligned
+to 4096 bytes; output starts 64 bytes into an aligned allocation, avoiding identical
+page offsets for the 32-bit input/output streams. Function-call cost is included,
+so batch size 1 includes that overhead. Filter payloads retain their own alignment.
 
 Each implementation receives the same shuffled raw keys and hit/miss workload. Present
 and absent raw-key sets are disjoint. Hashing uses the existing `HashVector` overload for
@@ -70,8 +112,9 @@ key is checked for false negatives; a failure terminates the benchmark.
 when a requested size is already a power of two. Some also cap their allocations:
 32-bit register filters at 512 KiB, and `NewCacheSectorizedBF32Bit` at 64 MiB. A tiny,
 saturated filter must not win a large-filter comparison by returning mostly positives.
-The mask-table implementations additionally share small static mask tables (132 or
-136 bytes), excluded from `filter_bytes`; object and allocator overhead are also excluded.
+The legacy mask-table implementations additionally share 132- or 136-byte static
+mask tables. FastPattern has two shared 128-byte dictionaries (one active per filter).
+These tables, object size, and allocator overhead are excluded from `filter_bytes`.
 
 Equal bytes do not imply equal FPR. Use a bits/key sweep to find comparable error-rate
 budgets, and retain negative-query sample counts: a zero observed false-positive count
@@ -123,6 +166,27 @@ Tests cover empty inputs, short and odd batches, unaligned inputs, repeated inse
 output bounds, batch/single-query agreement, and no false negatives. The comparison
 also fails on correctness errors before reporting timing results. Sanitized timings
 are for debugging only, never performance comparisons.
+
+## Optimization design
+
+FastPattern keeps both sector reads in one 64-byte cache line. Independent hash
+fields select the first word, its partner, and two rotated masks. AVX-512 lookup
+handles 16 keys at once; mask generation uses two register-resident tables and
+vector rotates. Large filters prefetch future independent queries. Inserts compute
+masks in batches but apply OR updates sequentially, preserving colliding keys.
+
+The filter selects three bits per sector below 12 actual bits/key, and four otherwise.
+This choice is fixed at construction; overfilling increases FPR as with other Bloom
+filters. It is not a target-FPR sizing API. Tables are deterministically generated by
+[`scripts/generate_patterns.py`](scripts/generate_patterns.py), balancing repeated
+pairs and triples under cyclic rotation. The design requires uniformly hashed input.
+
+Earlier interleaved, direct split-block, and smaller-dictionary prototypes live under
+[`experiments/2026-10-28-prototypes`](experiments/2026-10-28-prototypes). Enable them
+with `-DBF_EXPERIMENTS=ON` for ablation; they are not automatically better designs.
+The benchmark reports losses as well as improvements. Measured results will be
+recorded against a committed source revision, rather than presented as a universal
+“fastest filter” claim.
 
 ## Background
 

@@ -53,6 +53,10 @@ def main():
     commands = executable.parent / 'compile_commands.json'
     if commands.exists():
         (output / 'compile_commands.json').write_bytes(commands.read_bytes())
+    metadata['RUSTFLAGS'] = os.environ.get('RUSTFLAGS', '')
+    metadata['rustc'] = capture(['rustc', '-Vv'])
+    metadata['cargo'] = capture(['cargo', '--version'])
+    metadata['rust_build_fingerprints'] = {str(p): json.loads(p.read_text()) for p in executable.parent.glob('.fingerprint/fastest-bloom-filter-*/bin-compare_benchmark.json')}
     for compiler in ('clang++', 'g++'):
         metadata[compiler] = capture([compiler, '--version'])
     with (output / 'results.csv').open('w', newline='') as f:
