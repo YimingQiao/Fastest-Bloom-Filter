@@ -1,0 +1,125 @@
+[
+  {
+    "label": "configure-native",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent-vbmi",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/independent-vbmi",
+      "-DCMAKE_CXX_COMPILER=clang++"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 2.658113956451416
+  },
+  {
+    "label": "build-native",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/independent-vbmi",
+      "--parallel",
+      "1"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 6.690410137176514
+  },
+  {
+    "label": "ctest-native",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/independent-vbmi",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.21411967277526855
+  },
+  {
+    "label": "build-avx2",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "clang++",
+      "-std=c++17",
+      "-O3",
+      "-mavx2",
+      "-Iinclude",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent-vbmi/check.cpp",
+      "-o",
+      "/home/yiming/projects/fastest-bf-lab/build/independent-vbmi/check_avx2"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 1.0996301174163818
+  },
+  {
+    "label": "check-avx2",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "/home/yiming/projects/fastest-bf-lab/build/independent-vbmi/check_avx2"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.08115315437316895
+  },
+  {
+    "label": "configure-asan",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent-vbmi",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/independent-vbmi-asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_SANITIZERS=ON"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 2.5501275062561035
+  },
+  {
+    "label": "build-asan",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/independent-vbmi-asan",
+      "--parallel",
+      "1",
+      "--target",
+      "check",
+      "check_scalar"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 3.555227279663086
+  },
+  {
+    "label": "ctest-asan",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/independent-vbmi-asan",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.7190537452697754
+  }
+]
