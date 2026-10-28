@@ -32,6 +32,12 @@ calls, with separate prehashed/raw-key rankings. Seed42 is exploratory; this
 screen does not supersede the three-seed native confirmation. Every timed output
 is checked, and the archive freezes the binary, source provenance and analysis.
 
+The [Rust SBBF screen](../experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
+has 12 cases / 168 rows: four native layouts and three external families, each
+with an explicit public singleton control. Four API rankings retain native losses
+and distinguish production paths from experimental native controls. This is
+seed42 exploration at actual16/32 bpk, not a new confirmation or a finer-capacity sweep.
+
 The external multithreaded archives live under `experiments/` because they freeze a
 separate shared-bitmap executor and retain both original serial and new parallel
 metrics. They are not merged with single-thread timings:

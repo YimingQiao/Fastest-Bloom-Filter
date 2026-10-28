@@ -47,9 +47,17 @@ The external lockfile must still retain its transitive dependency revision.
   It chooses among two or more cache-line blocks using a cost function, improving
   blocked-filter space/FPR efficiency particularly at low target error rates.
   The published implementation uses Python/Numba with parallel partitioning.
-  Additional block probes and insertion work are the intended tradeoff. Include
-  it when expanding the low-FPR or JIT-compiled baseline suite; this survey has
-  not timed it.
+  Additional block probes and insertion work are the intended tradeoff. The
+  [whole-array bridge](../benchmarks/blowchoc-external/README.md) now preserves
+  the original JIT implementation and records backing-array padding. The
+  [initial accuracy experiment](../experiments/2026-10-29-blowchoc-accuracy/README.md)
+  is separate from throughput: no speed superiority over BlowChoc is established.
+- [SBBF safe0.3.2 / kernel0.2.8](../benchmarks/rust-sbbf-external/README.md)
+  is now integrated through its public Rust API, including runtime trait-object
+  dispatch and allocation padding. The
+  [168-row screen](../experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
+  compares it with Bloomsday, fastbloom and the four native layouts. This is a
+  single-seed API comparison, not a held-out or all-capacity result.
 - [RocksDB FastLocalBloom](https://github.com/facebook/rocksdb/wiki/RocksDB-Bloom-Filter)
   is now integrated at [v11.12 / ef3dd12](https://github.com/facebook/rocksdb/tree/ef3dd12e9a6314aaf08fba6d5d445494eac9b253).
   The [adapter](../benchmarks/rocksdb-external/README.md) preserves its bitmap

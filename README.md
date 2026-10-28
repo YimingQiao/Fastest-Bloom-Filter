@@ -15,7 +15,10 @@ Boost.Bloom 1.92 with its native bulk APIs. The current executable adds native
 FourSector/Split64/ByteSplit, eight RocksDB FastLocalBloom core configurations,
 and two FastFilter single-call controls, for **56**.
 A separate native Rust suite includes
-pinned Bloomsday and fastbloom. See the [survey](docs/external-survey-2026-10-28.md)
+pinned Bloomsday, fastbloom and [SBBF](benchmarks/rust-sbbf-external/README.md).
+Its [168-row SBBF screen](experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
+retains the small-filter singleton losses against Bloomsday.
+See the [survey](docs/external-survey-2026-10-28.md)
 and [shared-harness instructions](benchmarks/all-external/README.md).
 
 Ranking constrains **measured filter payload allocation and observed FPR**, distinguishing
