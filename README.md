@@ -27,10 +27,14 @@ public hash+query API leads Bloomsday by 6–22% at the two measured sizes.
 The generic batch-one path still loses, and existing native layouts win several
 large-batch settings. This is one-seed prototype evidence pending confirmation.
 A [six-seed ByteSplit confirmation](experiments/2026-10-29-rust-byte-leaf-analysis/report/DECISION.md)
-finds consistent gains from exposing its singleton body to the Rust compiler.
-The small 16-bpk public hash+query call has a six-seed geometric mean of 1.655 ns/key versus Bloomsday's
-2.145 ns/key; the large-table margin is only about 2.8%, with one losing seed.
-Generic batch calls retain losses. A minimal Byte-only port is being validated.
+supports exposing its public singleton body to the Rust compiler. The Rust library
+now includes the [minimal Byte-only inline hint](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md).
+Its isolated two-seed comparison improves public hash+query throughput by **16–38%**
+at batch1 across the four size/allocation settings, while some 32M-key,16-bpk
+short-batch cases are **2–3% slower**. This is a measured API tradeoff; full outputs,
+allocation and FPR stay identical. The integration passes the existing29 library
+tests, Clippy and an actual public-caller assembly check. Earlier external
+comparisons and all generic-mode losses remain linked separately.
 The separate [BlowChoc screen](experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
 compares eight upstream configurations using whole-array calls, with prehashed,
 fused-hash and staged-hash timings reported separately.

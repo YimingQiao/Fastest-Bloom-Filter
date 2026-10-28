@@ -110,7 +110,7 @@ impl ByteSplitBloomFilter {
         self.insert_hashes(std::slice::from_ref(&h));
     }
     /// Returns false for definitely absent, true for possibly present.
-    #[inline]
+    #[inline(always)]
     pub fn contains_hash(&self, h: u64) -> bool {
         #[cfg(target_arch = "x86_64")]
         if self.avx2 {
