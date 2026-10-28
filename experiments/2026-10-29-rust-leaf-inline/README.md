@@ -1,0 +1,19 @@
+# Isolated native Rust leaf-inlining experiment
+
+Status: correctness and generated-code preflight completed on CPU3; no performance matrix has run. Production library files, the previous visible28 harness, and all preserved executables remain unchanged.
+
+This copies the current native library into `native/` and changes exactly three source hints from `#[inline]` to `#[inline(always)]`: ByteSplit's public `contains_hash`, FourSector's private `contains_scalar`, and Split64's private `contains_scalar`. `verify_copy.py` checks every copied file against the original source hash and rejects any additional source change. The package/library names are changed for separate compilation and unambiguous typed assembly; copied benchmark bins remain unchanged but automatic bin discovery is disabled. Local packages are unpublished.
+
+The copied four-mode harness retains all seven original native/external implementations and adds ByteLeafInlineV1, FourSectorLeafInlineV1 and Split64LeafInlineV1. These are native experimental controls, never external baselines. Each directly uses the cloned library's public methods. There are no adapter-only query shortcuts or private upstream calls. SBBF keeps its runtime trait-object dispatch.
+
+No bulk routing, bit masks, feature dispatch, allocations or parallel code are changed. All original and compiler-visible pure/raw query contracts remain separate, with the same balanced four-mode schedule and exact output validation. Both original and cloned libraries receive the disable-avx512 feature in that validation configuration.
+
+Normal, disable-avx512 and AddressSanitizer each passed 29 cloned-library tests and 11 harness tests. Six small workloads / 60 current rows exactly match the frozen seven-family reference; six additional native batch guards / 36 rows match their original counterparts. All four fault-injection modes, exact seeded schedules and six invalid CLI cases pass. Ten offline runner guards pass. All 20 typed visible-loop bodies are archived; active-backend target calls disappear, while ByteSplit retains its scalar-fallback call. See `assembly/README.md`.
+
+The proposed `protocol.json` retains all 10 rows at batch1 and the six original/candidate native rows at batches 3/31/4096. Key powers 16/25, requested 8/16 (actual 16/32), query power 22, eight balanced repeats, whole-input insertion, calibration power 24 and seed42 give 16 workloads / 112 rows. Native-only guard rows cannot establish external leadership. The four visible query modes remain distinct; at nonunit original batches the visible modes still operate as whole-array singleton loops. The runner requires a committed full source revision and explicit CPU3/socket1 lease, and validates all trial vectors, exact phase orders, allocation, original/candidate parity and cross-batch semantics. Root review and a committed freeze precede any throughput execution.
+
+The earlier batch1-only preflight source, logs, assembly and executable are retained in `batch1-preflight/`; its source directory is an archival snapshot, not a relocated runnable crate. `validation/` describes the final revised harness preflight. `copy-source.json` records the initial native copy. Both stages made exactly the same three native hint changes.
+
+Performance must retain the original seven families, label all experimental controls and preserve bulk-path guards. Inlining can change code layout and compiler choices outside the most obvious singleton path even though the source routing is unchanged; semantic parity alone does not establish a speed gain.
+
+The performance runner rejects Python `-O` before argument processing and requires the actual inherited exclusive socket1 flock descriptor, in addition to the lease environment and CPU3 affinity. Three small offline lease tests cover missing descriptors, real descriptor inheritance, wrong CPU/environment/affinity and optimized-Python rejection. No benchmark runs are used by those tests.
