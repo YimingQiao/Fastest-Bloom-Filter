@@ -1,0 +1,922 @@
+{
+  "purpose": "Correctness and observed FPR only; no timing claims. Timings printed by the shared harness are deliberately discarded.",
+  "utc": "2026-10-28T16:07:55.433352+00:00",
+  "cpu": 3,
+  "compiler": "Debian clang version 23.0.0 (++20260614104823+cc613052fd6a-1~exp1~20260614224957.2204)\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/lib/llvm-23/bin\n",
+  "manifest_sha256": "f420d7591e894d8743bfa43e63df3dea2b015ddf64de19a5e01101f78975bf16",
+  "adapter_sha256": "ab900b3b4050b9b2ff173c7d23fc43fab24248d134bc7c377e3ab428cd86908a",
+  "commands": [
+    [
+      "build/rocksdb-external/compare_benchmark",
+      "16",
+      "8",
+      "50",
+      "12",
+      "32",
+      "1",
+      "731",
+      "RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9Batch32,RocksDBFastLocalBloom64K14Batch32",
+      "65536",
+      "24"
+    ],
+    [
+      "build/rocksdb-external-scalar/compare_benchmark",
+      "16",
+      "8",
+      "50",
+      "12",
+      "32",
+      "1",
+      "731",
+      "RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9Batch32,RocksDBFastLocalBloom64K14Batch32",
+      "65536",
+      "24"
+    ],
+    [
+      "build/rocksdb-external/compare_benchmark",
+      "16",
+      "16",
+      "50",
+      "12",
+      "32",
+      "1",
+      "731",
+      "RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9Batch32,RocksDBFastLocalBloom64K14Batch32",
+      "65536",
+      "24"
+    ],
+    [
+      "build/rocksdb-external-scalar/compare_benchmark",
+      "16",
+      "16",
+      "50",
+      "12",
+      "32",
+      "1",
+      "731",
+      "RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9Batch32,RocksDBFastLocalBloom64K14Batch32",
+      "65536",
+      "24"
+    ]
+  ],
+  "binary_sha256": {
+    "build/rocksdb-external/compare_benchmark": "6528b366ae35118c8f88e1fd66e7535898cbf57bbf58f860097263514df9d96e",
+    "build/rocksdb-external-scalar/compare_benchmark": "cef275c232d01a570938a79bbcf7f7d6e0fb4d82bcd06f5971bc3dbc6b5fdcb6"
+  },
+  "compile_commands": {
+    "rocksdb-external": [
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external",
+        "command": "/usr/bin/clang++ -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/check.dir/check.cpp.o -c /home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp"
+      }
+    ],
+    "rocksdb-external-scalar": [
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-scalar",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -mno-avx2 -mno-avx512f -O3 -DNDEBUG -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-scalar",
+        "command": "/usr/bin/clang++ -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -mno-avx2 -mno-avx512f -O3 -DNDEBUG -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/check.dir/check.cpp.o -c /home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp"
+      }
+    ],
+    "rocksdb-external-sanitized": [
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-sanitized",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -fno-strict-aliasing -march=native -fsanitize=address,undefined -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-sanitized",
+        "command": "/usr/bin/clang++ -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -fno-strict-aliasing -march=native -fsanitize=address,undefined -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/check.dir/check.cpp.o -c /home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp"
+      }
+    ]
+  },
+  "checks": [
+    "native two-test CTest suite passed",
+    "scalar two-test CTest suite passed",
+    "ASan+UBSan two-test CTest suite passed",
+    "all ten large-calibration rows exactly match native and scalar outputs",
+    "direct/bulk exact bitmaps vs upstream AddHash",
+    "scalar byte-by-byte oracle for SIMD query outputs",
+    "duplicate inserts/no false negatives/output guards/tails0..131",
+    "36 shared harness cases x5 filter variants"
+  ],
+  "scratch_accounting_correction": {
+    "utc": "2026-10-28T16:21:55.821980+00:00",
+    "contract": "filter_build_scratch_bytes reports explicit temporary heap allocation only; all RocksDB rows are 0. Fixed stack scratch remains 64 bytes for bulk insertion and 256 bytes for batch32 query.",
+    "adapter_sha256": "b866cb71b9520f95f4199cb901475445b861eedd1bdde4e626c402af746263c8",
+    "changed_behavior": "Only the scratch-accounting getter and its assertions/documentation changed. Bitmap construction, queries, hash mapping and accuracy.csv are unchanged.",
+    "checks": [
+      "native rocksdb_core_contract +rocksdb_harness_contract passed again",
+      "ASan+UBSan rocksdb_core_contract +rocksdb_harness_contract passed again"
+    ],
+    "commands": [
+      "taskset -c 3 cmake --build build/rocksdb-external --parallel 1",
+      "taskset -c 3 ctest --test-dir build/rocksdb-external --output-on-failure",
+      "taskset -c 3 cmake --build build/rocksdb-external-sanitized --parallel 1",
+      "taskset -c 3 ctest --test-dir build/rocksdb-external-sanitized --output-on-failure"
+    ],
+    "binary_sha256": {
+      "build/rocksdb-external/compare_benchmark": "59def075707dc750ab4f97809384292dd9f38c98bbfee34be5fad622eb3a3496",
+      "build/rocksdb-external-sanitized/compare_benchmark": "7392877d9f96008cc06722d3a3f740d3c07cb475faf895e645832f30b4d5cc09"
+    }
+  },
+  "combined_header_check": {
+    "command": [
+      "/usr/bin/clang++",
+      "-DBF_ROCKSDB=1",
+      "-DBF_NATIVE_LAYOUTS=1",
+      "-Werror=macro-redefined",
+      "-DBF_EXTERNAL_HEADER=\"adapters.hpp\"",
+      "-DBF_EXTERNAL_ONLY=1",
+      "-I/home/yiming/projects/fastest-bf-lab/benchmarks/all-external",
+      "-I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external",
+      "-I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include",
+      "-I/home/yiming/projects/fastest-bf-lab/build/all-external/_deps/fastfilter-src/src",
+      "-I/home/yiming/projects/fastest-bf-lab/build/all-external/_deps/pagebloom-src/include",
+      "-I/home/yiming/projects/fastest-bf-lab/build/all-external/_deps/pagebloom-src/src",
+      "-I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0",
+      "-I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-march=native",
+      "-std=gnu++17",
+      "-DROCKSDB_PLATFORM_POSIX",
+      "-DOS_LINUX",
+      "-I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor",
+      "-I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include",
+      "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external/integration_check.cpp",
+      "-o",
+      "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external/integration-check"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab/build/all-external",
+    "output": "Combined header rows=49, RocksDB rows=5, native layout rows=2\n",
+    "rocksdb_added_isa_flags": [],
+    "source": "#include \"/home/yiming/projects/fastest-bf-lab/benchmarks/all-external/adapters.hpp\"\n#include <iostream>\n#include <set>\n#include <string>\nint main() {\n int count=0; std::set<std::string> names;\n#define COUNT(T,H) ++count; names.emplace(#T); static_assert(sizeof(T)>0 && sizeof(H)>0)\n BF_REGISTER_EXTERNAL_FILTERS(COUNT);\n const int combined=count;\n if (names.size()!=static_cast<size_t>(combined)) return 1;\n count=0;\n BF_REGISTER_ROCKSDB_FILTERS(COUNT);\n const int rocks=count;\n count=0;\n BF_REGISTER_NATIVE_LAYOUT_FILTERS(COUNT);\n if (rocks!=5 || count!=2 || combined<rocks+count) return 2;\n std::cout << \"Combined header rows=\" << combined << \", RocksDB rows=\" << rocks << \", native layout rows=\" << count << \"\\n\";\n}\n",
+    "checked_definitions": [
+      "BF_ROCKSDB=1",
+      "BF_NATIVE_LAYOUTS=1",
+      "ROCKSDB_PLATFORM_POSIX",
+      "OS_LINUX"
+    ],
+    "compile_success_with_macro_redefinition_as_error": true
+  },
+  "expanded_fixed_direct_initial_test_failure": {
+    "utc": "2026-10-28T16:48:40.015753+00:00",
+    "purpose": "Correctness-only expanded eight-row fixed/direct core API coverage; no timing claims.",
+    "cpu": 3,
+    "sources": {
+      "benchmarks/rocksdb-external/adapters.hpp": "404452b25e4a525750e188ea7a72ff7b3f70a9cacd0bd7bffa07a05b7e251a68",
+      "benchmarks/rocksdb-external/check.cpp": "b4c5cca130aa66d5fac9e07992a10accb0ec450f8ea64287b86a20e966d25093",
+      "benchmarks/rocksdb-external/test_contract.py": "59f7a99fb4d9220d091c2553296ec67a314ea15e9d3b2bfa5dadcf366d238b40",
+      "benchmarks/rocksdb-external/CMakeLists.txt": "107c6fb4b13fadf6b73ca89f94fe40e7c397b7e7a74d520a9b15f4a2f4df6706",
+      "benchmarks/rocksdb-external/dependencies.cmake": "95197e75b2d7eb097f025b267536d4557e19c95a7017db8a4ee5d86e228393f1",
+      "benchmarks/rocksdb-external/manifest.json": "f420d7591e894d8743bfa43e63df3dea2b015ddf64de19a5e01101f78975bf16",
+      "src/compare_benchmark.cpp": "b0df0deda62e813545f93cf6811ecd6d166c8d34ec34df0cc733b5975542f599",
+      "include/register_blocked_BF_32bit_Masks.h": "595b0d5ad008ef3f2eb7008684b4e5ba4ef038dd8334fab938504da06559754c",
+      "include/register_blocked_BF_32bit.h": "aad3b10e1220d41ca06f818c4ded6b3b405a5c6f9cf7a31887cea58afeeaadd9",
+      "include/register_blocked_BF_64bit_Masks.h": "d63ffa01485942d886bd22b883a637929683f20d3c5e20e31cb5130e3bab2ecd",
+      "include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+      "include/split64_bloom.h": "9b548e880b927ade57ef27c946f0105e9abe9c2b2436eecdbbbff0a22d30f429",
+      "include/register_blocked_BF_64bit.h": "c64816638a58537ad3318e3707ec9ac3cd64732c1bd27f4347acbc70e6cad0c3",
+      "include/register_blocked_BF_2x32bit.h": "2ce6e2bba2342a2e2f6964aa5fda8fe6c3bdd090e759d91ae46b18878566ddde",
+      "include/fast_pattern_BF.h": "d10bb646c6fd40ecdda02a0d6b51304ae62cbd978b0dc9e058601c13c6d2b87b",
+      "include/new_cache_sectorized_BF_32bit.h": "cffa2fb61b1e38afb4c1bdc646219da3eb930a11ef1790dd8f4888de247bc769",
+      "include/four_sector_bloom.h": "127b46a8f065a34ce2028873a41476baccd5e68cfe2957ab3d0f5ef2d8900304",
+      "include/parallel_bloom.h": "7a1744d8689a344bcb8d0161f52e7d8999db52fca11bcc45953c9e4c4f0327cf",
+      "include/parallel_layout_bloom.h": "c935ab17f075f28020d40a46db431dc805757330c4f8848cdc91642b6e665af6",
+      "include/cache_sectorized_BF_32bit.h": "ee48aab598e0369fe92163dba420f42a51520a1e4792d61867c71dd52012a10a",
+      "include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c",
+      "include/impala_blocked_BF_64bit_avx512.h": "b088dcad98f5d9b18a010f5daf5e9b5d5fddacc744d17e8e0313fa71552ee452",
+      "include/impala_blocked_BF_64bit.h": "7c20f4f15155477b9865d91ce01723e6f1f9f6378c4973741ede7f56fd885d02"
+    },
+    "runs": [
+      {
+        "command": [
+          "python3",
+          "benchmarks/rocksdb-external/vendor.py"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 0.04384980723261833,
+        "stdout": "Verified 15 unmodified RocksDB files (179441 bytes), v11.12 @ ef3dd12e9a6314aaf08fba6d5d445494eac9b253\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "cmake",
+          "--build",
+          "build/rocksdb-external",
+          "--parallel",
+          "1"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 26.863354614004493,
+        "stdout": "[ 25%] Building CXX object CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o\n[ 50%] Linking CXX executable compare_benchmark\n[ 50%] Built target compare_benchmark\n[ 75%] Building CXX object CMakeFiles/check.dir/check.cpp.o\n[100%] Linking CXX executable check\n[100%] Built target check\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "ctest",
+          "--test-dir",
+          "build/rocksdb-external",
+          "--output-on-failure"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 8,
+        "seconds": 1.4564448334276676,
+        "stdout": "Internal ctest changing into directory: /home/yiming/projects/fastest-bf-lab/build/rocksdb-external\nTest project /home/yiming/projects/fastest-bf-lab/build/rocksdb-external\n    Start 1: rocksdb_core_contract\n1/2 Test #1: rocksdb_core_contract ............***Exception: SegFault  0.02 sec\n\n    Start 2: rocksdb_harness_contract\n2/2 Test #2: rocksdb_harness_contract .........   Passed    1.41 sec\n\n50% tests passed, 1 tests failed out of 2\n\nTotal Test time (real) =   1.43 sec\n\nThe following tests FAILED:\n\t  1 - rocksdb_core_contract (SEGFAULT)\n",
+        "stderr": "Errors while running CTest\n"
+      }
+    ],
+    "diagnosis": "Native core test crashed in compiler-generated vpgatherdq during the conditional positive/negative test-input generator, before a candidate lookup. The same source passed ASan. Replaced the predicated ternary with unconditional negative generation followed by an explicit outer n!=0 guard for positive generation. No adapter or upstream-core change. The identical generator issue was independently observed by the direct-split experiment owner.",
+    "observed_debugger_evidence": {
+      "command": "taskset -c 3 gdb -q -batch -ex run -ex \"x/12i $pc-24\" -ex \"info registers rax rbx rcx rdx rsi rdi r8 r9 r10 r11 r12 r13 r14 r15 rsp\" --args build/rocksdb-external/check",
+      "fault_instruction": "vpgatherdq (%rax,%xmm2,8),%ymm1{%k2}",
+      "rax": "0x30000001d4de0",
+      "note": "Captured before the test-generator rewrite; native CTest and ASan diagnostic were run before any performance measurement."
+    }
+  },
+  "expanded_fixed_direct_coverage": {
+    "utc": "2026-10-28T16:50:50.113962+00:00",
+    "purpose": "Correctness-only expanded eight-row fixed/direct core API coverage; no timing claims.",
+    "cpu": 3,
+    "sources": {
+      "benchmarks/rocksdb-external/adapters.hpp": "404452b25e4a525750e188ea7a72ff7b3f70a9cacd0bd7bffa07a05b7e251a68",
+      "benchmarks/rocksdb-external/check.cpp": "7860e9bce1ba9c110f8ec6bd944fc115a991242a5c54802444d45c85f25c8dfb",
+      "benchmarks/rocksdb-external/test_contract.py": "59f7a99fb4d9220d091c2553296ec67a314ea15e9d3b2bfa5dadcf366d238b40",
+      "benchmarks/rocksdb-external/CMakeLists.txt": "107c6fb4b13fadf6b73ca89f94fe40e7c397b7e7a74d520a9b15f4a2f4df6706",
+      "benchmarks/rocksdb-external/dependencies.cmake": "95197e75b2d7eb097f025b267536d4557e19c95a7017db8a4ee5d86e228393f1",
+      "benchmarks/rocksdb-external/manifest.json": "f420d7591e894d8743bfa43e63df3dea2b015ddf64de19a5e01101f78975bf16",
+      "src/compare_benchmark.cpp": "b0df0deda62e813545f93cf6811ecd6d166c8d34ec34df0cc733b5975542f599",
+      "include/register_blocked_BF_32bit_Masks.h": "595b0d5ad008ef3f2eb7008684b4e5ba4ef038dd8334fab938504da06559754c",
+      "include/register_blocked_BF_32bit.h": "aad3b10e1220d41ca06f818c4ded6b3b405a5c6f9cf7a31887cea58afeeaadd9",
+      "include/register_blocked_BF_64bit_Masks.h": "d63ffa01485942d886bd22b883a637929683f20d3c5e20e31cb5130e3bab2ecd",
+      "include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+      "include/split64_bloom.h": "9b548e880b927ade57ef27c946f0105e9abe9c2b2436eecdbbbff0a22d30f429",
+      "include/register_blocked_BF_64bit.h": "c64816638a58537ad3318e3707ec9ac3cd64732c1bd27f4347acbc70e6cad0c3",
+      "include/register_blocked_BF_2x32bit.h": "2ce6e2bba2342a2e2f6964aa5fda8fe6c3bdd090e759d91ae46b18878566ddde",
+      "include/fast_pattern_BF.h": "d10bb646c6fd40ecdda02a0d6b51304ae62cbd978b0dc9e058601c13c6d2b87b",
+      "include/new_cache_sectorized_BF_32bit.h": "cffa2fb61b1e38afb4c1bdc646219da3eb930a11ef1790dd8f4888de247bc769",
+      "include/four_sector_bloom.h": "127b46a8f065a34ce2028873a41476baccd5e68cfe2957ab3d0f5ef2d8900304",
+      "include/parallel_bloom.h": "7a1744d8689a344bcb8d0161f52e7d8999db52fca11bcc45953c9e4c4f0327cf",
+      "include/parallel_layout_bloom.h": "c935ab17f075f28020d40a46db431dc805757330c4f8848cdc91642b6e665af6",
+      "include/cache_sectorized_BF_32bit.h": "ee48aab598e0369fe92163dba420f42a51520a1e4792d61867c71dd52012a10a",
+      "include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c",
+      "include/impala_blocked_BF_64bit_avx512.h": "b088dcad98f5d9b18a010f5daf5e9b5d5fddacc744d17e8e0313fa71552ee452",
+      "include/impala_blocked_BF_64bit.h": "7c20f4f15155477b9865d91ce01723e6f1f9f6378c4973741ede7f56fd885d02"
+    },
+    "runs": [
+      {
+        "command": [
+          "python3",
+          "benchmarks/rocksdb-external/vendor.py"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 0.04388856515288353,
+        "stdout": "Verified 15 unmodified RocksDB files (179441 bytes), v11.12 @ ef3dd12e9a6314aaf08fba6d5d445494eac9b253\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "cmake",
+          "--build",
+          "build/rocksdb-external",
+          "--parallel",
+          "1"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 1.806692473590374,
+        "stdout": "[ 50%] Built target compare_benchmark\n[ 75%] Building CXX object CMakeFiles/check.dir/check.cpp.o\n[100%] Linking CXX executable check\n[100%] Built target check\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "ctest",
+          "--test-dir",
+          "build/rocksdb-external",
+          "--output-on-failure"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 0.49579654820263386,
+        "stdout": "Internal ctest changing into directory: /home/yiming/projects/fastest-bf-lab/build/rocksdb-external\nTest project /home/yiming/projects/fastest-bf-lab/build/rocksdb-external\n    Start 1: rocksdb_core_contract\n1/2 Test #1: rocksdb_core_contract ............   Passed    0.27 sec\n    Start 2: rocksdb_harness_contract\n2/2 Test #2: rocksdb_harness_contract .........   Passed    0.21 sec\n\n100% tests passed, 0 tests failed out of 2\n\nTotal Test time (real) =   0.49 sec\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "cmake",
+          "--build",
+          "build/rocksdb-external-scalar",
+          "--parallel",
+          "1"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 4.405504023656249,
+        "stdout": "[ 25%] Building CXX object CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o\n[ 50%] Linking CXX executable compare_benchmark\n[ 50%] Built target compare_benchmark\n[ 75%] Building CXX object CMakeFiles/check.dir/check.cpp.o\n[100%] Linking CXX executable check\n[100%] Built target check\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "ctest",
+          "--test-dir",
+          "build/rocksdb-external-scalar",
+          "--output-on-failure"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 0.6069077234715223,
+        "stdout": "Internal ctest changing into directory: /home/yiming/projects/fastest-bf-lab/build/rocksdb-external-scalar\nTest project /home/yiming/projects/fastest-bf-lab/build/rocksdb-external-scalar\n    Start 1: rocksdb_core_contract\n1/2 Test #1: rocksdb_core_contract ............   Passed    0.32 sec\n    Start 2: rocksdb_harness_contract\n2/2 Test #2: rocksdb_harness_contract .........   Passed    0.28 sec\n\n100% tests passed, 0 tests failed out of 2\n\nTotal Test time (real) =   0.60 sec\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "cmake",
+          "--build",
+          "build/rocksdb-external-sanitized",
+          "--parallel",
+          "1"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 8.100327175110579,
+        "stdout": "[ 25%] Building CXX object CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o\n[ 50%] Linking CXX executable compare_benchmark\n[ 50%] Built target compare_benchmark\n[ 75%] Building CXX object CMakeFiles/check.dir/check.cpp.o\n[100%] Linking CXX executable check\n[100%] Built target check\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "ctest",
+          "--test-dir",
+          "build/rocksdb-external-sanitized",
+          "--output-on-failure"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 3.4657687190920115,
+        "stdout": "Internal ctest changing into directory: /home/yiming/projects/fastest-bf-lab/build/rocksdb-external-sanitized\nTest project /home/yiming/projects/fastest-bf-lab/build/rocksdb-external-sanitized\n    Start 1: rocksdb_core_contract\n1/2 Test #1: rocksdb_core_contract ............   Passed    0.86 sec\n    Start 2: rocksdb_harness_contract\n2/2 Test #2: rocksdb_harness_contract .........   Passed    2.60 sec\n\n100% tests passed, 0 tests failed out of 2\n\nTotal Test time (real) =   3.46 sec\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "/usr/bin/clang++",
+          "-DBF_ROCKSDB=1",
+          "-DBF_NATIVE_LAYOUTS=1",
+          "-Werror=macro-redefined",
+          "-DBF_EXTERNAL_HEADER=\"adapters.hpp\"",
+          "-DBF_EXTERNAL_ONLY=1",
+          "-I/home/yiming/projects/fastest-bf-lab/benchmarks/all-external",
+          "-I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external",
+          "-I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include",
+          "-I/home/yiming/projects/fastest-bf-lab/build/all-external/_deps/fastfilter-src/src",
+          "-I/home/yiming/projects/fastest-bf-lab/build/all-external/_deps/pagebloom-src/include",
+          "-I/home/yiming/projects/fastest-bf-lab/build/all-external/_deps/pagebloom-src/src",
+          "-I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0",
+          "-I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external",
+          "-O3",
+          "-DNDEBUG",
+          "-fno-strict-aliasing",
+          "-march=native",
+          "-std=gnu++17",
+          "-DROCKSDB_PLATFORM_POSIX",
+          "-DOS_LINUX",
+          "-I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor",
+          "-I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include",
+          "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external/integration_check_expanded.cpp",
+          "-o",
+          "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external/integration-check-expanded"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab/build/all-external",
+        "exit_code": 0,
+        "seconds": 1.3964535761624575,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external/integration-check-expanded"
+        ],
+        "cwd": "/home/yiming/projects/fastest-bf-lab",
+        "exit_code": 0,
+        "seconds": 0.0018460918217897415,
+        "stdout": "Combined header rows=52, RocksDB rows=8, native layout rows=2\n",
+        "stderr": ""
+      }
+    ],
+    "combined_header_output": "Combined header rows=52, RocksDB rows=8, native layout rows=2\n",
+    "combined_header_source": "#include \"/home/yiming/projects/fastest-bf-lab/benchmarks/all-external/adapters.hpp\"\n#include <iostream>\n#include <set>\n#include <string>\nint main() {\n int count=0; std::set<std::string> names;\n#define COUNT(T,H) ++count; names.emplace(#T); static_assert(sizeof(T)>0 && sizeof(H)>0)\n BF_REGISTER_EXTERNAL_FILTERS(COUNT);\n const int combined=count;\n if (names.size()!=static_cast<size_t>(combined)) return 1;\n count=0;\n BF_REGISTER_ROCKSDB_FILTERS(COUNT);\n const int rocks=count;\n count=0;\n BF_REGISTER_NATIVE_LAYOUT_FILTERS(COUNT);\n if (rocks!=8 || count!=2 || combined<rocks+count) return 2;\n std::cout << \"Combined header rows=\" << combined << \", RocksDB rows=\" << rocks << \", native layout rows=\" << count << \"\\n\";\n}\n",
+    "accuracy_parity": [
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external/compare_benchmark",
+          "16",
+          "8",
+          "50",
+          "12",
+          "1",
+          "1",
+          "731",
+          "RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32",
+          "65536",
+          "22"
+        ],
+        "semantic_rows": [
+          {
+            "filter": "RocksDBFastLocalBloom64",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "5940656240829853481",
+            "false_positives": "2",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3548"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64Batch32",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "5940656240829853481",
+            "false_positives": "2",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3548"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K8",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "4009678124966723990",
+            "false_positives": "3",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3706"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K8Batch32",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "4009678124966723990",
+            "false_positives": "3",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3706"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K9",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "5940656240829853481",
+            "false_positives": "2",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3548"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K9Batch32",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "5940656240829853481",
+            "false_positives": "2",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3548"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K14",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "13942864340000588940",
+            "false_positives": "3",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "5169"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K14Batch32",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "13942864340000588940",
+            "false_positives": "3",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "5169"
+          }
+        ],
+        "timings": "Discarded: this run is correctness/calibration only."
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-scalar/compare_benchmark",
+          "16",
+          "8",
+          "50",
+          "12",
+          "1",
+          "1",
+          "731",
+          "RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32",
+          "65536",
+          "22"
+        ],
+        "semantic_rows": [
+          {
+            "filter": "RocksDBFastLocalBloom64",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "5940656240829853481",
+            "false_positives": "2",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3548"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64Batch32",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "5940656240829853481",
+            "false_positives": "2",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3548"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K8",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "4009678124966723990",
+            "false_positives": "3",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3706"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K8Batch32",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "4009678124966723990",
+            "false_positives": "3",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3706"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K9",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "5940656240829853481",
+            "false_positives": "2",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3548"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K9Batch32",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "5940656240829853481",
+            "false_positives": "2",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "3548"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K14",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "13942864340000588940",
+            "false_positives": "3",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "5169"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K14Batch32",
+            "keys": "65536",
+            "filter_bytes": "131072",
+            "actual_bpk": "16",
+            "result_checksum": "13942864340000588940",
+            "false_positives": "3",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "5169"
+          }
+        ],
+        "timings": "Discarded: this run is correctness/calibration only."
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external/compare_benchmark",
+          "16",
+          "16",
+          "50",
+          "12",
+          "1",
+          "1",
+          "731",
+          "RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32",
+          "65536",
+          "22"
+        ],
+        "semantic_rows": [
+          {
+            "filter": "RocksDBFastLocalBloom64",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "23"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64Batch32",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "23"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K8",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "71"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K8Batch32",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "71"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K9",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "48"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K9Batch32",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "48"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K14",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "23"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K14Batch32",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "23"
+          }
+        ],
+        "timings": "Discarded: this run is correctness/calibration only."
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "3",
+          "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-scalar/compare_benchmark",
+          "16",
+          "16",
+          "50",
+          "12",
+          "1",
+          "1",
+          "731",
+          "RocksDBFastLocalBloom64,RocksDBFastLocalBloom64Batch32,RocksDBFastLocalBloom64K8,RocksDBFastLocalBloom64K8Batch32,RocksDBFastLocalBloom64K9,RocksDBFastLocalBloom64K9Batch32,RocksDBFastLocalBloom64K14,RocksDBFastLocalBloom64K14Batch32",
+          "65536",
+          "22"
+        ],
+        "semantic_rows": [
+          {
+            "filter": "RocksDBFastLocalBloom64",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "23"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64Batch32",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "23"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K8",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "71"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K8Batch32",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "71"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K9",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "48"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K9Batch32",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "48"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K14",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "23"
+          },
+          {
+            "filter": "RocksDBFastLocalBloom64K14Batch32",
+            "keys": "65536",
+            "filter_bytes": "262144",
+            "actual_bpk": "32",
+            "result_checksum": "10311408877599122281",
+            "false_positives": "0",
+            "calibration_absent_queries": "4194304",
+            "calibration_false_positives": "23"
+          }
+        ],
+        "timings": "Discarded: this run is correctness/calibration only."
+      }
+    ],
+    "binary_sha256": {
+      "build/rocksdb-external/check": "c23b7836342aa8148b9ddb7dc933b53c2b757927b8782a38ff058eb2024202ca",
+      "build/rocksdb-external/compare_benchmark": "b7a744d1c5f11e373b3f05126e845732b238ae81360281c4b19823e252d6e40f",
+      "build/rocksdb-external-scalar/check": "dabe756a7f67611891d69f0b85c297132dddbcbac83e704efc531d347ab5f96e",
+      "build/rocksdb-external-scalar/compare_benchmark": "cd80f52a254f1ab60fdcad4012a41185d1b2c13c12ff399892ee35ac4fabc410",
+      "build/rocksdb-external-sanitized/check": "218d9b5149877bb5ccb6b0a6bd11c9a047fd25e4131a2c93ba67ab459feb09b5",
+      "build/rocksdb-external-sanitized/compare_benchmark": "196230a575c4b00066d23299ddbc68ab4199d45f366a9a8715ccf6bdc7ff8e4a"
+    },
+    "compile_commands": {
+      "rocksdb-external": [
+        {
+          "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external",
+          "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+          "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+        },
+        {
+          "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external",
+          "command": "/usr/bin/clang++ -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/check.dir/check.cpp.o -c /home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp",
+          "file": "/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp"
+        }
+      ],
+      "rocksdb-external-scalar": [
+        {
+          "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-scalar",
+          "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -mno-avx2 -mno-avx512f -O3 -DNDEBUG -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+          "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+        },
+        {
+          "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-scalar",
+          "command": "/usr/bin/clang++ -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -mno-avx2 -mno-avx512f -O3 -DNDEBUG -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/check.dir/check.cpp.o -c /home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp",
+          "file": "/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp"
+        }
+      ],
+      "rocksdb-external-sanitized": [
+        {
+          "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-sanitized",
+          "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -fno-strict-aliasing -march=native -fsanitize=address,undefined -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/compare_benchmark.dir/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+          "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+        },
+        {
+          "directory": "/home/yiming/projects/fastest-bf-lab/build/rocksdb-external-sanitized",
+          "command": "/usr/bin/clang++ -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -fno-strict-aliasing -march=native -fsanitize=address,undefined -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/check.dir/check.cpp.o -c /home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp",
+          "file": "/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/check.cpp"
+        }
+      ]
+    },
+    "sources_changed_during_validation": [],
+    "checks": [
+      "Native, forced-scalar and ASan/UBSan core + harness contracts pass",
+      "72 harness configurations x8 rows on every build",
+      "Independent scalar bitmap and query oracle matches upstream direct + prepared APIs",
+      "All inserted keys, duplicate writes, mixed high/low hash endpoints, null0 and exact tails pass",
+      "Expanded combined macro counts8 RocksDB rows without macro redefinition",
+      "Native/scalar 32 accuracy-only rows match, including all fixed direct/bulk pairs at actual16/32"
+    ],
+    "independent_contract_review": {
+      "upstream_files": "All 15 immutable manifest SHA-256 hashes verified; no core/header/license modifications. Apache-2.0 and LevelDB attribution files retained.",
+      "hash_mapping": "Low32(hash) enters upstream FastRange32 for cache-line selection; high32 enters the unchanged multiplicative probe sequence.",
+      "memory": "filter_bytes reports actual aligned byte-vector capacity; logical core bitmap and auto-probe selection use length_. No O(n) adapter staging, heap scratch0; stack scratch64 build/256 query. SST metadata/deque/hash collection excluded and documented.",
+      "schedules": "Direct calls upstream AddHash/HashMayMatch. Batch insertion preserves upstream eight-slot prepare/add/drain; query preserves prepare-all/query-all at MAX_BATCH_SIZE32.",
+      "fixed_core_specialization": "All fixed direct/prepared calls use ProbeCount() with if constexpr returning FixedProbes. Auto uses runtime probes_. No upstream SIMD or scalar implementation rewritten; fixed aliases are core API configurations, not DB factory paths.",
+      "scope": "Validated Linux x86-64 native AVX2/AVX-512-capable host and forced-scalar compiler configuration; no database/SST or cross-platform performance claim."
+    }
+  }
+}

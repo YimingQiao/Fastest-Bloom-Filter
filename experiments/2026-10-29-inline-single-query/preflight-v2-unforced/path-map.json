@@ -1,0 +1,754 @@
+{
+  "utc": "2026-10-28T19:24:40.457919+00:00",
+  "purpose": "Intermediate unforced Boost ScalarContains V2, all correctness passed; six Boost shim callsites remain. No timing matrix.",
+  "files": {
+    "experiments/2026-10-29-inline-single-query/.gitignore": {
+      "archive_path": "experiment/.gitignore",
+      "sha256": "20758690df905fdcaf2ca96780ddbdcb447d9215ba596e29624c85ef4c4c7ed0"
+    },
+    "experiments/2026-10-29-inline-single-query/CMakeLists.txt": {
+      "archive_path": "experiment/CMakeLists.txt",
+      "sha256": "3777adc0cc6ddb05d06e74994bf227bdb09355745851e91aaa694c776e71b280"
+    },
+    "experiments/2026-10-29-inline-single-query/README.md": {
+      "archive_path": "experiment/README.md",
+      "sha256": "dc89a8914cc76bef5810cfe0c67173a66fa38c2eff9fe6078672729479b94818"
+    },
+    "experiments/2026-10-29-inline-single-query/adapters.hpp": {
+      "archive_path": "experiment/adapters.hpp",
+      "sha256": "f57ba2bafae7b1bb644181390364df6250e71fd5915212dbc0ebcc0bfa95088a"
+    },
+    "experiments/2026-10-29-inline-single-query/asan-build.log": {
+      "archive_path": "experiment/asan-build.log",
+      "sha256": "1e4e75ad9532438bad60b7a8c87cf50cb7abbc15d88c14f92fb855e726de3c89"
+    },
+    "experiments/2026-10-29-inline-single-query/asan-cli.log": {
+      "archive_path": "experiment/asan-cli.log",
+      "sha256": "08f52bed4fe7f1439246b48e6190d62c2cffc2b98c5d289cec67d8fb6b6ebafd"
+    },
+    "experiments/2026-10-29-inline-single-query/asan-configure.log": {
+      "archive_path": "experiment/asan-configure.log",
+      "sha256": "b42dedb905af12ae3c21c0f5effd856652332a48e48177a513cd2fc38a562242"
+    },
+    "experiments/2026-10-29-inline-single-query/asan-ctest.log": {
+      "archive_path": "experiment/asan-ctest.log",
+      "sha256": "940eda25908c4b4ccd3732fd75141f7670087d383d2ffdf28c9d422e638f4899"
+    },
+    "experiments/2026-10-29-inline-single-query/audit_v2.py": {
+      "archive_path": "experiment/audit_v2.py",
+      "sha256": "a29e59ffb09683240c6335b2022aa972a64bd5658b83e7b1d3d03123043ec16f"
+    },
+    "experiments/2026-10-29-inline-single-query/benchmark.cpp": {
+      "archive_path": "experiment/benchmark.cpp",
+      "sha256": "e2b53f833074df526b2eb2eebaad6eca0db069333d903dafad2ff988ec024462"
+    },
+    "experiments/2026-10-29-inline-single-query/benchmark.patch": {
+      "archive_path": "experiment/benchmark.patch",
+      "sha256": "e6c9a7f7e4981f4e37e1184f5ee43923fddc3448b7b455d1c0c7956ee5a175ce"
+    },
+    "experiments/2026-10-29-inline-single-query/boost-direct-proof.json": {
+      "archive_path": "experiment/boost-direct-proof.json",
+      "sha256": "a46bc151c161c0b8210212ad981262f3714b3015fdbfe42b9039a1ca29ea1b65"
+    },
+    "experiments/2026-10-29-inline-single-query/boost-direct.hpp": {
+      "archive_path": "experiment/boost-direct.hpp",
+      "sha256": "4b842556ec8bdfce3d0b0ea2ab90811e70b6a6ece1b4e1b1fc09b61d5be9206c"
+    },
+    "experiments/2026-10-29-inline-single-query/boost-direct.patch": {
+      "archive_path": "experiment/boost-direct.patch",
+      "sha256": "b2d3d769d448141f6fae12f0c3820eeee03938183aafc26902efe28597f73f2b"
+    },
+    "experiments/2026-10-29-inline-single-query/check.cpp": {
+      "archive_path": "experiment/check.cpp",
+      "sha256": "0c529046508cb9ce8050c930e6bc9807d27c0ee636d89189d34d4a409ec7800d"
+    },
+    "experiments/2026-10-29-inline-single-query/check_benchmark.py": {
+      "archive_path": "experiment/check_benchmark.py",
+      "sha256": "9573517474dc0623b8c16b847f878d7b17be26d0be3b918f904c7d8a8887a4e4"
+    },
+    "experiments/2026-10-29-inline-single-query/freeze-v2.json": {
+      "archive_path": "experiment/freeze-v2.json",
+      "sha256": "c8e69b7c7e431d7820204ca24753c46b21cba9e38b5c6413a20effc138021116"
+    },
+    "experiments/2026-10-29-inline-single-query/freeze.json": {
+      "archive_path": "experiment/freeze.json",
+      "sha256": "a729f515e5ae760a8e9f0d86023720841a8e00402a07bf93ff4de7f72bf80ed6"
+    },
+    "experiments/2026-10-29-inline-single-query/full-build.log": {
+      "archive_path": "experiment/full-build.log",
+      "sha256": "1e4e75ad9532438bad60b7a8c87cf50cb7abbc15d88c14f92fb855e726de3c89"
+    },
+    "experiments/2026-10-29-inline-single-query/full-cli.log": {
+      "archive_path": "experiment/full-cli.log",
+      "sha256": "fd39fa8aa1959b79051643b0ee56adef81eb56ae10bc8474b5e211c77ff14eb4"
+    },
+    "experiments/2026-10-29-inline-single-query/full-configure.log": {
+      "archive_path": "experiment/full-configure.log",
+      "sha256": "3f01be8423377deb7aff222b19b3b05ebe7e7188013276cb08df11b408c15553"
+    },
+    "experiments/2026-10-29-inline-single-query/full-ctest.log": {
+      "archive_path": "experiment/full-ctest.log",
+      "sha256": "67398c1c55f70840a48be9d96048c28ef92cab758014cc6fd6efff36ea2579d7"
+    },
+    "experiments/2026-10-29-inline-single-query/independent_vbmi_control.hpp": {
+      "archive_path": "experiment/independent_vbmi_control.hpp",
+      "sha256": "75ee52c047103ef0daa3e84efb055fa80c3186ece1ec018d26e232909a8149c3"
+    },
+    "experiments/2026-10-29-inline-single-query/inline_query.hpp": {
+      "archive_path": "experiment/inline_query.hpp",
+      "sha256": "bcfa72eb79aa5d0196874416d05c5ecb17b69838680a1ea0d4dc0b3b16640799"
+    },
+    "experiments/2026-10-29-inline-single-query/native-build.log": {
+      "archive_path": "experiment/native-build.log",
+      "sha256": "1e4e75ad9532438bad60b7a8c87cf50cb7abbc15d88c14f92fb855e726de3c89"
+    },
+    "experiments/2026-10-29-inline-single-query/native-cli.log": {
+      "archive_path": "experiment/native-cli.log",
+      "sha256": "08f52bed4fe7f1439246b48e6190d62c2cffc2b98c5d289cec67d8fb6b6ebafd"
+    },
+    "experiments/2026-10-29-inline-single-query/native-configure.log": {
+      "archive_path": "experiment/native-configure.log",
+      "sha256": "1be17113c275bbdeede4f56ba9a96869b9c7d1d6d8a4baac17aeedf95e858bca"
+    },
+    "experiments/2026-10-29-inline-single-query/native-ctest.log": {
+      "archive_path": "experiment/native-ctest.log",
+      "sha256": "631f7fb12c8fbf6d55f3f2885f0a47416c188f1c1bf8c256346e3ba3fb8b5a7e"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-asan-build.log": {
+      "archive_path": "experiment/v2-asan-build.log",
+      "sha256": "1e4e75ad9532438bad60b7a8c87cf50cb7abbc15d88c14f92fb855e726de3c89"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-asan-cli.log": {
+      "archive_path": "experiment/v2-asan-cli.log",
+      "sha256": "54fe0859a2082216169a23afcc8d333ae58e4bacebd4938d9a83e4ef0d55b281"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-asan-configure.log": {
+      "archive_path": "experiment/v2-asan-configure.log",
+      "sha256": "e7f679db49fbde24d70f3f985b0bb882c382b3e8b8ffb66958bceab3c78155aa"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-asan-ctest.log": {
+      "archive_path": "experiment/v2-asan-ctest.log",
+      "sha256": "e3e144e95941127c36d0a1da7ef81954e9e284e451f96e43ed78de42b65c1dce"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-full-build.log": {
+      "archive_path": "experiment/v2-full-build.log",
+      "sha256": "1e4e75ad9532438bad60b7a8c87cf50cb7abbc15d88c14f92fb855e726de3c89"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-full-cli.log": {
+      "archive_path": "experiment/v2-full-cli.log",
+      "sha256": "8536b3a560932fc32dde42b2f5025e80892bc302152fd6167ec55a67015f3268"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-full-configure.log": {
+      "archive_path": "experiment/v2-full-configure.log",
+      "sha256": "b7b8108dcb3920c30f2c2440bbd3ba07503a9a1ac54fc81fb9c1cefa833b3c68"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-full-ctest.log": {
+      "archive_path": "experiment/v2-full-ctest.log",
+      "sha256": "b1d5397ec444f9ff90ae3890e176b61cc1c4090b3241a1647e8c9791bf736d7b"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-native-build.log": {
+      "archive_path": "experiment/v2-native-build.log",
+      "sha256": "1e4e75ad9532438bad60b7a8c87cf50cb7abbc15d88c14f92fb855e726de3c89"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-native-cli.log": {
+      "archive_path": "experiment/v2-native-cli.log",
+      "sha256": "54fe0859a2082216169a23afcc8d333ae58e4bacebd4938d9a83e4ef0d55b281"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-native-configure.log": {
+      "archive_path": "experiment/v2-native-configure.log",
+      "sha256": "e767bc3f8ed76196d9cd780f4b6846511536fd6684af1e0cd4fe495163fb34fc"
+    },
+    "experiments/2026-10-29-inline-single-query/v2-native-ctest.log": {
+      "archive_path": "experiment/v2-native-ctest.log",
+      "sha256": "a36a9298821f1c4a26408ade34a13bf132c1021b0ca3358dbc760be50008f8f9"
+    },
+    "experiments/2026-10-29-inline-single-query/validate.py": {
+      "archive_path": "experiment/validate.py",
+      "sha256": "839791ddfa53a941468c7cb778aa92e8eff6f4c0284ecf9c8d7a7eba06a4c03c"
+    },
+    "experiments/2026-10-29-inline-single-query/validation-v2.json": {
+      "archive_path": "experiment/validation-v2.json",
+      "sha256": "a109251b956d593412656c93bbf7cb5fdd593dce6210bcec6b7e70aa194b71b3"
+    },
+    "experiments/2026-10-29-inline-single-query/validation.json": {
+      "archive_path": "experiment/validation.json",
+      "sha256": "f7e485081ecb8245c3a2a07e848086e4eca6742109cd6c7fd13b34182bbbc719"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000003eb40.asm": {
+      "archive_path": "experiment/assembly-v2/000000000003eb40.asm",
+      "sha256": "9358b30374904261e09232368d2574409e23b15e7441ed93efd15eda13ae3463"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000003f0b0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000003f0b0.asm",
+      "sha256": "65aab699e846f09c915a7226fc02910c41b980b6c51065aab7a39ab398e1d798"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000463e0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000463e0.asm",
+      "sha256": "d316b1ed197598ac8c26e7ebbb2ea4053ca7f3d78053314a0c4d70de015f9743"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000468f0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000468f0.asm",
+      "sha256": "c6fc63c9692edd28335f05e9a3fa0f2413224ff0f16ee21ebfd1c2a50d6e6996"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000004bc40.asm": {
+      "archive_path": "experiment/assembly-v2/000000000004bc40.asm",
+      "sha256": "970e252759bf30a77811f5edadbc354b7a4e8d4da0fdfc97dfb3630c693bacbc"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000004c150.asm": {
+      "archive_path": "experiment/assembly-v2/000000000004c150.asm",
+      "sha256": "e7b1a29ee8dad56088f76515c4b4e8a8f16cfe4424dbc9e164e74b58da6f79d5"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000051300.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000051300.asm",
+      "sha256": "2fc76ec0f7ee416ffcd949d60ea35a29fcbe101db7c5be218cd2317675ee3775"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000051810.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000051810.asm",
+      "sha256": "d45a3055c967e47592e3045782105a616e88759fcb1f2393529cc479d1b46e32"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000056e90.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000056e90.asm",
+      "sha256": "a9ef67ed449d0726ed55e49badd3a0ce40f7eb94f356cd335e699a513e3a397e"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000057420.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000057420.asm",
+      "sha256": "758a7c7a78c77f6e24310a412137fa8d3d06502ed3105e49f0d434e4b1998d4d"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000005c770.asm": {
+      "archive_path": "experiment/assembly-v2/000000000005c770.asm",
+      "sha256": "d4a8df5dddf58251999679187180c9342077abb6341e80f5a7b44366f0087990"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000005cc60.asm": {
+      "archive_path": "experiment/assembly-v2/000000000005cc60.asm",
+      "sha256": "2eb09ad5be5b70d61ec5a7aaa8584d02006b09c16f8d423237f34ddd80238464"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000062020.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000062020.asm",
+      "sha256": "eba05263511d7d75aa8d8ce984ae52162f92bc294b35c10af63e59127a8761ec"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000062510.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000062510.asm",
+      "sha256": "6a9fc7ece94f0370a770d411823c870938eaa950d68116460a215ba7dc3b8015"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000677d0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000677d0.asm",
+      "sha256": "31e26727d4a8986eed90ce8dc1bdc784aa6bf17ea4d9e689e2aa5bf1f3bfa2dd"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000067ce0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000067ce0.asm",
+      "sha256": "9060fb1d739ea92bdf90a6919cdc7eeb17e93bde53b59263fe265597bad9d8c1"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000006ce20.asm": {
+      "archive_path": "experiment/assembly-v2/000000000006ce20.asm",
+      "sha256": "e43ee6b9ad64bf160f10db77c1ec75bb4204ca32d5d805866c4c31ed1157c96d"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000006d2c0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000006d2c0.asm",
+      "sha256": "233cf6bbdbc314587ea6bdc4052c3942d16ae7a152c28d2db76f1778a0751df9"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000724e0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000724e0.asm",
+      "sha256": "4f4f39f6869d4db08329a3c9c9243ce2bc4e813a6f80f29b54affc11a4c93e83"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000729f0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000729f0.asm",
+      "sha256": "b32a894015544f713ebfdcfcc07e5b07622aec4c965827b56ecd27aa3e0e5a5b"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000077ef0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000077ef0.asm",
+      "sha256": "c520cb56021d71dccfb387380fcace5e487b19f007bfa1473fdf0aa63bc15e5f"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000078470.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000078470.asm",
+      "sha256": "17d8465c32b47d19332d0bd066a34fcc6cef575e184220689daa66595dd22d3e"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000007db50.asm": {
+      "archive_path": "experiment/assembly-v2/000000000007db50.asm",
+      "sha256": "3d497f9daa55d696265ef8f92c5241a7efbcf27dc54d0d748bb9f1253c782982"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000007dfa0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000007dfa0.asm",
+      "sha256": "511ad5647640e5d4394750b291820f8747139df6a6533c31203d6f1a510d0f7f"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000831b0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000831b0.asm",
+      "sha256": "347ffd3c96e96fc7c9e15fee5072f7419eb4bc8158b804d2ba82b08553fbe916"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000083600.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000083600.asm",
+      "sha256": "95696d639718e0846d291f0e8cf5f6512abfe0800baa4d213bdb10bec1628262"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000889e0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000889e0.asm",
+      "sha256": "d7237ff67db5172417a2a2a90bb29001419f48c977a72cb97ec64b6643aed5f1"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000088e30.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000088e30.asm",
+      "sha256": "5625afb18f49e14356b1e1c61cd8f55acb81c01e5cbfb48a07f8d5174372f2cd"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000008e130.asm": {
+      "archive_path": "experiment/assembly-v2/000000000008e130.asm",
+      "sha256": "013cfc369a46b6dace2772bafb0933134745900732bc7a8af4447521e62aff25"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000008e600.asm": {
+      "archive_path": "experiment/assembly-v2/000000000008e600.asm",
+      "sha256": "253f8fc881e17f419d3a3e106e6e375714ca1cba900134a72253df567b120689"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000093b40.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000093b40.asm",
+      "sha256": "0117c686c563347b23d45491b4145b2c2965adf3f4566ee23079e2e51ff208af"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000094120.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000094120.asm",
+      "sha256": "84e818f04f537b890464665bbb8d47cc72551173d3046bc88bfaff24df9515a9"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000995f0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000995f0.asm",
+      "sha256": "95b290dad155c8617d468dafa51746f1e36bc75fca40e5f07ce3a1993915be53"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000099a40.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000099a40.asm",
+      "sha256": "8d2f14016765cd8bad0f3b601ab2a8053d2a55aadd8c58e7dcffc77c1dc7b752"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000009ee40.asm": {
+      "archive_path": "experiment/assembly-v2/000000000009ee40.asm",
+      "sha256": "84c9e5460ac057bc7536af58e64d3caba865ade2ef91c107816b6659c275faf8"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000009f350.asm": {
+      "archive_path": "experiment/assembly-v2/000000000009f350.asm",
+      "sha256": "97591fc609a604da2671eca9f7c4ed09094ce3a525faaae50426596770530eb6"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000a4f50.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000a4f50.asm",
+      "sha256": "5b14e90249946cf9a5c35573c9881fef5bdaaf15dac8c3d6ab2fe139485f380a"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000a53a0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000a53a0.asm",
+      "sha256": "3a4797a55a752b6a9c8e40e89e749bcd9ebdcba6e646e640b0a2e733ecd28ade"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000aa680.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000aa680.asm",
+      "sha256": "678536f8e2394b855cec31761b1193cb334ce181f1aff34ab6b19137e1bab1ff"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000aaad0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000aaad0.asm",
+      "sha256": "dad3ce18c19f237c0c6036ce938070fced8ea59585d414502bbc8a2b6d6f8b0c"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000aeb50.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000aeb50.asm",
+      "sha256": "eaeb658dd454e753efce4be710f1ba9a4ac37543ddf511ac577a58b4545102fd"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000af110.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000af110.asm",
+      "sha256": "8b9931cd25f1671c60d652060690052cdcedd393feb6928da3baf46218d45351"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000b3060.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000b3060.asm",
+      "sha256": "6304923e7b3874f8929baf40696a86014404a584d979dc20f79ca5d8d23cbfe9"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000b35d0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000b35d0.asm",
+      "sha256": "be9a532f94fb1e03905047096e37b2de69a5b36fe1a96c2d80ce702d07af44a9"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000b74a0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000b74a0.asm",
+      "sha256": "1584b18e8ce45be2b9d1c9219a82bdb5222433051c044e32c5dd1fc94ffd21d8"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000b7a10.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000b7a10.asm",
+      "sha256": "c15aad44d5894e0675cb373a45a8ec4d5b778455920441c68e5fc28a4bc8e29d"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000bb930.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000bb930.asm",
+      "sha256": "8fde9ce009a54add1f765ef78d481cd26d19bda36427cefc69e8281ee6788b77"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000bbef0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000bbef0.asm",
+      "sha256": "d63baa2d1c562fdf888d65845555904109a729de2ccd53b897746a3fe5a2486b"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000bfda0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000bfda0.asm",
+      "sha256": "43dcdb30cd1db070d681c6db0159c0ada56cc763cee149d0bce667c27ede7ee7"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000c0310.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000c0310.asm",
+      "sha256": "f82765895fa2289cbc6005d69526d55bdb492d60174a0be5f613d3d9c6991231"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000c4150.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000c4150.asm",
+      "sha256": "788b280cca6688c7646d49e98ec7993ff6a038fb8fb71a1ef91d1ad452fbd6af"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000c46c0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000c46c0.asm",
+      "sha256": "02fb63f0ccbe921b6262decf41e39b37eb88d63081e02cc5b1a6e4e3a40cda71"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000c9950.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000c9950.asm",
+      "sha256": "6677f8a6bc827cd5497a1fe7337d8a33bfa20f4a3e02a05e433b546ccef647fe"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000c9e80.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000c9e80.asm",
+      "sha256": "606bccc3d5dae4e65aa1dbbc21001ad5715db01bf59f739c128a683aeb135100"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000cfb30.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000cfb30.asm",
+      "sha256": "b37783c704ad3f8e48c52e48729de1fe780a0fa58f9b41460bd97d71550d02e4"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000d0060.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000d0060.asm",
+      "sha256": "965c54675be2f519746b987659699a5c807ba2e3a2c3f3e40cc40ed3b57d42c3"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000d5d70.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000d5d70.asm",
+      "sha256": "b8847de312fa8d76e4fd3a3b1735f1451b6bf24e5b500a94a89c8767a2938c6d"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000d62a0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000d62a0.asm",
+      "sha256": "92ea733583df413646c427163773c59e9d9daf69149be888b9865a38ad0c6716"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000dbfd0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000dbfd0.asm",
+      "sha256": "dd70611f52cd273f9e65aa155c4beffe908e5dcf1784e777d5678a7ec4904619"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000dc530.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000dc530.asm",
+      "sha256": "9ae6b319e6ccf3eef5b5e599fd9371c669d843cadf272614661c44549100ee46"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000e22d0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000e22d0.asm",
+      "sha256": "0b4e856f1101f5bdc3d6411b07c4d2c529bb5b879ca28871541f533643ba2a2a"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000e27f0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000e27f0.asm",
+      "sha256": "45862dbcfe1313da81e6988987a467359843fd185ecaf1471eb18316709079f7"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000e8610.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000e8610.asm",
+      "sha256": "45588029d969fd050e7167a110aee5a8789db75fa3e834fde9ebc0ed6a9dc660"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000e8ad0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000e8ad0.asm",
+      "sha256": "34d53f061ab2f02f4991f1546177f87aa20ff6659234b28daa1fd7a7ddd2239f"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000ee630.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000ee630.asm",
+      "sha256": "4b493371755b61faa0a9ef27637fde16c63abd7814ac8d79573428ca3f681501"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000eeaf0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000eeaf0.asm",
+      "sha256": "c90d53865c8afef61c470ed7da2cbe0b8ce5db06f1cda494a7d026d9368c7af5"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000f4630.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000f4630.asm",
+      "sha256": "d5fb79989498cb8727d231ad8c80f0cff0df57706c5aaec6f3309f26fe0bb89f"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000f4ae0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000f4ae0.asm",
+      "sha256": "0f8c99af733e75209de962293749117c8c6304254c558660295b972f03ba3912"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000fa440.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000fa440.asm",
+      "sha256": "abed5c9b57144a3be1f00f76115b5fe85bafd7691531efc440bb06015ad061af"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000000fa980.asm": {
+      "archive_path": "experiment/assembly-v2/00000000000fa980.asm",
+      "sha256": "6536d0a722941aabee91ecc8c22b704b048fc2b4a35c3090f0d8d638ee899520"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000100660.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000100660.asm",
+      "sha256": "b771e74a09cb9b340acc540caeda31a522298fcaa1aa4f427cabd2ae041da57d"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000100c00.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000100c00.asm",
+      "sha256": "96c717f020c06671e5c2d140847174374a77b91d6c277d5f11bbb84978581151"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000106870.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000106870.asm",
+      "sha256": "70fc686b5ea96f7f1ecd4b70ab1d33a1215613f5d21d164806ff59e812784937"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000106de0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000106de0.asm",
+      "sha256": "ef89d8abdc2f77ca6182197b6271c064e972a7879868527ff79fb4535bc88124"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000010c9e0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000010c9e0.asm",
+      "sha256": "75dfe95b7ce05424987aaf80404f78380d5dbad728bb70d4530908bd6519d4b0"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000010ce80.asm": {
+      "archive_path": "experiment/assembly-v2/000000000010ce80.asm",
+      "sha256": "d165141f9af168502524f44998600455f08c97fb1184a03d958a588f884ebd58"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000112770.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000112770.asm",
+      "sha256": "8ad7b699c84f5560ba0c973104e5c0f025e8b636eda6da741cba004fbcb7c35a"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000112d30.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000112d30.asm",
+      "sha256": "056252ca385af6edc3f78f5c8498afb9394351a63c2c803dc7833c8bebea32c6"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000001189e0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000001189e0.asm",
+      "sha256": "bac0eeea08bc954258dd6001b0da143d1ae1d7610866ab78cd798b3941793021"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000118ec0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000118ec0.asm",
+      "sha256": "796cea9b1d81d900fa0209fc21b44de0f3cff2f7e0c1e7f442ebab4e3f7805da"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000011ebc0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000011ebc0.asm",
+      "sha256": "57c377f6878cdb7e2a7ddefec71592f179bda4407c0b4c5ede32a1cc5ddc5aab"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000011f0d0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000011f0d0.asm",
+      "sha256": "170d043f1f28c952122852633fe93981754c4825dfb073e6016da9c6008d1a49"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000124e20.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000124e20.asm",
+      "sha256": "61582337acddf58187fe438b5e8e3a4e70071d18bb703160e6b1ec950c4ab258"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000125250.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000125250.asm",
+      "sha256": "7201e7f1a4b2f398375daca7515dc97af4e1e5166662ae44229796bab70302d5"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000012b100.asm": {
+      "archive_path": "experiment/assembly-v2/000000000012b100.asm",
+      "sha256": "a80e2c2dfcdfae4ed97a2befbed0d63c4ced7d3069cef6604785405159fa5e35"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000012b530.asm": {
+      "archive_path": "experiment/assembly-v2/000000000012b530.asm",
+      "sha256": "ec61bc3c4243bb789a434e9a9eff598f28997df51a1cfd4aecc754d5473c1ac9"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000131da0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000131da0.asm",
+      "sha256": "5d70646a6cb9e39d53779afc7d76ffce770671828b2763751176a27bb0e62b78"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000001321d0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000001321d0.asm",
+      "sha256": "b2a08d30789ed5ebb7cd3679a7aa204e39f4745d8625eb8fad91274d95747b8a"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000139f90.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000139f90.asm",
+      "sha256": "90644598df84cf6378bc4cffd97edb12197e78ce2b47ced31b684836d156408f"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000013a8d0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000013a8d0.asm",
+      "sha256": "472132200eb3c62aeb7887c39d0e0ea1e12128eb1b16d55c4b672b61e9238d2b"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000140eb0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000140eb0.asm",
+      "sha256": "f59e9d8c05d35997bcb8a28809566a1a71053b92e787cf9ecbe7a552c7d916f6"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000141390.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000141390.asm",
+      "sha256": "411072d8aec49497d405ac25c32158c97b1abdcec82d34cbf862663a6593e56b"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000001468e0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000001468e0.asm",
+      "sha256": "55946d08339138b08350074c9c160296ab6c8ac7f7299e5fa5a68665a5a2b1f2"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000146dc0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000146dc0.asm",
+      "sha256": "97863f09e9c5b7b29684b0561bf11189ad45a03d920c1a59dfe104db112e2280"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000014c640.asm": {
+      "archive_path": "experiment/assembly-v2/000000000014c640.asm",
+      "sha256": "cfb2971426e455094a8bfcd38b08ecfb4299f5f408051603a7907306ac7bc114"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000014cbd0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000014cbd0.asm",
+      "sha256": "81ee8d147e5247b915f6755d2461f65613cec01f01dd5e2169581374628e7fe6"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000151fc0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000151fc0.asm",
+      "sha256": "793903e8ed299726f619afceab144a34bdfc3453e7d886f234f239c2535f812c"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000001524b0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000001524b0.asm",
+      "sha256": "03904e7545a61c1685bbec97f8ea9c778863b9b4b2e9caee0463005c330e6371"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000001577d0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000001577d0.asm",
+      "sha256": "b1e12983ed8aa1ac11110934013f6dd98211f679f9356abaf12b2fa63d0e55b4"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000157cc0.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000157cc0.asm",
+      "sha256": "d9017fb9fa0a2f491e8c42d3db7035ad7724684ccb65e423ecbf063fc75ee0e5"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000015d230.asm": {
+      "archive_path": "experiment/assembly-v2/000000000015d230.asm",
+      "sha256": "7eae38643fbeb102390fa0f7c5c3b1e3a2803a6a46d64ee76e1953a379329ba2"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000015d7e0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000015d7e0.asm",
+      "sha256": "c30e0784259ffe44fdb42d6657cb50da59961bcad1ac01f3a71deb70c9f3b27a"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000162f70.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000162f70.asm",
+      "sha256": "956b52602044fb75c97492915aded560d278f665088a170eb18f5beef8d50975"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000163470.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000163470.asm",
+      "sha256": "bad48a08a93bcab08f9507654a17987c9ebafaa21e9ed9c238e457044923d8f1"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000168c90.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000168c90.asm",
+      "sha256": "4a498435cb5b50ddbf576b35e9d95c6701f428c6af408d0400731fa18b7e2742"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000169190.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000169190.asm",
+      "sha256": "6c611780bc2f4538df945b7fc9e69d9e951a96e673f30a53d81e541f0f025afe"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000016e950.asm": {
+      "archive_path": "experiment/assembly-v2/000000000016e950.asm",
+      "sha256": "0c20942c037b44eb665753364da401ebe8ac45198d5984164779603bec981dc7"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000016ee40.asm": {
+      "archive_path": "experiment/assembly-v2/000000000016ee40.asm",
+      "sha256": "6225115083a464d89e706c46bba12aafedbe64b2d414d472d42c8acc6cd81076"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000175510.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000175510.asm",
+      "sha256": "b4bbb48e5915e1314feebc906fed3bd7e99d0dd9a8040c1e8f31604f4d4126f1"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000175a40.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000175a40.asm",
+      "sha256": "d139c31914fa7f8cf8834cb0a3fecbc98fc5bcd956b9db5c1aeb61aae0dc97a6"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000017adb0.asm": {
+      "archive_path": "experiment/assembly-v2/000000000017adb0.asm",
+      "sha256": "f7134dc7e13c82cd311fc856921bb2acf9d431559c8ead42d5f01e7bd066a5e5"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000017b340.asm": {
+      "archive_path": "experiment/assembly-v2/000000000017b340.asm",
+      "sha256": "4ec90e3d7239bbfd70ad5b697d0f7c19888de47fc6f4b04e8550b6e70df0dc5b"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000001806a0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000001806a0.asm",
+      "sha256": "96947e7d8bd2883bf6a6d1d6858f54c51205e63f33cb8ab621df661df2f38ae2"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000180c50.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000180c50.asm",
+      "sha256": "4a0ee0f935b50451ce1b24b53d10fe947670bdfdc00440a1db9b7b5195a45598"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000186030.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000186030.asm",
+      "sha256": "33822570d589fcc40d51dffbde47c01e369857ee71e5091cbbf346bdbeb5c191"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/00000000001865e0.asm": {
+      "archive_path": "experiment/assembly-v2/00000000001865e0.asm",
+      "sha256": "8f4dd6154c2dbce4209c00417858f45c28104e3a2327c8af697ca42eb9366fd5"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000018b890.asm": {
+      "archive_path": "experiment/assembly-v2/000000000018b890.asm",
+      "sha256": "df36a8d31d866a80ec4ac30e8c908d49d74c6f77b7bcaf5c87c435fee35cd7c4"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/000000000018be90.asm": {
+      "archive_path": "experiment/assembly-v2/000000000018be90.asm",
+      "sha256": "64415926ab1311319925fa866b59faf7da139b6e24b4bbf4d45b37e180fe8e74"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000191370.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000191370.asm",
+      "sha256": "bd8dce65d2611825aed4554a007fc00b37a9fb9f0f0863bde611c614a9bd47bb"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/0000000000191970.asm": {
+      "archive_path": "experiment/assembly-v2/0000000000191970.asm",
+      "sha256": "1bf40ce5530478bbf509b3e44e44086937a0fb35f13ee07b8d93604fe03c4707"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/audit-fixture-correction.json": {
+      "archive_path": "experiment/assembly-v2/audit-fixture-correction.json",
+      "sha256": "cccadf18ac349fa348687be6e501f16ddd5e670a2eeab7faac6181db9bbe609f"
+    },
+    "experiments/2026-10-29-inline-single-query/assembly-v2/audit.json": {
+      "archive_path": "experiment/assembly-v2/audit.json",
+      "sha256": "d13e6b161bf56da8610de9020bc62ba6c9f42d315ba9d076a30667454f354462"
+    },
+    "build/inline-single-v2-native/CMakeCache.txt": {
+      "archive_path": "build-metadata/native/CMakeCache.txt",
+      "sha256": "171836fd777db404104316665df2119387d51d7407108f1e4784bf21187ff844"
+    },
+    "build/inline-single-v2-native/compile_commands.json": {
+      "archive_path": "build-metadata/native/compile_commands.json",
+      "sha256": "48678dcae3a01e6f7f85c75bcbabfff25cc473c7e0fbacc93a98c59ec854da7f"
+    },
+    "build/inline-single-v2-native/Testing/Temporary/LastTest.log": {
+      "archive_path": "build-metadata/native/Testing/Temporary/LastTest.log",
+      "sha256": "d37c2061b91f1935167ea96a8fddc6eb55ca245778a8b3ac793494bcf4c16e44"
+    },
+    "build/inline-single-v2-asan/CMakeCache.txt": {
+      "archive_path": "build-metadata/asan/CMakeCache.txt",
+      "sha256": "01fbfd5507146f49b8ea75cf699114a3a64bb81a5fbac1d7f31964d005d73ebd"
+    },
+    "build/inline-single-v2-asan/compile_commands.json": {
+      "archive_path": "build-metadata/asan/compile_commands.json",
+      "sha256": "422bb4b89431faa2b46e9805877cdf590685912d9765c6c59290babb35c2d086"
+    },
+    "build/inline-single-v2-asan/Testing/Temporary/LastTest.log": {
+      "archive_path": "build-metadata/asan/Testing/Temporary/LastTest.log",
+      "sha256": "b92a8032de7291faba93ef7e6267cf41cf3efc50c3f4eac09f483abcdda05c1d"
+    },
+    "build/inline-single-v2-full/CMakeCache.txt": {
+      "archive_path": "build-metadata/full/CMakeCache.txt",
+      "sha256": "29bb36439fc4e6e4c9bb93c76e6164b4c5feeb65c2cc890b452fce92abcf1149"
+    },
+    "build/inline-single-v2-full/compile_commands.json": {
+      "archive_path": "build-metadata/full/compile_commands.json",
+      "sha256": "c92b87849c8f43c38d7319341a8074f00d5b492ead51fb877156a7110c5330e6"
+    },
+    "build/inline-single-v2-full/Testing/Temporary/LastTest.log": {
+      "archive_path": "build-metadata/full/Testing/Temporary/LastTest.log",
+      "sha256": "e36862275250481976b982efcf185a920b0986e64931b1825847891895883fc7"
+    }
+  },
+  "binaries": {
+    "build/inline-single-v2-native/benchmark": {
+      "retained_path": "build/inline-single-v2-native/benchmark",
+      "sha256": "fbc9c944c4ee38c5d6d5a3d77345ed4b488f0aa773667dbdf77536a17eacc63f"
+    },
+    "build/inline-single-v2-native/check": {
+      "retained_path": "build/inline-single-v2-native/check",
+      "sha256": "630ed5a123835ca091deb44dff473849bdf43be4c4fa7c0c4c9ce707d147a129"
+    },
+    "build/inline-single-v2-native/fault_pure": {
+      "retained_path": "build/inline-single-v2-native/fault_pure",
+      "sha256": "cba2915ab96443b0aec723d2596c96167f5aadd670a15f090f92d887c7b3a70b"
+    },
+    "build/inline-single-v2-native/fault_raw": {
+      "retained_path": "build/inline-single-v2-native/fault_raw",
+      "sha256": "fb705824a299d548ff072e320ea59d9ef80731b43c65a2e5a327273571159dac"
+    },
+    "build/inline-single-v2-asan/benchmark": {
+      "retained_path": "build/inline-single-v2-asan/benchmark",
+      "sha256": "4d3027ae831bde5e3587926c0e472a764136e90a4b2b6f85ad13404cf0dfe48d"
+    },
+    "build/inline-single-v2-asan/check": {
+      "retained_path": "build/inline-single-v2-asan/check",
+      "sha256": "ab616bc133b98b27037d1c49f232a0df2b30948c01f35296c9e8d36564c6f9db"
+    },
+    "build/inline-single-v2-asan/fault_pure": {
+      "retained_path": "build/inline-single-v2-asan/fault_pure",
+      "sha256": "15df139b6bca4af5750a4a095b7b62921ffc7bc32161a6cfe68725c8ae7191e5"
+    },
+    "build/inline-single-v2-asan/fault_raw": {
+      "retained_path": "build/inline-single-v2-asan/fault_raw",
+      "sha256": "4e40059a74bc562e7a2582b380633e1de7d02c64966951cab129379b9630fb95"
+    },
+    "build/inline-single-v2-full/benchmark": {
+      "retained_path": "build/inline-single-v2-full/benchmark",
+      "sha256": "9bbe26ba8e784ecbf26cfae6129779415645b64c6afd7d647ca926e4b5e6345a"
+    },
+    "build/inline-single-v2-full/check": {
+      "retained_path": "build/inline-single-v2-full/check",
+      "sha256": "630ed5a123835ca091deb44dff473849bdf43be4c4fa7c0c4c9ce707d147a129"
+    },
+    "build/inline-single-v2-full/fault_pure": {
+      "retained_path": "build/inline-single-v2-full/fault_pure",
+      "sha256": "cba2915ab96443b0aec723d2596c96167f5aadd670a15f090f92d887c7b3a70b"
+    },
+    "build/inline-single-v2-full/fault_raw": {
+      "retained_path": "build/inline-single-v2-full/fault_raw",
+      "sha256": "fb705824a299d548ff072e320ea59d9ef80731b43c65a2e5a327273571159dac"
+    }
+  },
+  "dependency_archive": "../preflight-v1/path-map.json",
+  "dependency_freeze": "experiment/freeze-v2.json"
+}

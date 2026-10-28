@@ -1,0 +1,13 @@
+--- experiments/2026-10-29-external-parallel-query/snapshot/benchmarks/boost-external/adapters.hpp
++++ experiments/2026-10-29-inline-single-query/boost-direct.hpp
+@@ -103,6 +103,10 @@
+ 		else if (n)
+ 			filter_.insert(keys, keys + n);
+ 	}
++	// Direct unchanged upstream one-key API for the optimizer-visible track.
++	uint32_t ScalarContains(uint64_t hash) const {
++		return filter_.may_contain(hash);
++	}
+ 	uint32_t Lookup(uint32_t n, const uint64_t *keys, uint32_t *out) const {
+ 		if (n == 1)
+ 			*out = filter_.may_contain(*keys);

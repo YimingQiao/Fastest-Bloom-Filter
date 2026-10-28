@@ -1,0 +1,200 @@
+[
+  {
+    "label": "native",
+    "step": "configure",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-inline-single-query",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-native",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_INLINE_REPRESENTATIVE=ON"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 3.052002191543579
+  },
+  {
+    "label": "native",
+    "step": "build",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-native",
+      "--parallel",
+      "1"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 25.883819103240967
+  },
+  {
+    "label": "native",
+    "step": "ctest",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-native",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.02177286148071289
+  },
+  {
+    "label": "native",
+    "step": "cli",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "python3",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-inline-single-query/check_benchmark.py",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-native",
+      "--expected",
+      "18"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.08697676658630371
+  },
+  {
+    "label": "asan",
+    "step": "configure",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-inline-single-query",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_INLINE_REPRESENTATIVE=ON",
+      "-DBF_SANITIZERS=ON"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 2.694295644760132
+  },
+  {
+    "label": "asan",
+    "step": "build",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-asan",
+      "--parallel",
+      "1"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 48.97084903717041
+  },
+  {
+    "label": "asan",
+    "step": "ctest",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-asan",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.1268620491027832
+  },
+  {
+    "label": "asan",
+    "step": "cli",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "python3",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-inline-single-query/check_benchmark.py",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-asan",
+      "--expected",
+      "18"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.5950181484222412
+  },
+  {
+    "label": "full",
+    "step": "configure",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-inline-single-query",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-full",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_INLINE_REPRESENTATIVE=OFF"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 2.766411781311035
+  },
+  {
+    "label": "full",
+    "step": "build",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-full",
+      "--parallel",
+      "1"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 39.447789669036865
+  },
+  {
+    "label": "full",
+    "step": "ctest",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-full",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.021976470947265625
+  },
+  {
+    "label": "full",
+    "step": "cli",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "python3",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-inline-single-query/check_benchmark.py",
+      "/home/yiming/projects/fastest-bf-lab/build/inline-single-v2-direct-full",
+      "--expected",
+      "60",
+      "--registry",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-inline-single-query/registry.json"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 0.23367643356323242
+  }
+]
