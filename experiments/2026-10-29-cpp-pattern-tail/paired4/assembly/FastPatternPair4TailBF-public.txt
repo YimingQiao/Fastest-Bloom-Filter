@@ -1,0 +1,410 @@
+
+/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-paired4/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000001a960 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const>:
+   1a960:	push   %rbp
+   1a961:	push   %r15
+   1a963:	push   %r14
+   1a965:	push   %r12
+   1a967:	push   %rbx
+   1a968:	mov    %rcx,%r8
+   1a96b:	mov    %esi,%eax
+   1a96d:	cmp    $0x3,%esi
+   1a970:	ja     1aabe <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x15e>
+   1a976:	test   %eax,%eax
+   1a978:	je     1b0c3 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x763>
+   1a97e:	mov    (%rdx),%rsi
+   1a981:	mov    %rsi,%r9
+   1a984:	shr    $0x20,%r9
+   1a988:	and    0x8(%rdi),%r9d
+   1a98c:	mov    %esi,%ecx
+   1a98e:	and    $0x1f,%ecx
+   1a991:	mov    (%rdi),%r11
+   1a994:	mov    0x10(%rdi),%r10
+   1a998:	mov    (%r11,%rcx,4),%ebx
+   1a99c:	mov    %esi,%ecx
+   1a99e:	shr    $0x5,%ecx
+   1a9a1:	rol    %cl,%ebx
+   1a9a3:	mov    %esi,%ecx
+   1a9a5:	shr    $0x8,%ecx
+   1a9a8:	and    $0x7c,%ecx
+   1a9ab:	mov    (%r11,%rcx,1),%r11d
+   1a9af:	mov    %esi,%ecx
+   1a9b1:	shr    $0xf,%ecx
+   1a9b4:	rol    %cl,%r11d
+   1a9b7:	mov    (%r10,%r9,4),%ecx
+   1a9bb:	andn   %ebx,%ecx,%ecx
+   1a9c0:	shr    $0x14,%esi
+   1a9c3:	and    $0x7,%esi
+   1a9c6:	or     $0x8,%esi
+   1a9c9:	xor    %r9d,%esi
+   1a9cc:	mov    (%r10,%rsi,4),%esi
+   1a9d0:	andn   %r11d,%esi,%esi
+   1a9d5:	xor    %r9d,%r9d
+   1a9d8:	or     %ecx,%esi
+   1a9da:	sete   %r9b
+   1a9de:	mov    %r9d,(%r8)
+   1a9e1:	cmp    $0x1,%eax
+   1a9e4:	je     1b0c3 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x763>
+   1a9ea:	mov    0x8(%rdx),%rsi
+   1a9ee:	mov    %rsi,%r9
+   1a9f1:	shr    $0x20,%r9
+   1a9f5:	and    0x8(%rdi),%r9d
+   1a9f9:	mov    %esi,%ecx
+   1a9fb:	and    $0x1f,%ecx
+   1a9fe:	mov    (%rdi),%r11
+   1aa01:	mov    0x10(%rdi),%r10
+   1aa05:	mov    (%r11,%rcx,4),%ebx
+   1aa09:	mov    %esi,%ecx
+   1aa0b:	shr    $0x5,%ecx
+   1aa0e:	rol    %cl,%ebx
+   1aa10:	mov    %esi,%ecx
+   1aa12:	shr    $0x8,%ecx
+   1aa15:	and    $0x7c,%ecx
+   1aa18:	mov    (%r11,%rcx,1),%r11d
+   1aa1c:	mov    %esi,%ecx
+   1aa1e:	shr    $0xf,%ecx
+   1aa21:	rol    %cl,%r11d
+   1aa24:	mov    (%r10,%r9,4),%ecx
+   1aa28:	andn   %ebx,%ecx,%ecx
+   1aa2d:	shr    $0x14,%esi
+   1aa30:	and    $0x7,%esi
+   1aa33:	or     $0x8,%esi
+   1aa36:	xor    %r9d,%esi
+   1aa39:	mov    (%r10,%rsi,4),%esi
+   1aa3d:	andn   %r11d,%esi,%esi
+   1aa42:	xor    %r9d,%r9d
+   1aa45:	or     %ecx,%esi
+   1aa47:	sete   %r9b
+   1aa4b:	mov    %r9d,0x4(%r8)
+   1aa4f:	cmp    $0x2,%eax
+   1aa52:	je     1b0c3 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x763>
+   1aa58:	mov    0x10(%rdx),%rdx
+   1aa5c:	mov    %rdx,%rsi
+   1aa5f:	shr    $0x20,%rsi
+   1aa63:	and    0x8(%rdi),%esi
+   1aa66:	mov    %edx,%ecx
+   1aa68:	and    $0x1f,%ecx
+   1aa6b:	mov    (%rdi),%r9
+   1aa6e:	mov    0x10(%rdi),%rdi
+   1aa72:	mov    (%r9,%rcx,4),%r10d
+   1aa76:	mov    %edx,%ecx
+   1aa78:	shr    $0x5,%ecx
+   1aa7b:	rol    %cl,%r10d
+   1aa7e:	mov    %edx,%ecx
+   1aa80:	shr    $0x8,%ecx
+   1aa83:	and    $0x7c,%ecx
+   1aa86:	mov    (%r9,%rcx,1),%r9d
+   1aa8a:	mov    %edx,%ecx
+   1aa8c:	shr    $0xf,%ecx
+   1aa8f:	rol    %cl,%r9d
+   1aa92:	mov    (%rdi,%rsi,4),%ecx
+   1aa95:	andn   %r10d,%ecx,%ecx
+   1aa9a:	shr    $0x14,%edx
+   1aa9d:	and    $0x7,%edx
+   1aaa0:	or     $0x8,%edx
+   1aaa3:	xor    %esi,%edx
+   1aaa5:	mov    (%rdi,%rdx,4),%edx
+   1aaa8:	andn   %r9d,%edx,%edx
+   1aaad:	xor    %esi,%esi
+   1aaaf:	or     %ecx,%edx
+   1aab1:	sete   %sil
+   1aab5:	mov    %esi,0x8(%r8)
+   1aab9:	jmp    1b0c3 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x763>
+   1aabe:	mov    0x10(%rdi),%rsi
+   1aac2:	mov    0x18(%rdi),%rcx
+   1aac6:	sub    %rsi,%rcx
+   1aac9:	cmp    $0x200001,%rcx
+   1aad0:	jb     1aae5 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x185>
+   1aad2:	mov    %eax,%ebx
+   1aad4:	mov    %eax,%esi
+   1aad6:	mov    %r8,%rcx
+   1aad9:	call   1b0d0 <void bloom_filters::FastPatternPair4TailBF::LookupImpl<true>(unsigned int, unsigned long const*, unsigned int*) const>
+   1aade:	mov    %ebx,%eax
+   1aae0:	jmp    1b0c3 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x763>
+   1aae5:	mov    (%rdi),%r9
+   1aae8:	vmovdqu64 (%r9),%zmm0
+   1aaee:	vmovdqu64 0x40(%r9),%zmm1
+   1aaf5:	mov    %eax,%r10d
+   1aaf8:	cmp    $0x10,%eax
+   1aafb:	jae    1ab12 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x1b2>
+   1aafd:	xor    %r14d,%r14d
+   1ab00:	lea    0x8(%r14),%rcx
+   1ab04:	cmp    %r10,%rcx
+   1ab07:	ja     1ad0c <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x3ac>
+   1ab0d:	jmp    1ae9a <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x53a>
+   1ab12:	vpbroadcastd 0x8(%rdi),%zmm2
+   1ab19:	mov    0x10(%rdi),%r11
+   1ab1d:	lea    -0x10(%r10),%rbx
+   1ab21:	mov    %rbx,%r14
+   1ab24:	shr    $0x4,%r14
+   1ab28:	je     1adb4 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x454>
+   1ab2e:	inc    %r14
+   1ab31:	and    $0xfffffffffffffffe,%r14
+   1ab35:	mov    $0x10,%ecx
+   1ab3a:	vmovdqa64 -0x17e44(%rip),%zmm3        # 2d00 <_IO_stdin_used+0xd78>
+   1ab44:	vmovdqa64 -0x17e0e(%rip),%zmm4        # 2d40 <_IO_stdin_used+0xdb8>
+   1ab4e:	vpbroadcastd -0x18bd8(%rip),%zmm5        # 1f80 <__abi_tag+0x1cbc>
+   1ab58:	vpbroadcastd -0x18bde(%rip),%zmm6        # 1f84 <__abi_tag+0x1cc0>
+   1ab62:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   1ab70:	vmovdqu64 -0x80(%rdx,%rcx,8),%zmm7
+   1ab78:	vmovdqu64 -0x40(%rdx,%rcx,8),%zmm8
+   1ab80:	vmovdqa64 %zmm7,%zmm9
+   1ab86:	vpermt2d %zmm8,%zmm3,%zmm9
+   1ab8c:	vpermt2d %zmm8,%zmm4,%zmm7
+   1ab92:	vpandd %zmm2,%zmm7,%zmm7
+   1ab98:	kxnorw %k0,%k0,%k1
+   1ab9c:	vpxor  %xmm8,%xmm8,%xmm8
+   1aba1:	vpgatherdd (%r11,%zmm7,4),%zmm8{%k1}
+   1aba8:	vpsrld $0x14,%zmm9,%zmm10
+   1abaf:	vpandd %zmm5,%zmm10,%zmm10
+   1abb5:	vpternlogd $0x36,%zmm6,%zmm7,%zmm10
+   1abbc:	kxnorw %k0,%k0,%k1
+   1abc0:	vpxor  %xmm7,%xmm7,%xmm7
+   1abc4:	vpgatherdd (%r11,%zmm10,4),%zmm7{%k1}
+   1abcb:	vmovdqa64 %zmm0,%zmm10
+   1abd1:	vpermt2d %zmm1,%zmm9,%zmm10
+   1abd7:	vpsrld $0x5,%zmm9,%zmm11
+   1abde:	vprolvd %zmm11,%zmm10,%zmm10
+   1abe4:	vpsrld $0xa,%zmm9,%zmm11
+   1abeb:	vpermi2d %zmm1,%zmm0,%zmm11
+   1abf1:	vpsrld $0xf,%zmm9,%zmm9
+   1abf8:	vprolvd %zmm9,%zmm11,%zmm9
+   1abfe:	vpandd %zmm10,%zmm8,%zmm8
+   1ac04:	vpcmpeqd %zmm10,%zmm8,%k1
+   1ac0a:	vpandd %zmm9,%zmm7,%zmm7
+   1ac10:	vpcmpeqd %zmm9,%zmm7,%k0{%k1}
+   1ac16:	vpmovm2d %k0,%zmm7
+   1ac1c:	vpsrld $0x1f,%zmm7,%zmm7
+   1ac23:	vmovdqu64 %zmm7,-0x40(%r8,%rcx,4)
+   1ac2b:	vmovdqu64 (%rdx,%rcx,8),%zmm7
+   1ac32:	vmovdqu64 0x40(%rdx,%rcx,8),%zmm8
+   1ac3a:	vmovdqa64 %zmm7,%zmm9
+   1ac40:	vpermt2d %zmm8,%zmm3,%zmm9
+   1ac46:	vpermt2d %zmm8,%zmm4,%zmm7
+   1ac4c:	vpandd %zmm2,%zmm7,%zmm7
+   1ac52:	kxnorw %k0,%k0,%k1
+   1ac56:	vpxor  %xmm8,%xmm8,%xmm8
+   1ac5b:	vpgatherdd (%r11,%zmm7,4),%zmm8{%k1}
+   1ac62:	vpsrld $0x14,%zmm9,%zmm10
+   1ac69:	vpandd %zmm5,%zmm10,%zmm10
+   1ac6f:	vpternlogd $0x36,%zmm6,%zmm7,%zmm10
+   1ac76:	kxnorw %k0,%k0,%k1
+   1ac7a:	vpxor  %xmm7,%xmm7,%xmm7
+   1ac7e:	vpgatherdd (%r11,%zmm10,4),%zmm7{%k1}
+   1ac85:	vmovdqa64 %zmm0,%zmm10
+   1ac8b:	vpermt2d %zmm1,%zmm9,%zmm10
+   1ac91:	vpsrld $0x5,%zmm9,%zmm11
+   1ac98:	vprolvd %zmm11,%zmm10,%zmm10
+   1ac9e:	vpsrld $0xa,%zmm9,%zmm11
+   1aca5:	vpermi2d %zmm1,%zmm0,%zmm11
+   1acab:	vpsrld $0xf,%zmm9,%zmm9
+   1acb2:	vprolvd %zmm9,%zmm11,%zmm9
+   1acb8:	vpandd %zmm10,%zmm8,%zmm8
+   1acbe:	vpcmpeqd %zmm10,%zmm8,%k1
+   1acc4:	vpandd %zmm9,%zmm7,%zmm7
+   1acca:	vpcmpeqd %zmm9,%zmm7,%k0{%k1}
+   1acd0:	vpmovm2d %k0,%zmm7
+   1acd6:	vpsrld $0x1f,%zmm7,%zmm7
+   1acdd:	vmovdqu64 %zmm7,(%r8,%rcx,4)
+   1ace4:	add    $0x20,%rcx
+   1ace8:	add    $0xfffffffffffffffe,%r14
+   1acec:	jne    1ab70 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x210>
+   1acf2:	lea    -0x10(%rcx),%r14
+   1acf6:	test   $0x10,%bl
+   1acf9:	je     1adbc <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x45c>
+   1acff:	lea    0x8(%r14),%rcx
+   1ad03:	cmp    %r10,%rcx
+   1ad06:	jbe    1ae9a <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x53a>
+   1ad0c:	mov    %r14,%rcx
+   1ad0f:	lea    0x4(%rcx),%r15
+   1ad13:	cmp    %r10,%r15
+   1ad16:	ja     1af30 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x5d0>
+   1ad1c:	vmovdqu (%rdx,%rcx,8),%ymm2
+   1ad21:	vpshufd $0xf5,%zmm2,%zmm3
+   1ad28:	vpsllq $0xc,%zmm2,%zmm4
+   1ad2f:	vpshufd $0xa0,%zmm2,%zmm2
+   1ad36:	vpsrlvd -0x17fc0(%rip),%zmm2,%zmm5        # 2d80 <_IO_stdin_used+0xdf8>
+   1ad40:	vpermt2d %zmm1,%zmm5,%zmm0
+   1ad46:	vpsrlvd -0x17f90(%rip),%zmm2,%zmm1        # 2dc0 <_IO_stdin_used+0xe38>
+   1ad50:	vprolvd %zmm1,%zmm0,%zmm0
+   1ad56:	vpbroadcastq -0x18d40(%rip),%zmm1        # 2020 <_IO_stdin_used+0x98>
+   1ad60:	vpternlogq $0xf8,-0x18d83(%rip){1to8},%zmm4,%zmm1        # 1fe8 <_IO_stdin_used+0x60>
+   1ad6b:	mov    0x10(%rdi),%r11
+   1ad6f:	vpternlogd $0x78,0x8(%rdi){1to16},%zmm3,%zmm1
+   1ad77:	vpxor  %xmm2,%xmm2,%xmm2
+   1ad7b:	kxnorb %k0,%k0,%k1
+   1ad7f:	vpgatherdd (%r11,%zmm1,4),%zmm2{%k1}
+   1ad86:	vpandd %zmm2,%zmm0,%zmm1
+   1ad8c:	vpcmpeqq %zmm0,%zmm1,%k0
+   1ad92:	vpmovm2d %k0,%zmm0
+   1ad98:	vpsrld $0x1f,%xmm0,%xmm0
+   1ad9d:	vmovdqu %xmm0,(%r8,%rcx,4)
+   1ada3:	mov    %r10,%rcx
+   1ada6:	sub    %r15,%rcx
+   1ada9:	ja     1af3f <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x5df>
+   1adaf:	jmp    1b0c3 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x763>
+   1adb4:	mov    $0x10,%ecx
+   1adb9:	xor    %r14d,%r14d
+   1adbc:	vmovdqu64 (%rdx,%r14,8),%zmm3
+   1adc3:	vmovdqu64 0x40(%rdx,%r14,8),%zmm4
+   1adcb:	vmovdqa64 -0x180d5(%rip),%zmm5        # 2d00 <_IO_stdin_used+0xd78>
+   1add5:	vpermi2d %zmm4,%zmm3,%zmm5
+   1addb:	vmovdqa64 -0x180a5(%rip),%zmm6        # 2d40 <_IO_stdin_used+0xdb8>
+   1ade5:	vpermi2d %zmm4,%zmm3,%zmm6
+   1adeb:	vpandd %zmm2,%zmm6,%zmm2
+   1adf1:	vpsrld $0x14,%zmm5,%zmm3
+   1adf8:	vmovdqa64 %zmm0,%zmm4
+   1adfe:	vpermt2d %zmm1,%zmm5,%zmm4
+   1ae04:	vpsrld $0x5,%zmm5,%zmm6
+   1ae0b:	vprolvd %zmm6,%zmm4,%zmm4
+   1ae11:	kxnorw %k0,%k0,%k1
+   1ae15:	vpxor  %xmm6,%xmm6,%xmm6
+   1ae19:	kxnorw %k0,%k0,%k2
+   1ae1d:	vpgatherdd (%r11,%zmm2,4),%zmm6{%k2}
+   1ae24:	vpxor  %xmm7,%xmm7,%xmm7
+   1ae28:	vpandd -0x18eb2(%rip){1to16},%zmm3,%zmm3        # 1f80 <__abi_tag+0x1cbc>
+   1ae32:	vpternlogd $0x36,-0x18eb9(%rip){1to16},%zmm2,%zmm3        # 1f84 <__abi_tag+0x1cc0>
+   1ae3d:	vpgatherdd (%r11,%zmm3,4),%zmm7{%k1}
+   1ae44:	vpsrld $0xa,%zmm5,%zmm2
+   1ae4b:	vpermi2d %zmm1,%zmm0,%zmm2
+   1ae51:	vpsrld $0xf,%zmm5,%zmm3
+   1ae58:	vprolvd %zmm3,%zmm2,%zmm2
+   1ae5e:	vpandd %zmm4,%zmm6,%zmm3
+   1ae64:	vpcmpeqd %zmm4,%zmm3,%k1
+   1ae6a:	vpandd %zmm2,%zmm7,%zmm3
+   1ae70:	vpcmpeqd %zmm2,%zmm3,%k0{%k1}
+   1ae76:	vpmovm2d %k0,%zmm2
+   1ae7c:	vpsrld $0x1f,%zmm2,%zmm2
+   1ae83:	vmovdqu64 %zmm2,(%r8,%r14,4)
+   1ae8a:	mov    %rcx,%r14
+   1ae8d:	lea    0x8(%r14),%rcx
+   1ae91:	cmp    %r10,%rcx
+   1ae94:	ja     1ad0c <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x3ac>
+   1ae9a:	vmovdqu64 (%rdx,%r14,8),%zmm2
+   1aea1:	vpshufd $0xf5,%zmm2,%zmm3
+   1aea8:	vpsllq $0xc,%zmm2,%zmm4
+   1aeaf:	vpshufd $0xa0,%zmm2,%zmm2
+   1aeb6:	vpsrlvd -0x18140(%rip),%zmm2,%zmm5        # 2d80 <_IO_stdin_used+0xdf8>
+   1aec0:	vpermi2d %zmm1,%zmm0,%zmm5
+   1aec6:	vpsrlvd -0x18110(%rip),%zmm2,%zmm2        # 2dc0 <_IO_stdin_used+0xe38>
+   1aed0:	vprolvd %zmm2,%zmm5,%zmm2
+   1aed6:	vpbroadcastq -0x18ec0(%rip),%zmm5        # 2020 <_IO_stdin_used+0x98>
+   1aee0:	vpternlogq $0xf8,-0x18f03(%rip){1to8},%zmm4,%zmm5        # 1fe8 <_IO_stdin_used+0x60>
+   1aeeb:	mov    0x10(%rdi),%r11
+   1aeef:	vpternlogd $0x78,0x8(%rdi){1to16},%zmm3,%zmm5
+   1aef7:	kxnorw %k0,%k0,%k1
+   1aefb:	vpxor  %xmm3,%xmm3,%xmm3
+   1aeff:	vpgatherdd (%r11,%zmm5,4),%zmm3{%k1}
+   1af06:	vpandd %zmm3,%zmm2,%zmm3
+   1af0c:	vpcmpeqq %zmm2,%zmm3,%k0
+   1af12:	vpmovm2d %k0,%zmm2
+   1af18:	vpsrld $0x1f,%ymm2,%ymm2
+   1af1d:	vmovdqu %ymm2,(%r8,%r14,4)
+   1af23:	lea    0x4(%rcx),%r15
+   1af27:	cmp    %r10,%r15
+   1af2a:	jbe    1ad1c <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x3bc>
+   1af30:	mov    %rcx,%r15
+   1af33:	mov    %r10,%rcx
+   1af36:	sub    %r15,%rcx
+   1af39:	jbe    1b0c3 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x763>
+   1af3f:	mov    0x8(%rdi),%edi
+   1af42:	cmp    $0x4,%rcx
+   1af46:	jae    1af50 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x5f0>
+   1af48:	mov    %r15,%r11
+   1af4b:	jmp    1b060 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x700>
+   1af50:	mov    %ecx,%ebx
+   1af52:	and    $0xfffffffc,%ebx
+   1af55:	lea    (%r15,%rbx,1),%r11
+   1af59:	vpbroadcastd %edi,%xmm0
+   1af5f:	lea    (%r8,%r15,4),%r14
+   1af63:	lea    (%rdx,%r15,8),%r15
+   1af67:	xor    %r12d,%r12d
+   1af6a:	vpbroadcastq -0x18f5b(%rip),%ymm1        # 2018 <_IO_stdin_used+0x90>
+   1af73:	vpbroadcastd -0x18ffc(%rip),%xmm2        # 1f80 <__abi_tag+0x1cbc>
+   1af7c:	vpbroadcastd -0x19001(%rip),%xmm3        # 1f84 <__abi_tag+0x1cc0>
+   1af85:	data16 cs nopw 0x0(%rax,%rax,1)
+   1af90:	vmovdqu (%r15,%r12,8),%ymm4
+   1af96:	vpand  %ymm1,%ymm4,%ymm5
+   1af9a:	vpxor  %xmm6,%xmm6,%xmm6
+   1af9e:	kxnorw %k0,%k0,%k1
+   1afa2:	vpgatherqd (%r9,%ymm5,4),%xmm6{%k1}
+   1afa9:	vpsrlq $0x20,%ymm4,%ymm5
+   1afae:	vpsrlq $0xa,%ymm4,%ymm7
+   1afb3:	vpand  %ymm1,%ymm7,%ymm7
+   1afb7:	vpxor  %xmm8,%xmm8,%xmm8
+   1afbc:	kxnorw %k0,%k0,%k1
+   1afc0:	vpgatherqd (%r9,%ymm7,4),%xmm8{%k1}
+   1afc7:	vpmovqd %ymm5,%xmm5
+   1afcd:	vpand  %xmm5,%xmm0,%xmm5
+   1afd1:	vpmovzxdq %xmm5,%ymm7
+   1afd6:	vpxor  %xmm9,%xmm9,%xmm9
+   1afdb:	kxnorw %k0,%k0,%k1
+   1afdf:	vpgatherqd (%rsi,%ymm7,4),%xmm9{%k1}
+   1afe6:	vpmovqd %ymm4,%xmm4
+   1afec:	vpsrld $0x5,%xmm4,%xmm7
+   1aff1:	vprolvd %xmm7,%xmm6,%xmm6
+   1aff7:	vpsrld $0x14,%xmm4,%xmm7
+   1affc:	vpand  %xmm2,%xmm7,%xmm7
+   1b000:	vpternlogd $0x36,%xmm3,%xmm5,%xmm7
+   1b007:	vpmovzxdq %xmm7,%ymm5
+   1b00c:	vpxor  %xmm7,%xmm7,%xmm7
+   1b010:	kxnorw %k0,%k0,%k1
+   1b014:	vpgatherqd (%rsi,%ymm5,4),%xmm7{%k1}
+   1b01b:	vpsrld $0xf,%xmm4,%xmm4
+   1b020:	vprolvd %xmm4,%xmm8,%xmm4
+   1b026:	vpand  %xmm6,%xmm9,%xmm5
+   1b02a:	vpcmpeqd %xmm6,%xmm5,%k1
+   1b030:	vpand  %xmm4,%xmm7,%xmm5
+   1b034:	vpcmpeqd %xmm4,%xmm5,%k0{%k1}
+   1b03a:	vpmovm2d %k0,%xmm4
+   1b040:	vpsrld $0x1f,%xmm4,%xmm4
+   1b045:	vmovdqu %xmm4,(%r14,%r12,4)
+   1b04b:	add    $0x4,%r12
+   1b04f:	cmp    %r12,%rbx
+   1b052:	jne    1af90 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x630>
+   1b058:	cmp    %ebx,%ecx
+   1b05a:	je     1b0c3 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x763>
+   1b05c:	nopl   0x0(%rax)
+   1b060:	mov    (%rdx,%r11,8),%rbx
+   1b064:	mov    %rbx,%r14
+   1b067:	shr    $0x20,%r14
+   1b06b:	and    %edi,%r14d
+   1b06e:	mov    %ebx,%ecx
+   1b070:	and    $0x1f,%ecx
+   1b073:	mov    (%r9,%rcx,4),%ebp
+   1b077:	mov    %ebx,%ecx
+   1b079:	shr    $0x5,%ecx
+   1b07c:	rol    %cl,%ebp
+   1b07e:	mov    %ebx,%ecx
+   1b080:	shr    $0x8,%ecx
+   1b083:	and    $0x7c,%ecx
+   1b086:	mov    (%r9,%rcx,1),%r15d
+   1b08a:	mov    %ebx,%ecx
+   1b08c:	shr    $0xf,%ecx
+   1b08f:	rol    %cl,%r15d
+   1b092:	mov    (%rsi,%r14,4),%ecx
+   1b096:	andn   %ebp,%ecx,%ecx
+   1b09b:	shr    $0x14,%ebx
+   1b09e:	and    $0x7,%ebx
+   1b0a1:	or     $0x8,%ebx
+   1b0a4:	xor    %r14d,%ebx
+   1b0a7:	mov    (%rsi,%rbx,4),%ebx
+   1b0aa:	andn   %r15d,%ebx,%ebx
+   1b0af:	xor    %ebp,%ebp
+   1b0b1:	or     %ecx,%ebx
+   1b0b3:	sete   %bpl
+   1b0b7:	mov    %ebp,(%r8,%r11,4)
+   1b0bb:	inc    %r11
+   1b0be:	cmp    %r11,%r10
+   1b0c1:	jne    1b060 <bloom_filters::FastPatternPair4TailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x700>
+   1b0c3:	pop    %rbx
+   1b0c4:	pop    %r12
+   1b0c6:	pop    %r14
+   1b0c8:	pop    %r15
+   1b0ca:	pop    %rbp
+   1b0cb:	vzeroupper
+   1b0ce:	ret
