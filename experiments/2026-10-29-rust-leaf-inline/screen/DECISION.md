@@ -1,0 +1,13 @@
+# Initial decision: retain the experiment; do not promote
+
+The completed 16-workload / 112-row screen demonstrates a useful public-singleton code-generation opportunity, but does not pass the prespecified bulk regression checks. Production is unchanged. These are seed42 training results, not independent confirmation.
+
+ByteSplit's visible prehashed and fused-hash modes improve in all 16 workload contexts. At 65,536 keys and actual16 bpk, the original/candidate timings are 1.518/1.030 ns prehashed and 2.263/1.656 ns with fused common hashing. Bloomsday is 1.476/2.147 ns in those same modes. At 33,554,432 keys and actual16 bpk, Byte's candidate is 5.193/6.607 ns versus Bloomsday 6.391/6.727 ns; the raw margin is only about1.8%. Both qualify the1% ceiling, but their error rates differ: Wilson upper bounds are about0.555% and0.132%, respectively.
+
+The large actual32-bpk batch3 guard shows Byte original batch prehashed10.155→11.759 ns and raw15.665→17.859 ns. Those are approximately15.8% and14.0% slower candidate timings. At large actual32 bpk/batch31, FourSector original batch prehashed7.532→9.387 ns and raw7.879→9.949 ns regress approximately24.6%/26.3%; Split64's8.453→10.510 and8.742→11.137 ns regress approximately24.3%/27.4%. Large batch4096 is much closer to parity. These observations remain in all tables.
+
+FourSector visible prehashed gains at small size do not persist at large size, and its fused-hash mode is inconsistent. Split64 visible fused hashing improves in all16 contexts, but the strict0.01% small-table candidate still loses Bloomsday: prehashed2.028 versus1.518 ns, fused2.555 versus2.150 ns. Its strict large fused margin is only about1.4% and does not erase the pure or bulk losses.
+
+Only annotations differ in the clone; bulk source semantics and routing are unchanged. This fact does not establish that each observed timing change is caused by call removal. Compiler layout, allocation/cache state and run-order effects remain possible explanations; this screen does not isolate them. Keep the exact before/candidate code, trial vectors, generated assembly and all regression cases for any follow-up. A narrower Byte annotation experiment with independently repeated problematic guard conditions would be required before deciding on production use.
+
+`RESULTS.md` reports the four query contracts separately. `candidate-ratios.csv` contains192 paired original/candidate metric records, `api-ratios.csv`224 within-row API ratios, and `quality.csv`28 distinct original-family/size records. Batch/clone calibration reuse is not additional evidence. No external comparison is inferred from the native-only batch3/31/4096 rows.
