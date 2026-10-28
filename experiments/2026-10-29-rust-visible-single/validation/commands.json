@@ -1,0 +1,136 @@
+{
+  "cpu": 2,
+  "socket_lock": "/tmp/fastest-bf-socket0.lock",
+  "timings_claimed": false,
+  "commands": [
+    [
+      "fmt.log",
+      [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-visible-single/benchmark/Cargo.toml"
+      ]
+    ],
+    [
+      "normal-tests.log",
+      [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-rust-visible-single",
+        "RUST_TEST_THREADS=1",
+        "cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-visible-single/benchmark/Cargo.toml"
+      ]
+    ],
+    [
+      "disable-tests.log",
+      [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-rust-visible-single-disable",
+        "RUST_TEST_THREADS=1",
+        "cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-visible-single/benchmark/Cargo.toml",
+        "--features",
+        "disable-avx512"
+      ]
+    ],
+    [
+      "asan-tests.log",
+      [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-rust-visible-single-asan",
+        "RUST_TEST_THREADS=1",
+        "RUSTFLAGS=-Zsanitizer=address",
+        "cargo",
+        "+nightly",
+        "test",
+        "--locked",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-visible-single/benchmark/Cargo.toml"
+      ]
+    ],
+    [
+      "clippy.log",
+      [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-rust-visible-single",
+        "cargo",
+        "clippy",
+        "--locked",
+        "--all-targets",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-visible-single/benchmark/Cargo.toml",
+        "--",
+        "-D",
+        "warnings"
+      ]
+    ],
+    [
+      "release-build.log",
+      [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-rust-visible-single",
+        "RUSTFLAGS=-C target-cpu=native",
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-visible-single/benchmark/Cargo.toml"
+      ]
+    ],
+    [
+      "preflight.log",
+      [
+        "/usr/bin/python3",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-visible-single/check_preflight.py",
+        "--binary",
+        "/tmp/fastest-bf-rust-visible-single/release/compare_benchmark",
+        "--reference",
+        "/tmp/fastest-bf-rust-sbbf-external/release/compare_benchmark",
+        "--cpu",
+        "2",
+        "--output",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-visible-single/validation/preflight-results.json"
+      ]
+    ]
+  ],
+  "completed": [
+    {
+      "log": "fmt.log",
+      "returncode": 0
+    },
+    {
+      "log": "normal-tests.log",
+      "returncode": 0
+    },
+    {
+      "log": "disable-tests.log",
+      "returncode": 0
+    },
+    {
+      "log": "asan-tests.log",
+      "returncode": 0
+    },
+    {
+      "log": "clippy.log",
+      "returncode": 0
+    },
+    {
+      "log": "release-build.log",
+      "returncode": 0
+    },
+    {
+      "log": "preflight.log",
+      "returncode": 0
+    }
+  ]
+}

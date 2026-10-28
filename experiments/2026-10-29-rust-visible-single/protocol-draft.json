@@ -1,0 +1,86 @@
+{
+  "status": "Correctness and typed ASM preflight complete; proposed throughput matrix has not run",
+  "base_adapter_commit": "9c5820f0529efeaa37f896f6f8ce269a2e940afb",
+  "native_production_changes": false,
+  "filters": [
+    "FastPatternBF",
+    "ByteSplitBloomFilter",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter",
+    "Fastbloom017",
+    "BloomsdayPinned",
+    "SbbfSafePinned"
+  ],
+  "public_methods": {
+    "native": "contains_hash",
+    "Fastbloom017": "BloomFilter::contains_hash",
+    "BloomsdayPinned": "BlockedBloomFilter::may_match_hash",
+    "SbbfSafePinned": "sbbf_rs_safe::Filter::contains_hash; retain upstream trait object"
+  },
+  "query_modes": [
+    "old_prehashed",
+    "old_hash_staged",
+    "visible_prehashed",
+    "visible_hash_fused"
+  ],
+  "schedule": [
+    [
+      0,
+      1,
+      3,
+      2
+    ],
+    [
+      1,
+      2,
+      0,
+      3
+    ],
+    [
+      2,
+      3,
+      1,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      1
+    ]
+  ],
+  "label_permutation": "SplitMix64(seed xor 0x6a09e667f3bcc909), same shuffle as the shared workload",
+  "repeats": 8,
+  "key_powers": [
+    16,
+    25
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "batch": 1,
+  "query_power": 22,
+  "hit_percent": 50,
+  "seeds": [
+    42
+  ],
+  "insert_batch": "whole input",
+  "calibration_power": 24,
+  "expected_initial_workloads": 4,
+  "expected_initial_rows": 28,
+  "performance_authorization": "Pending parent review, committed final protocol and explicit socket lease; this draft cannot launch a run",
+  "correctness_requirements": [
+    "normal",
+    "disable-avx512",
+    "ASan",
+    "clippy",
+    "exact frozen baseline parity",
+    "every timed-mode tail corruption rejected",
+    "balanced phase-order evidence",
+    "public-only generated-code audit"
+  ],
+  "preflight_cpu": 2,
+  "proposed_performance_cpu": 2,
+  "compiler_flags": "-C target-cpu=native -C symbol-mangling-version=v0"
+}
