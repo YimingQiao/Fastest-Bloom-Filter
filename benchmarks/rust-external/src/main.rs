@@ -194,39 +194,52 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
     }
     let mut output_storage = Aligned::<u32>::new(c.q.max(c.batch) + 32);
     let output = &mut output_storage[16..16 + c.q.max(c.batch)];
-    let mut bf = F::new(c.n, c.bpk).unwrap();
+    // One bitmap per phase, with destruction and validation outside timing.
+    let validate_build = |filter: &F, output: &mut [u32], full: bool| {
+        let count = if full { c.n } else { c.n.min(c.batch) };
+        for chunk in inserted[..count].chunks(c.batch) {
+            lookup(filter, chunk, &mut output[..chunk.len()]);
+            assert!(
+                output[..chunk.len()].iter().all(|&x| x == 1),
+                "false negative in timed build"
+            );
+            consume(&output[..chunk.len()]);
+        }
+    };
     let mut insert_times = vec![];
     let mut build_times = vec![];
     let mut hash_insert_times = vec![];
     let mut hash_build_times = vec![];
-    for _ in 0..c.repeats {
-        let a = Instant::now();
-        let mut fresh = F::new(c.n, c.bpk).unwrap();
-        let ready = Instant::now();
-        for chunk in inserted.chunks(c.insert_batch) {
-            insert(&mut fresh, chunk);
-        }
-        let b = Instant::now();
-        insert_times.push((b - ready).as_secs_f64() * 1e9 / c.n as f64);
-        build_times.push((b - a).as_secs_f64() * 1e9 / c.n as f64);
-        let len = c.n.min(c.batch);
-        lookup(&fresh, &inserted[..len], &mut output[..len]);
-        consume(&output[..len]);
-        let a = Instant::now();
-        let mut fresh = F::new(c.n, c.bpk).unwrap();
-        let ready = Instant::now();
-        for chunk in raw_insert.chunks(c.insert_batch) {
-            for (h, &raw) in scratch.iter_mut().zip(chunk) {
-                *h = hash64(raw);
+    for trial in 0..c.repeats {
+        {
+            let a = Instant::now();
+            let mut fresh = F::new(c.n, c.bpk).unwrap();
+            let ready = Instant::now();
+            for chunk in inserted.chunks(c.insert_batch) {
+                insert(&mut fresh, chunk);
             }
-            insert(&mut fresh, &scratch[..chunk.len()]);
+            let b = Instant::now();
+            insert_times.push((b - ready).as_secs_f64() * 1e9 / c.n as f64);
+            build_times.push((b - a).as_secs_f64() * 1e9 / c.n as f64);
+            validate_build(&fresh, output, trial == 0);
         }
-        let b = Instant::now();
-        hash_insert_times.push((b - ready).as_secs_f64() * 1e9 / c.n as f64);
-        hash_build_times.push((b - a).as_secs_f64() * 1e9 / c.n as f64);
-        lookup(&fresh, &inserted[..len], &mut output[..len]);
-        consume(&output[..len]);
+        {
+            let a = Instant::now();
+            let mut fresh = F::new(c.n, c.bpk).unwrap();
+            let ready = Instant::now();
+            for chunk in raw_insert.chunks(c.insert_batch) {
+                for (h, &raw) in scratch.iter_mut().zip(chunk) {
+                    *h = hash64(raw);
+                }
+                insert(&mut fresh, &scratch[..chunk.len()]);
+            }
+            let b = Instant::now();
+            hash_insert_times.push((b - ready).as_secs_f64() * 1e9 / c.n as f64);
+            hash_build_times.push((b - a).as_secs_f64() * 1e9 / c.n as f64);
+            validate_build(&fresh, output, trial == 0);
+        }
     }
+    let mut bf = F::new(c.n, c.bpk).unwrap();
     for chunk in inserted.chunks(c.insert_batch) {
         insert(&mut bf, chunk);
     }

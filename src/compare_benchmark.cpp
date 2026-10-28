@@ -112,41 +112,51 @@ void run(const char *name, const std::vector<uint64_t> &raw_insert, const std::v
 		HashVector(n, raw_insert.data(), inserted.data());
 		HashVector(q, raw_query.data(), hashes.data());
 	}
-	BF bf = make_filter<BF>(n, bpk);
+	// Keep one bitmap alive in each phase. Validation and destruction are outside
+	// timing; the first trial validates the complete pure and hash+insert builds.
+	auto validate_build = [&](BF &filter, bool full) {
+		const size_t count = full ? n : std::min(n, batch);
+		for (size_t i = 0; i < count; i += batch) {
+			const size_t len = std::min(batch, count - i);
+			lookup_kernel(filter, len, inserted.data() + i, output);
+			for (size_t j = 0; j < len; ++j)
+				if (output[j] != 1)
+					throw std::runtime_error("false negative in timed build");
+			sink = std::accumulate(output, output + len, uint64_t {0});
+		}
+	};
 	std::vector<double> insert_times, build_times, hash_insert_times, hash_build_times;
 	for (unsigned trial = 0; trial < repeats; ++trial) {
-		auto a = Clock::now();
-		BF fresh = make_filter<BF>(n, bpk);
-		auto ready = Clock::now();
-		for (size_t i = 0; i < n; i += insert_batch)
-			insert(fresh, std::min(insert_batch, n - i), inserted.data() + i);
-		auto b = Clock::now();
-		insert_times.push_back(ns(ready, b) / n);
-		build_times.push_back(ns(a, b) / n);
-		lookup_kernel(fresh, std::min(n, batch), inserted.data(), output);
-		sink = std::accumulate(output, output + std::min(n, batch), uint64_t {0});
+		{
+			auto a = Clock::now();
+			BF fresh = make_filter<BF>(n, bpk);
+			auto ready = Clock::now();
+			for (size_t i = 0; i < n; i += insert_batch)
+				insert(fresh, std::min(insert_batch, n - i), inserted.data() + i);
+			auto b = Clock::now();
+			insert_times.push_back(ns(ready, b) / n);
+			build_times.push_back(ns(a, b) / n);
+			validate_build(fresh, trial == 0);
+		}
 		if constexpr (RawKeyApi<BF>::value) {
 			hash_insert_times.push_back(insert_times.back());
 			hash_build_times.push_back(build_times.back());
 		} else {
-			a = Clock::now();
+			auto a = Clock::now();
 			BF hashed = make_filter<BF>(n, bpk);
-			ready = Clock::now();
+			auto ready = Clock::now();
 			for (size_t i = 0; i < n; i += insert_batch) {
 				const size_t len = std::min(insert_batch, n - i);
 				HashVector(len, raw_insert.data() + i, scratch.data());
 				insert(hashed, len, scratch.data());
 			}
-			b = Clock::now();
+			auto b = Clock::now();
 			hash_insert_times.push_back(ns(ready, b) / n);
 			hash_build_times.push_back(ns(a, b) / n);
-			lookup_kernel(hashed, std::min(n, batch), inserted.data(), output);
-			for (size_t j = 0; j < std::min(n, batch); ++j)
-				if (output[j] != 1)
-					throw std::runtime_error("false negative in hashed build");
-			sink = std::accumulate(output, output + std::min(n, batch), uint64_t {0});
+			validate_build(hashed, trial == 0);
 		}
 	}
+	BF bf = make_filter<BF>(n, bpk);
 	for (size_t i = 0; i < n; i += insert_batch)
 		insert(bf, std::min(insert_batch, n - i), inserted.data() + i);
 	for (size_t i = 0; i < n; i += batch) {
@@ -260,7 +270,7 @@ int main(int argc, char **argv) {
 		             "queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,"
 		             "false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,"
 		             "allocate_hash_insert_ns,insert_batch,filter_build_scratch_bytes,harness_hash_scratch_bytes,hash_"
-					 "lookup_min_ns,hash_lookup_max_ns\n";
+		             "lookup_min_ns,hash_lookup_max_ns\n";
 		std::string selection = argc > 8 ? argv[8] : "";
 		std::vector<std::function<void()>> jobs;
 #define ADD(T, H)                                                                                                      \
