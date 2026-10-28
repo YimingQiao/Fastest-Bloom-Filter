@@ -1,0 +1,105 @@
+[
+  {
+    "label": "native",
+    "step": "configure",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-word16",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/word16-native",
+      "-DCMAKE_CXX_COMPILER=g++",
+      "-DFETCHCONTENT_SOURCE_DIR_FASTFILTER=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/fastfilter-src",
+      "-DFETCHCONTENT_SOURCE_DIR_PAGEBLOOM=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/pagebloom-src"
+    ],
+    "returncode": 0,
+    "seconds": 0.16156921349465847
+  },
+  {
+    "label": "native",
+    "step": "build",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/word16-native",
+      "--parallel",
+      "1"
+    ],
+    "returncode": 0,
+    "seconds": 7.988307008519769
+  },
+  {
+    "label": "native",
+    "step": "ctest",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/word16-native",
+      "--output-on-failure",
+      "-V"
+    ],
+    "returncode": 0,
+    "seconds": 0.45995173789560795
+  },
+  {
+    "label": "asan",
+    "step": "configure",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-word16",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/word16-asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_SANITIZERS=ON",
+      "-DFETCHCONTENT_SOURCE_DIR_FASTFILTER=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/fastfilter-src",
+      "-DFETCHCONTENT_SOURCE_DIR_PAGEBLOOM=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/pagebloom-src"
+    ],
+    "returncode": 0,
+    "seconds": 0.19551632553339005
+  },
+  {
+    "label": "asan",
+    "step": "build",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/word16-asan",
+      "--parallel",
+      "1"
+    ],
+    "returncode": 0,
+    "seconds": 6.069647202268243
+  },
+  {
+    "label": "asan",
+    "step": "ctest",
+    "argv": [
+      "taskset",
+      "-c",
+      "2",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/word16-asan",
+      "--output-on-failure",
+      "-V"
+    ],
+    "returncode": 0,
+    "seconds": 1.2910314612090588
+  }
+]
