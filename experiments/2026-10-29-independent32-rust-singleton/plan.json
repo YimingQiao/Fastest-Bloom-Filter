@@ -1,0 +1,317 @@
+{
+  "status": "Source-only proposal; no compilation, correctness execution or performance authorized here",
+  "candidate_delta": "Exactly four lines after existing public lookup_hashes length assertion; n==1 calls unchanged public contains_hash; all other source bytes unchanged",
+  "build_requirements": {
+    "normal_full_library_tests": true,
+    "disable_avx512": true,
+    "asan": true,
+    "clippy_warnings_denied": true,
+    "forced_backends": [
+      "scalar",
+      "avx2 when supported",
+      "vbmi when supported"
+    ],
+    "cpp_parity_rows": 9,
+    "tail_lengths": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      7,
+      8,
+      15,
+      31,
+      32,
+      63,
+      64,
+      127,
+      128,
+      4095,
+      4096,
+      4097
+    ],
+    "input_output_offsets": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "mismatched_lengths": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "mismatch_contract": "Panic before any output write",
+    "bitmap_quality_contract": "Full flat bitmap, every query answer, bytes, no-FN and calibration exactly equal before/after for same inputs; retain all parallel/ownership tests",
+    "assembly": "Inspect actual generic monomorphized wrapper, public batch function, visible loops and fullgroup bodies. Record retained indirect jump/dispatch and codegen changes; do not replace public calls with private kernels."
+  },
+  "proposed_fix_screen": {
+    "requires_new_frozen_binary_and_review": true,
+    "configurations": "All11 Rust132 configurations plus public candidate alias, unchanged before remains registered",
+    "key_powers": [
+      16,
+      25
+    ],
+    "requested_bpk": [
+      8,
+      16
+    ],
+    "actual_bpk": [
+      16,
+      32
+    ],
+    "batches": [
+      1,
+      2,
+      31,
+      4096
+    ],
+    "query_power": 20,
+    "hit_percent": 50,
+    "repeats": 4,
+    "seed": 42,
+    "calibration_power": 20,
+    "insert_batch": "whole input",
+    "workloads": 16,
+    "rows": 192,
+    "contracts": "Unchanged four-mode public/generic contracts; preserve noinline harness boundaries, dense outputs and exact phase schedule",
+    "interpretation": "Training/regression screen only; report every generic1, visible and larger-batch ratio. A branch-only source change can still alter bulk code generation; no promotion on source equality alone."
+  },
+  "proposed_unchanged_visible_confirmation": {
+    "binary": "/tmp/fastest-bf-independent32-rust-screen/release/compare_benchmark",
+    "binary_sha256": "5e7d08133b4404fcfe8090a482c55256eb7dc91fba7533a7a02f9ffed0f4305c",
+    "source_commit": "db966496072e3ec4af5d98afe39697d90ec10835",
+    "configurations": "All11 unchanged Rust132 configurations; do not substitute singleton candidate",
+    "input_seeds": [
+      104743,
+      130367,
+      155921
+    ],
+    "seed_selection": "Source-only raw-interval check replaced initial candidates104729 and130363, which overlapped seed42 large-table raw ranges; accepted104743/130367/155921 have disjoint full raw envelopes across both sizes and seed42. No filter accuracy or timing ran for any proposed seed. Other inspected interval-only candidates104759/130369 were unused.",
+    "key_powers": [
+      16,
+      25
+    ],
+    "requested_bpk": [
+      8,
+      16
+    ],
+    "batches": [
+      1
+    ],
+    "query_power": 22,
+    "hit_percent": 50,
+    "repeats": 8,
+    "calibration_power": 24,
+    "insert_batch": "whole input",
+    "workloads": 12,
+    "rows": 132,
+    "primary_fixed_candidate": {
+      "filter": "Independent32BloomFilter",
+      "requested_bpk": 16
+    },
+    "primary_fixed_rival": {
+      "filter": "BloomsdayPinned",
+      "requested_bpk": 16
+    },
+    "quality_target": 0.0001,
+    "memory_cap_bpk": 32,
+    "primary_metrics": [
+      "inline_lookup_ns",
+      "inline_hash_lookup_ns"
+    ],
+    "quality_rule": "Each seed must pass its own pointwise Wilson95 upper; report maximum endpoint, never pool counts. Candidate/rival quality failure stays failure; no replacement.",
+    "speed_rule": "Report each paired-seed ratio and worst ratio separately for each size/contract. Uniform descriptive win requires all ratios>1 and no faster quality-eligible frozen external challenger; no timing confidence interval is implied.",
+    "secondary_views": "All original/leaf/native/external and four contracts retained; cap32 admits actual16. Secondary reranking cannot replace a failed fixed primary comparison.",
+    "future_candidate_requirement": "Any successful singleton fix needs a separately frozen fresh-seed before/after confirmation, including visible and bulk regression controls."
+  },
+  "raw_interval_records": [
+    {
+      "seed": 42,
+      "key_power": 16,
+      "inserted": [
+        611675797,
+        611741333
+      ],
+      "timed_negative_envelope": [
+        611741333,
+        615935637
+      ],
+      "calibration": [
+        615935637,
+        632712853
+      ],
+      "all_raw_envelope": [
+        611675797,
+        632712853
+      ]
+    },
+    {
+      "seed": 42,
+      "key_power": 25,
+      "inserted": [
+        124481173,
+        158035605
+      ],
+      "timed_negative_envelope": [
+        158035605,
+        162229909
+      ],
+      "calibration": [
+        162229909,
+        179007125
+      ],
+      "all_raw_envelope": [
+        124481173,
+        179007125
+      ]
+    },
+    {
+      "seed": 104743,
+      "key_power": 16,
+      "inserted": [
+        453032696,
+        453098232
+      ],
+      "timed_negative_envelope": [
+        453098232,
+        457292536
+      ],
+      "calibration": [
+        457292536,
+        474069752
+      ],
+      "all_raw_envelope": [
+        453032696,
+        474069752
+      ]
+    },
+    {
+      "seed": 104743,
+      "key_power": 25,
+      "inserted": [
+        1843051256,
+        1876605688
+      ],
+      "timed_negative_envelope": [
+        1876605688,
+        1880799992
+      ],
+      "calibration": [
+        1880799992,
+        1897577208
+      ],
+      "all_raw_envelope": [
+        1843051256,
+        1897577208
+      ]
+    },
+    {
+      "seed": 130367,
+      "key_power": 16,
+      "inserted": [
+        2652537665,
+        2652603201
+      ],
+      "timed_negative_envelope": [
+        2652603201,
+        2656797505
+      ],
+      "calibration": [
+        2656797505,
+        2673574721
+      ],
+      "all_raw_envelope": [
+        2652537665,
+        2673574721
+      ]
+    },
+    {
+      "seed": 130367,
+      "key_power": 25,
+      "inserted": [
+        3616834369,
+        3650388801
+      ],
+      "timed_negative_envelope": [
+        3650388801,
+        3654583105
+      ],
+      "calibration": [
+        3654583105,
+        3671360321
+      ],
+      "all_raw_envelope": [
+        3616834369,
+        3671360321
+      ]
+    },
+    {
+      "seed": 155921,
+      "key_power": 16,
+      "inserted": [
+        1252758925,
+        1252824461
+      ],
+      "timed_negative_envelope": [
+        1252824461,
+        1257018765
+      ],
+      "calibration": [
+        1257018765,
+        1273795981
+      ],
+      "all_raw_envelope": [
+        1252758925,
+        1273795981
+      ]
+    },
+    {
+      "seed": 155921,
+      "key_power": 25,
+      "inserted": [
+        3970405773,
+        4003960205
+      ],
+      "timed_negative_envelope": [
+        4003960205,
+        4008154509
+      ],
+      "calibration": [
+        4008154509,
+        4024931725
+      ],
+      "all_raw_envelope": [
+        3970405773,
+        4024931725
+      ]
+    }
+  ],
+  "compute_policy": "No compute lease currently. Any later build/test/timing needs root authorization, CPU3 and the inherited exclusive /tmp/fastest-bf-socket1.lock; no source or benchmark mutation during a frozen run."
+}

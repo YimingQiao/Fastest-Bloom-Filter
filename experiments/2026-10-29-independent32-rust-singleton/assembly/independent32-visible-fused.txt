@@ -1,0 +1,266 @@
+
+/tmp/fastest-bf-independent32-rust-screen/release/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000202b0 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>>:
+   202b0:	push   %rbp
+   202b1:	push   %r15
+   202b3:	push   %r14
+   202b5:	push   %r13
+   202b7:	push   %r12
+   202b9:	push   %rbx
+   202ba:	sub    $0x48,%rsp
+   202be:	mov    %rdx,0x8(%rsp)
+   202c3:	mov    %r8,0x10(%rsp)
+   202c8:	cmp    %r8,%rdx
+   202cb:	jne    20696 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x3e6>
+   202d1:	mov    %rcx,%r13
+   202d4:	mov    %rsi,%r12
+   202d7:	mov    %rdi,%r15
+   202da:	movabs $0xd6e8feb86659fd93,%r14
+   202e4:	mov    0x8(%rdi),%rax
+   202e8:	mov    0x18(%rdi),%r10d
+   202ec:	cmpb   $0x1,0x1d(%rdi)
+   202f0:	jne    202ff <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x4f>
+   202f2:	cmp    $0x1,%rdx
+   202f6:	jne    2031b <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x6b>
+   202f8:	xor    %edi,%edi
+   202fa:	jmp    20412 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x162>
+   202ff:	cmpb   $0x0,0x1c(%r15)
+   20304:	je     2048b <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x1db>
+   2030a:	cmp    $0x1,%rdx
+   2030e:	jne    204e9 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x239>
+   20314:	xor    %edi,%edi
+   20316:	jmp    20600 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x350>
+   2031b:	movabs $0x7ffffffffffffffe,%r9
+   20325:	and    %rdx,%r9
+   20328:	xor    %esi,%esi
+   2032a:	vpbroadcastq -0x178eb(%rip),%xmm0        # 8a48 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2b2>
+   20333:	vpbroadcastd -0x179bc(%rip),%ymm1        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   2033c:	nopl   0x0(%rax)
+   20340:	mov    (%r12,%rsi,8),%rdi
+   20344:	mov    %rdi,%r8
+   20347:	shr    $0x20,%r8
+   2034b:	xor    %rdi,%r8
+   2034e:	imul   %r14,%r8
+   20352:	mov    %r8,%rdi
+   20355:	shr    $0x20,%rdi
+   20359:	xor    %r8,%rdi
+   2035c:	imul   %r14,%rdi
+   20360:	mov    %rdi,%r8
+   20363:	shr    $0x20,%r8
+   20367:	xor    %rdi,%r8
+   2036a:	shr    $0x29,%rdi
+   2036e:	and    %r10d,%edi
+   20371:	shl    $0x5,%edi
+   20374:	vmovdqa (%rax,%rdi,1),%ymm2
+   20379:	vpbroadcastq %r8,%xmm3
+   2037f:	vpmultishiftqb %xmm3,%xmm0,%xmm3
+   20385:	vpmovzxbd %xmm3,%ymm3
+   2038a:	vprolvd %ymm3,%ymm1,%ymm3
+   20390:	xor    %edi,%edi
+   20392:	vptest %ymm3,%ymm2
+   20397:	setb   %dil
+   2039b:	mov    %edi,0x0(%r13,%rsi,4)
+   203a0:	mov    0x8(%r12,%rsi,8),%rdi
+   203a5:	mov    %rdi,%r8
+   203a8:	shr    $0x20,%r8
+   203ac:	xor    %rdi,%r8
+   203af:	imul   %r14,%r8
+   203b3:	mov    %r8,%rdi
+   203b6:	shr    $0x20,%rdi
+   203ba:	xor    %r8,%rdi
+   203bd:	imul   %r14,%rdi
+   203c1:	mov    %rdi,%r8
+   203c4:	shr    $0x20,%r8
+   203c8:	xor    %rdi,%r8
+   203cb:	shr    $0x29,%rdi
+   203cf:	and    %r10d,%edi
+   203d2:	shl    $0x5,%edi
+   203d5:	vmovdqa (%rax,%rdi,1),%ymm2
+   203da:	vpbroadcastq %r8,%xmm3
+   203e0:	vpmultishiftqb %xmm3,%xmm0,%xmm3
+   203e6:	vpmovzxbd %xmm3,%ymm3
+   203eb:	vprolvd %ymm3,%ymm1,%ymm3
+   203f1:	xor    %r8d,%r8d
+   203f4:	vptest %ymm3,%ymm2
+   203f9:	lea    0x2(%rsi),%rdi
+   203fd:	setb   %r8b
+   20401:	mov    %r8d,0x4(%r13,%rsi,4)
+   20406:	mov    %rdi,%rsi
+   20409:	cmp    %rdi,%r9
+   2040c:	jne    20340 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x90>
+   20412:	test   $0x1,%dl
+   20415:	je     20684 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x3d4>
+   2041b:	mov    (%r12,%rdi,8),%rdx
+   2041f:	mov    %rdx,%rsi
+   20422:	shr    $0x20,%rsi
+   20426:	xor    %rdx,%rsi
+   20429:	imul   %r14,%rsi
+   2042d:	mov    %rsi,%rdx
+   20430:	shr    $0x20,%rdx
+   20434:	xor    %rsi,%rdx
+   20437:	imul   %r14,%rdx
+   2043b:	mov    %rdx,%rsi
+   2043e:	shr    $0x20,%rsi
+   20442:	xor    %rdx,%rsi
+   20445:	shr    $0x29,%rdx
+   20449:	and    %edx,%r10d
+   2044c:	shl    $0x5,%r10d
+   20450:	vmovdqa (%rax,%r10,1),%ymm0
+   20456:	vpbroadcastq %rsi,%xmm1
+   2045c:	vpbroadcastq -0x17a1d(%rip),%xmm2        # 8a48 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2b2>
+   20465:	vpmultishiftqb %xmm1,%xmm2,%xmm1
+   2046b:	vpmovzxbd %xmm1,%ymm1
+   20470:	vpbroadcastd -0x17af9(%rip),%ymm2        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   20479:	vprolvd %ymm1,%ymm2,%ymm1
+   2047f:	xor    %eax,%eax
+   20481:	vptest %ymm1,%ymm0
+   20486:	jmp    2067c <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x3cc>
+   2048b:	xor    %ebp,%ebp
+   2048d:	nopl   (%rax)
+   20490:	lea    0x1(%rbp),%rax
+   20494:	mov    %rax,(%rsp)
+   20498:	mov    (%r12,%rbp,8),%rax
+   2049c:	mov    %rax,%rsi
+   2049f:	shr    $0x20,%rsi
+   204a3:	xor    %rax,%rsi
+   204a6:	imul   %r14,%rsi
+   204aa:	mov    %rsi,%rax
+   204ad:	shr    $0x20,%rax
+   204b1:	xor    %rsi,%rax
+   204b4:	imul   %r14,%rax
+   204b8:	mov    %rax,%rsi
+   204bb:	shr    $0x20,%rsi
+   204bf:	xor    %rax,%rsi
+   204c2:	mov    %r15,%rdi
+   204c5:	mov    %rdx,%rbx
+   204c8:	call   5c770 <<independent32_native_experiment::independent32::Independent32BloomFilter>::contains_scalar>
+   204cd:	mov    %rbx,%rdx
+   204d0:	movzbl %al,%eax
+   204d3:	mov    %eax,0x0(%r13,%rbp,4)
+   204d8:	mov    (%rsp),%rax
+   204dc:	mov    %rax,%rbp
+   204df:	cmp    %rax,%rbx
+   204e2:	jne    20490 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x1e0>
+   204e4:	jmp    20684 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x3d4>
+   204e9:	movabs $0x7ffffffffffffffe,%r9
+   204f3:	and    %rdx,%r9
+   204f6:	xor    %esi,%esi
+   204f8:	vmovdqa -0x175a0(%rip),%ymm0        # 8f60 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x20>
+   20500:	vpbroadcastq -0x17989(%rip),%ymm1        # 8b80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xa8>
+   20509:	vpbroadcastd -0x17b96(%rip),%ymm2        # 897c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1e6>
+   20512:	vpbroadcastd -0x17b9b(%rip),%ymm3        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   2051b:	nopl   0x0(%rax,%rax,1)
+   20520:	mov    (%r12,%rsi,8),%rdi
+   20524:	mov    %rdi,%r8
+   20527:	shr    $0x20,%r8
+   2052b:	xor    %rdi,%r8
+   2052e:	imul   %r14,%r8
+   20532:	mov    %r8,%rdi
+   20535:	shr    $0x20,%rdi
+   20539:	xor    %r8,%rdi
+   2053c:	imul   %r14,%rdi
+   20540:	mov    %rdi,%r8
+   20543:	shr    $0x20,%r8
+   20547:	xor    %rdi,%r8
+   2054a:	shr    $0x29,%rdi
+   2054e:	and    %r10d,%edi
+   20551:	shl    $0x5,%edi
+   20554:	vmovdqa (%rax,%rdi,1),%ymm4
+   20559:	vpbroadcastq %r8,%ymm5
+   2055f:	vpsrlvq %ymm0,%ymm5,%ymm5
+   20564:	vpshufd $0xa0,%ymm5,%ymm5
+   20569:	vpsrlvd %ymm1,%ymm5,%ymm5
+   2056e:	vpand  %ymm2,%ymm5,%ymm5
+   20572:	vpsllvd %ymm5,%ymm3,%ymm5
+   20577:	xor    %edi,%edi
+   20579:	vptest %ymm5,%ymm4
+   2057e:	setb   %dil
+   20582:	mov    %edi,0x0(%r13,%rsi,4)
+   20587:	mov    0x8(%r12,%rsi,8),%rdi
+   2058c:	mov    %rdi,%r8
+   2058f:	shr    $0x20,%r8
+   20593:	xor    %rdi,%r8
+   20596:	imul   %r14,%r8
+   2059a:	mov    %r8,%rdi
+   2059d:	shr    $0x20,%rdi
+   205a1:	xor    %r8,%rdi
+   205a4:	imul   %r14,%rdi
+   205a8:	mov    %rdi,%r8
+   205ab:	shr    $0x20,%r8
+   205af:	xor    %rdi,%r8
+   205b2:	shr    $0x29,%rdi
+   205b6:	and    %r10d,%edi
+   205b9:	shl    $0x5,%edi
+   205bc:	vmovdqa (%rax,%rdi,1),%ymm4
+   205c1:	vpbroadcastq %r8,%ymm5
+   205c7:	vpsrlvq %ymm0,%ymm5,%ymm5
+   205cc:	vpshufd $0xa0,%ymm5,%ymm5
+   205d1:	vpsrlvd %ymm1,%ymm5,%ymm5
+   205d6:	vpand  %ymm2,%ymm5,%ymm5
+   205da:	vpsllvd %ymm5,%ymm3,%ymm5
+   205df:	xor    %r8d,%r8d
+   205e2:	vptest %ymm5,%ymm4
+   205e7:	lea    0x2(%rsi),%rdi
+   205eb:	setb   %r8b
+   205ef:	mov    %r8d,0x4(%r13,%rsi,4)
+   205f4:	mov    %rdi,%rsi
+   205f7:	cmp    %rdi,%r9
+   205fa:	jne    20520 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x270>
+   20600:	test   $0x1,%dl
+   20603:	je     20684 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, true>+0x3d4>
+   20605:	mov    (%r12,%rdi,8),%rdx
+   20609:	mov    %rdx,%rsi
+   2060c:	shr    $0x20,%rsi
+   20610:	xor    %rdx,%rsi
+   20613:	imul   %r14,%rsi
+   20617:	mov    %rsi,%rdx
+   2061a:	shr    $0x20,%rdx
+   2061e:	xor    %rsi,%rdx
+   20621:	imul   %r14,%rdx
+   20625:	mov    %rdx,%rsi
+   20628:	shr    $0x20,%rsi
+   2062c:	xor    %rdx,%rsi
+   2062f:	shr    $0x29,%rdx
+   20633:	and    %edx,%r10d
+   20636:	shl    $0x5,%r10d
+   2063a:	vpbroadcastq %rsi,%ymm0
+   20640:	vpsrlvq -0x176e9(%rip),%ymm0,%ymm0        # 8f60 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x20>
+   20649:	vpshufd $0xa0,%ymm0,%ymm0
+   2064e:	vpsrlvd -0x17757(%rip),%ymm0,%ymm0        # 8f00 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x428>
+   20657:	vmovdqa (%rax,%r10,1),%ymm1
+   2065d:	vpandd -0x17ceb(%rip){1to8},%ymm0,%ymm0        # 897c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1e6>
+   20667:	vpbroadcastd -0x17cf0(%rip),%ymm2        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   20670:	vpsllvd %ymm0,%ymm2,%ymm0
+   20675:	xor    %eax,%eax
+   20677:	vptest %ymm0,%ymm1
+   2067c:	setb   %al
+   2067f:	mov    %eax,0x0(%r13,%rdi,4)
+   20684:	add    $0x48,%rsp
+   20688:	pop    %rbx
+   20689:	pop    %r12
+   2068b:	pop    %r13
+   2068d:	pop    %r14
+   2068f:	pop    %r15
+   20691:	pop    %rbp
+   20692:	vzeroupper
+   20695:	ret
+   20696:	lea    0x8ca73(%rip),%rax        # ad110 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.52.llvm.3671060894988460240+0xb0>
+   2069d:	mov    %rax,0x18(%rsp)
+   206a2:	movq   $0x1,0x20(%rsp)
+   206ab:	movq   $0x8,0x28(%rsp)
+   206b4:	vxorps %xmm0,%xmm0,%xmm0
+   206b8:	vmovups %xmm0,0x30(%rsp)
+   206be:	lea    0x8ca5b(%rip),%r8        # ad120 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.52.llvm.3671060894988460240+0xc0>
+   206c5:	lea    0x8(%rsp),%rsi
+   206ca:	lea    0x10(%rsp),%rdx
+   206cf:	lea    0x18(%rsp),%rcx
+   206d4:	xor    %edi,%edi
+   206d6:	call   *0x9088c(%rip)        # b0f68 <_DYNAMIC+0x2f8>
+   206dc:	int3
+   206dd:	int3
+   206de:	int3
+   206df:	int3

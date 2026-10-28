@@ -1,0 +1,121 @@
+
+/tmp/fastest-bf-independent32-rust-screen/release/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000067ff0 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes>:
+   67ff0:	push   %rbp
+   67ff1:	push   %r15
+   67ff3:	push   %r14
+   67ff5:	push   %r13
+   67ff7:	push   %r12
+   67ff9:	push   %rbx
+   67ffa:	sub    $0x48,%rsp
+   67ffe:	mov    %rdx,0x8(%rsp)
+   68003:	mov    %r8,0x10(%rsp)
+   68008:	cmp    %r8,%rdx
+   6800b:	jne    68742 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x752>
+   68011:	mov    %rcx,%rbx
+   68014:	mov    %rdx,%r15
+   68017:	mov    %rsi,%r14
+   6801a:	mov    %rdi,%r12
+   6801d:	movzbl 0x1c(%rdi),%eax
+   68021:	cmp    $0x1,%rdx
+   68025:	jne    68081 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x91>
+   68027:	test   %al,%al
+   68029:	je     681c0 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x1d0>
+   6802f:	mov    (%r14),%rax
+   68032:	mov    0x8(%r12),%rcx
+   68037:	vpbroadcastd %eax,%ymm0
+   6803d:	shr    $0x20,%rax
+   68041:	and    0x18(%r12),%eax
+   68046:	shl    $0x6,%rax
+   6804a:	vmovdqa64 (%rcx,%rax,1),%zmm1
+   68051:	vpmulld -0x5f41a(%rip),%ymm0,%ymm0        # 8c40 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x168>
+   6805a:	vpsrld $0x1a,%ymm0,%ymm0
+   6805f:	vpmovzxdq %ymm0,%zmm0
+   68065:	vpsrlvq %zmm0,%zmm1,%zmm0
+   6806b:	vptestnmq -0x5f5cd(%rip){1to8},%zmm0,%k0        # 8aa8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x312>
+   68075:	kortestb %k0,%k0
+   68079:	sete   %al
+   6807c:	jmp    6840f <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x41f>
+   68081:	test   %al,%al
+   68083:	je     6823d <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x24d>
+   68089:	cmp    $0x10,%r15
+   6808d:	jae    6833a <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x34a>
+   68093:	test   %r15,%r15
+   68096:	je     68414 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x424>
+   6809c:	mov    0x8(%r12),%rcx
+   680a1:	mov    0x18(%r12),%edx
+   680a6:	lea    0x0(,%r15,4),%esi
+   680ae:	and    $0x38,%esi
+   680b1:	xor    %eax,%eax
+   680b3:	vmovdqa64 -0x5c57d(%rip),%zmm0        # bb40 <anon.663c38bb301f18615f4d3110a8e62152.0.llvm.1231715614483663210+0x30>
+   680bd:	vpbroadcastq -0x5f61f(%rip),%zmm1        # 8aa8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x312>
+   680c7:	nopw   0x0(%rax,%rax,1)
+   680d0:	mov    (%r14,%rax,2),%rdi
+   680d4:	mov    %edi,%r8d
+   680d7:	shr    $0x20,%rdi
+   680db:	and    %edx,%edi
+   680dd:	shl    $0x6,%rdi
+   680e1:	vpbroadcastq %r8,%zmm2
+   680e7:	vpmulld %zmm0,%zmm2,%zmm2
+   680ed:	vmovdqa64 (%rcx,%rdi,1),%zmm3
+   680f4:	vpsrlq $0x1a,%zmm2,%zmm2
+   680fb:	vpsrlvq %zmm2,%zmm3,%zmm2
+   68101:	vptestnmq %zmm1,%zmm2,%k0
+   68107:	xor    %edi,%edi
+   68109:	kortestb %k0,%k0
+   6810d:	sete   %dil
+   68111:	mov    %edi,(%rbx,%rax,1)
+   68114:	mov    0x8(%r14,%rax,2),%rdi
+   68119:	mov    %edi,%r8d
+   6811c:	shr    $0x20,%rdi
+   68120:	and    %edx,%edi
+   68122:	shl    $0x6,%rdi
+   68126:	vpbroadcastq %r8,%zmm2
+   6812c:	vpmulld %zmm0,%zmm2,%zmm2
+   68132:	vmovdqa64 (%rcx,%rdi,1),%zmm3
+   68139:	vpsrlq $0x1a,%zmm2,%zmm2
+   68140:	vpsrlvq %zmm2,%zmm3,%zmm2
+   68146:	vptestnmq %zmm1,%zmm2,%k0
+   6814c:	xor    %edi,%edi
+   6814e:	kortestb %k0,%k0
+   68152:	sete   %dil
+   68156:	mov    %edi,0x4(%rbx,%rax,1)
+   6815a:	add    $0x8,%rax
+   6815e:	cmp    %rax,%rsi
+   68161:	jne    680d0 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0xe0>
+   68167:	test   $0x1,%r15b
+   6816b:	je     68414 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x424>
+   68171:	mov    (%r14,%rax,2),%rsi
+   68175:	mov    %esi,%edi
+   68177:	shr    $0x20,%rsi
+   6817b:	and    %esi,%edx
+   6817d:	vpbroadcastq %rdi,%zmm0
+   68183:	vpmulld -0x5c64d(%rip),%zmm0,%zmm0        # bb40 <anon.663c38bb301f18615f4d3110a8e62152.0.llvm.1231715614483663210+0x30>
+   6818d:	shl    $0x6,%rdx
+   68191:	vmovdqa64 (%rcx,%rdx,1),%zmm1
+   68198:	vpsrlq $0x1a,%zmm0,%zmm0
+   6819f:	vpsrlvq %zmm0,%zmm1,%zmm0
+   681a5:	vptestnmq -0x5f707(%rip){1to8},%zmm0,%k0        # 8aa8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x312>
+   681af:	xor    %ecx,%ecx
+   681b1:	kortestb %k0,%k0
+   681b5:	sete   %cl
+   681b8:	mov    %ecx,(%rbx,%rax,1)
+   681bb:	jmp    68414 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x424>
+   681c0:	mov    (%r14),%rsi
+   681c3:	cmpb   $0x0,0x1d(%r12)
+   681c9:	je     68407 <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x417>
+   681cf:	mov    %rsi,%rax
+   681d2:	shr    $0x20,%rax
+   681d6:	and    0x18(%r12),%eax
+   681db:	mov    0x8(%r12),%rcx
+   681e0:	shl    $0x6,%rax
+   681e4:	vpbroadcastd %esi,%ymm0
+   681ea:	.byte 0xc4
+   681eb:	loop   6826a <<fastest_bloom_filter::split64::Split64BloomFilter>::lookup_hashes+0x27a>
+   681ed:	rex
+   681ee:	.byte 0x5
+   681ef:	rex.WRB

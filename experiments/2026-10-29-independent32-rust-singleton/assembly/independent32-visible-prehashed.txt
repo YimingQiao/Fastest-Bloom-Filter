@@ -1,0 +1,273 @@
+
+/tmp/fastest-bf-independent32-rust-screen/release/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000001fe50 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>>:
+   1fe50:	push   %rbp
+   1fe51:	push   %r15
+   1fe53:	push   %r14
+   1fe55:	push   %r13
+   1fe57:	push   %r12
+   1fe59:	push   %rbx
+   1fe5a:	sub    $0x48,%rsp
+   1fe5e:	mov    %rdx,0x8(%rsp)
+   1fe63:	mov    %r8,0x10(%rsp)
+   1fe68:	cmp    %r8,%rdx
+   1fe6b:	jne    2025d <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x40d>
+   1fe71:	mov    %rdx,%r15
+   1fe74:	test   %rdx,%rdx
+   1fe77:	je     2024b <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x3fb>
+   1fe7d:	mov    %rcx,%r14
+   1fe80:	mov    %rsi,%rbx
+   1fe83:	mov    %rdi,%r12
+   1fe86:	mov    0x8(%rdi),%rax
+   1fe8a:	mov    0x18(%rdi),%ecx
+   1fe8d:	cmpb   $0x1,0x1d(%rdi)
+   1fe91:	jne    1fea6 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x56>
+   1fe93:	mov    %r15d,%edx
+   1fe96:	and    $0x3,%edx
+   1fe99:	cmp    $0x4,%r15
+   1fe9d:	jae    1fec9 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x79>
+   1fe9f:	xor    %edi,%edi
+   1fea1:	jmp    1ffe7 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x197>
+   1fea6:	cmpb   $0x0,0x1c(%r12)
+   1feac:	je     20059 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x209>
+   1feb2:	mov    %r15d,%edx
+   1feb5:	and    $0x3,%edx
+   1feb8:	cmp    $0x4,%r15
+   1febc:	jae    20084 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x234>
+   1fec2:	xor    %edi,%edi
+   1fec4:	jmp    201c3 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x373>
+   1fec9:	and    $0xfffffffffffffffc,%r15
+   1fecd:	xor    %esi,%esi
+   1fecf:	vpbroadcastq -0x17490(%rip),%xmm0        # 8a48 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2b2>
+   1fed8:	vpbroadcastd -0x17561(%rip),%ymm1        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   1fee1:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   1fef0:	mov    (%rbx,%rsi,8),%rdi
+   1fef4:	vpbroadcastq %rdi,%xmm2
+   1fefa:	shr    $0x29,%rdi
+   1fefe:	and    %ecx,%edi
+   1ff00:	shl    $0x5,%edi
+   1ff03:	vmovdqa (%rax,%rdi,1),%ymm3
+   1ff08:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   1ff0e:	vpmovzxbd %xmm2,%ymm2
+   1ff13:	vprolvd %ymm2,%ymm1,%ymm2
+   1ff19:	xor    %edi,%edi
+   1ff1b:	vptest %ymm2,%ymm3
+   1ff20:	setb   %dil
+   1ff24:	mov    %edi,(%r14,%rsi,4)
+   1ff28:	mov    0x8(%rbx,%rsi,8),%rdi
+   1ff2d:	vpbroadcastq %rdi,%xmm2
+   1ff33:	shr    $0x29,%rdi
+   1ff37:	and    %ecx,%edi
+   1ff39:	shl    $0x5,%edi
+   1ff3c:	vmovdqa (%rax,%rdi,1),%ymm3
+   1ff41:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   1ff47:	vpmovzxbd %xmm2,%ymm2
+   1ff4c:	vprolvd %ymm2,%ymm1,%ymm2
+   1ff52:	xor    %edi,%edi
+   1ff54:	vptest %ymm2,%ymm3
+   1ff59:	setb   %dil
+   1ff5d:	mov    %edi,0x4(%r14,%rsi,4)
+   1ff62:	mov    0x10(%rbx,%rsi,8),%rdi
+   1ff67:	vpbroadcastq %rdi,%xmm2
+   1ff6d:	shr    $0x29,%rdi
+   1ff71:	and    %ecx,%edi
+   1ff73:	shl    $0x5,%edi
+   1ff76:	vmovdqa (%rax,%rdi,1),%ymm3
+   1ff7b:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   1ff81:	vpmovzxbd %xmm2,%ymm2
+   1ff86:	vprolvd %ymm2,%ymm1,%ymm2
+   1ff8c:	xor    %edi,%edi
+   1ff8e:	vptest %ymm2,%ymm3
+   1ff93:	setb   %dil
+   1ff97:	mov    %edi,0x8(%r14,%rsi,4)
+   1ff9c:	mov    0x18(%rbx,%rsi,8),%rdi
+   1ffa1:	vpbroadcastq %rdi,%xmm2
+   1ffa7:	shr    $0x29,%rdi
+   1ffab:	and    %ecx,%edi
+   1ffad:	shl    $0x5,%edi
+   1ffb0:	vmovdqa (%rax,%rdi,1),%ymm3
+   1ffb5:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   1ffbb:	vpmovzxbd %xmm2,%ymm2
+   1ffc0:	vprolvd %ymm2,%ymm1,%ymm2
+   1ffc6:	xor    %r8d,%r8d
+   1ffc9:	vptest %ymm2,%ymm3
+   1ffce:	lea    0x4(%rsi),%rdi
+   1ffd2:	setb   %r8b
+   1ffd6:	mov    %r8d,0xc(%r14,%rsi,4)
+   1ffdb:	mov    %rdi,%rsi
+   1ffde:	cmp    %rdi,%r15
+   1ffe1:	jne    1fef0 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0xa0>
+   1ffe7:	test   %rdx,%rdx
+   1ffea:	je     2024b <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x3fb>
+   1fff0:	lea    (%r14,%rdi,4),%rsi
+   1fff4:	lea    (%rbx,%rdi,8),%rdi
+   1fff8:	xor    %r8d,%r8d
+   1fffb:	vpbroadcastq -0x175bc(%rip),%xmm0        # 8a48 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2b2>
+   20004:	vpbroadcastd -0x1768d(%rip),%ymm1        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   2000d:	nopl   (%rax)
+   20010:	mov    (%rdi,%r8,8),%r9
+   20014:	vpbroadcastq %r9,%xmm2
+   2001a:	shr    $0x29,%r9
+   2001e:	and    %ecx,%r9d
+   20021:	shl    $0x5,%r9d
+   20025:	vmovdqa (%rax,%r9,1),%ymm3
+   2002b:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   20031:	vpmovzxbd %xmm2,%ymm2
+   20036:	vprolvd %ymm2,%ymm1,%ymm2
+   2003c:	xor    %r9d,%r9d
+   2003f:	vptest %ymm2,%ymm3
+   20044:	setb   %r9b
+   20048:	mov    %r9d,(%rsi,%r8,4)
+   2004c:	inc    %r8
+   2004f:	cmp    %r8,%rdx
+   20052:	jne    20010 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x1c0>
+   20054:	jmp    2024b <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x3fb>
+   20059:	xor    %r13d,%r13d
+   2005c:	nopl   0x0(%rax)
+   20060:	lea    0x1(%r13),%rbp
+   20064:	mov    (%rbx,%r13,8),%rsi
+   20068:	mov    %r12,%rdi
+   2006b:	call   5c770 <<independent32_native_experiment::independent32::Independent32BloomFilter>::contains_scalar>
+   20070:	movzbl %al,%eax
+   20073:	mov    %eax,(%r14,%r13,4)
+   20077:	mov    %rbp,%r13
+   2007a:	cmp    %rbp,%r15
+   2007d:	jne    20060 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x210>
+   2007f:	jmp    2024b <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x3fb>
+   20084:	and    $0xfffffffffffffffc,%r15
+   20088:	xor    %esi,%esi
+   2008a:	vmovdqa -0x17132(%rip),%ymm0        # 8f60 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x20>
+   20092:	vpbroadcastq -0x1751b(%rip),%ymm1        # 8b80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xa8>
+   2009b:	vpbroadcastd -0x17728(%rip),%ymm2        # 897c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1e6>
+   200a4:	vpbroadcastd -0x1772d(%rip),%ymm3        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   200ad:	nopl   (%rax)
+   200b0:	mov    (%rbx,%rsi,8),%rdi
+   200b4:	vpbroadcastq %rdi,%ymm4
+   200ba:	shr    $0x29,%rdi
+   200be:	and    %ecx,%edi
+   200c0:	shl    $0x5,%edi
+   200c3:	vmovdqa (%rax,%rdi,1),%ymm5
+   200c8:	vpsrlvq %ymm0,%ymm4,%ymm4
+   200cd:	vpshufd $0xa0,%ymm4,%ymm4
+   200d2:	vpsrlvd %ymm1,%ymm4,%ymm4
+   200d7:	vpand  %ymm2,%ymm4,%ymm4
+   200db:	vpsllvd %ymm4,%ymm3,%ymm4
+   200e0:	xor    %edi,%edi
+   200e2:	vptest %ymm4,%ymm5
+   200e7:	setb   %dil
+   200eb:	mov    %edi,(%r14,%rsi,4)
+   200ef:	mov    0x8(%rbx,%rsi,8),%rdi
+   200f4:	vpbroadcastq %rdi,%ymm4
+   200fa:	shr    $0x29,%rdi
+   200fe:	and    %ecx,%edi
+   20100:	shl    $0x5,%edi
+   20103:	vmovdqa (%rax,%rdi,1),%ymm5
+   20108:	vpsrlvq %ymm0,%ymm4,%ymm4
+   2010d:	vpshufd $0xa0,%ymm4,%ymm4
+   20112:	vpsrlvd %ymm1,%ymm4,%ymm4
+   20117:	vpand  %ymm2,%ymm4,%ymm4
+   2011b:	vpsllvd %ymm4,%ymm3,%ymm4
+   20120:	xor    %edi,%edi
+   20122:	vptest %ymm4,%ymm5
+   20127:	setb   %dil
+   2012b:	mov    %edi,0x4(%r14,%rsi,4)
+   20130:	mov    0x10(%rbx,%rsi,8),%rdi
+   20135:	vpbroadcastq %rdi,%ymm4
+   2013b:	shr    $0x29,%rdi
+   2013f:	and    %ecx,%edi
+   20141:	shl    $0x5,%edi
+   20144:	vmovdqa (%rax,%rdi,1),%ymm5
+   20149:	vpsrlvq %ymm0,%ymm4,%ymm4
+   2014e:	vpshufd $0xa0,%ymm4,%ymm4
+   20153:	vpsrlvd %ymm1,%ymm4,%ymm4
+   20158:	vpand  %ymm2,%ymm4,%ymm4
+   2015c:	vpsllvd %ymm4,%ymm3,%ymm4
+   20161:	xor    %edi,%edi
+   20163:	vptest %ymm4,%ymm5
+   20168:	setb   %dil
+   2016c:	mov    %edi,0x8(%r14,%rsi,4)
+   20171:	mov    0x18(%rbx,%rsi,8),%rdi
+   20176:	vpbroadcastq %rdi,%ymm4
+   2017c:	shr    $0x29,%rdi
+   20180:	and    %ecx,%edi
+   20182:	shl    $0x5,%edi
+   20185:	vmovdqa (%rax,%rdi,1),%ymm5
+   2018a:	vpsrlvq %ymm0,%ymm4,%ymm4
+   2018f:	vpshufd $0xa0,%ymm4,%ymm4
+   20194:	vpsrlvd %ymm1,%ymm4,%ymm4
+   20199:	vpand  %ymm2,%ymm4,%ymm4
+   2019d:	vpsllvd %ymm4,%ymm3,%ymm4
+   201a2:	xor    %r8d,%r8d
+   201a5:	vptest %ymm4,%ymm5
+   201aa:	lea    0x4(%rsi),%rdi
+   201ae:	setb   %r8b
+   201b2:	mov    %r8d,0xc(%r14,%rsi,4)
+   201b7:	mov    %rdi,%rsi
+   201ba:	cmp    %rdi,%r15
+   201bd:	jne    200b0 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x260>
+   201c3:	test   %rdx,%rdx
+   201c6:	je     2024b <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x3fb>
+   201cc:	lea    (%r14,%rdi,4),%rsi
+   201d0:	lea    (%rbx,%rdi,8),%rdi
+   201d4:	xor    %r8d,%r8d
+   201d7:	vmovdqa -0x1727f(%rip),%ymm0        # 8f60 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x20>
+   201df:	vpbroadcastq -0x17668(%rip),%ymm1        # 8b80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xa8>
+   201e8:	vpbroadcastd -0x17875(%rip),%ymm2        # 897c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1e6>
+   201f1:	vpbroadcastd -0x1787a(%rip),%ymm3        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   201fa:	nopw   0x0(%rax,%rax,1)
+   20200:	mov    (%rdi,%r8,8),%r9
+   20204:	vpbroadcastq %r9,%ymm4
+   2020a:	shr    $0x29,%r9
+   2020e:	and    %ecx,%r9d
+   20211:	shl    $0x5,%r9d
+   20215:	vmovdqa (%rax,%r9,1),%ymm5
+   2021b:	vpsrlvq %ymm0,%ymm4,%ymm4
+   20220:	vpshufd $0xa0,%ymm4,%ymm4
+   20225:	vpsrlvd %ymm1,%ymm4,%ymm4
+   2022a:	vpand  %ymm2,%ymm4,%ymm4
+   2022e:	vpsllvd %ymm4,%ymm3,%ymm4
+   20233:	xor    %r9d,%r9d
+   20236:	vptest %ymm4,%ymm5
+   2023b:	setb   %r9b
+   2023f:	mov    %r9d,(%rsi,%r8,4)
+   20243:	inc    %r8
+   20246:	cmp    %r8,%rdx
+   20249:	jne    20200 <compare_benchmark::visible_lookup::<independent32_native_experiment::independent32::Independent32BloomFilter, false>+0x3b0>
+   2024b:	add    $0x48,%rsp
+   2024f:	pop    %rbx
+   20250:	pop    %r12
+   20252:	pop    %r13
+   20254:	pop    %r14
+   20256:	pop    %r15
+   20258:	pop    %rbp
+   20259:	vzeroupper
+   2025c:	ret
+   2025d:	lea    0x8ceac(%rip),%rax        # ad110 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.52.llvm.3671060894988460240+0xb0>
+   20264:	mov    %rax,0x18(%rsp)
+   20269:	movq   $0x1,0x20(%rsp)
+   20272:	movq   $0x8,0x28(%rsp)
+   2027b:	vxorps %xmm0,%xmm0,%xmm0
+   2027f:	vmovups %xmm0,0x30(%rsp)
+   20285:	lea    0x8ce94(%rip),%r8        # ad120 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.52.llvm.3671060894988460240+0xc0>
+   2028c:	lea    0x8(%rsp),%rsi
+   20291:	lea    0x10(%rsp),%rdx
+   20296:	lea    0x18(%rsp),%rcx
+   2029b:	xor    %edi,%edi
+   2029d:	call   *0x90cc5(%rip)        # b0f68 <_DYNAMIC+0x2f8>
+   202a3:	int3
+   202a4:	int3
+   202a5:	int3
+   202a6:	int3
+   202a7:	int3
+   202a8:	int3
+   202a9:	int3
+   202aa:	int3
+   202ab:	int3
+   202ac:	int3
+   202ad:	int3
+   202ae:	int3
+   202af:	int3
