@@ -28,7 +28,8 @@ using three new insertion seeds and 50 million independent calibration negatives
 per configuration. In the C++ shortlist, our eligible query leaders are
 **1.10–1.73× faster** than the fastest eligible external configuration across the
 reported memory/FPR ceilings. This covers 65K–32M keys, 50% hits, batch 4096,
-and allocations up to 128 MiB on one Xeon Platinum 8474C core.
+and allocations up to 128 MiB on one Xeon Platinum 8474C core. This confirmation
+uses 16/32-bpk allocation targets; smaller intermediate budgets remain to be swept.
 
 ![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
 
@@ -63,7 +64,8 @@ The new [eight-core external confirmation](docs/external-parallel-confirmation-2
 compares the same 23 shortlisted configurations on identical physical cores and a
 shared immutable bitmap. Across three fresh seeds, our per-scenario leaders are
 **1.06–1.59× faster including hashing, fresh thread startup and joining** at batch
-4096, 50% hits and 65K/32M keys. Memory caps and measured FPR ceilings still apply;
+4096, 50% hits and 65K/32M keys, at the two measured 16/32-bpk allocation targets.
+Memory caps and measured FPR ceilings still apply;
 individual ByteSplit/Split64 losses remain in the report. This is a C++ external
 comparison; Rust's separately reported scaling uses its own serial baseline.
 
