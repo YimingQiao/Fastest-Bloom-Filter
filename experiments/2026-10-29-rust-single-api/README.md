@@ -64,3 +64,8 @@ The subsequent four-row guard retained the two original native paths and both V2
 **V2 is not promoted.** Its positive singleton evidence and all regressions remain intact. The next isolated hypothesis is to keep the checked inline public entry but remove redundant checks and the unreachable singleton branch from the private bulk body; actual kernels for lengths other than one must retain their semantics. That hypothesis requires separate source freeze, validation and timing. Production remains unchanged at this stage.
 
 `native-before/` archives all fifteen original native package files, including complete source/binaries/support and licenses, exactly as git `c4b6a08`; `before-source-provenance.json` verifies every byte and maps old root paths to their snapshots. Original/strong frozen runners intentionally reject a changed production source tree. A later core integration must use this archived original for port-cost controls rather than silently pointing an old name at new source.
+
+
+## Later isolated V3 screen
+
+[V3 report](README-v3.md) retains the CPU3 same-process original/V2/V3 guard. It did not resolve Byte's short-batch regressions and was not promoted. Earlier [V2 evidence](README-v2.md), source snapshots and binaries remain unchanged.
