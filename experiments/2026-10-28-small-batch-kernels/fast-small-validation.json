@@ -1,0 +1,83 @@
+{
+  "sources": {
+    "experiments/2026-10-28-small-batch-kernels/fast_pattern_before.h": "09bfa056d7282638f6328838b13b32a849d1773f3b6dec7549df88451d330469",
+    "experiments/2026-10-28-small-batch-kernels/fast_pattern_early.h": "222ca117c0528f2335ffac22763118480a8008993b455cc29c59de1d742835ab",
+    "experiments/2026-10-28-small-batch-kernels/check_fast_small.cpp": "b6a48f577edbb1f74dd322dba02c9739e700cd857f4b807b38df5d9036d2d388",
+    "include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0"
+  },
+  "runs": [
+    {
+      "case": "gcc-scalar",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "g++",
+        "-O2",
+        "-march=x86-64",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-std=c++17",
+        "-Iinclude",
+        "experiments/2026-10-28-small-batch-kernels/check_fast_small.cpp",
+        "-o",
+        "/tmp/bf-fast-small-gcc-scalar"
+      ],
+      "compile_status": 0,
+      "compile_stderr": "",
+      "run_status": 0,
+      "stdout": "12129348150252803241\n",
+      "stderr": ""
+    },
+    {
+      "case": "gcc-avx2",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "g++",
+        "-O2",
+        "-march=x86-64",
+        "-mavx2",
+        "-mno-avx512f",
+        "-std=c++17",
+        "-Iinclude",
+        "experiments/2026-10-28-small-batch-kernels/check_fast_small.cpp",
+        "-o",
+        "/tmp/bf-fast-small-gcc-avx2"
+      ],
+      "compile_status": 0,
+      "compile_stderr": "",
+      "run_status": 0,
+      "stdout": "12129348150252803241\n",
+      "stderr": ""
+    },
+    {
+      "case": "clang-avx512-sanitize",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "clang++",
+        "-O1",
+        "-g",
+        "-march=x86-64",
+        "-mavx512f",
+        "-mavx2",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-std=c++17",
+        "-Iinclude",
+        "experiments/2026-10-28-small-batch-kernels/check_fast_small.cpp",
+        "-o",
+        "/tmp/bf-fast-small-clang-avx512-sanitize"
+      ],
+      "compile_status": 0,
+      "compile_stderr": "",
+      "run_status": 0,
+      "stdout": "12129348150252803241\n",
+      "stderr": ""
+    }
+  ]
+}

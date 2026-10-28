@@ -35,6 +35,16 @@ public:
 			InsertImpl<false>(num, keys);
 	}
 	uint32_t Lookup(uint32_t num, const uint64_t *keys, uint32_t *out) const {
+		// Tiny calls need neither SIMD setup nor a cache-size dispatch.
+		if (num <= 3) {
+			for (size_t i = 0; i < num; ++i) {
+				const uint64_t h = keys[i];
+				const uint32_t a = Block(h), lo = static_cast<uint32_t>(h);
+				const uint32_t m1 = Pattern(lo), m2 = Pattern(lo >> 10);
+				out[i] = ((blocks_[a] & m1) == m1) & ((blocks_[a ^ (8u + ((lo >> 20) & 7))] & m2) == m2);
+			}
+			return num;
+		}
 		if (SizeInBytes() > (1u << 21))
 			LookupImpl<true>(num, keys, out);
 		else

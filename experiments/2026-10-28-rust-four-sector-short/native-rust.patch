@@ -1,0 +1,154 @@
+diff --git a/rust/src/four_sector.rs b/rust/src/four_sector.rs
+index dbd7f9c..8525a86 100644
+--- a/rust/src/four_sector.rs
++++ b/rust/src/four_sector.rs
+@@ -183,7 +183,19 @@ impl FourSectorBloomFilter {
+         if self.avx512 && hashes.len() >= 4 {
+             // SAFETY: checked CPU features, equal output length and masked tails.
+             unsafe {
+-                if self.size_in_bytes() > PREFETCH_THRESHOLD {
++                let large = self.size_in_bytes() > PREFETCH_THRESHOLD;
++                if hashes.len() < 64 && (hashes.len() <= 8 || large) {
++                    if large {
++                        use std::arch::x86_64::*;
++                        for &hash in hashes {
++                            let index = ((hash >> 32) as u32 & self.word_mask) as usize;
++                            _mm_prefetch::<_MM_HINT_T0>(
++                                self.lines.as_ptr().cast::<u32>().add(index).cast(),
++                            );
++                        }
++                    }
++                    self.lookup_short_avx512(hashes, out);
++                } else if large {
+                     self.lookup_avx512::<true>(hashes, out);
+                 } else {
+                     self.lookup_avx512::<false>(hashes, out);
+@@ -359,6 +371,66 @@ impl FourSectorBloomFilter {
+         }
+     }
+ 
++    #[target_feature(enable = "avx2,avx512f")]
++    unsafe fn lookup_short_avx512(&self, hashes: &[u64], out: &mut [u32]) {
++        use std::arch::x86_64::*;
++        // Eight keys repeated across both halves: one gather probes sectors 0/1,
++        // and the second probes sectors 2/3. Bitmap masks remain unchanged.
++        let even = _mm512_setr_epi32(0, 2, 4, 6, 8, 10, 12, 14, 0, 2, 4, 6, 8, 10, 12, 14);
++        let odd = _mm512_add_epi32(even, _mm512_set1_epi32(1));
++        let rotations = _mm512_setr_epi32(0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8);
++        let quarters = _mm512_setr_epi32(0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4);
++        let offset_mask = _mm512_setr_epi32(0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3);
++        let shifts2 = _mm512_setr_epi32(
++            28, 28, 28, 28, 28, 28, 28, 28, 30, 30, 30, 30, 30, 30, 30, 30,
++        );
++        let table = _mm512_loadu_si512(PATTERNS.as_ptr().cast());
++        let zero = _mm512_setzero_si512();
++        let words = self.lines.as_ptr().cast::<i32>();
++        let mut i = 0;
++        while i < hashes.len() {
++            let count = (hashes.len() - i).min(8);
++            let valid = (1u16 << count) - 1;
++            let packed = if count == 8 {
++                _mm512_loadu_si512(hashes.as_ptr().add(i).cast())
++            } else {
++                _mm512_maskz_loadu_epi64(valid as u8, hashes.as_ptr().add(i).cast())
++            };
++            let lo = _mm512_permutexvar_epi32(even, packed);
++            let hi = _mm512_permutexvar_epi32(odd, packed);
++            let code = _mm512_rorv_epi32(lo, rotations);
++            let mask = _mm512_rolv_epi32(
++                _mm512_permutexvar_epi32(code, table),
++                _mm512_srli_epi32::<4>(code),
++            );
++            let base = _mm512_and_si512(hi, _mm512_set1_epi32(self.word_mask as i32));
++            let offsets = _mm512_and_si512(_mm512_srli_epi32::<26>(hi), offset_mask);
++            let index = _mm512_xor_si512(base, _mm512_xor_si512(quarters, offsets));
++            let lanes = valid * 0x101;
++            let values = _mm512_mask_i32gather_epi32::<4>(zero, lanes, index, words);
++            let offsets2 = _mm512_and_si512(_mm512_srlv_epi32(hi, shifts2), _mm512_set1_epi32(3));
++            let index2 = _mm512_xor_si512(
++                base,
++                _mm512_xor_si512(_mm512_add_epi32(quarters, _mm512_set1_epi32(8)), offsets2),
++            );
++            let code2 = _mm512_ror_epi32::<16>(code);
++            let mask2 = _mm512_rolv_epi32(
++                _mm512_permutexvar_epi32(code2, table),
++                _mm512_srli_epi32::<4>(code2),
++            );
++            let values2 = _mm512_mask_i32gather_epi32::<4>(zero, lanes, index2, words);
++            let mut pass = _mm512_cmpeq_epi32_mask(_mm512_and_si512(values, mask), mask)
++                & _mm512_cmpeq_epi32_mask(_mm512_and_si512(values2, mask2), mask2);
++            pass &= pass >> 8;
++            _mm512_mask_storeu_epi32(
++                out.as_mut_ptr().add(i).cast(),
++                valid,
++                _mm512_maskz_set1_epi32(pass, 1),
++            );
++            i += 8;
++        }
++    }
++
+     #[target_feature(enable = "avx2,avx512f")]
+     unsafe fn lookup_avx512<const PREFETCH: bool>(&self, hashes: &[u64], out: &mut [u32]) {
+         use std::arch::x86_64::*;
+@@ -753,4 +825,61 @@ mod tests {
+             assert_ne!(bf.backend(), "avx512");
+         }
+     }
++    #[test]
++    fn short_dispatch_matches_scalar_and_previous_vector_kernel() {
++        let mut inserted: Vec<_> = (0..65539).map(hash64).collect();
++        inserted[0] = 0;
++        inserted[1] = u64::MAX;
++        // Below, exactly at, and above the strict 2 MiB dispatch threshold.
++        for (keys, bpk) in [(65539, 8), (1 << 19, 16), (1 << 20, 16)] {
++            let mut filter = FourSectorBloomFilter::new(keys, bpk).unwrap();
++            filter.insert_hashes(&inserted);
++            let bitmap = filter.lines.clone();
++            let mut present = vec![0; inserted.len()];
++            filter.lookup_hashes(&inserted, &mut present);
++            assert!(present.iter().all(|&x| x == 1));
++            for len in 0..=131 {
++                for offset in 0..16 {
++                    // The logical tail is also the allocation tail, so sanitizer
++                    // builds can catch an accidental full load for <8 keys.
++                    let input: Vec<_> = (0..len + offset)
++                        .map(|j| {
++                            if j % 11 == 0 {
++                                0
++                            } else if j % 13 == 0 {
++                                u64::MAX
++                            } else if j % 2 == 0 {
++                                inserted[(j * 71) % inserted.len()]
++                            } else {
++                                hash64(1_000_000 + j as u64)
++                            }
++                        })
++                        .collect();
++                    let query = &input[offset..];
++                    let mut actual = vec![0xfeed; len + 2];
++                    filter.lookup_hashes(query, &mut actual[1..len + 1]);
++                    assert_eq!(actual[0], 0xfeed);
++                    assert_eq!(actual[len + 1], 0xfeed);
++                    for (&h, &v) in query.iter().zip(&actual[1..len + 1]) {
++                        assert_eq!(v, filter.contains_scalar(h) as u32);
++                    }
++                    #[cfg(target_arch = "x86_64")]
++                    if filter.avx512 {
++                        let mut previous = vec![0xfeed; len + 2];
++                        // SAFETY: the filter detected AVX2/AVX512F; both slices
++                        // have exactly len entries. This invokes the old kernel.
++                        unsafe {
++                            if filter.size_in_bytes() > PREFETCH_THRESHOLD {
++                                filter.lookup_avx512::<true>(query, &mut previous[1..len + 1]);
++                            } else {
++                                filter.lookup_avx512::<false>(query, &mut previous[1..len + 1]);
++                            }
++                        }
++                        assert_eq!(actual, previous);
++                    }
++                }
++            }
++            assert_eq!(bitmap, filter.lines);
++        }
++    }
+ }

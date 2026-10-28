@@ -54,8 +54,9 @@ def main():
     if any(item['compile_status'] != 0 or item.get('run_status') != 0 for item in report['runs']):
         raise SystemExit(1)
     checksums = [item['stdout'] for item in report['runs'] if item['name'].startswith('parity-')]
-    if checksums and any(value != checksums[0] for value in checksums):
-        raise SystemExit('Parity checksums differ between ISA/compiler builds')
+    expected = '2018356366237207559\n7874112049163596729\n'
+    if any(value != expected for value in checksums):
+        raise SystemExit('Parity checksum differs from the archived expected output')
 
 
 if __name__ == '__main__':

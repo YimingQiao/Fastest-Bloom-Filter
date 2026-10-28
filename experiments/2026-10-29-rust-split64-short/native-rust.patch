@@ -1,0 +1,151 @@
+diff --git a/rust/src/split64.rs b/rust/src/split64.rs
+index f5b1902..4c1767d 100644
+--- a/rust/src/split64.rs
++++ b/rust/src/split64.rs
+@@ -121,11 +121,35 @@ impl Split64BloomFilter {
+     /// Writes one 0/1 per input; panics before writing when lengths differ.
+     pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
+         assert_eq!(hashes.len(), out.len(), "one output is required per input");
++        if hashes.len() == 1 {
++            #[cfg(target_arch = "x86_64")]
++            {
++                if self.avx512 {
++                    // SAFETY: detected AVX2/AVX512F and exactly one checked input/output.
++                    out[0] = unsafe { self.lookup_one_avx512(hashes[0]) };
++                    return;
++                }
++                if self.avx2 {
++                    // SAFETY: detected AVX2 and exactly one checked input/output.
++                    out[0] = unsafe { self.lookup_one_avx2(hashes[0]) };
++                    return;
++                }
++            }
++            out[0] = self.contains_scalar(hashes[0]) as u32;
++            return;
++        }
++
+         #[cfg(target_arch = "x86_64")]
+         {
+             if self.avx512 {
+                 // SAFETY: detected backend, checked output length and bounded input/index loads.
+-                unsafe { self.lookup_avx512(hashes, out) };
++                unsafe {
++                    if hashes.len() < 16 {
++                        self.lookup_short_avx512(hashes, out);
++                    } else {
++                        self.lookup_avx512(hashes, out);
++                    }
++                };
+                 return;
+             }
+             if self.avx2 {
+@@ -178,6 +202,27 @@ impl Split64BloomFilter {
+         _mm512_sllv_epi64(_mm512_set1_epi64(1), _mm512_cvtepu32_epi64(positions))
+     }
+     #[inline]
++    #[target_feature(enable = "avx2,avx512f")]
++    unsafe fn wide_mask(hash: u64) -> std::arch::x86_64::__m512i {
++        use std::arch::x86_64::*;
++        let salts = _mm512_setr_epi64(
++            0x47b6137b, 0x44974d91, 0x8824ad5b, 0xa2b7289d, 0x705495c7, 0x2df1424b, 0x9efc4947,
++            0x5c6bfb31,
++        );
++        // Zero upper dwords keep each wrapped u32 product in one u64 lane.
++        let products = _mm512_mullo_epi32(_mm512_set1_epi64(hash as u32 as i64), salts);
++        _mm512_sllv_epi64(_mm512_set1_epi64(1), _mm512_srli_epi64::<26>(products))
++    }
++    #[target_feature(enable = "avx2,avx512f")]
++    unsafe fn lookup_short_avx512(&self, hashes: &[u64], out: &mut [u32]) {
++        use std::arch::x86_64::*;
++        for (&hash, answer) in hashes.iter().zip(out) {
++            let line = self.lines.as_ptr().add(self.block(hash)).cast();
++            *answer = (_mm512_testn_epi64_mask(_mm512_load_si512(line), Self::wide_mask(hash)) == 0)
++                as u32;
++        }
++    }
++    #[inline]
+     #[target_feature(enable = "avx2")]
+     unsafe fn masks_avx2(hash: u64) -> (std::arch::x86_64::__m256i, std::arch::x86_64::__m256i) {
+         use std::arch::x86_64::*;
+@@ -496,4 +541,81 @@ mod tests {
+             assert_ne!(bf.backend(), "avx512");
+         }
+     }
++    #[test]
++    fn short_queries_match_scalar_and_previous_kernel() {
++        let mut inserted: Vec<_> = (0..65539).map(hash64).collect();
++        inserted[0] = 0;
++        inserted[1] = u64::MAX;
++        for (keys, bpk) in [(65539, 8), (1 << 20, 16)] {
++            for backend in 0..3 {
++                let mut filter = Split64BloomFilter::new(keys, bpk).unwrap();
++                if backend < 2 {
++                    filter.avx512 = false;
++                }
++                if backend == 0 {
++                    filter.avx2 = false;
++                }
++                filter.insert_hashes(&inserted);
++                let bitmap = filter.lines.clone();
++                for len in 0..=131 {
++                    for offset in 0..16 {
++                        let input: Vec<_> = (0..len + offset)
++                            .map(|j| {
++                                if j % 11 == 0 {
++                                    0
++                                } else if j % 13 == 0 {
++                                    u64::MAX
++                                } else if j % 2 == 0 {
++                                    inserted[(j * 71) % inserted.len()]
++                                } else {
++                                    hash64(1_000_000 + j as u64)
++                                }
++                            })
++                            .collect();
++                        let hashes = &input[offset..];
++                        let mut actual = vec![0xfeed; len + 2];
++                        filter.lookup_hashes(hashes, &mut actual[1..len + 1]);
++                        assert_eq!(actual[0], 0xfeed);
++                        assert_eq!(actual[len + 1], 0xfeed);
++                        for (&h, &v) in hashes.iter().zip(&actual[1..len + 1]) {
++                            assert_eq!(v, filter.contains_scalar(h) as u32);
++                        }
++                        #[cfg(target_arch = "x86_64")]
++                        if filter.avx512 {
++                            let mut old = vec![0xfeed; len + 2];
++                            // SAFETY: runtime backend verified, matched slices, old bounded kernel.
++                            unsafe {
++                                filter.lookup_avx512(hashes, &mut old[1..len + 1]);
++                            }
++                            assert_eq!(actual, old);
++                        }
++                    }
++                }
++                assert_eq!(bitmap, filter.lines);
++                assert!(inserted.iter().all(|&h| filter.contains_hash(h)));
++            }
++        }
++    }
++    #[test]
++    #[cfg(target_arch = "x86_64")]
++    fn wide_mask_is_identical_to_original_and_scalar() {
++        if !layout_parallel::backends().0 {
++            return;
++        }
++        use std::arch::x86_64::*;
++        let special = [0, u64::MAX, 0x8000_0000, 0xffff_ffff, 0x1_0000_0000];
++        for h in special.into_iter().chain((0..65536).map(hash64)) {
++            let mut old = [0u64; 8];
++            let mut wide = [0u64; 8];
++            // SAFETY: detected backend; both complete 64-byte output arrays are writable.
++            unsafe {
++                _mm512_storeu_si512(old.as_mut_ptr().cast(), Split64BloomFilter::mask(h));
++                _mm512_storeu_si512(wide.as_mut_ptr().cast(), Split64BloomFilter::wide_mask(h));
++            }
++            assert_eq!(old, wide);
++            for j in 0..8 {
++                assert_eq!(wide[j], 1u64 << ((h as u32).wrapping_mul(SALTS[j]) >> 26));
++            }
++        }
++    }
+ }

@@ -176,6 +176,13 @@ impl<const PATTERN: bool> BloomFilter<PATTERN> {
     /// Writes one 0/1 per input. Panics before writing if lengths differ.
     pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
         assert_eq!(hashes.len(), out.len(), "one output is required per input");
+        // Tiny calls avoid SIMD setup and the cache-size/backend dispatch.
+        if PATTERN && hashes.len() <= 3 {
+            for (&hash, value) in hashes.iter().zip(out.iter_mut()) {
+                *value = self.contains_hash(hash) as u32;
+            }
+            return;
+        }
         #[cfg(target_arch = "x86_64")]
         if self.avx512 {
             // SAFETY: runtime feature detection; exact slice lengths checked above.

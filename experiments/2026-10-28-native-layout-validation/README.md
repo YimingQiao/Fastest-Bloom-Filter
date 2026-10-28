@@ -73,3 +73,6 @@ python3 experiments/2026-10-28-native-layout-validation/run.py \
 Source changes after this archive create new validation evidence; inspect the
 new hashes rather than attributing earlier results to later code. No production
 or frozen source was modified by this independent review.
+
+[Rust source review](rust-review.md) and [reviewed Rust hashes](rust-review-sources.json)
+record the separate ownership/bounds audit and its scratch-overflow finding.

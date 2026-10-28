@@ -87,6 +87,14 @@ public:
 #if defined(__AVX512F__)
 		if (n < 4)
 			return LookupScalar(n, h, out);
+		if (n < 64) {
+			const bool large = SizeInBytes() > (1u << 21);
+			if (large)
+				for (size_t i = 0; i < n; ++i)
+					__builtin_prefetch(words_.data() + ((h[i] >> 32) & word_mask_), 0, 3);
+			if (n <= 8 || large)
+				return LookupShort(n, h, out);
+		}
 		if (SizeInBytes() > (1u << 21))
 			return LookupVector<true>(n, h, out);
 		return LookupVector<false>(n, h, out);
@@ -222,6 +230,42 @@ private:
 			_mm512_mask_storeu_epi32(out, valid, _mm512_maskz_set1_epi32(pass, 1));
 		else
 			_mm512_storeu_si512(out, _mm512_maskz_set1_epi32(pass, 1));
+	}
+	uint32_t LookupShort(uint32_t n, const uint64_t *h, uint32_t *out) const {
+		// Eight keys per group; lower/upper lanes probe two sectors of each key.
+		const __m512i even = _mm512_setr_epi32(0, 2, 4, 6, 8, 10, 12, 14, 0, 2, 4, 6, 8, 10, 12, 14);
+		const __m512i odd = _mm512_add_epi32(even, _mm512_set1_epi32(1));
+		const __m512i rotations = _mm512_setr_epi32(0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8);
+		const __m512i quarters = _mm512_setr_epi32(0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4);
+		const __m512i offset_mask = _mm512_setr_epi32(0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3);
+		const __m512i shifts2 = _mm512_setr_epi32(28, 28, 28, 28, 28, 28, 28, 28, 30, 30, 30, 30, 30, 30, 30, 30);
+		const __m512i table = _mm512_loadu_si512(patterns2);
+		const __m512i zero = _mm512_setzero_si512();
+		for (size_t i = 0; i < n; i += 8) {
+			const unsigned count = std::min<size_t>(8, n - i), valid = (1u << count) - 1;
+			const __m512i packed =
+			    count == 8 ? _mm512_loadu_si512(h + i) : _mm512_maskz_loadu_epi64(static_cast<__mmask8>(valid), h + i);
+			const __m512i lo = _mm512_permutexvar_epi32(even, packed), hi = _mm512_permutexvar_epi32(odd, packed);
+			const __m512i code = _mm512_rorv_epi32(lo, rotations);
+			const __m512i mask = _mm512_rolv_epi32(_mm512_permutexvar_epi32(code, table), _mm512_srli_epi32(code, 4));
+			const __m512i base = _mm512_and_si512(hi, _mm512_set1_epi32(word_mask_));
+			const __m512i offsets = _mm512_and_si512(_mm512_srli_epi32(hi, 26), offset_mask);
+			const __m512i index = _mm512_xor_si512(base, _mm512_xor_si512(quarters, offsets));
+			const __mmask16 lanes = valid * 0x101u;
+			const __m512i words = _mm512_mask_i32gather_epi32(zero, lanes, index, words_.data(), 4);
+			const __m512i offsets2 = _mm512_and_si512(_mm512_srlv_epi32(hi, shifts2), _mm512_set1_epi32(3));
+			const __m512i index2 =
+			    _mm512_xor_si512(base, _mm512_xor_si512(_mm512_add_epi32(quarters, _mm512_set1_epi32(8)), offsets2));
+			const __m512i code2 = _mm512_ror_epi32(code, 16);
+			const __m512i mask2 =
+			    _mm512_rolv_epi32(_mm512_permutexvar_epi32(code2, table), _mm512_srli_epi32(code2, 4));
+			const __m512i words2 = _mm512_mask_i32gather_epi32(zero, lanes, index2, words_.data(), 4);
+			unsigned pass = _mm512_cmpeq_epi32_mask(_mm512_and_si512(words, mask), mask) &
+			                _mm512_cmpeq_epi32_mask(_mm512_and_si512(words2, mask2), mask2);
+			pass &= pass >> 8;
+			_mm512_mask_storeu_epi32(out + i, valid, _mm512_maskz_set1_epi32(pass, 1));
+		}
+		return n;
 	}
 	template <bool Prefetch>
 	uint32_t LookupVector(uint32_t n, const uint64_t *h, uint32_t *out) const {

@@ -1,0 +1,63 @@
+{
+  "cpu": 5,
+  "compiler": "Debian clang version 23.0.0 (++20260614104823+cc613052fd6a-1~exp1~20260614224957.2204)\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/lib/llvm-23/bin\n",
+  "checks": [
+    "all inserted hashes",
+    "complete positive/negative outputs vs independently scalar-built frozen bitmap",
+    "lengths 0..131",
+    "offsets 0..7",
+    "query batches 1/3/4/7/8/9/15/16/17/31/32/33/63/64/4096",
+    "duplicate insertions",
+    "ASan/UBSan"
+  ],
+  "sources": {
+    "experiments/2026-10-28-four-sector-probe/adapters.hpp": "d3063f5b11b89abf2106131c927efa0d6ed14523f70b0a2b46294183da2cb77d",
+    "experiments/2026-10-28-four-sector-probe/base_snapshot.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+    "experiments/2026-10-28-four-sector-probe/native-cpp.patch": "3d1e6cf60ea7d3c4ba0bbccac3ee75dc7656844cff7c12aea39c836c45a05f2d",
+    "experiments/2026-10-28-four-sector-probe/adapters_screen_snapshot.hpp": "7e97205faa71e217e98b8297e56fc3b974f8e51bd90f00cf914a97a089dc15bb",
+    "experiments/2026-10-28-four-sector-probe/compare_benchmark_snapshot.cpp": "b0df0deda62e813545f93cf6811ecd6d166c8d34ec34df0cc733b5975542f599",
+    "experiments/2026-10-28-four-sector-probe/run_speed.py": "6da14edd408b0d82c40e007ef81702a632f04322910181d531b25d07fea552dd",
+    "experiments/2026-10-28-four-sector-probe/masks3-count16.txt": "8f0a908d8546221108c3974420ec38768353468683207d28156cf8eaff8824bc",
+    "experiments/2026-10-28-four-sector-probe/probe_filter_screen_snapshot.h": "abe0bdd14de64d300e01b9d2145781bfe7b8c17f066d5c61a4622e309bf885ea",
+    "experiments/2026-10-28-four-sector-probe/masks2-count16.txt": "03f61f55344530f123db1a25d498d7577b53c3955c3bc18f3f49cba3deb36d78",
+    "experiments/2026-10-28-four-sector-probe/four_sector_native_candidate.h": "041c8158851ee4c8e31f6f0175621b457cee2634fd375dc98b52b18c83ab09b5",
+    "experiments/2026-10-28-four-sector-probe/check.cpp": "0e449202d101724c1c489a014b38f48953ed3fcb5a18fd5ccf982319665a4859",
+    "experiments/2026-10-28-four-sector-probe/check_native.cpp": "7c93f7621d60ffa6a9c38682b9e191d45aaa315a12e3b3bb0157e7dbd51dc894",
+    "experiments/2026-10-28-four-sector-probe/CMakeLists.txt": "cb39b85869b6afa492df7083c2ac4128c40f72f77fd5bb5ed304e9d458f9af13",
+    "experiments/2026-10-28-four-sector-probe/probe_filter.h": "c8bd85c130c02b5501a8397155d48f52de772612669f752522c5d9f408325fb5",
+    "experiments/2026-10-28-four-sector-probe/baseline_snapshot.h": "718f80d76971b54691923125ca4b823ea94c067e9948ed0ca43f60265344a8d3",
+    "include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+    "include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c"
+  },
+  "commands": [
+    "taskset -c 5 clang++ -std=c++17 -O2 -march=native -Iinclude experiments/2026-10-28-four-sector-probe/check.cpp -o build/four-sector-probe/check",
+    "taskset -c 5 build/four-sector-probe/check",
+    "taskset -c 5 clang++ -std=c++17 -O1 -g -march=native -fsanitize=address,undefined -fno-omit-frame-pointer -Iinclude experiments/2026-10-28-four-sector-probe/check.cpp -o build/four-sector-probe/check-sanitized",
+    "taskset -c 5 build/four-sector-probe/check-sanitized"
+  ],
+  "strategies_checked": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "native_patch_checks": {
+    "applied_to_production": false,
+    "git_apply_check": true,
+    "cpu": 5,
+    "full_outputs_vs_scalar_frozen": true,
+    "avx512f_without_vl_dq_bw": true,
+    "address_undefined_sanitizers": true,
+    "commands": [
+      "taskset -c 5 clang++ -std=c++17 -O2 -mavx512f -mavx2 -mno-avx512vl -mno-avx512dq -mno-avx512bw -Iinclude experiments/2026-10-28-four-sector-probe/check_native.cpp -o build/four-sector-probe/check-native",
+      "taskset -c 5 build/four-sector-probe/check-native",
+      "taskset -c 5 clang++ -std=c++17 -O1 -g -march=native -fsanitize=address,undefined -fno-omit-frame-pointer -Iinclude experiments/2026-10-28-four-sector-probe/check_native.cpp -o build/four-sector-probe/check-native-sanitized",
+      "taskset -c 5 build/four-sector-probe/check-native-sanitized"
+    ]
+  }
+}

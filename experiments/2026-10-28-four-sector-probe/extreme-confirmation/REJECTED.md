@@ -1,0 +1,1 @@
+This entire sweep is excluded from performance conclusions because its first cases overlapped a CPU3 production build/test window. The raw CSV is retained as timing.csv.rejected. Use extreme-confirmation-clean instead.

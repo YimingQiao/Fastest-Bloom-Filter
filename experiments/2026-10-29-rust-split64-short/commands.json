@@ -1,0 +1,42 @@
+[
+  {
+    "log": "logs/isolated-normal-test.log",
+    "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-split-short cargo test --manifest-path experiments/2026-10-29-rust-split64-short/benchmark/Cargo.toml after::tests -- --nocapture"
+  },
+  {
+    "log": "logs/isolated-disable-test.log",
+    "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-split-short-disable RUST_TEST_THREADS=1 cargo test --manifest-path experiments/2026-10-29-rust-split64-short/benchmark/Cargo.toml --features disable-avx512 after::tests -- --nocapture"
+  },
+  {
+    "log": "logs/isolated-asan-test.log",
+    "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-split-short-asan RUSTFLAGS=-Zsanitizer=address RUST_TEST_THREADS=1 cargo +nightly test --target x86_64-unknown-linux-gnu --manifest-path experiments/2026-10-29-rust-split64-short/benchmark/Cargo.toml after::tests -- --nocapture"
+  },
+  {
+    "log": "logs/isolated-build.log",
+    "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-split-short RUSTFLAGS='-C target-cpu=native' cargo build --release --locked --manifest-path experiments/2026-10-29-rust-split64-short/benchmark/Cargo.toml"
+  },
+  {
+    "log": "logs/confirmation.log",
+    "command": "taskset -c 3 python3 experiments/2026-10-29-rust-split64-short/run.py --output-dir experiments/2026-10-29-rust-split64-short/confirmation"
+  },
+  {
+    "log": "logs/native-normal-test.log",
+    "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-split-native RUST_TEST_THREADS=1 cargo test --manifest-path rust/Cargo.toml --lib split64::tests -- --nocapture"
+  },
+  {
+    "log": "logs/native-disable-test.log",
+    "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-split-native-disable RUST_TEST_THREADS=1 cargo test --manifest-path rust/Cargo.toml --features disable-avx512 --lib split64::tests -- --nocapture"
+  },
+  {
+    "log": "logs/native-asan-test.log",
+    "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-split-native-asan RUSTFLAGS=-Zsanitizer=address RUST_TEST_THREADS=1 cargo +nightly test --target x86_64-unknown-linux-gnu --manifest-path rust/Cargo.toml --lib split64::tests -- --nocapture"
+  },
+  {
+    "log": "logs/native-clippy.log",
+    "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-split-native cargo clippy --manifest-path rust/Cargo.toml --all-targets -- -D warnings"
+  },
+  {
+    "log": "logs/native-fmt.log",
+    "command": "cargo fmt --manifest-path rust/Cargo.toml -- --check"
+  }
+]

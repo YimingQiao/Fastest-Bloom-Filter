@@ -1,0 +1,85 @@
+{
+  "sources": {
+    "experiments/2026-10-28-small-batch-kernels/native_split_before.h": "cdef632cb4375fca0ee8dda85ea9ce6c704f4fdbad9b998ac9d78d575ee8d7c2",
+    "experiments/2026-10-28-small-batch-kernels/native_split_single.h": "932a3862e3c7a22d4db2c254e58b58a072785f4abf797553ae03716243796bae",
+    "experiments/2026-10-28-small-batch-kernels/native_split_after.h": "7769c0fa82453e6d57421dde6d16d9d4a1d4eb788dc24ec194ead5ec2b77f3e2",
+    "experiments/2026-10-28-small-batch-kernels/check_native_split.cpp": "f24fd2900be759363593595fcc933b12f70787f27e5423e4017ea090e17eafd7",
+    "include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+    "include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c"
+  },
+  "runs": [
+    {
+      "case": "gcc-scalar",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "g++",
+        "-O2",
+        "-march=x86-64",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-std=c++17",
+        "-Iinclude",
+        "experiments/2026-10-28-small-batch-kernels/check_native_split.cpp",
+        "-o",
+        "/tmp/bf-native-split-gcc-scalar"
+      ],
+      "compile_status": 0,
+      "compile_stderr": "",
+      "run_status": 0,
+      "stdout": "11781676180046210976\n",
+      "stderr": ""
+    },
+    {
+      "case": "gcc-avx2",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "g++",
+        "-O2",
+        "-march=x86-64",
+        "-mavx2",
+        "-mno-avx512f",
+        "-std=c++17",
+        "-Iinclude",
+        "experiments/2026-10-28-small-batch-kernels/check_native_split.cpp",
+        "-o",
+        "/tmp/bf-native-split-gcc-avx2"
+      ],
+      "compile_status": 0,
+      "compile_stderr": "",
+      "run_status": 0,
+      "stdout": "11781676180046210976\n",
+      "stderr": ""
+    },
+    {
+      "case": "clang-avx512-sanitize",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "clang++",
+        "-O1",
+        "-g",
+        "-march=x86-64",
+        "-mavx512f",
+        "-mavx2",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-std=c++17",
+        "-Iinclude",
+        "experiments/2026-10-28-small-batch-kernels/check_native_split.cpp",
+        "-o",
+        "/tmp/bf-native-split-clang-avx512-sanitize"
+      ],
+      "compile_status": 0,
+      "compile_stderr": "",
+      "run_status": 0,
+      "stdout": "11781676180046210976\n",
+      "stderr": ""
+    }
+  ]
+}
