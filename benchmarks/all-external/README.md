@@ -1,7 +1,8 @@
 # Unified modern Bloom filter comparison
 
-This executable runs FastPattern and the pinned FastFilter, PageBloomFilter and
-Boost.Bloom configurations in one process, with shuffled implementation order,
+This executable now runs **53 configurations** by default: three native layouts
+and 50 pinned FastFilter, PageBloomFilter, Boost.Bloom and RocksDB core configurations.
+They run in one process, with shuffled implementation order,
 identical inputs, compiler flags, timing loops and validation. It compiles the
 shared `src/compare_benchmark.cpp`; it does not copy a separate timing harness.
 
@@ -21,6 +22,10 @@ The default uses the build CPU instruction set for every implementation.
 benchmarked AES hash mode (different bitmap/FPR). Pins and archive SHA-256 hashes
 are recorded in `upstreams.json` and the component manifests. Upstream sources
 are fetched unchanged. Licenses are copied beside the binary.
+`BF_NATIVE_LAYOUTS=OFF` omits the new native FourSector/Split64 types;
+`BF_ROCKSDB=OFF` omits the eight RocksDB core configurations. The original screen
+used the earlier 43-configuration executable; later additions do not alter those
+historical rows or their claimed baseline set.
 
 Use `hash_lookup_ns` and `hash_insert_ns` to compare all families end to end:
 PageBloom hashes the raw 8-byte keys through its public API. Its pure prehash
@@ -30,6 +35,12 @@ avalanching identity trait suppresses an otherwise implicit remix. Native bulk
 APIs are used where available, with separate explicit scalar/AddAll aliases for
 FastFilter. Actual allocations, not advertised capacity alone, populate
 `filter_bytes`. See each adapter's README for exact allocation accounting.
+
+The [RocksDB adapter](../rocksdb-external/README.md) measures the unchanged
+FastLocalBloom bitmap primitives and the production insertion/MultiGet schedules.
+Its hash+operation columns use the common source hash and exclude SST hash queues,
+serialized metadata, virtual reader calls and database I/O. They are core-filter
+measurements, not complete RocksDB database or SST-building timings.
 
 `insert_batch` is independent of query `batch` for this executable. The extra
 C++ CSV columns are `input_mode`, `hash_insert_ns`, `allocate_hash_insert_ns`, and

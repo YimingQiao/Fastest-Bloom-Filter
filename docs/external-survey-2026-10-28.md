@@ -51,10 +51,13 @@ The external lockfile must still retain its transitive dependency revision.
   it when expanding the low-FPR or JIT-compiled baseline suite; this survey has
   not timed it.
 - [RocksDB FastLocalBloom](https://github.com/facebook/rocksdb/wiki/RocksDB-Bloom-Filter)
-  is a relevant production baseline. Its benchmark needs to distinguish the core
-  bitmap algorithm from SST filter building, serialized metadata, and reader API
-  costs. Pin a release/commit before integration; this survey did not pin or time
-  that implementation.
+  is now integrated at [v11.12 / ef3dd12](https://github.com/facebook/rocksdb/tree/ef3dd12e9a6314aaf08fba6d5d445494eac9b253).
+  The [adapter](../benchmarks/rocksdb-external/README.md) preserves its bitmap
+  primitives, eight-slot insertion pipeline and MultiGet32 query schedule. Five
+  configurations distinguish automatic/fixed probe counts and scalar/bulk APIs.
+  These are prehashed core-filter comparisons; SST queues, serialized metadata,
+  byte hashing, reader and database costs are explicitly excluded. Integration
+  validation precedes the separate performance screen.
 - [peterboncz/bloomfilter-repro](https://github.com/peterboncz/bloomfilter-repro)
   is the authors' original reproduction source for the
   [VLDB 2019 paper](https://www.vldb.org/pvldb/vol12/p502-lang.pdf).
