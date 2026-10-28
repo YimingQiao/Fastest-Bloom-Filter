@@ -28,7 +28,7 @@ The generic batch-one path still loses, and existing native layouts win several
 large-batch settings. This is one-seed prototype evidence pending confirmation.
 A [six-seed ByteSplit confirmation](experiments/2026-10-29-rust-byte-leaf-analysis/report/DECISION.md)
 finds consistent gains from exposing its singleton body to the Rust compiler.
-The small 16-bpk public hash+query call averages 1.655 ns/key versus Bloomsday's
+The small 16-bpk public hash+query call has a six-seed geometric mean of 1.655 ns/key versus Bloomsday's
 2.145 ns/key; the large-table margin is only about 2.8%, with one losing seed.
 Generic batch calls retain losses. A minimal Byte-only port is being validated.
 The separate [BlowChoc screen](experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
@@ -48,12 +48,15 @@ per configuration. In the C++ shortlist, our eligible query leaders are
 **1.10–1.73× faster** than the fastest eligible external configuration across the
 reported memory/FPR ceilings. This covers 65K–32M keys, 50% hits, batch 4096,
 and allocations up to 128 MiB on one Xeon Platinum 8474C core. This confirmation
-uses 16/32-bpk allocation targets. The newer finer-capacity screen changes the
-large-table comparison: the production leader is 4.4% slower than a 24-bpk Boost
-filter in strict-FPR hash+query, while the loose-FPR production lead shrinks to 0.5%.
-An isolated 24-bpk Split64 range prototype leads that strict setting by 4.2%,
-pending fresh-seed confirmation. These training results remain separate from
-the earlier three-seed confirmation.
+uses 16/32-bpk allocation targets. The newer
+[finer-capacity confirmation](experiments/2026-10-29-exact-budget-confirmation/screen/RESULTS.md)
+tests fixed leaders from the 988-row screen with three fresh seeds. At 32M keys
+and a 0.01% FPR ceiling, production FastPattern loses to a 24-bpk Boost filter
+on two seeds. The isolated 24-bpk Split64 range prototype has **4.3–6.7% lower
+hash+query latency** on all three, with its worst FPR upper bound close to the
+ceiling. FourSector at 16 bpk fails the small-table 0.1% quality gate on one seed;
+its timing advantage does not count as a qualifying win. These results preserve
+fixed candidates and failures, and remain separate from the earlier confirmation.
 
 ![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
 
