@@ -1,11 +1,29 @@
 # Benchmark records — 2026-10-28
 
-The [measured report](../docs/results-2026-10-28.md) is generated from these CSVs.
-There are 2,772 aggregate rows across the main, external, scaling, and ablation runs.
+The [historical report](../docs/results-2026-10-28.md) uses 2,772 aggregate rows
+across the original main, external, scaling, and ablation runs listed below.
+New modern-baseline results are recorded separately; they are not silently folded
+into that historical total.
 Every directory contains `results.csv`, individual case output, `metadata.json`,
 `source.patch`, and CMake compile commands when applicable. Metadata contains exact
 commands, source revision, binary SHA-256, CPU/compiler details, and Rust build
 fingerprints. Empty patches mean no tracked source changes at measurement start.
+For a frozen executable, `binary_source_revision` identifies the compiled sources;
+`revision`, `status` and `source.patch` retain the workspace state at launch.
+The binary SHA-256 is retained independently of later source edits.
+
+| Modern directory | Purpose | Cases | Rows |
+| --- | --- | --- | --- |
+| [modern-screen](2026-10-28-modern-screen) | 43 C++ configurations, exploratory seed 42 | 18 | 774 |
+| [page-aes-screen](2026-10-28-page-aes-screen) | PageBloom optional AES hashing, separate cohort | 4 | 28 |
+| [modern-confirmation-cpp](2026-10-28-modern-confirmation-cpp) | Frozen 13-candidate large-batch shortlist, three new seeds | 18 | 234 |
+| [modern-confirmation-rust](2026-10-28-modern-confirmation-rust) | Five native Rust candidates on the same confirmation inputs | 18 | 90 |
+
+See the [modern confirmation report](../docs/modern-confirmation-2026-10-28.md).
+Generate its rankings with `scripts/rank_external.py` at 16/32 bits/key and zero
+allocation slack, then render the report/figure with `scripts/summarize_modern.py`
+(matplotlib required). Single-key screening and new-layout scaling are separate
+stages and must not be represented as completed by the large-batch result.
 
 | Directory | Purpose | Cases | Rows |
 | --- | --- | --- | --- |

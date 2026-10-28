@@ -1,12 +1,13 @@
 # Fastest Bloom Filter
 
 Native **C++17 and Rust** Bloom filters with **AVX-512 / AVX2**, parallel construction,
-parallel membership queries, and an atomic type for concurrent readers/writers.
-The new `FastPatternBF` / `FastPatternBloomFilter` uses small SIMD mask dictionaries and cache-sectorized storage. The C++ benchmark also includes register-blocked, cache-sectorized, and Impala-style split-block baselines.
+parallel membership queries, and an atomic FastPattern type for concurrent readers/writers.
+Three native layouts cover different throughput/accuracy tradeoffs: **FastPattern**,
+**FourSector**, and **Split64**. Each keeps a key's probes within one cache line.
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
 
-## Modern external comparison (active)
+## Modern external comparison
 
 The broader campaign now compares **43 C++ configurations in one shuffled process**:
 FastPattern, pinned FastFilter SIMD/classical variants, PageBloomFilter, and
@@ -19,10 +20,50 @@ prehashed kernels from raw-key end-to-end work. Build batches are independently
 configurable, temporary build allocations are reported, and timed construction
 holds only one bitmap at a time. Screening uses explicit error ceilings and a
 pointwise 95% Wilson bound; final candidates need held-out confirmation.
-This campaign is ongoing: the historical results below compare the original
-repository baselines and are not an external or global-fastest claim.
+The completed large-batch confirmation has **234 C++ rows and 90 Rust rows**,
+using three new insertion seeds and 50 million independent calibration negatives
+per configuration. In the C++ shortlist, our eligible query leaders are
+**1.10–1.73× faster** than the fastest eligible external configuration across the
+reported memory/FPR ceilings. This covers 65K–32M keys, 50% hits, batch 4096,
+and allocations up to 128 MiB on one Xeon Platinum 8474C core.
 
-## Measured results
+![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
+
+| At 16M keys | Memory ceiling | Our query leader | Hash+query | Best eligible external |
+| --- | --- | --- | --- | --- |
+| FPR ≤ 1% | 16 bits/key | FastPattern | 3.709 ns/key | FastFilter SIMD: 4.096 ns/key |
+| FPR ≤ 0.1% | 16 bits/key | Split64 | 3.789 ns/key | Boost Multi64K8: 4.433 ns/key |
+| FPR ≤ 0.01% | 32 bits/key | FastPattern | 4.110 ns/key | FastFilter Fixed32: 4.855 ns/key |
+
+Eligibility uses a pointwise 95% FPR upper bound; exact allocations remain visible.
+This is a query result within the stated contract. FourSector still has construction
+and short-batch losses, and single-key comparisons are being expanded. The wider
+mask dictionary in the report remains experimental. See the
+[complete confirmation, including Rust and build timings](docs/modern-confirmation-2026-10-28.md),
+[screening results](docs/modern-screen-2026-10-28.md), and
+[frozen protocol](docs/confirmation-protocol-2026-10-28.md).
+
+## Native layouts
+
+| Layout | C++ header/type | Rust type | Observed FPR at 16 actual bits/key |
+| --- | --- | --- | --- |
+| FastPattern | `fast_pattern_BF.h` / `FastPatternBF` | `FastPatternBloomFilter` | About 0.20% |
+| FourSector | `four_sector_bloom.h` / `FourSectorBloomFilter` | `FourSectorBloomFilter` | About 0.098% |
+| Split64 | `split64_bloom.h` / `Split64BloomFilter` | `Split64BloomFilter` | About 0.091% |
+
+These FPRs are measured on uniform hashes, not hard guarantees for arbitrary inputs.
+FourSector sets two bits in each of four 32-bit sectors; Split64 sets one in each
+of eight 64-bit sectors. Both have native scalar, AVX2 and AVX-512 query paths,
+with matching C++/Rust bitmaps, exclusive parallel construction and parallel reads.
+Rust detects CPU support at runtime; C++ selects its backend at compilation.
+The `disable-avx512` Rust feature applies to all three native layouts.
+
+The constructor's bits/key parameter preserves the repository's **strict next
+power-of-two** allocation rule: for a power-of-two key count, requesting 8 yields
+16 actual bits/key. Check `SizeInBytes()` / `size_in_bytes()` for real allocation.
+All layouts accept prehashed 64-bit keys and support incremental insertion.
+
+## Historical comparison and FastPattern scaling
 
 ![Measured single-thread throughput and parallel query scaling](docs/figures/throughput.svg)
 
@@ -113,6 +154,13 @@ must name the enabled instruction set.
 Both languages support parallel construction, parallel immutable queries, and a
 separate atomic filter for overlapping writers/readers.
 
+For FourSector and Split64, C++ provides `ParallelFourSectorBloomFilter` and
+`ParallelSplit64BloomFilter` in `parallel_layout_bloom.h`, with the same
+`InsertParallel` / `LookupParallel` interface shown below. Their Rust types expose
+`insert_hashes_parallel` / `lookup_hashes_parallel` directly. Each builder partitions
+by its layout's actual cache-line index; it does not replicate the bitmap per worker.
+The overlapping reader/writer atomic type is currently FastPattern only.
+
 | Use case | C++ | Rust |
 | --- | --- | --- |
 | Exclusive parallel build, then read-only queries | `ParallelFastPatternBF` in `parallel_bloom.h` | `FastPatternBloomFilter::insert_hashes_parallel` |
@@ -157,6 +205,9 @@ python3 scripts/run_parallel.py --output-dir results/scaling-rust \
   --executable rust/target/release/parallel_benchmark \
   --cpus 2,4,6,8,10,12,14,16 --threads 1,2,4,8
 python3 scripts/check_parallel_parity.py
+# The new layouts use the same scaling runner, grouped by layout for parity:
+python3 scripts/run_parallel.py --output-dir results/layout-scaling \
+  --cpus 2,4,6,8,10,12,14,16 --threads 1,2,4,8 --filters FourSector,Split64
 ```
 
 Choose physical cores on one NUMA socket for an initial scaling study. The runner

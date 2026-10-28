@@ -34,8 +34,9 @@ def main():
     parser.add_argument('--repeats', type=int, default=5)
     parser.add_argument('--cpu', type=int, default=min(os.sched_getaffinity(0)))
     parser.add_argument('--filters', default='', help='Comma-separated exact class names; empty selects all')
-    parser.add_argument('--insert-batch', type=int, default=None, help='C++ and external Rust harnesses: independent build batch size; 0=all inserted keys; default equals query batch')
-    parser.add_argument('--calibration-power', type=int, default=0, help='C++ and external Rust harnesses: extra untimed disjoint negative probes; 0=disabled')
+    parser.add_argument('--binary-source-revision', help='Explicit source commit for an already-built, frozen executable; launch workspace provenance is retained separately')
+    parser.add_argument('--insert-batch', type=int, default=None, help='Independent build batch size; 0=all inserted keys; default equals query batch')
+    parser.add_argument('--calibration-power', type=int, default=0, help='Extra untimed disjoint negative probes; 0=disabled; requires a current calibrated harness')
     args = parser.parse_args()
     if args.cpu not in os.sched_getaffinity(0):
         parser.error('CPU is not in the allowed affinity set')
@@ -43,6 +44,11 @@ def main():
     output = Path(args.output_dir)
     output.mkdir(parents=True, exist_ok=False)
     repo = Path(__file__).resolve().parents[1]
+    binary_revision = None
+    if args.binary_source_revision:
+        if not (7 <= len(args.binary_source_revision) <= 40) or any(c not in '0123456789abcdefABCDEF' for c in args.binary_source_revision):
+            parser.error('--binary-source-revision must be a commit hash')
+        binary_revision = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', '--verify', args.binary_source_revision + '^{commit}'], text=True).strip()
     metadata = {
         'arguments': vars(args), 'utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
         'platform': platform.platform(), 'cpu': capture(['lscpu']),
@@ -50,6 +56,7 @@ def main():
         'status': capture(['git', '-C', str(repo), 'status', '--short']),
         'executable_sha256': hashlib.sha256(executable.read_bytes()).hexdigest(),
         'cpu_affinity': [args.cpu], 'runs': [],
+        'binary_source_revision': binary_revision,
     }
     (output / 'source.patch').write_text(capture(['git', '-C', str(repo), 'diff', 'HEAD']))
     commands = executable.parent / 'compile_commands.json'
