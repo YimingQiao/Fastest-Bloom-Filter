@@ -72,7 +72,10 @@ The external lockfile must still retain its transitive dependency revision.
   It is useful for validating the provenance of the repository's historical
   sectorized baselines and testing original rather than reconstructed variants.
   The existing local variants alone do not establish superiority over every
-  configuration in the original artifact.
+  configuration in the original artifact. An
+  [API audit](../experiments/2026-10-29-vldb-original-api-audit.md) records its
+  original 32-bit key and compact-position batch contracts, with a separate
+  workload proposal that preserves them. No timing claim has been made for it.
 - [SuperBloom](https://github.com/EtienneC-K/SuperBloom/tree/2bab3d9b10e7f555b46d65b4029429814394526a)
   is a 2026 genomic-stream design using minimizer grouping and overlap consistency.
   Adjacent k-mer streams provide locality absent from shuffled independent u64
