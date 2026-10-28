@@ -99,7 +99,7 @@ __attribute__((noinline)) void insert(BF &bf, size_t n, const Hash *hashes) {
 template <class BF, class Hash>
 void run(const char *name, const std::vector<uint64_t> &raw_insert, const std::vector<uint64_t> &raw_query,
          uint32_t bpk, unsigned hit, size_t batch, unsigned repeats, uint64_t seed, uint64_t key_base,
-         size_t insert_batch) {
+         size_t insert_batch, unsigned calibration_power) {
 	const size_t n = raw_insert.size(), q = raw_query.size();
 	std::vector<Hash, AlignedAllocator<Hash, 4096>> inserted(n), hashes(q), scratch(std::max(batch, insert_batch));
 	std::vector<uint32_t, AlignedAllocator<uint32_t, 4096>> output_storage(std::max(q, batch) + 32);
@@ -205,6 +205,29 @@ void run(const char *name, const std::vector<uint64_t> &raw_insert, const std::v
 		total.push_back(ns(start, end) / q);
 		sink = std::accumulate(output, output + q, uint64_t {0});
 	}
+	// Independent negative calibration after all timed phases. Stream probes to
+	// increase FPR resolution without changing the timed query working set.
+	uint64_t calibration_queries = calibration_power ? uint64_t {1} << calibration_power : 0;
+	uint64_t calibration_fp = 0;
+	if (calibration_queries) {
+		std::vector<uint64_t> raw(batch);
+		std::vector<Hash, AlignedAllocator<Hash, 4096>> prepared(batch);
+		for (uint64_t i = 0; i < calibration_queries; i += batch) {
+			const size_t len = std::min<uint64_t>(batch, calibration_queries - i);
+			for (size_t j = 0; j < len; ++j)
+				raw[j] = key_base + n + q + i + j;
+			if constexpr (RawKeyApi<BF>::value)
+				std::copy(raw.begin(), raw.begin() + len, prepared.begin());
+			else
+				HashVector(len, raw.data(), prepared.data());
+			lookup_kernel(bf, len, prepared.data(), output);
+			for (size_t j = 0; j < len; ++j) {
+				if (output[j] > 1)
+					throw std::runtime_error("invalid calibration output");
+				calibration_fp += output[j];
+			}
+		}
+	}
 	std::cout << "cpp," << name << ',' << n << ',' << q << ',' << bpk << ',' << bf.SizeInBytes() << ','
 	          << 8.0 * bf.SizeInBytes() / n << ',' << sizeof(Hash) * 8 << ',' << hit << ',' << present << ',' << batch
 	          << ',' << repeats << ',' << seed << ','
@@ -226,11 +249,11 @@ void run(const char *name, const std::vector<uint64_t> &raw_insert, const std::v
 	          << median(hash_insert_times) << ',' << median(hash_build_times) << ',' << insert_batch << ','
 	          << BuildScratch<BF>::bytes(bf) << ',' << sizeof(Hash) * scratch.size() << ','
 	          << *std::min_element(total.begin(), total.end()) << ',' << *std::max_element(total.begin(), total.end())
-	          << '\n';
+	          << ',' << calibration_queries << ',' << calibration_fp << '\n';
 }
 int main(int argc, char **argv) {
 	try {
-		if (argc > 10)
+		if (argc > 11)
 			throw std::invalid_argument("too many arguments");
 		auto number = [&](int i, uint64_t fallback) {
 			if (argc <= i)
@@ -249,10 +272,12 @@ int main(int argc, char **argv) {
 		unsigned qp = number(4, 22);
 		size_t batch = number(5, 4096);
 		size_t insert_batch = number(9, batch);
+		unsigned calibration_power = number(10, 0);
 		unsigned repeats = number(6, 5);
 		uint64_t seed = number(7, 42);
 		if (power > 26 || power < 5 || qp > 27 || qp < 12 || !bpk || bpk > 32 || hit > 100 || !batch ||
-		    batch > (1u << qp) || !insert_batch || insert_batch > (1u << 26) || !repeats)
+		    batch > (1u << qp) || !insert_batch || insert_batch > (1u << 26) ||
+		    (calibration_power && (calibration_power < 12 || calibration_power > 27)) || !repeats)
 			throw std::invalid_argument("unsupported benchmark arguments");
 		size_t n = size_t {1} << power, q = size_t {1} << qp;
 		if (n * bpk >= (size_t {1} << 31))
@@ -270,12 +295,13 @@ int main(int argc, char **argv) {
 		             "queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,"
 		             "false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,"
 		             "allocate_hash_insert_ns,insert_batch,filter_build_scratch_bytes,harness_hash_scratch_bytes,hash_"
-		             "lookup_min_ns,hash_lookup_max_ns\n";
+		             "lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives\n";
 		std::string selection = argc > 8 ? argv[8] : "";
 		std::vector<std::function<void()>> jobs;
 #define ADD(T, H)                                                                                                      \
 	if (selection.empty() || ("," + selection + ",").find("," #T ",") != std::string::npos)                            \
-	jobs.emplace_back([&] { run<T, H>(#T, ins, query, bpk, hit, batch, repeats, seed, key_base, insert_batch); })
+	jobs.emplace_back(                                                                                                 \
+	    [&] { run<T, H>(#T, ins, query, bpk, hit, batch, repeats, seed, key_base, insert_batch, calibration_power); })
 
 #ifndef BF_EXTERNAL_ONLY
 		ADD(RegisterBlockedBF32Bit, uint32_t);

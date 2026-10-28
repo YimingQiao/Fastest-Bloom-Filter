@@ -45,7 +45,7 @@ def main():
         if r['hit_percent'] == '0':
             # Batch/insert-batch repeats use identical query keys; count a seed only once.
             seed = r['seed']
-            counts = (int(r['false_positives']), int(r['absent_queries']))
+            counts = (int(r['calibration_false_positives']), int(r['calibration_absent_queries'])) if int(r.get('calibration_absent_queries', 0)) else (int(r['false_positives']), int(r['absent_queries']))
             previous = negatives[config(r)].get(seed)
             if previous is not None and previous[1] == counts[1] and previous != counts:
                 raise ValueError('FPR changed across batch sizes for same input')

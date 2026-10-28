@@ -8,13 +8,15 @@ for hit in (0, 50, 100):
     checksums = set()
     for insert_batch in (1, 31, 1024):
         output = subprocess.check_output(
-            [sys.argv[1], '10', '8', str(hit), '12', '31', '2', '42', '', str(insert_batch)], text=True)
+            [sys.argv[1], '10', '8', str(hit), '12', '31', '2', '42', '', str(insert_batch), '12'], text=True)
         rows = list(csv.DictReader(io.StringIO(output)))
         assert len(rows) == 2
         checksums.update(row['result_checksum'] for row in rows)
         assert len({row['false_positives'] for row in rows}) == 1
+        assert len({row['calibration_false_positives'] for row in rows}) == 1
         for row in rows:
             assert int(row['insert_batch']) == insert_batch
+            assert int(row['calibration_absent_queries']) == 4096
             for field in ('hash_insert_ns', 'allocate_hash_insert_ns', 'hash_lookup_ns'):
                 assert math.isfinite(float(row[field])) and float(row[field]) > 0
             for field in ('insert_ns', 'allocate_insert_ns', 'lookup_ns'):

@@ -62,3 +62,14 @@ cache-resident and larger-than-LLC bitmaps. A winner under one memory/FPR ceilin
 is not an equal-space/FPR dominance claim or evidence of being globally fastest.
 Static xor/ribbon/fuse filters have a different construction/update contract and
 must be reported as a separate approximate-membership category if included.
+
+## Independent FPR calibration
+
+`--calibration-power 24` adds 2^24 disjoint negative probes **after timing**. It
+streams through batch-sized buffers, so improving statistical resolution does not
+increase the timed query working set. The two appended CSV fields are
+`calibration_absent_queries` and `calibration_false_positives`; when available,
+the ranker uses these counts instead of timed all-miss workload counts. Probes
+start after both inserted keys and the timed query interval. The input remains
+uniformly source-hashed. Use new insertion seeds for confirmation, not merely
+more negatives against the filter used to select the candidate.
