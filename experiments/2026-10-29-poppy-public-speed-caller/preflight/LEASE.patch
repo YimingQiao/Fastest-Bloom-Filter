@@ -1,0 +1,31 @@
+--- parent-source_guard.py
++++ lease.py
+@@ -1,15 +1,15 @@
+-"""Require the runner to hold its actual inherited exclusive socket1 lease."""
++"""Require the runner to hold its actual inherited exclusive socket0 lease."""
+ import fcntl
+ import os
+ import re
+ from pathlib import Path
+ 
+ 
+-def require_lease(cpu, lock_path='/tmp/fastest-bf-socket1.lock'):
+-    if cpu != 3 or os.environ.get('BF_SOCKET_LEASE') != 'socket1-cpu3':
+-        raise ValueError('This protocol requires the explicit socket1-cpu3 lease')
+-    if os.sched_getaffinity(0) != {3}:
+-        raise ValueError('Pin the whole matrix to CPU3')
++def require_lease(cpu, lock_path='/tmp/fastest-bf-socket0.lock'):
++    if cpu != 2 or os.environ.get('BF_SOCKET_LEASE') != 'socket0-cpu2':
++        raise ValueError('This protocol requires the explicit socket0-cpu2 lease')
++    if os.sched_getaffinity(0) != {2}:
++        raise ValueError('Pin the whole matrix to CPU2')
+     expected = str(Path(lock_path).resolve())
+     inherited = []
+     for name in os.listdir('/proc/self/fd'):
+@@ -27,5 +27,5 @@
+             pass
+     if not inherited:
+         raise ValueError('Run the complete matrix under the specified flock lease')
+-    return dict(cpu=3, lease='socket1', lock_path=expected,
++    return dict(cpu=2, lease='socket0', lock_path=expected,
+                 inherited_lock_descriptors=inherited)
