@@ -1,0 +1,41 @@
+--- frozen-parent/row_guard.py
++++ fixed216/row_guard.py
+@@ -1,4 +1,4 @@
+-"""Fixed small actual-caller proof; no timing ranking or formal-data loader."""
++"""Exact formal row guard derived from the proved small caller; no rankings."""
+ import json
+ import math
+ from pathlib import Path
+@@ -51,7 +51,6 @@
+     n,q=1<<case['power'],1<<case['query_power']
+     points=[p for p in POINTS if int(p['geometry']['keys'])==n]
+     if allocation:return points,None
+-    points.append(SELECTION['proof_only_point'])
+     rng=Random(case['seed']);base=rng.next()%((1<<32)-n-q)
+     present=q//100*case['hit']+min(q%100,case['hit'])
+     rng.advance(n-1+present+q-1)
+@@ -82,8 +81,8 @@
+         if allocation:
+             need(row['allocation_only'] is True,'allocation mode');continue
+         q=1<<case['query_power'];present=q//100*case['hit']+min(q%100,case['hit'])
+-        expected=dict(queries=q,hit=case['hit'],batch=case['batch'],repeats=4,seed=74381,
+-            reverse_jobs=bool(case['order']),measure=False,key_base=base,present=present,absent=q-present,
++        expected=dict(queries=q,hit=case['hit'],batch=case['batch'],repeats=case['repeats'],seed=case['seed'],
++            reverse_jobs=bool(case['order']),measure=True,key_base=base,present=present,absent=q-present,
+             query_scratch_bytes=8*case['batch'],calibration_negatives=(1<<case['calibration_power']) if case['calibration_power'] else 0)
+         for k,v in expected.items():need(type(row[k])is type(v) and row[k]==v,'caller '+k)
+         for k in ('inserted_digest','query_digest','inserted_hash_digest','query_hash_digest','result_digest'):
+@@ -96,11 +95,11 @@
+         for k in ('bitmap_digest','calibration_digest'):
+             need(row[k] is None or (type(row[k])is int and 0<=row[k]<=MASK),'optional digest '+k)
+         schedule=FOUR if case['batch']==1 else TWO
+-        need(row['phase_order']==[m for trial in schedule for m in trial],'balanced phase order')
++        need(row['phase_order']==[m for trial in schedule*(case['repeats']//4) for m in trial],'balanced phase order')
+         need(type(row['samples'])is dict and set(row['samples'])==set(MODES),'metric set')
+         for i,name in enumerate(MODES):
+             v=row['samples'][name]
+-            need(type(v)is list and len(v)==(4 if i<2 or case['batch']==1 else 0),'trial length')
++            need(type(v)is list and len(v)==(case['repeats'] if i<2 or case['batch']==1 else 0),'trial length')
+             need(all(type(x)in (int,float) and math.isfinite(x) and x>0 for x in v),'positive finite trial')
+     if not allocation:
+         for key in ('inserted_digest','query_digest','inserted_hash_digest','query_hash_digest'):

@@ -1,0 +1,22 @@
+--- frozen-parent/audit.py
++++ fixed216/audit.py
+@@ -11,7 +11,7 @@
+     closure=verify(source_commit,live=live)
+     need(metadata['initial_freeze']==metadata['final_freeze']==closure,'recorded source closure mismatch')
+     placement.validate(metadata['placement']);need(metadata['final_placement']==metadata['placement'],'placement changed')
+-    cases=ledger();need(len(metadata['cases'])==48,'command ledger incomplete')
++    cases=ledger();need(len(metadata['cases'])==24,'command ledger incomplete')
+     binary=closure['normal_executable']['path']
+     for index,(entry,case,record)in enumerate(zip(metadata['cases'],cases,records,strict=True)):
+         need(entry['case']==case and entry['argv']==command(binary,case),'wrong actual command')
+@@ -29,8 +29,8 @@
+ def load_complete(raw_commit,raw_manifest_sha256):
+     manifest=RESULTS/'RAW_ARCHIVE.json';need(sha(manifest)==raw_manifest_sha256,'raw manifest SHA mismatch')
+     need(manifest.read_bytes()==blob(raw_commit,str(manifest.relative_to(ROOT))),'raw manifest Git mismatch')
+-    files=read(manifest)['files'];expected={'metadata.json','records.json','quality.json'}|{f'case-{i:03d}.{kind}'for i in range(48)for kind in('stdout','stderr')}
+-    need(set(files)==expected and len(files)==99,'raw inventory incomplete/extra')
++    files=read(manifest)['files'];expected={'metadata.json','records.json','quality.json'}|{f'case-{i:03d}.{kind}'for i in range(24)for kind in('stdout','stderr')}
++    need(set(files)==expected and len(files)==51,'raw inventory incomplete/extra')
+     for name,entry in files.items():
+         path=RESULTS/name;data=path.read_bytes()
+         need(len(data)==entry['bytes']and sha(path)==entry['sha256'],'raw artifact SHA mismatch')
