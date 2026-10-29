@@ -528,7 +528,22 @@ reproductions, two output faults and six invalid-input checks across ordinary
 and ASan/UBSan builds. All nine actual clock windows and six supplemental
 public callees are archived. The [fixed analysis](../experiments/2026-10-30-independent32-range-analysis/README.md)
 prescribes 24 processes/216 rows and retains every sample, quality failure and
-loss. It compares candidate12 with eligible external and production-native
-leaders in each cell and retains equal-byte candidate16 controls. All 32
-prespecified large-table comparisons must improve to meet its scoped target;
-formal timing has not started.
+loss. The [completed comparison](../experiments/2026-10-30-independent32-range-analysis/INTERPRETATION.md)
+retains 30 wins and 98 losses against the fastest eligible external and
+production-native rivals in each cell; all 64 small-table comparisons lose.
+All 18 points pass both-seed 1% quality and actual 16-bpk capacity gates.
+At 32M keys, both visible-single contracts beat the selected Boost control
+in all eight observations, with latency ratios 0.935433–0.995860. Against
+production natives those same contracts retain seven wins and one loss.
+Batch4096 loses all 16 large-table comparisons: external latency ratios are
+1.071694–1.165323, and production-native ratios are 1.059900–1.329062.
+The prespecified 32-comparison target therefore fails, with 15 wins/17 losses.
+The unconditional controls retain 118 wins/202 losses at equal bytes and
+240 wins/144 losses for the smaller footprint; they are not strongest-rival
+claims. All 36 unpooled quality records, 576 vectors/4,608 samples, 128 cell
+and 128 fixed-rival pairs, 704 controls and 288 round comparisons were
+independently recomputed. The first offline loader stopped before data access
+because a valid proof sealer was absent from its older source-only inventory;
+the preserved proof-verified allowance changes no calculation or raw data.
+This result does not promote the candidate or establish Rust, build or
+multithread performance.

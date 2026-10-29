@@ -55,6 +55,15 @@ All ten 65K-key build configurations regress. The
 has not changed default worker selection; its unchanged-code controls leave
 31/36 two-seed classifications unresolved under the preset ±3% stability band.
 
+Recent singleton SIMD experiments improve their own controls, but retain bulk
+regressions. The C++ candidate also loses 204 eligible external comparisons;
+the Rust experiment has no external leadership result. Independent32Range
+retains small-table and bulk-query losses. The expanded raw-input baseline
+comparison is still running.
+
+<details>
+<summary>Experimental gains, losses and baseline validation</summary>
+
 A [C++ single-key SIMD experiment](experiments/2026-10-29-k12-singleton-vector-analysis/INTERPRETATION.md)
 improves visible single-key throughput including hashing **1.91–2.27×** against
 old K12. All 144 batch1/3 contrasts improve across two seeds and opposite launch
@@ -73,12 +82,14 @@ Native large batch31 hash+query regresses **0.25–1.51%**; batch4096 is mixed.
 The candidate remains experimental, with no external leadership claim.
 Portable builds retain a per-key call that native builds inline.
 
-The experimental [Independent32Range layout](experiments/2026-10-30-independent32-range/accuracy/RESULTS.md)
-uses 12 bits/key and passes the preset 1% false-positive ceiling at 65K and
-32M keys; measured Wilson upper bounds are 0.5353% and 0.5568%.
-Its [external comparison caller](experiments/2026-10-30-independent32-range/caller/REPORT.md)
-passes correctness and sanitizer checks. The separate 216-row speed comparison
-is being prepared; lower memory use alone does not establish a speed gain.
+The completed [Independent32Range comparison](experiments/2026-10-30-independent32-range-analysis/INTERPRETATION.md)
+tests a 12-bit/key candidate under a 16-bit/key ceiling and a measured 1% FPR
+gate. Its 128 comparisons against the fastest eligible external and production
+native in each cell retain **30 wins and 98 losses**, including all 64 small-table
+losses. At 32M keys, visible-single queries win all eight comparisons against
+the selected Boost control, but batch4096 loses all 16 comparisons against
+both rival groups. The preset large-table target is not met: **15 wins and
+17 losses**. The layout stays experimental; all 4,608 samples are retained.
 
 <details>
 <summary>See gains and regressions across every query contract</summary>
@@ -125,6 +136,8 @@ The [natural Poppy caller](experiments/2026-10-29-poppy-natural-raw-caller/proof
 also passes normal/ASan checks for 14 constructions through both byte8 and
 typed-u64 public APIs. Their natural hashing is included; full-load quality
 and performance comparisons remain pending.
+
+</details>
 
 See the [baseline survey](docs/external-survey-2026-10-28.md),
 [benchmark contract](#what-the-numbers-mean), and [bbtree lessons](docs/bbtree-lessons.md).
