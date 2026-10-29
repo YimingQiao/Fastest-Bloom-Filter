@@ -1,0 +1,104 @@
+--- frozen/benchmark/src/main.rs
++++ bridge/benchmark/src/main.rs
+@@ -251,6 +251,9 @@
+ mod raw_contract;
+ mod fastbloom_rs_adapter;
+ mod reporter;
++mod poppy_raw;
++mod poppy_geometry;
++use poppy_raw::PoppyRaw;
+ use raw_contract::{CommonHash, RawFilter};
+ use fastbloom_rs_adapter::FastbloomRsRaw;
+ #[path = "support/filter_selection.rs"]
+@@ -304,6 +307,34 @@
+     "FastbloomRsRawK22",
+     "FastbloomRsRawK23",
+     "FastbloomRsRawK24",
++    "PoppyRawByte020",
++    "PoppyRawTyped020",
++    "PoppyRawByte033",
++    "PoppyRawTyped033",
++    "PoppyRawByte039",
++    "PoppyRawTyped039",
++    "PoppyRawByte040",
++    "PoppyRawTyped040",
++    "PoppyRawByte041",
++    "PoppyRawTyped041",
++    "PoppyRawByte042",
++    "PoppyRawTyped042",
++    "PoppyRawByte043",
++    "PoppyRawTyped043",
++    "PoppyRawByte060",
++    "PoppyRawTyped060",
++    "PoppyRawByte073",
++    "PoppyRawTyped073",
++    "PoppyRawByte079",
++    "PoppyRawTyped079",
++    "PoppyRawByte080",
++    "PoppyRawTyped080",
++    "PoppyRawByte081",
++    "PoppyRawTyped081",
++    "PoppyRawByte082",
++    "PoppyRawTyped082",
++    "PoppyRawByte083",
++    "PoppyRawTyped083",
+ ];
+ 
+ fn main() {
+@@ -343,10 +374,10 @@
+             && args.len() <= 11,
+         "invalid arguments"
+     );
+-    let mut jobs = filter_selection::select_filters(
+-        args.get(8).map(String::as_str).unwrap_or(""),
+-        FILTER_NAMES,
+-    )
++    let selection = args.get(8).map(String::as_str).unwrap_or("");
++    // Preserve the frozen45 default; natural Poppy constructors require an explicit selection.
++    let available = if selection.is_empty() { &FILTER_NAMES[..45] } else { FILTER_NAMES };
++    let mut jobs = filter_selection::select_filters(selection, available)
+     .unwrap_or_else(|error| {
+         eprintln!("{error}");
+         std::process::exit(2);
+@@ -436,6 +467,34 @@
+             "FastbloomRsRawK22" => report::<FastbloomRsRaw<22>>(name, &inserted, &query, &c),
+             "FastbloomRsRawK23" => report::<FastbloomRsRaw<23>>(name, &inserted, &query, &c),
+             "FastbloomRsRawK24" => report::<FastbloomRsRaw<24>>(name, &inserted, &query, &c),
++            "PoppyRawByte020" => report::<PoppyRaw<20, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped020" => report::<PoppyRaw<20, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte033" => report::<PoppyRaw<33, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped033" => report::<PoppyRaw<33, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte039" => report::<PoppyRaw<39, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped039" => report::<PoppyRaw<39, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte040" => report::<PoppyRaw<40, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped040" => report::<PoppyRaw<40, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte041" => report::<PoppyRaw<41, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped041" => report::<PoppyRaw<41, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte042" => report::<PoppyRaw<42, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped042" => report::<PoppyRaw<42, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte043" => report::<PoppyRaw<43, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped043" => report::<PoppyRaw<43, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte060" => report::<PoppyRaw<60, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped060" => report::<PoppyRaw<60, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte073" => report::<PoppyRaw<73, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped073" => report::<PoppyRaw<73, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte079" => report::<PoppyRaw<79, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped079" => report::<PoppyRaw<79, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte080" => report::<PoppyRaw<80, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped080" => report::<PoppyRaw<80, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte081" => report::<PoppyRaw<81, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped081" => report::<PoppyRaw<81, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte082" => report::<PoppyRaw<82, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped082" => report::<PoppyRaw<82, true>>(name, &inserted, &query, &c),
++            "PoppyRawByte083" => report::<PoppyRaw<83, false>>(name, &inserted, &query, &c),
++            "PoppyRawTyped083" => report::<PoppyRaw<83, true>>(name, &inserted, &query, &c),
+             _ => unreachable!(),
+         }
+     }
+@@ -443,3 +502,6 @@
+ 
+ #[cfg(test)]
+ mod tests;
++
++#[cfg(test)]
++mod poppy_tests;
