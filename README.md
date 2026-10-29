@@ -62,8 +62,11 @@ wins all eight strict24-bpk views against both external and retained native
 leaders, while losing most wider comparisons. The fixed
 [three-seed confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md)
 then wins all24 primary views with every selected rival passing all three quality
-gates. The smallest primary gain over native Range is only **1.96%**. K12 remains
-experimental; the result supports a Rust port, not a general default replacement.
+gates. The smallest primary gain over native Range is only **1.96%**. The isolated
+[Rust K12 port](experiments/2026-10-29-four-sector-range12-rust-port/PREFLIGHT_REPORT.md)
+now passes full C++ bitmap/output parity and real multicore build/query checks
+under normal, AVX2 and ASan profiles. Its Rust performance comparison is pending;
+K12 remains experimental.
 
 See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
 [baseline survey](docs/external-survey-2026-10-28.md),
