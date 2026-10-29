@@ -151,7 +151,6 @@ fn single_line_probe_physical_owner_invariant() {
                     for sector in 0..4 {
                         assert_eq!(indices[sector]>>4,expected);
                         assert_eq!((indices[sector]&15)>>2,sector as u32);
-                        assert!((indices[sector]&15)<16);
                         assert_eq!(masks[sector].count_ones(),3);
                     }
                 }
