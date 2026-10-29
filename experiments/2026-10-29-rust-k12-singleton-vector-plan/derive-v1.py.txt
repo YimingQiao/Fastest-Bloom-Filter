@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+"""Derive exactly one native Rust singleton candidate; never compile/run it."""
+import difflib
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[1]
+COMMIT = 'ba5530a4fc38930a9da4593f2a8af7d1de3c853a'
+SOURCE = 'rust/src/four_sector_range12.rs'
+
+OLD_CONTAINS = '''    pub fn contains_hash(&self, hash: u64) -> bool {
+        self.contains_scalar(hash)
+    }'''
+NEW_CONTAINS = '''    pub fn contains_hash(&self, hash: u64) -> bool {
+        #[cfg(target_arch = "x86_64")]
+        if self.avx512 {
+            // SAFETY: the constructor checked the runtime AVX512F backend.
+            return unsafe { self.contains_single_avx512(hash) };
+        }
+        self.contains_scalar(hash)
+    }'''
+OLD_LOOKUP = '''    pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
+        assert_eq!(hashes.len(), out.len(), "one output is required per input");
+'''
+NEW_LOOKUP = OLD_LOOKUP + '''        #[cfg(target_arch = "x86_64")]
+        if self.avx512 && (1..4).contains(&hashes.len()) {
+            // SAFETY: runtime feature check, equal lengths and one to three keys.
+            unsafe { self.lookup_tiny_avx512(hashes, out) };
+            return;
+        }
+'''
+HELPERS = '''
+// One target boundary per tiny batch; singleton callers retain the actual
+// runtime dispatch/inline consequences rather than imposing a new inline hint.
+#[cfg(target_arch = "x86_64")]
+impl FourSectorRange12BloomFilter {
+    #[inline]
+    #[target_feature(enable = "avx512f")]
+    unsafe fn contains_single_avx512(&self, hash: u64) -> bool {
+        use std::arch::x86_64::*;
+        let hi = (hash >> 32) as u32;
+        let lo = hash as u32;
+        // A checked borrow establishes exactly one valid, initialized64-byte line.
+        let line = &self.lines[Self::base(hi, self.line_count) as usize >> 4].0;
+        let hi4 = _mm512_set1_epi32(hi as i32);
+        let shifts = _mm512_setr_epi32(
+            32, 2, 4, 6, 32, 2, 4, 6, 32, 2, 4, 6, 32, 2, 4, 6,
+        );
+        let quarters = _mm512_setr_epi32(
+            0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12,
+        );
+        // SIMD shift32 yields zero; no scalar Rust shift by its type width.
+        let local = _mm512_xor_si512(
+            quarters,
+            _mm512_and_si512(
+                _mm512_xor_si512(hi4, _mm512_srlv_epi32(hi4, shifts)),
+                _mm512_set1_epi32(3),
+            ),
+        );
+        let selected = _mm512_permutexvar_epi32(
+            local, _mm512_load_si512(line.as_ptr().cast()),
+        );
+        let rotations = _mm512_setr_epi32(
+            0, 8, 16, 24, 0, 8, 16, 24, 0, 8, 16, 24, 0, 8, 16, 24,
+        );
+        let code = _mm512_rorv_epi32(_mm512_set1_epi32(lo as i32), rotations);
+        // VPERMD consumes low4 index bits; ROLV32 consumes low5 count bits.
+        let pattern = _mm512_permutexvar_epi32(
+            code, _mm512_loadu_si512(PATTERNS.as_ptr().cast()),
+        );
+        let masks = _mm512_rolv_epi32(pattern, _mm512_srli_epi32::<4>(code));
+        (_mm512_cmpeq_epi32_mask(_mm512_and_si512(selected, masks), masks) & 15) == 15
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512f")]
+    unsafe fn lookup_tiny_avx512(&self, hashes: &[u64], out: &mut [u32]) {
+        for (&hash, answer) in hashes.iter().zip(out) {
+            *answer = self.contains_single_avx512(hash) as u32;
+        }
+    }
+}
+
+'''
+
+
+def blob(name):
+    return subprocess.check_output(['git', 'show', COMMIT + ':' + name], cwd=ROOT)
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def main():
+    original = blob(SOURCE).decode()
+    assert original.count(OLD_CONTAINS) == original.count(OLD_LOOKUP) == 1
+    boundary = '#[cfg(target_arch = "x86_64")]\nimpl FourSectorRange12BloomFilter {'
+    assert original.count(boundary) == 1
+    changed = original.replace(OLD_CONTAINS, NEW_CONTAINS, 1).replace(OLD_LOOKUP, NEW_LOOKUP, 1)
+    changed = changed.replace(boundary, HELPERS + boundary, 1)
+    restored = changed.replace(HELPERS, '', 1).replace(NEW_LOOKUP, OLD_LOOKUP, 1).replace(NEW_CONTAINS, OLD_CONTAINS, 1)
+    assert restored == original, 'candidate delta is not exactly reversible'
+    assert '#[inline(always)]' not in HELPERS
+    (HERE / 'control.rs').write_text(original)
+    (HERE / 'candidate.rs').write_text(changed)
+    (HERE / 'CHANGE.patch').write_text(''.join(difflib.unified_diff(
+        original.splitlines(True), changed.splitlines(True), fromfile='control.rs', tofile='candidate.rs')))
+    retained = {
+        'oracle-tests.rs': 'rust/src/four_sector_range12_tests.rs',
+        'LICENSE-MIT': 'rust/LICENSE-MIT',
+        'LICENSE-APACHE': 'rust/LICENSE-APACHE',
+        'NOTICE': 'rust/NOTICE',
+    }
+    for local, source in retained.items():
+        (HERE / local).write_bytes(blob(source))
+    dependencies = [SOURCE, 'rust/src/four_sector_range12_tests.rs', 'rust/src/k12_parallel.rs',
+                    'rust/src/layout_parallel.rs', 'rust/src/lib.rs', 'rust/Cargo.toml']
+    manifest = dict(status='one source-only candidate; no compiler/filter/measurement execution',
+                    native_commit=COMMIT, candidate_count=1,
+                    original_path=SOURCE, original_sha256=sha(original.encode()),
+                    candidate_sha256=sha(changed.encode()), exact_reverse=True,
+                    native_dependencies={name: sha(blob(name)) for name in dependencies},
+                    retained={local: dict(path=source, sha256=sha(blob(source)))
+                              for local, source in retained.items()},
+                    preserved=['contains_scalar/probe oracle', 'all >=4 query bodies', 'insertion',
+                               'allocation/actual bytes', 'top24 mapping', 'parallel physical-line ownership',
+                               'public signatures', 'old inline hints and runtime backend flags'])
+    (HERE / 'SOURCE.json').write_text(json.dumps(manifest, indent=2) + '\n')
+
+
+if __name__ == '__main__':
+    main()
