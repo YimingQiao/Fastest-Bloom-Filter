@@ -1,0 +1,93 @@
+{
+  "stage": "focused caller correctness and assembly only; no formal speed comparison",
+  "plan_commit": "9f0ebb2f5b75c3be493e562024d01bbfc4a4c749",
+  "native_before": "e8b89cd3c7c090287d1d4222db981ec7f8fb86ab",
+  "native_after": "2b3469f02c8dafc2219a132c681c14529e79995d",
+  "source_only_until_review_and_lease": true,
+  "check_mode": {
+    "argument": "--caller-check",
+    "seed": 74381,
+    "repeats": 4,
+    "cycles": 1,
+    "same_trial_function_as_formal": true,
+    "scenarios": [
+      0,
+      1,
+      2
+    ],
+    "families": [
+      "Split64",
+      "Split64Range"
+    ],
+    "languages": {
+      "cpp": 4,
+      "rust": 8
+    }
+  },
+  "formal_mode": {
+    "argument": "--measure",
+    "seeds": [
+      2694173,
+      3819257
+    ],
+    "repeats": 32,
+    "cycles": 8,
+    "never_validly_invoked_by_preflight": true
+  },
+  "profiles": [
+    "normal",
+    "asan"
+  ],
+  "counts": {
+    "successful_records": 24,
+    "arm_records": 96,
+    "semantic_geometries": 6,
+    "successful_timed_bitmap_lifetimes": 640,
+    "untimed_serial_oracles": 24,
+    "injected_output_faults": 4,
+    "invalid_cli": 14,
+    "executables": 4
+  },
+  "build": {
+    "cpp": "Clang Release -O3 -march=native -fno-strict-aliasing; ASan+UBSan in ASan profile",
+    "rust": "stable normal/nightly ASan release, target-cpu=native, v0 symbol mangling, ThinLTO, one codegen unit",
+    "native_tests": "Reuse unchanged full native before/after source proofs; no repeat full backend matrix",
+    "dependency_collection": "Every actual .o.d/*.d, exact structured Cargo package/target/manifest mapping, dep LHS and actual/final executable identity for nightly output layout"
+  },
+  "placement": {
+    "primary_cpus_allowed": [
+      2,
+      3
+    ],
+    "compile_affinity": "one parent primary core",
+    "caller_affinity": "first4 CPP or first8 Rust physical cores of leased socket, widened before numactl, requested T unchanged",
+    "memory": "explicit membind to leased NUMA node; constructor first-touch semantics retained",
+    "lease": "exclusive inherited WRITE flock for complete preflight, env and topology validated"
+  },
+  "correctness": [
+    "Every streamed old and new key present",
+    "All four arms full guarded mixed serial and parallel output equal untimed serial oracle",
+    "Same seen-seed semantic fields equal exact committed native96 records; no old timing reuse",
+    "Exact full chronological Williams and contract order",
+    "Per-arm effective workers/scratch/spawn, populated allocation unavailable",
+    "Whole input digests unchanged",
+    "Cross-language and backend semantics equal",
+    "Both fresh seeds rejected by check; old seed rejected by measure before workload construction"
+  ],
+  "assembly_gate": {
+    "required_before_formal": true,
+    "normal_binaries_only": true,
+    "record_raw_tools_versions_commands_and_hashes": true,
+    "checks": [
+      "A0 and A1 converge to same typed noinline Trial entry and actual address for each family",
+      "All3 native types have symmetric noinline Trial boundary outside internal clocks",
+      "Original requested T passed to actual public native entry inside insert and allocate+insert intervals",
+      "Policy current n/bytes inclusive gate executes between clocks (possibly in native callee)",
+      "Constructors allocation/zeroing inside allocation interval; prefill outside insert interval",
+      "Record exact before/clone package or namespace identities and raw symbols; report folded/shared or distinct addresses and instruction equivalence without assuming layout independence",
+      "No performance data or new compiler tuning used to adjust caller"
+    ]
+  },
+  "failure_policy": "Preserve every attempt/source/log; versioned repair only; no automatic rebuild of successful outputs",
+  "timing_interpretation": "Four-trial validation durations are incidental correctness evidence, not training data, rankings or claims; formal fresh seeds remain unused."
+}
