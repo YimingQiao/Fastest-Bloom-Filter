@@ -75,7 +75,11 @@ The external lockfile must still retain its transitive dependency revision.
   configuration in the original artifact. An
   [API audit](../experiments/2026-10-29-vldb-original-api-audit.md) records its
   original 32-bit key and compact-position batch contracts, with a separate
-  workload proposal that preserves them. No timing claim has been made for it.
+  workload proposal that preserves them. The completed
+  [728-row paired-context comparison](../experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md)
+  measures all three public surfaces and keeps original MAGIC-addressing quality
+  failures. Modern and original executables retain their own native controls;
+  their measured context differences are never normalized away.
 - [SuperBloom](https://github.com/EtienneC-K/SuperBloom/tree/2bab3d9b10e7f555b46d65b4029429814394526a)
   is a 2026 genomic-stream design using minimizer grouping and overlap consistency.
   Adjacent k-mer streams provide locality absent from shuffled independent u64

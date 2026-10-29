@@ -6,6 +6,16 @@ RocksDB FastLocalBloom core variants and explicit single-call controls.
 A separate [988-row exact-capacity screen](../experiments/2026-10-29-exact-budget-range/screen/OBSERVATIONS.md)
 expands this to **68 external configurations, four production natives and two
 range-capacity experiments**, using actual backing-byte ceilings from 12 to 32 bits/key.
+The [728-row original/modern raw-u32 comparison](../experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md)
+now measures the original VLDB public PImpl/dynamic/static APIs alongside modern
+libraries, with identical native controls in separate executable contexts.
+Production leaders win all 72 comparable original-context views, but lose 29 of
+84 modern-context views. The large strict bulk loss against Boost24 persists in
+both rounds. Actual allocations, public hash work, compact-to-dense conversion,
+166 unpooled quality identities and all missing-qualifier cases remain visible.
+No context adjustment or cross-context normalization is applied. Page's separate
+direct-byte-pointer singleton control is still pending; its value-wrapper result
+does not establish the fastest possible public caller.
 A separate native Rust suite includes
 pinned Bloomsday, fastbloom and [SBBF](../benchmarks/rust-sbbf-external/README.md).
 Its [168-row SBBF screen](../experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)

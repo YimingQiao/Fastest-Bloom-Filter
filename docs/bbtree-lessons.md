@@ -96,3 +96,13 @@ the smaller prologue. The [208-row comparison](../experiments/2026-10-29-indepen
 improves batch-one throughput10–20% but still loses16.6% on small batch-two
 queries, despite matching the original's bulk-loop instructions. It remains
 isolated. Source brevity and instruction counts alone are insufficient evidence.
+
+The [original/modern raw-u32 screen](../experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md)
+shows why the same cost model must include allocation flexibility and the public
+call boundary. Native filters beat the eligible original-artifact configurations,
+but modern Boost at roughly 24 bpk still beats the fastest qualifying native at
+32 bpk in both large strict bulk rounds. The remaining gap cannot be explained
+by cache-line count alone. Page's scalar byte API also exposed a by-value stack
+copy in the caller; a separate pointer-direct control was fixed before inspecting
+the timings. Its result is pending, so the value-wrapper ranking is not treated
+as a complete test of Page's available public call shapes.
