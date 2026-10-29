@@ -1,0 +1,59 @@
+--- control.hpp
++++ conditional.hpp
+@@ -12,7 +12,7 @@
+ // Four distinct 32-bit sectors in one cache line, three cyclic mask bits per sector.
+ // Single-writer insertion; immutable queries can run concurrently. Uniform 64-bit
+ // hashes are required. Empirical FPR is workload-dependent; this is not a hard cap.
+-class K12ScalarOrControl {
++class K12PrefetchLineOrCandidate {
+ 	template <class>
+ 	friend class ParallelLayoutBloomFilter;
+ 	size_t CacheLineCount() const {
+@@ -65,12 +65,12 @@
+ 	}
+ 
+ public:
+-	explicit K12ScalarOrControl(RangeBytes budget)
++	explicit K12PrefetchLineOrCandidate(RangeBytes budget)
+         : words_(range_detail::LineCount(budget.bytes) * 16), line_count_(words_.size() / 16) {
+         if (SizeInBytes() > budget.bytes) throw std::length_error("actual backing exceeds budget");
+     }
+-    explicit K12ScalarOrControl(size_t n, uint32_t bpk)
+-        : K12ScalarOrControl(RangeBytes{range_detail::BudgetBytes(n, bpk)}) {}
++    explicit K12PrefetchLineOrCandidate(size_t n, uint32_t bpk)
++        : K12PrefetchLineOrCandidate(RangeBytes{range_detail::BudgetBytes(n, bpk)}) {}
+     const uint32_t* Data() const { return words_.data(); }
+     uint32_t LineIndex(uint64_t h) const { return Block(static_cast<uint32_t>(h >> 32)); }
+     bool ContainsHash(uint64_t h) const { uint32_t out; LookupScalar(1, &h, &out); return out != 0; }
+@@ -218,9 +218,28 @@
+ 			alignas(64) uint32_t index[16], mask[16];
+ 			_mm512_store_si512(index, indices);
+ 			_mm512_store_si512(mask, masks);
+-			// Sequential ORs preserve every bit when different keys share a word.
+-			for (unsigned j = 0; j < 16; ++j)
+-				words_[index[j]] |= mask[j];
++			if constexpr (Prefetch) {
++				// Each key has one distinct, increasing word index per sector.
++				// Expand its four masks, then complete its line RMW before the next
++				// key: duplicate keys and different keys sharing a line retain all bits.
++				for (unsigned key = 0; key < 4; ++key) {
++					const unsigned first = key * 4;
++					const uint32_t base = index[first] & ~uint32_t{15};
++					const __mmask16 selected = static_cast<__mmask16>(
++					    (1u << (index[first] & 15)) | (1u << (index[first + 1] & 15)) |
++					    (1u << (index[first + 2] & 15)) | (1u << (index[first + 3] & 15)));
++					const __m128i packed_masks =
++					    _mm_loadu_si128(reinterpret_cast<const __m128i *>(mask + first));
++					const __m512i expanded = _mm512_maskz_expand_epi32(
++					    selected, _mm512_castsi128_si512(packed_masks));
++					const __m512i value = _mm512_load_si512(words_.data() + base);
++					_mm512_store_si512(words_.data() + base, _mm512_or_si512(value, expanded));
++				}
++			} else {
++				// Sequential ORs preserve every bit when different keys share a word.
++				for (unsigned j = 0; j < 16; ++j)
++					words_[index[j]] |= mask[j];
++			}
+ 		}
+ 		InsertScalar(n - i, h + i);
+ 	}
