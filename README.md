@@ -43,11 +43,11 @@ against K7. Range is now an optional native API; it does not replace the old
 power-of-two types. All default-only comparisons and interrupted-run provenance
 remain in the linked evidence.
 
-The [actual-native small-build policy comparison](experiments/2026-10-29-native-build-policy-port-analysis/DECISION.md)
-improves all48 comparisons where its serial fallback applies, by **2.33–5.74×**
-across the tested build contracts. Outside that gate, the 112 comparisons split
-evenly between wins and losses. The policy remains isolated while follow-up
-controls investigate variability and repeated losses; no default change is made.
+The [fresh four-arm small-build comparison](experiments/2026-10-29-native-build-policy-controls-analysis/DECISION.md)
+observes **2.28–4.76×** gains in all48 comparisons where serial fallback applies.
+However, unchanged-code controls fail the preset ±3% stability gate in31/36
+two-seed contracts, leaving those classifications unresolved. All outside-gate
+losses remain in the report; default worker selection is unchanged.
 The [Page pointer-caller control](experiments/2026-10-29-page-pointer-single-analysis/RESULTS.md)
 finds no stable advantage over its original value caller; all losses are retained.
 

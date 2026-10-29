@@ -242,7 +242,20 @@ outside the gate,56 improve and56 regress. All160 pairs,480 trial summaries and
 320 shared-serial comparisons are retained. The two seeds were already seen in
 the wrapper study, whose latencies are not imported. Repeated losses remain,
 but this sign pattern alone does not establish deterministic regressions.
-The policy stays isolated pending unchanged-code controls and a fixed follow-up.
+The policy stays isolated; the completed unchanged-code follow-up is below.
+
+The [fresh four-arm native build comparison](../experiments/2026-10-29-native-build-policy-controls-analysis/DECISION.md)
+uses40 processes,72 contracts and9,216 fresh timed bitmap lifetimes, with A0/A1
+sharing the exact same compiled function and a separate unchanged-source Clone.
+All48 active-gate Policy/A0 or Policy/A1 comparisons favor the policy, with
+observed C++ gains of2.28–3.13× and Rust gains of3.32–4.76×. Outside the gate,
+46/96 paired observations are slower. The fixed two-seed classification yields
+one consistently faster contract, four practically within the ±3% band, and31
+unresolved because negative-control intervals exceed that band. All432
+contrasts,864 interval endpoints,288 trial vectors and their summaries are
+retained and independently recomputed from raw records. Shared control samples
+and eight-cycle bootstrap assumptions limit inference. Default selection stays
+unchanged; no more repetitions of this policy are planned.
 
 The [Poppy public-constructor proof](../experiments/2026-10-29-poppy-public-geometry/GEOMETRY_REPORT.md)
 checks all 86 source-selected public configurations against actual constructor
