@@ -74,7 +74,7 @@ The [native API scaling screen](../experiments/2026-10-29-split64-range-native-s
 also exposes a practical limit of exclusive ownership. At 32M keys, full
 allocation+parallel construction gains 2.18–2.61×, but every tested 65K-key
 eight-core build loses. Partitioning and thread startup are included, so the
-next experiment will examine worker selection. An incremental insertion's
+worker-selection experiment must consider an incremental insertion's
 batch length and the existing bitmap's size must both be considered: a short
 batch can still touch a large table. The query worker policy is a separate decision.
 
@@ -103,9 +103,11 @@ call boundary. Native filters beat the eligible original-artifact configurations
 but modern Boost at roughly 24 bpk still beats the fastest qualifying native at
 32 bpk in both large strict bulk rounds. The remaining gap cannot be explained
 by cache-line count alone. Page's scalar byte API also exposed a by-value stack
-copy in the caller; a separate pointer-direct control was fixed before inspecting
-the timings. Its result is pending, so the value-wrapper ranking is not treated
-as a complete test of Page's available public call shapes.
+copy in the caller. The completed
+[240-row pointer-direct control](../experiments/2026-10-29-page-pointer-single-analysis/RESULTS.md)
+finds no stable benefit from removing that copy: small-table single calls all
+regress, while large-table changes have both signs. Unchanged dense callees also
+vary. A plausible instruction-saving change still needs a measured result.
 
 The [full Rust public-probe screen](../experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md)
 now quantifies that baseline-configuration effect: tuning strengthens 48 of 216
@@ -115,3 +117,12 @@ changes the existing dictionary while preserving four word accesses. It meets
 the strict 24-bpk quality gate at both sizes; its vector port is correct, but
 speed is still unmeasured. Keeping the same number of memory accesses makes it
 a useful hypothesis, not evidence of a throughput improvement.
+
+The [fixed build-policy confirmation](../experiments/2026-10-29-native-build-policy-analysis/DECISION.md)
+puts numbers on thread-startup costs. Serial fallback for small batches in small
+bitmaps improves every active-gate comparison, but several unchanged-policy
+controls regress repeatedly. Even a policy that leaves the selected worker
+count unchanged can alter caller/code generation. The native port therefore
+keeps the failing controls and must compare the actual public entrypoints before
+changing defaults. Neither a shorter path nor unchanged algorithmic work proves
+that the generated program is faster.

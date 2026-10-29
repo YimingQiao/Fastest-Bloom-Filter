@@ -13,9 +13,13 @@ Production leaders win all 72 comparable original-context views, but lose 29 of
 84 modern-context views. The large strict bulk loss against Boost24 persists in
 both rounds. Actual allocations, public hash work, compact-to-dense conversion,
 166 unpooled quality identities and all missing-qualifier cases remain visible.
-No context adjustment or cross-context normalization is applied. Page's separate
-direct-byte-pointer singleton control is still pending; its value-wrapper result
-does not establish the fastest possible public caller.
+No context adjustment or cross-context normalization is applied. The completed
+[240-row Page caller control](../experiments/2026-10-29-page-pointer-single-analysis/RESULTS.md)
+compares value and direct-pointer public single calls in both launch rounds.
+Pointer calls show no stable gain; the large-table changes include both signs,
+and unchanged dense callees also vary. Native leaders win all 84 comparable
+Page-only views; 60 missing-qualifier views are not wins. This does not replace
+the full-modern ranking or erase its Boost/FastFilter/RocksDB losses.
 The [complete 336-row Rust public-K comparison](../experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md)
 keeps every Fastbloom K1–12 and the automatic constructor. Public tuning improves
 48/216 eligible query views, with a maximum 1.97× external gain. Experimental
@@ -151,24 +155,24 @@ sizes, while power-of-two production types cannot use that budget fully. It
 loses47/48 equal16/32-byte-budget query comparisons and all48 build comparisons
 against production Split64. The qualifying fastbloom baseline here uses its
 accuracy-optimal default probe count; its public configurable probe-count API
-still needs a full timing comparison. Large ratios against that default are not a
-claim against the strongest tuned fastbloom configuration.
+was subsequently covered by the complete336-row comparison above. Large ratios
+against the default in this earlier screen are not a claim against tuned fastbloom.
 
 The [112-row public Fastbloom probe calibration](../experiments/2026-10-29-rust-fastbloom-fixed-probes-analysis/report/REPORT.md)
 tests every K from 1 to 12 at both sizes and all three capacities, preserving
 all 40 old constructions and their exact quality results. At 24 actual bpk,
 K7 passes the 0.01% upper-bound gate at both sizes, versus default K17. K6 at
 16 bpk passes 0.1%, and K5 at 32 bpk passes 0.01%. These are quality minima
-within the tested grid, not latency winners. The next timing grid retains
-every K, automatic defaults and existing native/external controls.
+within the tested grid, not latency winners. The completed336-row timing grid
+above retains every K, automatic defaults and existing native/external controls.
 
 The [original VLDB public PImpl baseline](../benchmarks/vldb-original-external/README.md)
 now passes native, AVX2 and ASan/UBSan correctness checks. Its public calls,
 compact output conversion, allocations and original upstream sources are
 preserved. The [168-case large-geometry preflight](../benchmarks/vldb-raw32-stage2/PREFLIGHT_RESULTS.md)
 also passes, including 48–128 MiB backing allocations with bounded correctness
-fixtures. Full-population raw-u32 performance is pending; correctness completion
-alone is not throughput evidence.
+fixtures. The completed728-row raw-u32 comparison above supplies the separate
+full-population timing evidence; these fixtures alone do not establish throughput.
 
 The [142-row eight-core Range screen](../experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md)
 uses the same shared immutable bitmap and executor across all public APIs.
@@ -194,3 +198,13 @@ passes all six backend/sanitizer correctness profiles but misses the proposed
 24-bpk/0.01% quality gate at both sizes. The two upper endpoints are 0.01059%
 and 0.01092%, while the retained Split64Range controls pass. No throughput
 measurement or integration was justified by that pilot.
+
+The [fixed96-pair build-policy confirmation](../experiments/2026-10-29-native-build-policy-analysis/DECISION.md)
+tests one fallback rule: a current insertion of at most65,536 hashes into at
+most256KiB uses one build worker. All48 active-gate contracts improve on both
+fresh seeds, with per-cell gains of2.25–8.47× across languages and build contracts.
+However,66 of112 unchanged-policy controls regress. Rust Split64 just above the
+batch threshold has14–21% higher allocation+build latency atT8 on both seeds.
+All160 paired contracts,320 shared-serial comparisons and480 trial vectors are
+retained. An actual native port must resolve these repeated losses before a
+default change; no query or external-leadership claim follows from this result.

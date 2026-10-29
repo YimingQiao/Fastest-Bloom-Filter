@@ -39,6 +39,13 @@ production Split64 in this screen. Fresh-seed confirmation is pending; Range
 remains experimental. All default-only comparisons and the interrupted-run
 provenance remain in the linked evidence.
 
+A [fixed small-build policy](experiments/2026-10-29-native-build-policy-analysis/DECISION.md)
+improves all48 comparisons where its serial fallback applies, by **2.25–8.47×**
+across the tested build contracts. Some calls just outside the gate regress
+**14–21%** in Rust, so it remains isolated pending an actual native comparison.
+The [Page pointer-caller control](experiments/2026-10-29-page-pointer-single-analysis/RESULTS.md)
+finds no stable advantage over its original value caller; all losses are retained.
+
 Multiply's earlier gain over Split64 also fails to beat the faster FourSector
 once a uniform larger accuracy sample qualifies all six constructions.
 A new [FourSector range probe pilot](experiments/2026-10-29-four-sector-range-probe-pilot/RESULTS.md)
