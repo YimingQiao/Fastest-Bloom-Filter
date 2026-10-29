@@ -1,0 +1,1821 @@
+{
+  "complete": true,
+  "started_utc": "2026-10-29T02:45:10.039774+00:00",
+  "source_commit": "0129cbdb116bdf56be1c6ab0ba5a973c495d07c2",
+  "protocol_sha256": "2b39e2b584ad0ae5d9dba8f6fba5594ef6129e60cb54715d4201e693d23bf8e3",
+  "frozen_before": {
+    "source_commit": "0129cbdb116bdf56be1c6ab0ba5a973c495d07c2",
+    "freeze_sha256": "46177b9db9d531252e6e2bb5d6dee6bd77e8e7282294044364cdc5a75b8491bc",
+    "local_artifacts": 178,
+    "preflight_commit": "a35ed9af797b78f78f1a88cad731cd7f0152d55c",
+    "preflight_archive_sha256": "8a4bf9d1a4201b13bdcabf500ecb6afaea79169dedfc54d307a262b305a51402",
+    "compiled_freeze_sha256": "8457bf8c94580b35984e6f657dcf34c6ee57eea3cfa48e2daff48108c79bcc52",
+    "compiler_inputs": 442,
+    "validated_binaries": 4,
+    "selected_normal_executables": {
+      "cpp": {
+        "path": "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "sha256": "f960c2380105641611306fa5aae045debb58b905a24c4a8bfb57515cae70b64f"
+      },
+      "rust": {
+        "path": "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "sha256": "3604ba4670946afae250466304762081364fecf7d356370f995a3ff395957c78"
+      }
+    }
+  },
+  "placement_before": {
+    "lease": {
+      "cpu": 3,
+      "lease": "socket1",
+      "lock_path": "/tmp/fastest-bf-socket1.lock",
+      "inherited_lock_descriptors": [
+        3
+      ]
+    },
+    "lease_mode": "FLOCK ADVISORY WRITE",
+    "parent_affinity": [
+      3
+    ],
+    "topology": [
+      {
+        "cpu": 3,
+        "socket": 1,
+        "core": 26,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 5,
+        "socket": 1,
+        "core": 20,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 7,
+        "socket": 1,
+        "core": 47,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 9,
+        "socket": 1,
+        "core": 3,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 11,
+        "socket": 1,
+        "core": 29,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 13,
+        "socket": 1,
+        "core": 18,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 15,
+        "socket": 1,
+        "core": 44,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 17,
+        "socket": 1,
+        "core": 6,
+        "nodes": [
+          1
+        ]
+      }
+    ],
+    "environment": {
+      "BF_SOCKET_LEASE": "socket1-cpu3",
+      "LD_PRELOAD": "",
+      "LD_LIBRARY_PATH": "",
+      "GLIBC_TUNABLES": "",
+      "MALLOC_CONF": "",
+      "MALLOC_ARENA_MAX": "",
+      "RUSTFLAGS": "",
+      "RUSTDOCFLAGS": ""
+    }
+  },
+  "commands": [
+    {
+      "index": 0,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 16,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "16",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.7063589245080948,
+      "stdout": "case-00-cpp-n16-p16-t1.stdout",
+      "stdout_sha256": "53b3d3fce1873bc0eb97316c26177f59b2c37a74bbdb74e5e12df9c46d2fb099",
+      "stderr": "case-00-cpp-n16-p16-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 1,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 16,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "16",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.7263422720134258,
+      "stdout": "case-01-rust-n16-p16-t1.stdout",
+      "stdout_sha256": "5886c81f4dfca8ba7259f883156dc628f07015c487a5dcc86f0e8120013ef7ab",
+      "stderr": "case-01-rust-n16-p16-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 2,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 16,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "16",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.657117573544383,
+      "stdout": "case-02-cpp-n16-p16-t4.stdout",
+      "stdout_sha256": "d41c067421c68115e18b3e3d6ad55b8879e06c758f070c0b4dacd7ae850270be",
+      "stderr": "case-02-cpp-n16-p16-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 3,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 16,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "16",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.6795769985765219,
+      "stdout": "case-03-rust-n16-p16-t4.stdout",
+      "stdout_sha256": "3215b34f981b2617270f064dec98d66e2ec6f211807f3e18bf3be68cc3c1921b",
+      "stderr": "case-03-rust-n16-p16-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 4,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 16,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "16",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.6597157269716263,
+      "stdout": "case-04-cpp-n16-p16-t8.stdout",
+      "stdout_sha256": "ee11134726be9204d0c024f6730cc5cf46aaf878b83b51588a7abb191bfd3d7c",
+      "stderr": "case-04-cpp-n16-p16-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 5,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 16,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "16",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.6771195195615292,
+      "stdout": "case-05-rust-n16-p16-t8.stdout",
+      "stdout_sha256": "889d6df69d76656547eb128d7777dd62fd37569bc1a1d465c52d6162142e4453",
+      "stderr": "case-05-rust-n16-p16-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 6,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 24,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "24",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.37259095534682274,
+      "stdout": "case-06-cpp-n16-p24-t1.stdout",
+      "stdout_sha256": "aaff955a166612c8dea5f11fab4a6a4facfd1f4f5934831887f7973f4b953848",
+      "stderr": "case-06-cpp-n16-p24-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 7,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 24,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "24",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.3903751727193594,
+      "stdout": "case-07-rust-n16-p24-t1.stdout",
+      "stdout_sha256": "0d934a9ff5558ccda017ab55d62ffbb225aece63517584a91deb7e16d5b64a4f",
+      "stderr": "case-07-rust-n16-p24-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 8,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 24,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "24",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.3512247186154127,
+      "stdout": "case-08-cpp-n16-p24-t4.stdout",
+      "stdout_sha256": "e35cba31aa6900c62154855cd4f281eadd0ff8a7db469310cfe76f6b7b928b01",
+      "stderr": "case-08-cpp-n16-p24-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 9,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 24,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "24",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.3697607908397913,
+      "stdout": "case-09-rust-n16-p24-t4.stdout",
+      "stdout_sha256": "4be5d73851c507001fad5897141f6fea774fa5a66a322818b4f8e84f5dbb52aa",
+      "stderr": "case-09-rust-n16-p24-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 10,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 24,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "24",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.3564190547913313,
+      "stdout": "case-10-cpp-n16-p24-t8.stdout",
+      "stdout_sha256": "f8bd744f9fe7a15fd0f0bd71e47f55ef946a39a1bdceb3d0ab4518da163bdca7",
+      "stderr": "case-10-cpp-n16-p24-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 11,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 24,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "24",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.3682408984750509,
+      "stdout": "case-11-rust-n16-p24-t8.stdout",
+      "stdout_sha256": "d21351736b8355395f2d4807a2cec2b5c137b86cd35e25a0210d7dda1a04b65b",
+      "stderr": "case-11-rust-n16-p24-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 12,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 32,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "32",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.7032073438167572,
+      "stdout": "case-12-cpp-n16-p32-t1.stdout",
+      "stdout_sha256": "19a4cd205eac22afae25e96c3894c41a31dd5ed295bc17158410f02a2907beec",
+      "stderr": "case-12-cpp-n16-p32-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 13,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 32,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "32",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.7273843511939049,
+      "stdout": "case-13-rust-n16-p32-t1.stdout",
+      "stdout_sha256": "474649da8fca2b36b7d1bdc678e5a7863709ffe9f497a397269f52a63e686f9a",
+      "stderr": "case-13-rust-n16-p32-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 14,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 32,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "32",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.659024553373456,
+      "stdout": "case-14-cpp-n16-p32-t4.stdout",
+      "stdout_sha256": "f199008ea23a9ec1d1cb88431330f1a0e1322ba0f824bf60cc57968dd7d0a58b",
+      "stderr": "case-14-cpp-n16-p32-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 15,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 32,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "32",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.6848478130996227,
+      "stdout": "case-15-rust-n16-p32-t4.stdout",
+      "stdout_sha256": "69d7352668ef749ad175f77022aab94ba758eed105a6ec3830a2b6371f808655",
+      "stderr": "case-15-rust-n16-p32-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 16,
+      "case": {
+        "language": "cpp",
+        "key_power": 16,
+        "budget_bpk": 32,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "16",
+        "32",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.6619199998676777,
+      "stdout": "case-16-cpp-n16-p32-t8.stdout",
+      "stdout_sha256": "dfcc9288d90ca3a4a045380d3e0c8bbf5d367ba8ae6f511ac196548609905d6c",
+      "stderr": "case-16-cpp-n16-p32-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 17,
+      "case": {
+        "language": "rust",
+        "key_power": 16,
+        "budget_bpk": 32,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "16",
+        "32",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.6792676150798798,
+      "stdout": "case-17-rust-n16-p32-t8.stdout",
+      "stdout_sha256": "875b5449ef216c9b558bd6d29e2ba181bc556d6b9364be7a3bc6ff8d972e4caa",
+      "stderr": "case-17-rust-n16-p32-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 18,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 16,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "16",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 13.349223855882883,
+      "stdout": "case-18-cpp-n25-p16-t1.stdout",
+      "stdout_sha256": "76e1a4f4744c72efe5acc39b3438c588c7800179a95f01e8bd0390badfd5e2ea",
+      "stderr": "case-18-cpp-n25-p16-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 19,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 16,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "16",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 14.131241684779525,
+      "stdout": "case-19-rust-n25-p16-t1.stdout",
+      "stdout_sha256": "ee271e173e95c28cd3c7f2d4d637acff0a7b54689a9e6f0c762120447d994670",
+      "stderr": "case-19-rust-n25-p16-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 20,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 16,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "16",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 12.177485870197415,
+      "stdout": "case-20-cpp-n25-p16-t4.stdout",
+      "stdout_sha256": "91257edd33c43f882da73eef235f1d321714b19696602defd03cb1dd1dae7e49",
+      "stderr": "case-20-cpp-n25-p16-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 21,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 16,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "16",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 13.17304807715118,
+      "stdout": "case-21-rust-n25-p16-t4.stdout",
+      "stdout_sha256": "793f23f2e82d0247e43c2ad94130b9c7c074995b23c54c4b85f127dda61aa140",
+      "stderr": "case-21-rust-n25-p16-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 22,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 16,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "16",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 11.644920937716961,
+      "stdout": "case-22-cpp-n25-p16-t8.stdout",
+      "stdout_sha256": "f018dc26201c7046dcb7c69e005a64749c2893edce43d9c3ee3bbd013bb0cd26",
+      "stderr": "case-22-cpp-n25-p16-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 23,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 16,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "16",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 12.407890971750021,
+      "stdout": "case-23-rust-n25-p16-t8.stdout",
+      "stdout_sha256": "e9422b04504f64426558845ed0179bcc487b1453359b542ef5cd767387ee83a0",
+      "stderr": "case-23-rust-n25-p16-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 24,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 24,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "24",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 8.265256466343999,
+      "stdout": "case-24-cpp-n25-p24-t1.stdout",
+      "stdout_sha256": "5d28e95218d0f5b4a930038aaaa162587b93a000473532057da8bff96c96725c",
+      "stderr": "case-24-cpp-n25-p24-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 25,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 24,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "24",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 8.527120303362608,
+      "stdout": "case-25-rust-n25-p24-t1.stdout",
+      "stdout_sha256": "df908441e66ff91ad7ed0fce2a757e9f63d0fcd4a72fc0e37abe733cb7e32990",
+      "stderr": "case-25-rust-n25-p24-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 26,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 24,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "24",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 7.435226701200008,
+      "stdout": "case-26-cpp-n25-p24-t4.stdout",
+      "stdout_sha256": "1c4cceae243bf549d8d2bbeaec3c28cbd739c674c30e5d564e1d089cc9980015",
+      "stderr": "case-26-cpp-n25-p24-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 27,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 24,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "24",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 7.913118105381727,
+      "stdout": "case-27-rust-n25-p24-t4.stdout",
+      "stdout_sha256": "77002ebcc600c1242aad39f9ea3652170ea41630db56ef90d1a8d578939a4f39",
+      "stderr": "case-27-rust-n25-p24-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 28,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 24,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "24",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 7.074846038594842,
+      "stdout": "case-28-cpp-n25-p24-t8.stdout",
+      "stdout_sha256": "c2745cfc8c56ea3cabd5eb5029d08d4b332869ad3515aec719587f3b9db0b76f",
+      "stderr": "case-28-cpp-n25-p24-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 29,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 24,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "24",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 7.485372595489025,
+      "stdout": "case-29-rust-n25-p24-t8.stdout",
+      "stdout_sha256": "fe8720d300dc100095fc6b583aeb5cede723ba01be279f63d4ca7cb3811fe1eb",
+      "stderr": "case-29-rust-n25-p24-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 30,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 32,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "32",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 17.95595531538129,
+      "stdout": "case-30-cpp-n25-p32-t1.stdout",
+      "stdout_sha256": "23ed90f220c49e9b983e5eff45bf4b218b5ea7f208c9f3c0776cacb64111e6ea",
+      "stderr": "case-30-cpp-n25-p32-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 31,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 32,
+        "threads": 1,
+        "cpus": [
+          3
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3",
+        "numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "32",
+        "22",
+        "1",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 18.683518705889583,
+      "stdout": "case-31-rust-n25-p32-t1.stdout",
+      "stdout_sha256": "40f41034e0516eca91125168e5c79219d26358280b9e578557997a26ec12c516",
+      "stderr": "case-31-rust-n25-p32-t1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 32,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 32,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "32",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 16.203797755762935,
+      "stdout": "case-32-cpp-n25-p32-t4.stdout",
+      "stdout_sha256": "9ced41beb40eff07fdddd9352e754db37211724172591a271a51f75dea073798",
+      "stderr": "case-32-cpp-n25-p32-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 33,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 32,
+        "threads": 4,
+        "cpus": [
+          3,
+          5,
+          7,
+          9
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9",
+        "numactl",
+        "--physcpubind=3,5,7,9",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "32",
+        "22",
+        "4",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9"
+      ],
+      "returncode": 0,
+      "wall_seconds": 17.116362258791924,
+      "stdout": "case-33-rust-n25-p32-t4.stdout",
+      "stdout_sha256": "ae8a11d11e7d4dd8db5b5513234981d48904a2304de945591d93ffc1c23a480f",
+      "stderr": "case-33-rust-n25-p32-t4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 34,
+      "case": {
+        "language": "cpp",
+        "key_power": 25,
+        "budget_bpk": 32,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "25",
+        "32",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 15.493965676054358,
+      "stdout": "case-34-cpp-n25-p32-t8.stdout",
+      "stdout_sha256": "8b76afb6c21c3a1c3b606315b104321d635cc3aee0be92fa7be0456fdae9e1a0",
+      "stderr": "case-34-cpp-n25-p32-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "index": 35,
+      "case": {
+        "language": "rust",
+        "key_power": 25,
+        "budget_bpk": 32,
+        "threads": 8,
+        "cpus": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17
+        ],
+        "filters": [
+          "Split64",
+          "Split64Range"
+        ]
+      },
+      "argv": [
+        "taskset",
+        "-c",
+        "3,5,7,9,11,13,15,17",
+        "numactl",
+        "--physcpubind=3,5,7,9,11,13,15,17",
+        "--membind=1",
+        "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "25",
+        "32",
+        "22",
+        "8",
+        "4",
+        "42",
+        "50",
+        "24",
+        "Split64,Split64Range",
+        "3,5,7,9,11,13,15,17"
+      ],
+      "returncode": 0,
+      "wall_seconds": 16.29877214320004,
+      "stdout": "case-35-rust-n25-p32-t8.stdout",
+      "stdout_sha256": "1a8758904a0ab5597ca10010c632a905ed993b547cbacf203ff2cf89c4bb53d1",
+      "stderr": "case-35-rust-n25-p32-t8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "finished_utc": "2026-10-29T02:49:06.374523+00:00",
+  "frozen_after": {
+    "source_commit": "0129cbdb116bdf56be1c6ab0ba5a973c495d07c2",
+    "freeze_sha256": "46177b9db9d531252e6e2bb5d6dee6bd77e8e7282294044364cdc5a75b8491bc",
+    "local_artifacts": 178,
+    "preflight_commit": "a35ed9af797b78f78f1a88cad731cd7f0152d55c",
+    "preflight_archive_sha256": "8a4bf9d1a4201b13bdcabf500ecb6afaea79169dedfc54d307a262b305a51402",
+    "compiled_freeze_sha256": "8457bf8c94580b35984e6f657dcf34c6ee57eea3cfa48e2daff48108c79bcc52",
+    "compiler_inputs": 442,
+    "validated_binaries": 4,
+    "selected_normal_executables": {
+      "cpp": {
+        "path": "/home/yiming/projects/fastest-bf-lab/build/native-range-scaling-v1-normal/benchmark",
+        "sha256": "f960c2380105641611306fa5aae045debb58b905a24c4a8bfb57515cae70b64f"
+      },
+      "rust": {
+        "path": "/tmp/fastest-bf-native-range-scaling-v1/normal/x86_64-unknown-linux-gnu/release/benchmark",
+        "sha256": "3604ba4670946afae250466304762081364fecf7d356370f995a3ff395957c78"
+      }
+    }
+  },
+  "placement_after": {
+    "lease": {
+      "cpu": 3,
+      "lease": "socket1",
+      "lock_path": "/tmp/fastest-bf-socket1.lock",
+      "inherited_lock_descriptors": [
+        3
+      ]
+    },
+    "lease_mode": "FLOCK ADVISORY WRITE",
+    "parent_affinity": [
+      3
+    ],
+    "topology": [
+      {
+        "cpu": 3,
+        "socket": 1,
+        "core": 26,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 5,
+        "socket": 1,
+        "core": 20,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 7,
+        "socket": 1,
+        "core": 47,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 9,
+        "socket": 1,
+        "core": 3,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 11,
+        "socket": 1,
+        "core": 29,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 13,
+        "socket": 1,
+        "core": 18,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 15,
+        "socket": 1,
+        "core": 44,
+        "nodes": [
+          1
+        ]
+      },
+      {
+        "cpu": 17,
+        "socket": 1,
+        "core": 6,
+        "nodes": [
+          1
+        ]
+      }
+    ],
+    "environment": {
+      "BF_SOCKET_LEASE": "socket1-cpu3",
+      "LD_PRELOAD": "",
+      "LD_LIBRARY_PATH": "",
+      "GLIBC_TUNABLES": "",
+      "MALLOC_CONF": "",
+      "MALLOC_ARENA_MAX": "",
+      "RUSTFLAGS": "",
+      "RUSTDOCFLAGS": ""
+    }
+  },
+  "coverage": {
+    "rows": 60,
+    "commands": 36,
+    "semantic_geometries": 10,
+    "language_quality_records": 20,
+    "pooled_samples": false
+  },
+  "results_sha256": "eebd598cae35f0f2ad7d1321a949b19582072fd8a1902b031afcd5ebc9f1853c"
+}
