@@ -1,0 +1,7 @@
+# Pre-data control of filter order
+
+The immutable original shuffle happens to put control first for every formal seed/size. Before any formal timing, this additive stage adds one explicit final CLI argument, `original` or `reverse` (default `original`). It is validated before workload allocation and applied only after the unchanged two-job shuffle. No extra RNG draw occurs. Unknown values and extra arguments reject.
+
+`ORDER.patch` is the exact caller delta from proof `a029583a66936b1bf061df4ee8699cb3514117ca`. All source before `main`, including public helpers, clock boundaries and trial outputs, is identical. The filter headers, compiler flags and every workload key/seed/count are unchanged. Formal seed5011 uses `original`; seed6011 uses `reverse`, so each geometry/chunk pair has both relative filter orders. The old proposal and proof remain preserved; no filter variant or input seed is chosen using a timing outcome.
+
+Only bounded caller checks are needed: normal/ASan, existing tiny seed74381 cases, both order flags, exact old output/allocation parity, and invalid flag/extra argument rejection. The earlier three-profile1,642-case kernel proof is reused without rerunning it. Normal assembly must show actual clock/callee behavior and document whether relevant public/vector insertion bodies remain identical after address normalization. No formal data is collected by preparing this source.
