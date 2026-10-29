@@ -1,0 +1,28 @@
+--- frozen-parent/screen_contract.py
++++ fixed192/screen_contract.py
+@@ -1,4 +1,4 @@
+-"""Fixed24 processes/216 rows and unpooled calibration links; no rankings."""
++"""Fixed24 processes/192 rows and unpooled calibration links; no rankings."""
+ import json
+ from pathlib import Path
+ import row_guard as guard
+@@ -10,7 +10,7 @@
+ def read(path):return json.loads(Path(path).read_text(),object_pairs_hook=guard.unique)
+ def ledger():
+     cases=read(HERE/'ledger.json');need(len(cases)==24 and [c['index']for c in cases]==list(range(24)),'fixed ledger changed')
+-    need(sum(len(c['point_ids'])for c in cases)==216,'fixed row count changed')
++    need(sum(len(c['point_ids'])for c in cases)==192,'fixed row count changed')
+     for case in cases:
+         need(case['power']in(16,25) and case['query_power']==22 and case['hit']==50 and case['repeats']==8
+              and case['seed']in(982451653,961748941) and case['batch']in(1,31,4096),'formal dimensions')
+@@ -53,8 +53,8 @@
+                 need(row['calibration_negatives']==0 and row['calibration_fp']==0 and row['calibration_digest']is None,'cal0 row contains new calibration')
+                 quality[key]['reuse_case_indices'].append(expected['index']);reuse_rows+=1
+     if complete:
+-        need((total_rows,total_vectors,total_samples)==(216,576,4608),'complete sample counts')
+-        need((len(quality),len(aliases),reuse_rows)==(36,34,180),'quality source/known group/reuse counts')
++        need((total_rows,total_vectors,total_samples)==(192,512,4096),'complete sample counts')
++        need((len(quality),len(aliases),reuse_rows)==(32,26,160),'quality source/known group/reuse counts')
+     counts=dict(processes=len(records),rows=total_rows,query_vectors=total_vectors,query_samples=total_samples,
+         calibration_rows=len(quality),reuse_rows=reuse_rows,api_quality_records=len(quality),known_alias_records=len(aliases))
+     links=dict(api_records=list(quality.values()),api_record_count=len(quality),known_mapping_record_count=len(aliases),

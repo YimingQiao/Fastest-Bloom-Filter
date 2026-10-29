@@ -1,0 +1,29 @@
+--- frozen-parent/pins.py
++++ fixed192/pins.py
+@@ -30,7 +30,7 @@
+     for name in('caller','analysis'):
+         item=binding[name];inventory(item['commit'],ROOT/item['path'],'PREPARATION.json',item['preparation_sha256'],item['files'])
+     proof=binding['proof'];folder=ROOT/proof['path'];archive=json.loads(anchor(proof['commit'],folder/'COMPLETE_PROOF_ARCHIVE.json',proof['archive_sha256']))
+-    need(archive['complete']is True and len(archive['files'])==173,'complete actual caller proof required')
++    need(archive['complete']is True and len(archive['files'])==272,'complete actual caller proof required')
+     proof_files={}
+     for relative,digest in archive['files'].items():
+         need(type(digest)is str,'proof SHA-string inventory required');path=folder/relative
+@@ -39,7 +39,7 @@
+     compiled=read(compiled_path)
+     need(compiled['complete']is True and compiled['manual_review']['complete']is True,'actual proof/manual gate incomplete')
+     need(compiled['source_commit']==binding['caller']['commit'],'actual caller source changed')
+-    need(compiled['counts']['caller_rows']==66 and compiled['counts']['formal_workloads']==0,'proof scope changed')
++    need(compiled['counts']['caller_rows']==90 and compiled['counts']['formal_workloads']==0,'proof scope changed')
+     need(compiled['normal_executable']==proof['normal_executable'],'selected normal binary changed')
+     derivation=read(HERE/'DERIVATION.json')
+     for item in derivation['parents']:anchor(item['commit'],ROOT/item['path'],item['sha256'])
+@@ -50,7 +50,7 @@
+     closure=dict(source_sha256=source,proof_sha256=proof_files,all_binary_sha256=compiled['all_binary_sha256'],
+         compiler_consumed_input_sha256=compiled['compiler_consumed_input_sha256'],prepared_input_sha256=compiled['prepared_source_sha256'],
+         tools_sha256=compiled['tools_sha256'],launcher_tools_sha256=binding['launcher_tools_sha256'],normal_executable=compiled['normal_executable'])
+-    need(len(closure['all_binary_sha256'])==2 and len(closure['compiler_consumed_input_sha256'])==570,'actual compiler closure count')
++    need(len(closure['all_binary_sha256'])==3 and len(closure['compiler_consumed_input_sha256'])==572,'actual compiler closure count')
+     if live:
+         for field in('all_binary_sha256','compiler_consumed_input_sha256','prepared_input_sha256','tools_sha256','launcher_tools_sha256'):
+             for path,digest in closure[field].items():need(sha(path)==digest,'live '+field+' changed: '+path)
