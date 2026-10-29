@@ -106,3 +106,12 @@ by cache-line count alone. Page's scalar byte API also exposed a by-value stack
 copy in the caller; a separate pointer-direct control was fixed before inspecting
 the timings. Its result is pending, so the value-wrapper ranking is not treated
 as a complete test of Page's available public call shapes.
+
+The [full Rust public-probe screen](../experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md)
+now quantifies that baseline-configuration effect: tuning strengthens 48 of 216
+query views, up to 1.97×. Range retains its 24-bpk niche but loses most equal-byte
+controls. A different [range K12 pilot](../experiments/2026-10-29-four-sector-range-probe-pilot/RESULTS.md)
+changes the existing dictionary while preserving four word accesses. It meets
+the strict 24-bpk quality gate at both sizes; its vector port is correct, but
+speed is still unmeasured. Keeping the same number of memory accesses makes it
+a useful hypothesis, not evidence of a throughput improvement.

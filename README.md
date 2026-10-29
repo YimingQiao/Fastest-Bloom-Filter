@@ -28,21 +28,24 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | [Eight-core exact-capacity screen](experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md) | At 32M keys and the 24-bpk/0.01% ceiling, experimental Range improves throughput **2.7–5.4%** over the fastest eligible external configuration. | One seed and fixed phase order; equal-allocation and wider-scenario losses remain. |
 | [Native C++/Rust API scaling](experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md) | At 32M keys, 8-core allocation+build gains **2.18–2.61×**, and whole-array queries gain **6.83–7.81×**, against each row's own serial control. | All ten 65K-key build configurations regress; one seed, Split64/Range only, 4M prehashed queries. |
 | [Original and modern raw-u32 APIs](experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md) | Native leaders win **72/72** comparable original-artifact views and **55/84** modern-library views. | One seed, two launch rounds, three API contracts; **29 modern losses**, including both large strict bulk comparisons against Boost24. |
+| [Rust full public-probe comparison](experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md) | Experimental Range24 leads the strongest eligible Rust external configuration by **2.61–7.49×** for pure batch-API queries at the 24-bpk/0.01% ceiling. | All Fastbloom K1–12 retained; one seed, three external families. Bloomsday still wins several 32-bpk singleton contracts. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
-**Recent experiments:** Rust Split64Range fills the24-bpk/0.01% capacity gap,
-but loses47/48 equal-allocation query comparisons and all48 build comparisons
-to production Split64. A [complete public-probe calibration](experiments/2026-10-29-rust-fastbloom-fixed-probes-analysis/report/REPORT.md)
-shows fastbloom can meet the 24-bpk/0.01% gate with 7 probes instead of its
-default 17. Speed comparisons against all tested probe counts are pending;
-the earlier default-only comparison does not establish that lead.
-Multiply's promising bulk gain over Split64 also fails to beat the faster
-FourSector once a uniform larger accuracy sample qualifies all six constructions.
-Both candidates remain isolated.
-The separate FourSector range-capacity candidate also stays experimental:
-its [fixed accuracy pilot](experiments/2026-10-29-four-sector-range24/accuracy/RESULTS.md)
-fails the 24-bpk/0.01% gate at both sizes. No speed claim follows from its
-successful correctness checks.
+**Recent experiments:** The complete 336-row Rust comparison finds that
+public probe tuning strengthens the eligible external baseline in 48/216 query
+views, by up to **1.97×**. Range retains the constrained 24-bpk opportunity,
+but loses **46/48 equal-allocation query** and **47/48 build** comparisons to
+production Split64 in this screen. Fresh-seed confirmation is pending; Range
+remains experimental. All default-only comparisons and the interrupted-run
+provenance remain in the linked evidence.
+
+Multiply's earlier gain over Split64 also fails to beat the faster FourSector
+once a uniform larger accuracy sample qualifies all six constructions.
+A new [FourSector range probe pilot](experiments/2026-10-29-four-sector-range-probe-pilot/RESULTS.md)
+retains the failed 8-bit mapping and tests existing 9/10/12-bit masks. Only
+12 bits meet the 24-bpk/0.01% gate at both sizes. Its vector port passes
+[all three backends and sanitizers](experiments/2026-10-29-four-sector-range12-vector/VALIDATION.md),
+but has no performance result yet.
 
 See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
 [baseline survey](docs/external-survey-2026-10-28.md),
@@ -84,7 +87,7 @@ languages and backend/sanitizer checks pass. The
 shows a useful24-bpk capacity option with equal-allocation speed losses.
 Both shared-executor and native API scaling are reported above. Large builds
 benefit from parallelism, while small builds expose substantial overhead.
-Range remains experimental pending the stronger public-probe baseline comparison.
+Range remains experimental pending fresh-seed confirmation of the full public-probe result.
 
 ## Historical comparison and FastPattern scaling
 

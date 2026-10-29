@@ -16,6 +16,16 @@ both rounds. Actual allocations, public hash work, compact-to-dense conversion,
 No context adjustment or cross-context normalization is applied. Page's separate
 direct-byte-pointer singleton control is still pending; its value-wrapper result
 does not establish the fastest possible public caller.
+The [complete 336-row Rust public-K comparison](../experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md)
+keeps every Fastbloom K1–12 and the automatic constructor. Public tuning improves
+48/216 eligible query views, with a maximum 1.97× external gain. Experimental
+Range24 still leads at the 24-bpk/0.01% ceiling, but equal-byte controls favor
+production Split64 in 46/48 queries and 47/48 builds; Bloomsday retains several
+32-bpk singleton advantages. All 432 query/build views and their full alternative
+sets remain available. The first 316 raw rows were preserved after exit143;
+only the unfinished 20-row case was resumed with the identical executable.
+The derived archive explicitly records both sessions and never pools repeated
+quality samples. Fresh-seed confirmation is pending.
 A separate native Rust suite includes
 pinned Bloomsday, fastbloom and [SBBF](../benchmarks/rust-sbbf-external/README.md).
 Its [168-row SBBF screen](../experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
