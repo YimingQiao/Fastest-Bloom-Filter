@@ -131,14 +131,24 @@ sizes, while power-of-two production types cannot use that budget fully. It
 loses47/48 equal16/32-byte-budget query comparisons and all48 build comparisons
 against production Split64. The qualifying fastbloom baseline here uses its
 accuracy-optimal default probe count; its public configurable probe-count API
-still needs a fixed comparison. Large ratios against that default are not a
+still needs a full timing comparison. Large ratios against that default are not a
 claim against the strongest tuned fastbloom configuration.
+
+The [112-row public Fastbloom probe calibration](../experiments/2026-10-29-rust-fastbloom-fixed-probes-analysis/report/REPORT.md)
+tests every K from 1 to 12 at both sizes and all three capacities, preserving
+all 40 old constructions and their exact quality results. At 24 actual bpk,
+K7 passes the 0.01% upper-bound gate at both sizes, versus default K17. K6 at
+16 bpk passes 0.1%, and K5 at 32 bpk passes 0.01%. These are quality minima
+within the tested grid, not latency winners. The next timing grid retains
+every K, automatic defaults and existing native/external controls.
 
 The [original VLDB public PImpl baseline](../benchmarks/vldb-original-external/README.md)
 now passes native, AVX2 and ASan/UBSan correctness checks. Its public calls,
 compact output conversion, allocations and original upstream sources are
-preserved. Raw-u32 performance and larger geometries are the next stage;
-correctness completion alone is not throughput evidence.
+preserved. The [168-case large-geometry preflight](../benchmarks/vldb-raw32-stage2/PREFLIGHT_RESULTS.md)
+also passes, including 48–128 MiB backing allocations with bounded correctness
+fixtures. Full-population raw-u32 performance is pending; correctness completion
+alone is not throughput evidence.
 
 The [142-row eight-core Range screen](../experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md)
 uses the same shared immutable bitmap and executor across all public APIs.

@@ -30,8 +30,10 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 
 **Recent experiments:** Rust Split64Range fills the24-bpk/0.01% capacity gap,
 but loses47/48 equal-allocation query comparisons and all48 build comparisons
-to production Split64. Its fastbloom comparison currently uses the default
-accuracy-optimal probe count; public lower-probe configurations are pending.
+to production Split64. A [complete public-probe calibration](experiments/2026-10-29-rust-fastbloom-fixed-probes-analysis/report/REPORT.md)
+shows fastbloom can meet the 24-bpk/0.01% gate with 7 probes instead of its
+default 17. Speed comparisons against all tested probe counts are pending;
+the earlier default-only comparison does not establish that lead.
 Multiply's promising bulk gain over Split64 also fails to beat the faster
 FourSector once a uniform larger accuracy sample qualifies all six constructions.
 Both candidates remain isolated.
@@ -78,7 +80,8 @@ It accepts arbitrary complete cache-line budgets; full bitmaps match across
 languages and backend/sanitizer checks pass. The
 [Rust screen](experiments/2026-10-29-split64-range-rust-analysis/report-final/REPORT.md)
 shows a useful24-bpk capacity option with equal-allocation speed losses.
-Parallel performance remains to be measured before production integration.
+The shared-executor eight-core comparison is reported above; native parallel
+construction and whole-array API scaling remain to be measured before integration.
 
 ## Historical comparison and FastPattern scaling
 
