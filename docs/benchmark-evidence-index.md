@@ -491,3 +491,10 @@ retains its prepared-u64/byte8 path, seen seed, absent construction trial vector
 and preallocated caller scratch; it is not the new scratch-inclusive raw8
 construction contract. No direct raw Poppy, fresh-seed, Rust SIMD candidate,
 multithread or global leadership claim follows.
+
+The [historical Poppy bridge selection](../experiments/2026-10-29-poppy-raw-public-bridge-selection/RESULT_SCOPE.md)
+retains 14 constructions across all 864 old views, including every exact tie
+and 96 unavailable views. Each construction gets both natural byte8 and typed-u64
+follow-ups, for 28 unmeasured entries. All 20,304 alternatives remain visible.
+This historical shortlist supplies neither a natural-input quality gate nor a
+speed result; it cannot establish the best geometry for those new input paths.
