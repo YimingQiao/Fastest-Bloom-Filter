@@ -499,6 +499,19 @@ follow-ups, for 28 unmeasured entries. All 20,304 alternatives remain visible.
 This historical shortlist supplies neither a natural-input quality gate nor a
 speed result; it cannot establish the best geometry for those new input paths.
 
+The [natural Poppy caller proof](../experiments/2026-10-29-poppy-natural-raw-caller/proof-final/REPORT.md)
+now passes normal/ASan validation: four executables, eight focused test
+invocations, 146 tiny caller rows, 90 old-control semantic reproductions and
+12 precise CLI rejections. All 28 constructor/form combinations match a public
+iterator oracle, with actual allocation and output checks. Actual assembly
+keeps each form's natural hashes, public Result handling and dense stores in
+the measured operations, and constructor work inside complete build. The old
+31 external dependencies retain their identities, features and edges. Large
+constructors contain only 1,031 fixture insertions here; full-load quality and
+speed are still unmeasured. The retained first attempt stopped before compiling
+because four legitimate dependency source files were absent from its inventory;
+the bounded repair validates those exact members against the locked crate.
+
 The isolated C++ [Independent32Range candidate](../experiments/2026-10-30-independent32-range/VALIDATION.md)
 passes native AVX-512, AVX2, scalar-source and ASan/UBSan correctness checks.
 Its [fixed 16-construction accuracy pilot](../experiments/2026-10-30-independent32-range/accuracy/RESULTS.md)
@@ -509,3 +522,13 @@ and 28-bpk/0.01% targets also pass. All failures remain, including 16 bpk at
 negatives on seen seed 42; shared inputs are not independent evidence.
 This establishes the accuracy gate for a separate external speed comparison.
 No speed, Rust-port or parallel-construction result is implied.
+The [actual external caller proof](../experiments/2026-10-30-independent32-range/caller/REPORT.md)
+passes 66 small rows, 36 actual allocation observations, 14 old semantic
+reproductions, two output faults and six invalid-input checks across ordinary
+and ASan/UBSan builds. All nine actual clock windows and six supplemental
+public callees are archived. The [fixed analysis](../experiments/2026-10-30-independent32-range-analysis/README.md)
+prescribes 24 processes/216 rows and retains every sample, quality failure and
+loss. It compares candidate12 with eligible external and production-native
+leaders in each cell and retains equal-byte candidate16 controls. All 32
+prespecified large-table comparisons must improve to meet its scoped target;
+formal timing has not started.

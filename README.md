@@ -73,6 +73,13 @@ Native large batch31 hash+query regresses **0.25–1.51%**; batch4096 is mixed.
 The candidate remains experimental, with no external leadership claim.
 Portable builds retain a per-key call that native builds inline.
 
+The experimental [Independent32Range layout](experiments/2026-10-30-independent32-range/accuracy/RESULTS.md)
+uses 12 bits/key and passes the preset 1% false-positive ceiling at 65K and
+32M keys; measured Wilson upper bounds are 0.5353% and 0.5568%.
+Its [external comparison caller](experiments/2026-10-30-independent32-range/caller/REPORT.md)
+passes correctness and sanitizer checks. The separate 216-row speed comparison
+is being prepared; lower memory use alone does not establish a speed gain.
+
 <details>
 <summary>See gains and regressions across every query contract</summary>
 
@@ -114,6 +121,10 @@ passes normal/ASan checks for all 24 public probe counts and 21 retained control
 Its hashes stay inside the clock, and required build scratch is included in
 allocation+build. Its fixed 786-row comparison is running; results will be
 reported after the complete raw archive is validated.
+The [natural Poppy caller](experiments/2026-10-29-poppy-natural-raw-caller/proof-final/REPORT.md)
+also passes normal/ASan checks for 14 constructions through both byte8 and
+typed-u64 public APIs. Their natural hashing is included; full-load quality
+and performance comparisons remain pending.
 
 See the [baseline survey](docs/external-survey-2026-10-28.md),
 [benchmark contract](#what-the-numbers-mean), and [bbtree lessons](docs/bbtree-lessons.md).
