@@ -1,0 +1,11 @@
+# Conditional K12 actual caller proof
+
+The additive include-route repair passed all three configurations: native, minimal AVX512F with VL/DQ/BW/BITALG/VBMI disabled, and native ASan+UBSan. Each executes18 focused threshold/duplicate/incremental oracle cases and18 old-seed caller rows. All54 oracle cases,54 caller rows and9 strict CLI rejections passed; the54 caller rows preserve all three Latin positions and both real false/true dispatch paths. The source is d986c17dbe496c17627164283157e5a59c112639.
+
+All41 recorded commands completed as expected. Six actual binaries and404 compiler-consumed inputs are frozen. The independent18-case oracle digest is3747184550059334374 in every configuration. Dense guarded answers, all inserted hits, whole bitmaps and incremental histories agree. The original small control repeats its committed earlier result; no fresh formal seed or calibration stream ran. The earlier1642-case matrix was reused rather than repeated.
+
+V1 source b7bec22fe6b88fe0b0382c6fb53a939dcf97f211 failed at the first translation-unit compilation because of an old direct include path. Its exact five commands and failure evidence remain unchanged, with zero project executables and zero filter executions. V2 changes only include routes and fresh driver paths. All native logic, timed helpers, flags, inputs and Latin order remain fixed.
+
+The selected normal binary is99af7d855138f462a6c71229b514967f8505b07844c639845af5945a85808bb7. Manual inspection of the captured actual assembly confirms all8 K12 insertion bodies match intended previous bodies after address/class-name normalization. The conditional false branch retains original word OR; true retains prior whole-line OR. The actual helper tests strict greater-than2MiB inside the timed public call. Six clock windows cover pure/common construction for old/conditional/Range. See assembly-review/REVIEW.md and exact raw excerpts; a successful disassembler exit alone is not the gate.
+
+The operation used CPU2/socket0 under an inherited exclusive whole-operation flock. Parent/children stayed pinned toCPU2, with no explicit NUMA memory binding during correctness. The lock has exited and CPU2 is released. No formal72 performance or production change ran. The original small-table regression and unknown3/12MiB performance remain; this proof establishes correctness/code generation only.
