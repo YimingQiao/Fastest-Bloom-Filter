@@ -1,0 +1,60 @@
+--- control.hpp
++++ candidate.hpp
+@@ -1,21 +1,25 @@
+-// Isolated native packaging of the frozen Independent32BloomFilter mapping.
+-// Query masks, insertion order, address bits and capacity rule are unchanged.
++// Isolated Independent32 range-capacity candidate.
++// Low40 probe fields/mask/insertion/query loops are unchanged.
++// High24 disjoint address fields select a multiply-reduced 32-byte bucket.
+ #pragma once
+ #include "base.h"
+-#include "layout_detail.h"
++#include "split64_range_size.h"
+ #include <vector>
+ #if defined(__AVX2__)
+ #include <immintrin.h>
+ #endif
+ namespace bloom_filters {
+-// Eight disjoint 5-bit fields select independent positions in eight u32
+-// sectors. Hash bits 41..63 address at most 2^23 buckets (256 MiB).
+-// Unlike multiply-salted split-block masks, all forty probe bits are retained.
+-struct alignas(32) WordBucket { uint32_t words[8] {}; };
+-class Independent32BloomFilter {
+-	std::vector<WordBucket, bloom_filters::AlignedAllocator<WordBucket, 64>> buckets_;
+-	uint32_t block_mask_;
+-	uint32_t Block(uint64_t hash) const { return static_cast<uint32_t>(hash >> 41) & block_mask_; }
++// Eight disjoint 5-bit fields select positions in eight u32 sectors.
++// Bits0..39 are probes; bits40..63 address 2*floor(budget/64) buckets.
++// The product is at most (2^24-1)*2^23 < 2^47. Every access is in range.
++// Physical lines contain exactly two buckets; no partial line is allocated.
++struct alignas(32) Independent32RangeBucket { uint32_t words[8] {}; };
++class Independent32RangeBloomFilter {
++	std::vector<Independent32RangeBucket, bloom_filters::AlignedAllocator<Independent32RangeBucket, 64>> buckets_;
++	uint32_t bucket_count_;
++	uint32_t Block(uint64_t hash) const {
++		return static_cast<uint32_t>(((hash >> 40) * uint64_t(bucket_count_)) >> 24);
++	}
+ #if defined(__AVX2__)
+ 	static __m256i Mask(uint64_t hash) {
+ 	#if defined(__AVX512VBMI__) && defined(__AVX512VL__)
+@@ -55,11 +59,16 @@
+ 	size_t CacheLineCount() const { return buckets_.size() / 2; }
+ 	size_t CacheLineIndex(uint64_t hash) const { return Block(hash) / 2; }
+ 	bool ContainsHash(uint64_t hash) const { return LookupOne(hash) != 0; }
+-	Independent32BloomFilter(size_t n, uint32_t bpk)
+-	    : buckets_(bloom_filters::layout_detail::WordCount(n, bpk) / 8), block_mask_(buckets_.size() - 1) {}
+-	size_t SizeInBytes() const { return buckets_.capacity() * sizeof(WordBucket); }
++	explicit Independent32RangeBloomFilter(RangeBytes budget)
++	    : buckets_(range_detail::LineCount(budget.bytes) * 2), bucket_count_(buckets_.size()) {
++		if (SizeInBytes() > budget.bytes)
++			throw std::length_error("actual Independent32 range backing exceeds byte budget");
++	}
++	Independent32RangeBloomFilter(size_t n, uint32_t bpk)
++	    : Independent32RangeBloomFilter(RangeBytes{range_detail::BudgetBytes(n, bpk)}) {}
++	size_t SizeInBytes() const { return buckets_.capacity() * sizeof(Independent32RangeBucket); }
+ 	const void *Data() const { return buckets_.data(); }
+-	size_t LogicalBytes() const { return buckets_.size() * sizeof(WordBucket); }
++	size_t LogicalBytes() const { return buckets_.size() * sizeof(Independent32RangeBucket); }
+ 	void Insert(uint32_t n, const uint64_t *hashes) { for (size_t i = 0; i < n; ++i) InsertOne(hashes[i]); }
+ 	uint32_t Lookup(uint32_t n, const uint64_t *hashes, uint32_t *out) const {
+ 		for (size_t i = 0; i < n; ++i) out[i] = LookupOne(hashes[i]);
