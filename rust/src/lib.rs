@@ -5,6 +5,8 @@ use std::fmt;
 
 mod byte_split;
 mod four_sector;
+mod four_sector_range12;
+mod k12_parallel;
 mod layout_parallel;
 mod parallel;
 mod patterns;
@@ -13,6 +15,7 @@ mod split64;
 mod split64_range;
 pub use byte_split::ByteSplitBloomFilter;
 pub use four_sector::FourSectorBloomFilter;
+pub use four_sector_range12::FourSectorRange12BloomFilter;
 pub use parallel::AtomicFastPatternBloomFilter;
 pub use split64::Split64BloomFilter;
 pub use split64_range::Split64RangeBloomFilter;
