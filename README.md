@@ -50,7 +50,10 @@ The Rust K12 port remains isolated; C++ K12 is an optional native type.
 
 A [C++ insertion experiment](experiments/2026-10-29-k12-line-or-analysis/DECISION.md)
 reduces complete 96 MiB K12 construction latency by **14–23%** against the old
-kernel, but small whole-input builds regress **4–10%**. It remains experimental.
+kernel, but small whole-input builds regress **4–10%**. A subsequent
+[conditional follow-up](experiments/2026-10-29-k12-prefetch-line-or-analysis/DECISION.md)
+confirms the 96 MiB benefit but finds stable 3 MiB insertion losses, so neither
+variant replaces native insertion.
 The [Rust two-hint inline experiment](experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
 also retains batch regressions despite eliminating per-key helper calls. A subsequent
 [safe single-line Rust rewrite](experiments/2026-10-29-rust-k12-single-line-analysis/INTERPRETATION.md)

@@ -280,6 +280,19 @@ loses all eight metric/seed comparisons. Native/minimal-AVX512F/sanitizer
 checks and actual caller assembly pass; the unconditional variant stays isolated.
 No external build, parallel-speed or hardware-counter causality claim follows.
 
+The [fixed conditional insertion confirmation](../experiments/2026-10-29-k12-prefetch-line-or-analysis/DECISION.md)
+keeps the existing greater-than2MiB prefetch dispatch and uses the old word-OR
+kernel below it. All72 rows and288 construction contrasts remain. Against old
+K12,64 observations improve and32 regress; all96 candidate/Range comparisons
+lose. At96MiB all24 metric/seed observations improve, with complete construction
+latency14.6–23.7% lower. At3MiB whole-input insertion loses all three seeds in
+both pure and common-hash contracts;12MiB whole-input results are mixed. The
+192KiB branch has unchanged kernel instructions but still shows substantial
+allocation/order variation. All12 three-seed quality gates pass. The exact
+conditional strategy is rejected as a native/default change; no threshold was
+retuned after seeing these outcomes. All288 raw vectors/2016 samples, ratios,
+96 three-seed ranges and36 quality records were independently recomputed.
+
 The [Rust K12 two-hint screen](../experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
 then changes only two inline annotations. Actual visible loops eliminate the
 per-key helper call, but retain repeated bounds checks and larger stack frames.

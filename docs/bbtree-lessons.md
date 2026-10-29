@@ -129,3 +129,24 @@ count unchanged can alter caller/code generation. The native port therefore
 keeps the failing controls and must compare the actual public entrypoints before
 changing defaults. Neither a shorter path nor unchanged algorithmic work proves
 that the generated program is faster.
+
+The [safe Rust K12 single-line rewrite](../experiments/2026-10-29-rust-k12-single-line-analysis/INTERPRETATION.md)
+makes cache-line locality explicit in safe code: borrow the physical line once,
+then index its four words. Ordinary inline hints remain unchanged. Actual
+visible callers reduce four global line-bound checks to one and eliminate the
+successful-path per-key helper call. Visible-single throughput improves
+1.19–1.46× against original K12, but small batch31 regresses and4096 is mixed;
+Range still wins every singleton/build comparison. Body simplification and the
+compiler's changed inline decision occur together, so their separate causal
+contributions are not identified. The earlier forced-inline variant's losses
+remain relevant: removing a call alone was insufficient.
+
+The [conditional C++ insertion confirmation](../experiments/2026-10-29-k12-prefetch-line-or-analysis/DECISION.md)
+illustrates the cost of replacing scattered word updates with full-line SIMD
+updates. Extra mask preparation accompanies fewer scalar memory ORs. Every
+96MiB construction observation improves, while3MiB whole-input insertion
+regresses in all three seeds and12MiB is mixed. Different cache residency and
+instruction cost are plausible explanations, not measured hardware-counter
+causality. The existing2MiB dispatch therefore does not justify enabling this
+kernel throughout that interval. Evaluate the complete operation and actual
+working set before turning a local improvement into a default policy.
