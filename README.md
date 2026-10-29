@@ -30,7 +30,7 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | [Native C++/Rust API scaling](experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md) | At 32M keys, 8-core allocation+build gains **2.18–2.61×**, and whole-array queries gain **6.83–7.81×**, against each row's own serial control. | All ten 65K-key build configurations regress; one seed, Split64/Range only, 4M prehashed queries. |
 | [Original and modern raw-u32 APIs](experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md) | Native leaders win **72/72** comparable original-artifact views and **55/84** modern-library views. | One seed, two launch rounds, three API contracts; **29 modern losses**, including both large strict bulk comparisons against Boost24. |
 | [Rust Range24 fresh confirmation](experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md) | Range24 is **2.65–7.46×** faster in pure batch-API queries and **2.04–6.09×** including hashing against the fixed external K7 leader. | Two fresh seeds, 65K/32M keys, batches1/31/4096, 24-bpk/0.01% ceiling; K7 was selected by the complete public-probe training screen. |
-| [C++ K12 strict24 confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md) | Experimental K12 is **1.09–1.83×** faster than the strongest eligible selected external across all 24 primary views. | Three fresh seeds, 65K/32M keys, batches31/4096, 24-bpk/0.01% ceiling; singleton, build speed and parallel K12 remain unmeasured. |
+| [C++ K12 strict24 confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md) | Experimental K12 is **1.09–1.83×** faster than the strongest eligible selected external across all 24 primary views. | Three fresh seeds, 65K/32M keys, batches31/4096, 24-bpk/0.01% ceiling; this confirmation excludes singleton, build and parallel K12. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
 **Recent experiments:** The complete 336-row Rust comparison finds that
@@ -67,6 +67,13 @@ gates. The smallest primary gain over native Range is only **1.96%**. The isolat
 now passes full C++ bitmap/output parity and real multicore build/query checks
 under normal, AVX2 and ASan profiles. Its Rust performance comparison is pending;
 K12 remains experimental.
+
+The [160-row public raw-u32 comparison](experiments/2026-10-29-vldb-nearby-raw32-analysis/INTERPRETATION.md)
+also gives the original VLDB baselines nearby capacity choices. Project controls
+win42 comparable views;30 views have no eligible comparison and are not wins.
+K12 loses all8 singleton comparisons against Range, at **2.33–3.26×** its latency,
+and large strict bulk results change direction between rounds. These GCC12.2,
+seen-seed results reinforce keeping the layouts' different use cases visible.
 
 See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
 [baseline survey](docs/external-survey-2026-10-28.md),

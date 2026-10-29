@@ -272,3 +272,16 @@ uninitialized-iterator errors leave the complete serialization unchanged;
 Zero/full-capacity and invalid-FPP cases also pass. The public byte-slice path
 retains the common first hash while preserving mandatory internal hash work.
 No accuracy or timing samples were collected in this stage.
+
+The [complete160-row nearby public-capacity comparison](../experiments/2026-10-29-vldb-nearby-raw32-analysis/INTERPRETATION.md)
+retains20 APIs, two sizes, two capacity ceilings and two opposite launch rounds
+in one GCC12.2/Boost1.83 raw-u32 context. Project controls win42 comparable views;
+30 no-comparable views are excluded. Nearby/original geometry yields76 wins
+and92 losses across168 unconditional pairs, with20 both-round wins,28 both-round
+losses and36 mixed outcomes. K12/Range singleton and dense1 comparisons each
+record0W/8L; bulk4096 is7W/1L, including a direction change at large strict24.
+All80 API quality records,48 proven mappings,72 nested views and2160 alternatives
+remain, with no pooled negatives or imported old latencies. The full trial
+summaries, Wilson gates, paired ratios and nested group minima were independently
+recomputed. These are original public-PImpl results, not a modern-library or
+global ranking.
