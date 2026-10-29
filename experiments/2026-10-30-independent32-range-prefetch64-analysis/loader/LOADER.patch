@@ -1,0 +1,83 @@
+--- experiments/2026-10-30-independent32-range-analysis/loader-v2/run.py@515f6c0c17db7b8d3db382ef2643a05e97f9aeab
++++ prefetch64-analysis/loader/run.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Additive complete-only Independent32Range216 loader; no filter, compiler or timer invocation."""
++"""Additive complete-only Independent32Range prefetch64 loader; no filter, compiler or timer invocation."""
+ if not __debug__:
+     raise RuntimeError('Python -O is unsupported')
+ import argparse
+@@ -15,7 +15,7 @@
+ HERE = Path(__file__).resolve().parent
+ ANALYSIS = HERE.parent
+ ROOT = ANALYSIS.parents[1]
+-PRODUCER = ROOT / 'experiments/2026-10-30-independent32-range/screening'
++PRODUCER = ROOT / 'experiments/2026-10-30-independent32-range-prefetch64/screening'
+ CALLER = PRODUCER.parent / 'caller'
+ 
+ 
+@@ -94,15 +94,17 @@
+     need(binding['raw_manifest'] == 'results-v1/RAW_ARCHIVE.json' and
+          binding['launcher_log'] == 'screen-run.log' and binding['terminal_outcome'] == 'execution-outcome.json',
+          'fixed evidence paths changed')
+-    need((binding['expected_raw_files'], binding['expected_processes'], binding['expected_rows']) == (51, 24, 216),
++    need((binding['expected_raw_files'], binding['expected_processes'], binding['expected_rows']) == (51, 24, 192),
+          'fixed run cardinalities changed')
++    need(type(binding['expected_proof_artifacts']) is int and binding['expected_proof_artifacts'] > 0,
++         'fixed committed proof inventory required')
+ 
+ 
+ def verify_proof(binding):
+     archive = json.loads(committed(binding['proof_commit'], CALLER / 'COMPLETE_PROOF_ARCHIVE.json',
+         binding['proof_archive_sha256']), object_pairs_hook=unique)
+     need(archive['complete'] is True and archive['source_commit'] == binding['caller_commit'] and
+-         len(archive['files']) == 173, 'incomplete or different actual caller proof')
++         len(archive['files']) == binding['expected_proof_artifacts'], 'incomplete or different actual caller proof')
+     for name, expected in archive['files'].items():
+         need(type(name) is str and not Path(name).is_absolute() and
+              (CALLER / name).resolve().is_relative_to(CALLER.resolve()), 'escaped proof artifact')
+@@ -111,8 +113,8 @@
+         binding['compiled_proof_sha256']), object_pairs_hook=unique)
+     need(proof['complete'] is True and proof['source_commit'] == binding['caller_commit'] and
+          proof['preparation_sha256'] == binding['caller_manifest_sha256'] and
+-         proof['manual_review']['complete'] is True and len(proof['all_binary_sha256']) == 2 and
+-         len(proof['compiler_consumed_input_sha256']) == 570, 'actual caller proof gate differs')
++         proof['manual_review']['complete'] is True and len(proof['all_binary_sha256']) == 3 and
++         len(proof['compiler_consumed_input_sha256']) == 572, 'actual caller proof gate differs')
+     executable = proof['normal_executable']
+     need(proof['all_binary_sha256'].get(executable['path']) == executable['sha256'], 'normal binary absent from proof')
+     python_names = {name for name in archive['files']
+@@ -151,7 +153,7 @@
+ 
+ def expected_log():
+     lines = [f'{i}/24 processes complete' for i in range(1, 25)]
+-    lines.append('Complete24 processes/216 rows; all final source/raw/semantic guards passed.')
++    lines.append('Complete24 processes/192 rows; all final source/raw/semantic guards passed.')
+     return ('\n'.join(lines) + '\n').encode()
+ 
+ 
+@@ -209,7 +211,7 @@
+     need(metadata['complete'] is True and metadata['source_commit'] == binding['producer_commit'],
+          'audit returned incomplete or different producer')
+     need(len(metadata['cases']) == 24 and metadata['counts']['processes'] == 24 and
+-         metadata['counts']['rows'] == 216, 'incomplete audited process ledger')
++         metadata['counts']['rows'] == 192, 'incomplete audited process ledger')
+     closure = metadata['initial_freeze']
+     need(metadata['final_freeze'] == closure, 'source/tool/binary closure changed during run')
+     for key in ('all_binary_sha256', 'compiler_consumed_input_sha256', 'tools_sha256', 'normal_executable'):
+@@ -267,12 +269,12 @@
+ 
+ 
+ def validate_quality_agreement(result, links):
+-    need(links['api_record_count'] == 36 and links['known_mapping_record_count'] == 34 and
+-         links['calibration_rows'] == 36 and links['reuse_rows'] == 180 and links['pooling'] is False,
++    need(links['api_record_count'] == 32 and links['known_mapping_record_count'] == 26 and
++         links['calibration_rows'] == 32 and links['reuse_rows'] == 160 and links['pooling'] is False,
+          'producer quality counts changed')
+     producer = {(r['point_id'], r['seed']):r for r in links['api_records']}
+     calculated = {(r['point_id'], r['seed']):r for r in result['quality']}
+-    need(len(producer) == len(links['api_records']) == len(calculated) == len(result['quality']) == 36 and
++    need(len(producer) == len(links['api_records']) == len(calculated) == len(result['quality']) == 32 and
+          set(producer) == set(calculated), 'analysis/producer quality sets differ')
+     fields = ('point_id', 'mapping_id', 'keys', 'seed', 'actual_bytes', 'calibration_negatives',
+               'calibration_fp', 'calibration_digest', 'source_case_index', 'source_row_index', 'reuse_case_indices')

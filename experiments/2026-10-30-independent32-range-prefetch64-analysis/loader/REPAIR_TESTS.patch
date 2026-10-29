@@ -1,0 +1,23 @@
+--- experiments/2026-10-30-independent32-range-analysis/loader-v2/test_repair.py@515f6c0c17db7b8d3db382ef2643a05e97f9aeab
++++ prefetch64-analysis/loader/test_repair.py
+@@ -22,16 +22,16 @@
+             (caller / 'seal.py').write_bytes(seal)
+             h = lambda b: hashlib.sha256(b).hexdigest()
+             archive = dict(complete=True, source_commit='1'*40,
+-                files={**{f'capture-{i}.txt':h(b'x') for i in range(172)},
++                files={**{f'capture-{i}.txt':h(b'x') for i in range(271)},
+                        'seal.py': '0'*64 if wrong_hash else h(seal)})
+             proof = dict(complete=True, source_commit='1'*40, preparation_sha256='a'*64,
+-                manual_review=dict(complete=True), all_binary_sha256={'normal':'b'*64,'asan':'c'*64},
+-                compiler_consumed_input_sha256={f'input-{i}':'d'*64 for i in range(570)},
++                manual_review=dict(complete=True), all_binary_sha256={'normal':'b'*64,'avx2':'c'*64,'asan':'e'*64},
++                compiler_consumed_input_sha256={f'input-{i}':'d'*64 for i in range(572)},
+                 normal_executable=dict(path='normal',sha256='b'*64))
+             manifest = dict(files={'source.py':dict(bytes=len(source),sha256=h(source))})
+             binding = dict(proof_commit='2'*40, caller_commit='1'*40,
+                 caller_manifest_sha256='a'*64, proof_archive_sha256='e'*64,
+-                compiled_proof_sha256='f'*64)
++                compiled_proof_sha256='f'*64,expected_proof_artifacts=272)
+             real_committed = run.committed
+             def committed(commit, path, expected=None, size=None):
+                 name = Path(path).name
