@@ -1,0 +1,11 @@
+--- a/experiments/2026-10-29-rust-fastbloom-fixed-probes-screen/screening/run.py
++++ b/experiments/2026-10-29-rust-fastbloom-fixed-probes-screen/screening/run.py
+@@ -116,7 +116,7 @@
+     need(observed==rows,'In-memory/raw drift')
+     verify(args.source_commit)
+     need(require_lease(3)==lease,'Final lease drift')
+-    metadata.update(complete=True,**counts,known_mapping_records=110,results_sha256=sha(args.output/'results.csv'),
++    metadata.update(complete=True,**{key:value for key,value in counts.items()if key!='cases'},case_count=counts['cases'],known_mapping_records=110,results_sha256=sha(args.output/'results.csv'),
+         quality_sha256=sha(args.output/'quality.json'),final_sources_dependencies_binaries_equal=True,
+         finished_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()))
+     save(args.output/'metadata.json',metadata)
