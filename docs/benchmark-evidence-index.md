@@ -414,3 +414,20 @@ or wrong writes after warmup. Actual public hashes/probes remain inside query
 clocks, including the compiler's outlined upstream helper. The exact source,
 380/387 consumed input files and binary identities are archived. No formal
 accuracy qualification or performance comparison follows from these fixtures.
+
+The [complete Poppy public speed comparison](../experiments/2026-10-29-poppy-public-speed-analysis/INTERPRETATION.md)
+retains 36 processes/486 rows, all 47 fitting Poppy mappings, 32 prior strong
+Rust control geometries and two original K12 controls. Poppy has no win over
+retained external leaders in either query or construction: 384 losses and
+48 unavailable views per class. The all-native composite retains 311 query
+wins/73 losses/48 unavailable and 342 build wins/42 losses/48 unavailable;
+every remaining loss is against Bloomsday. The composite is not one layout,
+and these nested repeated views are not independent experiments. Native
+optional types fill all 48 strict24-bpk/0.01% query views in this panel.
+Root independently reconstructed all 81 Wilson records, 864 owner-group views,
+26,640 alternatives, 7,776 contrasts, 1,944 round pairs and 15,552 query values.
+The [caller scope](../experiments/2026-10-29-poppy-public-speed-analysis/CALLER_SCOPE.md)
+retains its prepared-u64/byte8 path, seen seed, absent construction trial vectors
+and preallocated caller scratch; it is not the new scratch-inclusive raw8
+construction contract. No direct raw Poppy, fresh-seed, Rust SIMD candidate,
+multithread or global leadership claim follows.

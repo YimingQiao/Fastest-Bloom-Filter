@@ -67,9 +67,13 @@ integrated. [Rust inline hints](experiments/2026-10-29-rust-k12-singleton-inline
 also retain batch regressions. These results and all other comparisons are in the
 [evidence index](docs/benchmark-evidence-index.md).
 
-The external set is still expanding. [Poppy's complete accuracy calibration](experiments/2026-10-29-poppy-public-accuracy-analysis/REPORT.md)
-retains all 86 configurations; its [public-API speed comparison](experiments/2026-10-29-poppy-public-speed-caller/README.md)
-is in progress. A separate [fastbloom-rs raw-byte caller](experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
+The [complete 486-row Poppy comparison](experiments/2026-10-29-poppy-public-speed-analysis/INTERPRETATION.md)
+adds 47 public mappings with cache bytes charged. Poppy wins none of the 384
+comparable query or build views against retained external leaders. The native
+composite still loses **73 query and 42 build views**, all to Bloomsday.
+These are nested views from one seen seed and two launch rounds, using the
+frozen prepared-u64/byte8 contract; they do not measure direct raw Poppy APIs.
+A separate [fastbloom-rs raw-byte caller](experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
 passes normal/ASan checks for all 24 public probe counts and 21 retained controls.
 Its hashes stay inside the clock, and required build scratch is included in
 allocation+build. Formal timing is pending; correctness checks alone do not

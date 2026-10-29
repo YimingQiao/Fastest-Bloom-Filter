@@ -168,3 +168,13 @@ and initialization belong inside complete construction, while a direct raw-byte
 API receives no unused buffer. The verified caller releases build scratch
 before queries and keeps every implementation's required hashing inside its
 raw operation. This prevents a faster inner loop from hiding prepaid work.
+
+The [complete Poppy comparison](../experiments/2026-10-29-poppy-public-speed-analysis/INTERPRETATION.md)
+also keeps the strongest existing rivals visible. Adding 47 public mappings
+produces no Poppy win over retained external leaders in this prepared-input
+contract, while the native composite still loses 73 query and 42 build views
+to Bloomsday. Poppy's actual per-key call, cache and secondary hashing are
+measured costs, but the timing does not isolate any one as the cause. A new
+baseline failing to lead does not close an existing gap or predict a different
+raw-input API's performance. Optimize the remaining measured losses and keep
+the complete-operation boundary explicit.
