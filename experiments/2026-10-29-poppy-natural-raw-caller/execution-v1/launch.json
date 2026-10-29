@@ -1,0 +1,23 @@
+{
+  "source_commit": "8d533d9711f5d4cb30f7496dcf29860b35359bca",
+  "command": [
+    "flock",
+    "/tmp/fastest-bf-socket1.lock",
+    "env",
+    "BF_SOCKET_LEASE=socket1-cpu3",
+    "/usr/bin/numactl",
+    "--physcpubind=3",
+    "--membind=1",
+    "bash",
+    "-c",
+    "set -Ce; /usr/bin/numactl --show > \"$1/numa.stdout\" 2> \"$1/numa.stderr\"; python3 -c 'import pathlib,sys; d=pathlib.Path(sys.argv[1]); text=(d/\"numa.stdout\").read_text(); lines=dict(line.split(\":\",1) for line in text.splitlines() if \":\" in line); assert lines[\"policy\"].strip()==\"bind\" and lines[\"physcpubind\"].strip()==\"3\" and lines[\"membind\"].strip()==\"1\",text; assert not (d/\"numa.stderr\").read_bytes()' \"$1\"; exec python3 -u \"$2/preflight/validate.py\" --source-commit 8d533d9711f5d4cb30f7496dcf29860b35359bca > \"$1/launch.stdout\" 2> \"$1/launch.stderr\"",
+    "natural-poppy-proof",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-poppy-natural-raw-caller/execution-v1",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-poppy-natural-raw-caller"
+  ],
+  "numactl_sha256": "2bb4801c050ced4512e6b1985ee1d1548808a0493b63993660069d05cc2d945a",
+  "complete": false,
+  "scope": "One bounded normal/ASan proof; no formal performance or new FPR study",
+  "source_preparation_utc": "2026-10-29T17:10:00.566310+00:00",
+  "started_utc": "2026-10-29T17:10:43.868757+00:00"
+}
