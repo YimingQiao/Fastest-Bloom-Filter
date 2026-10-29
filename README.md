@@ -30,6 +30,7 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | [Native C++/Rust API scaling](experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md) | At 32M keys, 8-core allocation+build gains **2.18–2.61×**, and whole-array queries gain **6.83–7.81×**, against each row's own serial control. | All ten 65K-key build configurations regress; one seed, Split64/Range only, 4M prehashed queries. |
 | [Original and modern raw-u32 APIs](experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md) | Native leaders win **72/72** comparable original-artifact views and **55/84** modern-library views. | One seed, two launch rounds, three API contracts; **29 modern losses**, including both large strict bulk comparisons against Boost24. |
 | [Rust Range24 fresh confirmation](experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md) | Range24 is **2.65–7.46×** faster in pure batch-API queries and **2.04–6.09×** including hashing against the fixed external K7 leader. | Two fresh seeds, 65K/32M keys, batches1/31/4096, 24-bpk/0.01% ceiling; K7 was selected by the complete public-probe training screen. |
+| [C++ K12 strict24 confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md) | Experimental K12 is **1.09–1.83×** faster than the strongest eligible selected external across all 24 primary views. | Three fresh seeds, 65K/32M keys, batches31/4096, 24-bpk/0.01% ceiling; singleton, build speed and parallel K12 remain unmeasured. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
 **Recent experiments:** The complete 336-row Rust comparison finds that
@@ -42,10 +43,11 @@ against K7. Range is now an optional native API; it does not replace the old
 power-of-two types. All default-only comparisons and interrupted-run provenance
 remain in the linked evidence.
 
-A [fixed small-build policy](experiments/2026-10-29-native-build-policy-analysis/DECISION.md)
-improves all48 comparisons where its serial fallback applies, by **2.25–8.47×**
-across the tested build contracts. Some calls just outside the gate regress
-**14–21%** in Rust, so it remains isolated pending an actual native comparison.
+The [actual-native small-build policy comparison](experiments/2026-10-29-native-build-policy-port-analysis/DECISION.md)
+improves all48 comparisons where its serial fallback applies, by **2.33–5.74×**
+across the tested build contracts. Outside that gate, the 112 comparisons split
+evenly between wins and losses. The policy remains isolated while follow-up
+controls investigate variability and repeated losses; no default change is made.
 The [Page pointer-caller control](experiments/2026-10-29-page-pointer-single-analysis/RESULTS.md)
 finds no stable advantage over its original value caller; all losses are retained.
 
@@ -57,8 +59,11 @@ retains the failed 8-bit mapping and tests existing 9/10/12-bit masks. Only
 [all three backends and sanitizers](experiments/2026-10-29-four-sector-range12-vector/VALIDATION.md).
 The completed [296-row bulk screen](experiments/2026-10-29-four-sector-range12-analysis/INTERPRETATION.md)
 wins all eight strict24-bpk views against both external and retained native
-leaders, with only **2.8–3.5%** margins in the weakest hash+query cases.
-It loses most wider comparisons and remains experimental pending fresh seeds.
+leaders, while losing most wider comparisons. The fixed
+[three-seed confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md)
+then wins all24 primary views with every selected rival passing all three quality
+gates. The smallest primary gain over native Range is only **1.96%**. K12 remains
+experimental; the result supports a Rust port, not a general default replacement.
 
 See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
 [baseline survey](docs/external-survey-2026-10-28.md),

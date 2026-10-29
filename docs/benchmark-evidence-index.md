@@ -226,6 +226,24 @@ unpooled quality identities remain. Its weakest hash+query margins are2.84%
 and3.47%, requiring fresh confirmation;16bpk fails0.1% and32bpk is not a general
 replacement. The native Rust K12 port and parallel K12 construction are unmeasured.
 
+The [fixed three-seed K12 confirmation](../experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md)
+retains all78 rows and qualifies all13 API geometries on all three separate
+2^26-negative samples. K12 wins24/24 primary24-bpk views against both external
+and retained-project leaders, plus12/12 prespecified large-table cap32 views.
+All180 named pairs remain; the primary native margin falls to1.96% in one cell.
+The secondary views reuse primary observations and add separate-process28/32-bpk
+controls. First/middle/last candidate order is balanced across the three seeds,
+without claiming complete position balance or separating seed from order effects.
+
+The [actual-native96-pair policy comparison](../experiments/2026-10-29-native-build-policy-port-analysis/DECISION.md)
+measures the public before/after C++ and Rust implementations with policy
+selection inside the clocks. All48 active-gate contracts improve2.33–5.74×;
+outside the gate,56 improve and56 regress. All160 pairs,480 trial summaries and
+320 shared-serial comparisons are retained. The two seeds were already seen in
+the wrapper study, whose latencies are not imported. Repeated losses remain,
+but this sign pattern alone does not establish deterministic regressions.
+The policy stays isolated pending unchanged-code controls and a fixed follow-up.
+
 The [Poppy public-constructor proof](../experiments/2026-10-29-poppy-public-geometry/GEOMETRY_REPORT.md)
 checks all 86 source-selected public configurations against actual constructor
 metadata and requested live heap bytes. Both bucket and cache allocations are
