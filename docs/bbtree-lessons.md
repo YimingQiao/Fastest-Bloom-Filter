@@ -40,8 +40,12 @@ A cyclic probe mask needed fewer vector instructions but increased false
 positives; compensating with a larger bitmap lost15 of16 eligible external
 comparison views. It was [rejected](../experiments/2026-10-29-cyclic-split64-analysis/FINDINGS.md).
 A fixed multiply-code mask keeps a short dependency chain while passing the
-first16/24-bpk quality gates; its [accuracy pilot](../experiments/2026-10-29-multiply-code-split64-analysis/REPORT.md)
-is complete, but its speed and fresh-seed robustness remain unproven.
+first16/24-bpk quality gates. Its [70-row screen](../experiments/2026-10-29-multiply-code-split64-performance-analysis/report/RESULTS.md)
+improves small equal-space Split64Range throughput by about8–10%, yet loses on
+large tables. Historical quality failures also change which rivals qualify:
+excluding the previously failed FourSector16 exposes a small16-bpk/0.1% gap
+worth [fresh-seed confirmation](../experiments/2026-10-29-multiply-code-small-confirmation/README.md).
+The mask remains experimental; fewer instructions alone do not establish a win.
 
 Compiler boundaries also matter. Exposing Rust ByteSplit's public singleton
 body removed a hot per-key call and improved fused throughput16–38% in the

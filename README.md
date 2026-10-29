@@ -72,6 +72,13 @@ fixed candidates and failures, and remain separate from the earlier confirmation
 A [62-row cyclic-mask experiment](experiments/2026-10-29-cyclic-split64-analysis/FINDINGS.md)
 also stays experimental: fewer mask instructions raised the required space,
 and it lost 15 of 16 eligible views against the retained external leaders.
+A [70-row multiply-code experiment](experiments/2026-10-29-multiply-code-split64-performance-analysis/report/RESULTS.md)
+improves small-table Split64Range throughput by about 8–10%, but loses to the
+best current-seed project controls. Respecting FourSector16's earlier quality
+failure leaves a possible small-table, 16-bpk / 0.1% gap; a
+[fixed fresh-seed comparison](experiments/2026-10-29-multiply-code-small-confirmation/README.md)
+will test that gap across singleton, short and large batches. The new mask
+remains experimental; large-table losses are retained.
 
 ![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
 
