@@ -4,6 +4,7 @@ Native **C++17 and Rust** Bloom filters with **AVX-512 / AVX2**, parallel constr
 parallel membership queries, and an atomic FastPattern type for concurrent readers/writers.
 Four native layouts cover different throughput/accuracy tradeoffs: **FastPattern**,
 **FourSector**, **Split64**, and **ByteSplit**. Each keeps a key's probes within one cache line.
+An optional **Split64Range** type also supports explicit byte budgets between powers of two.
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
 
@@ -22,22 +23,24 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | Evidence | What it supports | Remaining loss or limit |
 |---|---|---|
 | [C++ held-out large batches](docs/modern-confirmation-2026-10-28.md) | Eligible native leaders are **1.10–1.73×** faster than the fastest eligible external configuration across the tested ceilings. | 65K–32M keys,50% hits,batch4096,16/32-bpk targets; singleton and finer-capacity rankings differ. |
-| [Finer-capacity confirmation](experiments/2026-10-29-exact-budget-confirmation/screen/RESULTS.md) | Experimental Split64Range24 has **4.3–6.7% lower** hash+query latency than Boost24 at32M keys and0.01% FPR. | Production FastPattern loses two of three seeds; Range remains experimental. |
+| [Finer-capacity confirmation](experiments/2026-10-29-exact-budget-confirmation/screen/RESULTS.md) | Experimental Split64Range24 has **4.3–6.7% lower** hash+query latency than Boost24 at32M keys and0.01% FPR. | Production FastPattern loses two of three seeds; Range is an optional capacity choice. |
 | [Single-key confirmation](docs/byte-confirmation-2026-10-29.md) | C++ Split64 leads the tested0.1% band by **1.10–1.20×** including hashing. | FastFilter wins the strict0.01% and large-filter1% bands; Rust retains Bloomsday losses. |
 | [Eight-core external confirmation](docs/external-parallel-confirmation-2026-10-29.md) | C++ native scenario leaders are **1.06–1.59×** faster including hashing and fresh thread startup/join. | Fixed23-configuration shortlist,65K/32M keys,50% hits,batch4096; individual losses remain. |
 | [Eight-core exact-capacity screen](experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md) | At 32M keys and the 24-bpk/0.01% ceiling, experimental Range improves throughput **2.7–5.4%** over the fastest eligible external configuration. | One seed and fixed phase order; equal-allocation and wider-scenario losses remain. |
 | [Native C++/Rust API scaling](experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md) | At 32M keys, 8-core allocation+build gains **2.18–2.61×**, and whole-array queries gain **6.83–7.81×**, against each row's own serial control. | All ten 65K-key build configurations regress; one seed, Split64/Range only, 4M prehashed queries. |
 | [Original and modern raw-u32 APIs](experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md) | Native leaders win **72/72** comparable original-artifact views and **55/84** modern-library views. | One seed, two launch rounds, three API contracts; **29 modern losses**, including both large strict bulk comparisons against Boost24. |
-| [Rust full public-probe comparison](experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md) | Experimental Range24 leads the strongest eligible Rust external configuration by **2.61–7.49×** for pure batch-API queries at the 24-bpk/0.01% ceiling. | All Fastbloom K1–12 retained; one seed, three external families. Bloomsday still wins several 32-bpk singleton contracts. |
+| [Rust Range24 fresh confirmation](experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md) | Range24 is **2.65–7.46×** faster in pure batch-API queries and **2.04–6.09×** including hashing against the fixed external K7 leader. | Two fresh seeds, 65K/32M keys, batches1/31/4096, 24-bpk/0.01% ceiling; K7 was selected by the complete public-probe training screen. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
 **Recent experiments:** The complete 336-row Rust comparison finds that
 public probe tuning strengthens the eligible external baseline in 48/216 query
 views, by up to **1.97×**. Range retains the constrained 24-bpk opportunity,
 but loses **46/48 equal-allocation query** and **47/48 build** comparisons to
-production Split64 in this screen. Fresh-seed confirmation is pending; Range
-remains experimental. All default-only comparisons and the interrupted-run
-provenance remain in the linked evidence.
+production Split64 in this screen. The fixed fresh confirmation passes all
+eight quality samples and favors Range in all48 query and48 build comparisons
+against K7. Range is now an optional native API; it does not replace the old
+power-of-two types. All default-only comparisons and interrupted-run provenance
+remain in the linked evidence.
 
 A [fixed small-build policy](experiments/2026-10-29-native-build-policy-analysis/DECISION.md)
 improves all48 comparisons where its serial fallback applies, by **2.25–8.47×**
@@ -81,20 +84,23 @@ with a scalar fallback. It adapts FastFilter's Fixed16 mask with direct addressi
 four 16-byte buckets share each aligned cache line. It also supports exclusive
 parallel construction and parallel immutable queries, with matching C++/Rust bitmaps.
 
-The constructor's bits/key parameter preserves the repository's **strict next
+The four original types' bits/key constructors preserve the repository's **strict next
 power-of-two** allocation rule: for a power-of-two key count, requesting 8 yields
 16 actual bits/key. Check `SizeInBytes()` / `size_in_bytes()` for real allocation.
 All layouts accept prehashed 64-bit keys and support incremental insertion.
 
-An isolated [Split64 range-capacity prototype](experiments/2026-10-29-split64-range-native/VALIDATION.md)
-now has native C++/Rust implementations with exclusive parallel construction.
-It accepts arbitrary complete cache-line budgets; full bitmaps match across
-languages and backend/sanitizer checks pass. The
-[Rust screen](experiments/2026-10-29-split64-range-rust-analysis/report-final/REPORT.md)
-shows a useful24-bpk capacity option with equal-allocation speed losses.
-Both shared-executor and native API scaling are reported above. Large builds
-benefit from parallelism, while small builds expose substantial overhead.
-Range remains experimental pending fresh-seed confirmation of the full public-probe result.
+**Split64RangeBloomFilter** is available in both native libraries when an
+intermediate capacity such as24 bits/key is useful. Its byte-budget constructor
+rounds down to complete64-byte lines, within128 bytes through256MiB. Its
+`n, bits_per_key` constructor uses an at-most budget, unlike the original types.
+The mapping differs even at equal allocation; it is not a serialized substitute
+for Split64. See the [C++/Rust API guide](docs/range-capacity.md) and
+[integration validation](experiments/2026-10-29-range-production-integration/VALIDATION.md).
+
+Range supports exclusive parallel construction and immutable parallel queries.
+Its capacity benefit is confirmed above, while equal-allocation speed losses
+remain documented. Large builds benefit from parallelism; small builds still
+expose overhead. The bounded build-policy experiment has not changed defaults.
 
 ## Historical comparison and FastPattern scaling
 
@@ -192,6 +198,8 @@ For FourSector, Split64 and ByteSplit, C++ provides `ParallelFourSectorBloomFilt
 `InsertParallel` / `LookupParallel` interface shown below. Their Rust types expose
 `insert_hashes_parallel` / `lookup_hashes_parallel` directly. Each builder partitions
 by its layout's actual cache-line index; it does not replicate the bitmap per worker.
+`ParallelSplit64RangeBloomFilter` is provided separately in
+`parallel_split64_range_bloom.h`; Rust Range exposes the same parallel methods.
 The overlapping reader/writer atomic type is currently FastPattern only.
 
 The new-layout [1–8 core measurements](docs/layout-parallel-2026-10-28.md) cover

@@ -51,5 +51,10 @@ The integrated kernels and partitioning come from the
 Packaging changes rename the C++ serial type and headers, export the Rust type
 from the main crate, and remove the experiment-only Rust bitmap-copy accessor.
 Independent full-bitmap, boundary, tail, and serial/parallel tests accompany
-the public implementation. Native integration validation is recorded separately
-from the prototype's performance evidence.
+the public implementation. [Native integration validation](../experiments/2026-10-29-range-production-integration/VALIDATION.md)
+is recorded separately from the prototype's performance evidence. The
+[fixed fresh-seed Rust confirmation](../experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md)
+compares Range24 with the training-selected public Fastbloom K7 at equal bytes
+and a0.01% measured-FPR ceiling. Both pass every seed-specific gate; Range wins
+all retained query/build pairs. That capacity-specific result does not remove
+the documented equal16/32-bpk losses against ordinary Split64.

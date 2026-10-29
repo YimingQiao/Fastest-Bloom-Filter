@@ -29,7 +29,14 @@ production Split64 in 46/48 queries and 47/48 builds; Bloomsday retains several
 sets remain available. The first 316 raw rows were preserved after exit143;
 only the unfinished 20-row case was resumed with the identical executable.
 The derived archive explicitly records both sessions and never pools repeated
-quality samples. Fresh-seed confirmation is pending.
+quality samples. The [fixed fresh24-row confirmation](../experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md)
+passes all eight separate accuracy samples. Range beats the training-selected
+K7 in all48 query and48 build metric records; pure batch-API gains are2.65–7.46×
+and staged hash+query gains2.04–6.09×. It confirms this fixed shortlist, not a new
+exhaustive external search on each seed. Range is now an optional native API;
+its [packaging validation](../experiments/2026-10-29-range-production-integration/VALIDATION.md)
+passes C++ native/AVX2/portable/sanitizers and Rust normal/AVX2/ASan/Clippy checks.
+The existing power-of-two layouts and build defaults remain unchanged.
 A separate native Rust suite includes
 pinned Bloomsday, fastbloom and [SBBF](../benchmarks/rust-sbbf-external/README.md).
 Its [168-row SBBF screen](../experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
