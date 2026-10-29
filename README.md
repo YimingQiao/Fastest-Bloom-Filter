@@ -336,6 +336,12 @@ A single case is also available:
 # Example: FastPatternBF,Split64BloomFilter 65536 24
 ```
 
+Optional layouts are available in both languages through
+`--filters Split64RangeBloomFilter,FourSectorRange12BloomFilter`. The parallel
+runner uses family names: `--filters Split64Range,FourSectorRange12`.
+See the [Range examples](docs/range-capacity.md#ordinary-benchmark-selection)
+and [K12 examples](docs/four-sector-range12.md#ordinary-benchmark-selection).
+
 Try `--batches 1,31,4096` to distinguish single-key calls, irregular tails, and large
 batches. Large filters should be tested beyond the machine's last-level cache as well
 as in cache. The default queries stream through 2^22 entries; filters and inputs are

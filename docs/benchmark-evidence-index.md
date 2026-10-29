@@ -321,6 +321,12 @@ the existing batch dispatch. Cargo target-name and folded-symbol validation
 failures remain archived; corrected checks reuse the same binaries. This is
 integration and code-generation evidence, with no new speed or FPR result.
 
+The [ordinary benchmark CLI validation](../experiments/2026-10-29-optional-benchmark-cli/VALIDATION.md)
+exposes both optional layouts through explicit C++/Rust selections. Four CLI
+builds pass cross-language output and three-worker checks. Exact family grouping
+keeps Range/K12 separate from similarly named layouts; defaults and timing
+helpers are preserved. These small validation runs are not performance evidence.
+
 The [actual-native96-pair policy comparison](../experiments/2026-10-29-native-build-policy-port-analysis/DECISION.md)
 measures the public before/after C++ and Rust implementations with policy
 selection inside the clocks. All48 active-gate contracts improve2.33–5.74×;
