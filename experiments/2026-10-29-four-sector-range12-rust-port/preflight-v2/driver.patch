@@ -1,0 +1,62 @@
+--- e0f4453/preflight/validate.py
++++ preflight-v2/validate.py
+@@ -3,19 +3,21 @@
+ if not __debug__:raise RuntimeError('Use Python without -O')
+ import argparse,json,os,platform,re,shutil,subprocess,sys,time
+ from pathlib import Path
++HERE=Path(__file__).resolve().parent;STAGE=HERE.parent;ROOT=STAGE.parents[1]
++sys.path.insert(0,str(STAGE/'preflight'))
+ from checks import need,sha,save,artifact,fixture,dependencies,CPUS,topology,execution_stderr,check_environment
+-HERE=Path(__file__).resolve().parent;STAGE=HERE.parent;ROOT=STAGE.parents[1]
+ OLD=ROOT/'experiments/2026-10-29-four-sector-range12-screen'
+ sys.path.insert(0,str(OLD/'preflight'))
+ from lease import require_lease
+ PROOF='e150be33b95a22dca9b75175e6174b9555c82393'
+-BUILD=Path('/tmp/fastest-bf-k12-rust-port-v1-cpu3')
++BUILD=Path('/tmp/fastest-bf-k12-rust-port-v2-cpu3')
++CPP_INCLUDE=ROOT/'experiments/2026-10-29-split64-range-parallel-screen/snapshot/include'
+ TRIPLE='x86_64-unknown-linux-gnu'
+ 
+ def blob(path,commit):return subprocess.check_output(['git','show',commit+':'+str(path.relative_to(ROOT))],cwd=ROOT)
+ def verify(commit):
+     need(re.fullmatch('[0-9a-f]{40}',commit)is not None,'Full source commit required');pins={}
+-    for folder in(STAGE,HERE):
++    for folder in(STAGE,STAGE/'preflight',HERE):
+         descriptor=folder/'PREPARATION.json';need(descriptor.read_bytes()==blob(descriptor,commit),'Uncommitted descriptor')
+         for name,item in json.loads(descriptor.read_text())['files'].items():
+             path=folder/name;need(sha(path)==item['sha256']and path.stat().st_size==item['bytes']and path.read_bytes()==blob(path,commit),'Changed prepared source '+name);pins[str(path.resolve())]=item['sha256']
+@@ -28,13 +30,13 @@
+ def main():
+     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source-commit',required=True);args=p.parse_args();lease=require_lease(3);pins=verify(args.source_commit)
+     ambient=check_environment(os.environ);worker_topology=topology()
+-    need(not BUILD.exists()and not BUILD.is_symlink(),'Fresh target required, including dangling symlink');out=STAGE/'validation-v1';need(not out.exists()and not out.is_symlink(),'Preserve prior attempts');BUILD.mkdir();out.mkdir()
++    need(not BUILD.exists()and not BUILD.is_symlink(),'Fresh target required, including dangling symlink');out=STAGE/'validation-v2';need(not out.exists()and not out.is_symlink(),'Preserve prior attempts');BUILD.mkdir();out.mkdir()
+     meta=dict(complete=False,source_commit=args.source_commit,host=platform.uname()._asdict(),lease=lease,affinity=sorted(os.sched_getaffinity(0)),commands=[],ambient_environment=ambient,worker_topology=worker_topology,execution_affinity=CPUS,source_sha256=pins,binaries={},consumed_inputs={},performance_runs=0)
+     save(out/'metadata.json',meta)
+     def run(label,cmd,env=None,binary_output=False,execute=False):
+         need(require_lease(3)==lease,'Lease drift');environment=os.environ.copy();environment.update(CARGO_BUILD_JOBS='1',RUST_TEST_THREADS='1',RUSTFLAGS='',RUSTDOCFLAGS='');environment.update(env or {})
+         original=[str(x)for x in cmd]
+-        actual=['taskset','-c',','.join(map(str,CPUS)),sys.executable,str(HERE/'exec_affinity.py'),*original]if execute else original
++        actual=['taskset','-c',','.join(map(str,CPUS)),sys.executable,str(STAGE/'preflight/exec_affinity.py'),*original]if execute else original
+         record=dict(label=label,command=actual,program=original,executes_filter=execute,environment={k:environment.get(k)for k in('RUSTFLAGS','RUSTDOCFLAGS','ASAN_OPTIONS','CARGO_TARGET_DIR','RUST_TEST_THREADS','CARGO_BUILD_JOBS')},complete=False);meta['commands'].append(record);save(out/'metadata.json',meta)
+         start=time.monotonic();r=subprocess.run(record['command'],cwd=ROOT,env=environment,capture_output=True);record.update(returncode=r.returncode,diagnostic_seconds=time.monotonic()-start,stdout_sha256=__import__('hashlib').sha256(r.stdout).hexdigest(),stdout_bytes=len(r.stdout),stderr_sha256=__import__('hashlib').sha256(r.stderr).hexdigest())
+         (out/(label+'.stderr')).write_bytes(r.stderr)
+@@ -45,15 +47,16 @@
+         record['complete']=True;save(out/'metadata.json',meta);print(label+' passed',flush=True);return r
+     try:
+         run('derive',[sys.executable,STAGE/'derive.py'])
+-        run('guards',[sys.executable,'-m','unittest','discover','-s',HERE,'-p','test_checks.py'])
++        run('guards',[sys.executable,'-m','unittest','discover','-s',STAGE/'preflight','-p','test_checks.py'])
+         meta['tools']={}
+         for label,args2 in [('rustc',[]),('cargo',[]),('rustc-nightly',['--toolchain','nightly']),('cargo-nightly',['--toolchain','nightly'])]:
+             name=label.split('-')[0];found=run('which-'+label,['rustup','which',*args2,name]);path=Path(found.stdout.decode().strip());need(path.is_absolute()and path.is_file(),'Actual toolchain path');meta['tools'][str(path)]=sha(path)
+         for label,cmd in [('rustc',['rustc','-Vv']),('nightly-rustc',['rustc','+nightly','-Vv']),('cargo',['cargo','-V'])]:run(label,cmd)
+         compiler=Path(shutil.which('clang++')).absolute();meta['compiler']=dict(path=str(compiler),sha256=sha(compiler));meta['tools'][str(compiler)]=sha(compiler);run('clang-version',[compiler,'--version'])
+-        cpp=BUILD/'cpp-fixture';dep=BUILD/'cpp-fixture.d';run('cpp-build',[compiler,'-std=c++17','-O3','-march=native','-MD','-MF',dep,'-I',ROOT/'include',STAGE/'cpp_fixture.cpp','-o',cpp]);meta['binaries'][str(cpp)]=sha(cpp)
++        cpp=BUILD/'cpp-fixture';dep=BUILD/'cpp-fixture.d';run('cpp-build',[compiler,'-std=c++17','-O3','-march=native','-MD','-MF',dep,'-I',CPP_INCLUDE,STAGE/'cpp_fixture.cpp','-o',cpp]);meta['binaries'][str(cpp)]=sha(cpp)
+         cppdeps=dependencies(dep,ROOT)
+         need(str((OLD/'four_sector_range12.h').resolve())in cppdeps,'Wrong actual C++ K12 header')
++        need(str((CPP_INCLUDE/'base.h').resolve())in cppdeps and str((ROOT/'include/base.h').resolve())not in cppdeps,'Wrong actual C++ base.h snapshot')
+         for name,digest in cppdeps.items():need(pins.get(name)==digest,'Unpinned actual C++ input '+name)
+         meta['consumed_inputs']['cpp']=cppdeps;save(out/'metadata.json',meta)
+         modes={}
