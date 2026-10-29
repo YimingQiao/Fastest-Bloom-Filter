@@ -1,0 +1,206 @@
+{
+  "complete": false,
+  "source_commit": "2dd44627f85081dd8ba4f123992234f2dc09ac8f",
+  "native_commit": "3af9c6555bbd42b778c93075d1740e243ac9f11e",
+  "native_base": "4d2d2258302ace258c19b7ab33c1d0a2e7d796ef",
+  "reference_commit": "0c0eb382a817245e379b01339ecd71b747bd5cea",
+  "lease": {
+    "cpu": 3,
+    "lease": "socket1",
+    "lock_path": "/tmp/fastest-bf-socket1.lock",
+    "inherited_lock_descriptors": [
+      3
+    ]
+  },
+  "compile_affinity": [
+    3
+  ],
+  "execution_cpus": [
+    3,
+    5,
+    7,
+    9,
+    11,
+    13,
+    15
+  ],
+  "physical_topology": [
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      18
+    ],
+    [
+      1,
+      20
+    ],
+    [
+      1,
+      26
+    ],
+    [
+      1,
+      29
+    ],
+    [
+      1,
+      44
+    ],
+    [
+      1,
+      47
+    ]
+  ],
+  "prepared_sha256": "bcdf1ad49ed436e9d678156ae0077e58f4bc6ec7d1895231163b649325060cba",
+  "commands": [
+    {
+      "label": "offline-guards",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-rust-k12-integration-plan/proof-v2",
+        "-p",
+        "test_*.py"
+      ],
+      "explicit_environment": {},
+      "complete": true,
+      "stdout": "offline-guards.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "offline-guards.stderr",
+      "stderr_sha256": "feabb4add9e2ca3374e538560634d1ec97dc4f4ce89aab12f3d726e36ea9b2f6",
+      "returncode": 0
+    },
+    {
+      "label": "normal-compiler",
+      "command": [
+        "rustc",
+        "-Vv"
+      ],
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "complete": true,
+      "stdout": "normal-compiler.stdout",
+      "stdout_sha256": "8f97c91e920ce0d02680e3d01eb87afa0c77290dcd5d19eb901ae194d4700d90",
+      "stderr": "normal-compiler.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "normal-metadata",
+      "command": [
+        "cargo",
+        "metadata",
+        "--locked",
+        "--offline",
+        "--format-version=1",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-rust-k12-integration-plan/proof-v2/caller/Cargo.toml"
+      ],
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "complete": true,
+      "stdout": "normal-metadata.stdout",
+      "stdout_sha256": "74c33db98797ffa144ccf633209e7c529299e0b4666eedf7672bcfad3e59dbe5",
+      "stderr": "normal-metadata.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "normal-native-test-build",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--release",
+        "--message-format=json",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-rust-k12-integration/rust/Cargo.toml",
+        "--lib",
+        "--no-run"
+      ],
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "complete": true,
+      "stdout": "normal-native-test-build.stdout",
+      "stdout_sha256": "7867ed4cb5c774ceb9bdb94ef94ddd7de97efb9a993d8eaae7b777284951cb53",
+      "stderr": "normal-native-test-build.stderr",
+      "stderr_sha256": "183d252c3d0db8af7d689a367e67accf97d0379e0b21936f0e37ddb86b615e5f",
+      "returncode": 0
+    },
+    {
+      "label": "normal-caller-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--release",
+        "--message-format=json",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-rust-k12-integration-plan/proof-v2/caller/Cargo.toml",
+        "--bin",
+        "native-rust-k12-port-proof"
+      ],
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "complete": true,
+      "stdout": "normal-caller-build.stdout",
+      "stdout_sha256": "807c3ee7c7c5ba05d326353f4cf2a0ab9579bb72493153ba314fc03f48e54860",
+      "stderr": "normal-caller-build.stderr",
+      "stderr_sha256": "c1a2367e1b6215d103b9dfc38f0fffaa9d2f2685f19644c33a80ce220ced6d87",
+      "returncode": 0
+    },
+    {
+      "label": "normal-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--offline",
+        "--release",
+        "--message-format=json",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-rust-k12-integration/rust/Cargo.toml",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "complete": true,
+      "stdout": "normal-clippy.stdout",
+      "stdout_sha256": "43d628ea9af9cc711f370c4ca4dfe59357281a7f0c587d52fa2f7bbb00af77ce",
+      "stderr": "normal-clippy.stderr",
+      "stderr_sha256": "ebc779c69eb1ae32c3dba6ebf7d041009dce49ebe7f78098f674ad778055dddd",
+      "returncode": 0
+    }
+  ],
+  "binaries": {
+    "/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/deps/fastest_bloom_filter-d0efe21b6cfa8a2c": "2a8de9729562cbd815e001bb7c9e86caa00513eae539aecbe8db31f95a78d022",
+    "/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/native-rust-k12-port-proof": "6320a6e46303240e17ffcb62a5a2f6638ab7921433eb8f1bfe801469455ea6df"
+  },
+  "compiler_inputs": {},
+  "fixtures": {},
+  "timing": false,
+  "new_calibration_samples": 0,
+  "error": "ValueError('No unique Cargo artifact owner for relative dep-info /tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/deps/native_rust_k12_port_proof-235c5635c14e8e2a.d')",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-rust-k12-integration-plan/proof-v2/validate.py\", line 55, in main\n    consumed,rules=collect(target/mode,target/mode,texts,repo_sources,ROOT,packages)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-rust-k12-integration-plan/proof-v2/dependencies.py\", line 89, in collect\n    need(owner is not None,'No unique Cargo artifact owner for relative dep-info '+str(dep))\n  File \"/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-rust-k12-integration-plan/proof-v2/dependencies.py\", line 6, in need\n    if not ok:raise ValueError(text)\n              ^^^^^^^^^^^^^^^^^^^^^^\nValueError: No unique Cargo artifact owner for relative dep-info /tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/deps/native_rust_k12_port_proof-235c5635c14e8e2a.d\n"
+}

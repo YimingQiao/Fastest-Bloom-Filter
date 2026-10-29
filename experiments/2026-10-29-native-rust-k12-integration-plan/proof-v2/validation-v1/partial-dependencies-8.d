@@ -1,0 +1,10 @@
+/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/deps/parallel_benchmark-1285855ecd7b10c6.d: src/bin/parallel_benchmark.rs src/bin/support/filter_selection.rs Cargo.toml
+
+/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/deps/libparallel_benchmark-1285855ecd7b10c6.rmeta: src/bin/parallel_benchmark.rs src/bin/support/filter_selection.rs Cargo.toml
+
+src/bin/parallel_benchmark.rs:
+src/bin/support/filter_selection.rs:
+Cargo.toml:
+
+# env-dep:CLIPPY_ARGS=-D__CLIPPY_HACKERY__warnings__CLIPPY_HACKERY__
+# env-dep:CLIPPY_CONF_DIR

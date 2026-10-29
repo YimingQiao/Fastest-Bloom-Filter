@@ -1,0 +1,21 @@
+/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/deps/fastest_bloom_filter-c2f7dc93e76d8ceb.d: src/lib.rs src/byte_split.rs src/four_sector.rs src/four_sector_range12.rs src/four_sector_range12_tests.rs src/k12_parallel.rs src/layout_parallel.rs src/parallel.rs src/patterns.rs src/range_parallel.rs src/split64.rs src/split64_range.rs src/split64_range/tests.rs Cargo.toml
+
+/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/deps/libfastest_bloom_filter-c2f7dc93e76d8ceb.rmeta: src/lib.rs src/byte_split.rs src/four_sector.rs src/four_sector_range12.rs src/four_sector_range12_tests.rs src/k12_parallel.rs src/layout_parallel.rs src/parallel.rs src/patterns.rs src/range_parallel.rs src/split64.rs src/split64_range.rs src/split64_range/tests.rs Cargo.toml
+
+src/lib.rs:
+src/byte_split.rs:
+src/four_sector.rs:
+src/four_sector_range12.rs:
+src/four_sector_range12_tests.rs:
+src/k12_parallel.rs:
+src/layout_parallel.rs:
+src/parallel.rs:
+src/patterns.rs:
+src/range_parallel.rs:
+src/split64.rs:
+src/split64_range.rs:
+src/split64_range/tests.rs:
+Cargo.toml:
+
+# env-dep:CLIPPY_ARGS=-D__CLIPPY_HACKERY__warnings__CLIPPY_HACKERY__
+# env-dep:CLIPPY_CONF_DIR
