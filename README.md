@@ -25,6 +25,7 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | [Finer-capacity confirmation](experiments/2026-10-29-exact-budget-confirmation/screen/RESULTS.md) | Experimental Split64Range24 has **4.3–6.7% lower** hash+query latency than Boost24 at32M keys and0.01% FPR. | Production FastPattern loses two of three seeds; Range remains experimental. |
 | [Single-key confirmation](docs/byte-confirmation-2026-10-29.md) | C++ Split64 leads the tested0.1% band by **1.10–1.20×** including hashing. | FastFilter wins the strict0.01% and large-filter1% bands; Rust retains Bloomsday losses. |
 | [Eight-core external confirmation](docs/external-parallel-confirmation-2026-10-29.md) | C++ native scenario leaders are **1.06–1.59×** faster including hashing and fresh thread startup/join. | Fixed23-configuration shortlist,65K/32M keys,50% hits,batch4096; individual losses remain. |
+| [Eight-core exact-capacity screen](experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md) | At 32M keys and the 24-bpk/0.01% ceiling, experimental Range improves throughput **2.7–5.4%** over the fastest eligible external configuration. | One seed and fixed phase order; equal-allocation and wider-scenario losses remain. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
 **Recent experiments:** Rust Split64Range fills the24-bpk/0.01% capacity gap,
@@ -34,6 +35,10 @@ accuracy-optimal probe count; public lower-probe configurations are pending.
 Multiply's promising bulk gain over Split64 also fails to beat the faster
 FourSector once a uniform larger accuracy sample qualifies all six constructions.
 Both candidates remain isolated.
+The separate FourSector range-capacity candidate also stays experimental:
+its [fixed accuracy pilot](experiments/2026-10-29-four-sector-range24/accuracy/RESULTS.md)
+fails the 24-bpk/0.01% gate at both sizes. No speed claim follows from its
+successful correctness checks.
 
 See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
 [baseline survey](docs/external-survey-2026-10-28.md),

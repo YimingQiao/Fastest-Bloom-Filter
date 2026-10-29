@@ -139,3 +139,18 @@ now passes native, AVX2 and ASan/UBSan correctness checks. Its public calls,
 compact output conversion, allocations and original upstream sources are
 preserved. Raw-u32 performance and larger geometries are the next stage;
 correctness completion alone is not throughput evidence.
+
+The [142-row eight-core Range screen](../experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md)
+uses the same shared immutable bitmap and executor across all public APIs.
+At 24 bpk and a 0.01% ceiling, Range leads the eligible external controls by
+14.7–27.1% at 65K keys and 2.7–5.4% at 32M keys across pure/hash and gated/full
+end-to-end query contracts. It loses 36 of 64 eligible nested views against
+external configurations and 54 of 56 against production natives. This is one
+seed with a fixed phase order; the useful capacity niche is not a general
+replacement claim. Serial-build losses and same-row scaling remain separate.
+
+A [FourSector range-addressing pilot](../experiments/2026-10-29-four-sector-range24/accuracy/RESULTS.md)
+passes all six backend/sanitizer correctness profiles but misses the proposed
+24-bpk/0.01% quality gate at both sizes. The two upper endpoints are 0.01059%
+and 0.01092%, while the retained Split64Range controls pass. No throughput
+measurement or integration was justified by that pilot.

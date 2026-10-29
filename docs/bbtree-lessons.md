@@ -62,6 +62,14 @@ budgets make24 bpk usable, but range addressing loses47/48 equal-allocation
 query comparisons to the power-of-two Split64 layout. The useful result is
 finer capacity control, with an explicitly measured cost in that workload.
 
+The [eight-core comparison](../experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md)
+retains that capacity benefit: Range24 leads the eligible external controls
+at the strict24-bpk ceiling, while losing most wider comparisons against
+production layouts. A separate [FourSector range pilot](../experiments/2026-10-29-four-sector-range24/accuracy/RESULTS.md)
+keeps the fast gather kernels but fails the same24-bpk quality gate. Fitting
+the desired memory budget and preserving a fast kernel are both insufficient
+without testing the resulting probe distribution.
+
 Compiler boundaries also matter. Exposing Rust ByteSplit's public singleton
 body removed a hot per-key call and improved fused throughput16–38% in the
 isolated comparison, with2–3% losses in some short batches. The
