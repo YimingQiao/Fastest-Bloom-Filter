@@ -96,6 +96,13 @@ The external lockfile must still retain its transitive dependency revision.
   speed result; no BloomCraft comparison has run yet. Sources:
   [filter implementation](https://github.com/ZaudRehman/bloomcraft/blob/17acc9bb3f23e3ed9083fcc825dd4623fe6977c5/src/filters/register_blocked.rs),
   [hash API](https://github.com/ZaudRehman/bloomcraft/blob/17acc9bb3f23e3ed9083fcc825dd4623fe6977c5/src/hash/mod.rs).
+- A [pinned public-API audit of three more Rust libraries](../experiments/2026-10-29-additional-rust-baseline-api-audit.md)
+  adds Poppy V2, `fastbloom-rs` and `bloomfilter` to the queue. Poppy adds 4 KiB
+  buckets and optional cache storage; its public 8-byte slice API accepts the
+  common prehash. `fastbloom-rs` exposes exact bitmap/probe controls but performs
+  its own two hashes, so it belongs in the raw-key track. `bloomfilter` also
+  hashes raw keys and adds a 45-byte heap header that must count toward memory.
+  Their source/API audits are complete; no performance comparison has run yet.
 - [cuSBF](https://github.com/tdortman/cuSBF) and GPU blocked Bloom filters change the
   hardware and host/device transfer contract. Their throughput belongs in a GPU
   track with transfer, memory and batching costs stated; they are not ruled out
