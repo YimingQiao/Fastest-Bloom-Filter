@@ -169,8 +169,13 @@ shows why this must be checked separately for each language and build profile.
 Its native build hoists the feature check and inlines the vector path. The
 portable build retains a public call and a target-feature jump for each key,
 while the old safe scalar control already inlines. Both pass correctness checks,
-but those different call boundaries require separate measurements before any
-speed claim. The same source-level SIMD idea does not establish the same gain.
+and the [subsequent 192-row measurement](../experiments/2026-10-29-rust-k12-singleton-internal-analysis/INTERPRETATION.md)
+reports the profiles separately. Visible hash+query throughput improves
+2.14–2.24× in native builds and 1.68–1.80× in portable builds against each
+profile's own control. All 224 batch1/3 pairs improve, while native large
+batch31 hash+query retains four losses and batch4096 is mixed. These results
+support measuring the actual caller; they do not isolate the cost of a call
+or prove that unchanged bulk source preserves bulk performance.
 
 The [raw-byte baseline caller](../experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
 also makes temporary memory part of the complete-operation cost. A prehash API

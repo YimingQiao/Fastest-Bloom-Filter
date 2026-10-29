@@ -432,6 +432,19 @@ assembly verifies the new timing boundaries and the native-inline versus
 portable per-key distinction. The fixed 192-row comparison keeps the profiles
 separate; these additional correctness checks supply no timing result.
 
+The subsequent [complete Rust SIMD comparison](../experiments/2026-10-29-rust-k12-singleton-internal-analysis/INTERPRETATION.md)
+finishes all 96 processes and 192 rows with those two rebuilt binaries. All 112
+batch1/3 pairs in each profile improve against the safe SingleLine control.
+Visible single-key throughput including hashing gains 2.14–2.24× in native
+builds and 1.68–1.80× in portable builds, each relative to its own control.
+The larger-batch results differ: native batch31 retains 11 losses among 16 pairs,
+including all four large hash+query pairs (0.25–1.51% slower); portable batch31
+retains five losses, while all eight large pairs improve. Batch4096 is mixed
+in both profiles. All 288 ratios, 576 vectors, 4608 values, 144 round sensitivities
+and 72 descriptive ranges were independently recomputed from complete raw data.
+No external, FPR, build, multithread, cross-language or promotion result follows
+from this internal query comparison.
+
 The [public raw8 caller proof](../experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
 adds fastbloom-rs0.5.10, distinct from fastbloom0.17, through its original public
 raw-byte API. Four normal/ASan executables pass 12 focused test invocations,

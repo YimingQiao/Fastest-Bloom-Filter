@@ -60,9 +60,13 @@ improves visible single-key throughput including hashing **1.91–2.27×** again
 old K12. All 144 batch1/3 contrasts improve across two seeds and opposite launch
 rounds, but large batch31 hash+query regresses **1.8–3.0%**, and batch4096 is mixed.
 It remains experimental pending comparison with leading native/external controls.
-The [Rust SIMD candidate](experiments/2026-10-29-rust-k12-singleton-vector-plan/caller/proof-final/REPORT.md)
-passes native, portable, AVX512-disabled and ASan correctness checks; its performance
-comparison is pending. Portable builds retain a per-key call that native builds inline.
+The [Rust SIMD comparison](experiments/2026-10-29-rust-k12-singleton-internal-analysis/INTERPRETATION.md)
+also improves all 224 batch1/3 contrasts against its safe SingleLine control.
+Visible single-key throughput including hashing improves **2.14–2.24×** in native
+builds and **1.68–1.80×** in portable builds, each against its own control.
+Native large batch31 hash+query regresses **0.25–1.51%**; batch4096 is mixed.
+The candidate remains experimental, with no external leadership claim.
+Portable builds retain a per-key call that native builds inline.
 
 <details>
 <summary>See gains and regressions across every query contract</summary>
@@ -73,6 +77,18 @@ Each point summarizes two seeds and two opposite launch rounds; bars show the
 full observed range, not confidence intervals. The figure includes all 240
 contrasts from the [complete report](experiments/2026-10-29-k12-singleton-vector-analysis/INTERPRETATION.md).
 Regenerate it with `python3 scripts/plot_k12_singleton.py` (requires matplotlib).
+
+</details>
+
+<details>
+<summary>See Rust gains and regressions in both build profiles</summary>
+
+![Rust K12 SIMD latency relative to each build's own control](docs/figures/rust-k12-singleton.svg)
+
+All 288 contrasts are shown. Each build is compared with its own safe SingleLine
+control; the panels do not compare absolute native and portable throughput.
+Bars show the full two-seed/two-round range, not confidence intervals.
+Regenerate with `python3 scripts/plot_rust_k12_singleton.py` (requires matplotlib).
 
 </details>
 
