@@ -1,0 +1,19 @@
+--- proof-v2/dependencies.py
++++ proof-v3/dependencies.py
+@@ -30,9 +30,13 @@
+                     need(key not in roots or roots[key]==identity,'Ambiguous Cargo dep-info owner')
+                     roots[key]=identity
+                 if value['target'].get('kind')==['bin'] and artifact.name==value['target']['name']:
+-                    key='bin-stem:'+value['target']['name']
+-                    need(key not in roots or roots[key]==identity,'Ambiguous Cargo binary stem')
+-                    roots[key]=identity
++                    # Rustc's hashed dep-info uses the structured Cargo target's
++                    # Rust crate identifier: Cargo normalizes hyphens to underscores.
++                    # Register only those two exact identity-derived spellings.
++                    for stem in {value['target']['name'], value['target']['name'].replace('-', '_')}:
++                        key='bin-stem:'+stem
++                        need(key not in roots or roots[key]==identity,'Ambiguous Cargo binary stem')
++                        roots[key]=identity
+                     package_name=package.split('#',1)[1].rsplit('@',1)[0]
+                     key='nightly-bin:'+package_name+':'+value['target']['name']
+                     record={'identity':identity,'reported_artifact':str(artifact)}
