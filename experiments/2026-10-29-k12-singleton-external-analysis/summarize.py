@@ -16,6 +16,8 @@ MODES = ('generic_pure', 'generic_staged_common_hash',
 SEEDS = (982451653, 961748941)
 CAPS = (16, 24, 32)
 CEILINGS = (.01, .001, .0001)
+PUBLIC_BITMAP_FILTERS = frozenset(('K12Control', 'K12SingletonVector', 'Split64Range',
+    'RocksDBFastLocalBloom64K8', 'RocksDBFastLocalBloom64K8Batch32'))
 OWNERS = ('candidate', 'old_k12', 'native_range', 'production_native',
           'all_native_composite', 'external')
 CONTRASTS = (('candidate', 'external'), ('old_k12', 'external'),
@@ -109,7 +111,7 @@ def validate_row(row, case, point, domain):
     for key in ('bitmap_digest', 'calibration_digest'):
         need(row[key] is None or (type(row[key]) is int and 0 <= row[key] < 1 << 64), 'invalid optional digest')
     need((row['calibration_digest'] is None) == (not case['calibration_power']), 'wrong calibration availability')
-    need((row['bitmap_digest'] is not None) == (point['owner'] in ('candidate', 'old_k12', 'native_range')),
+    need((row['bitmap_digest'] is not None) == (row['filter'] in PUBLIC_BITMAP_FILTERS),
          'wrong public bitmap availability')
     schedule = FOUR if case['batch'] == 1 else TWO
     need(row['phase_order'] == [v for step in schedule * 2 for v in step], 'wrong phase schedule')

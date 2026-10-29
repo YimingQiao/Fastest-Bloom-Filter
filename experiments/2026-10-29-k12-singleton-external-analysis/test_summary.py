@@ -1,7 +1,9 @@
-"""Synthetic complete-grid tests; never loads experimental timing observations."""
+"""Synthetic grids and a preformal API-schema guard; no proof-timing ranking."""
 import copy
 import json
 import math
+import hashlib
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,6 +17,7 @@ def fixture():
     points = {p['id']: p for p in source['selection.json']['points']}
     mapping_ids = {name: i+1 for i, name in enumerate(sorted({p['mapping_id'] for p in points.values()}))}
     domains = {(d['keys'], d['seed']): d for d in source['input-domains.json']}
+    bitmap_api = s.read(s.HERE / 'BITMAP_API.json')['types']
     records = []
     for case in source['ledger.json']:
         rows = []
@@ -36,7 +39,7 @@ def fixture():
                 false_positives=0 if hit == 100 else m, inserted_digest=n+seed,
                 inserted_hash_digest=n+seed+1, query_digest=n+seed+hit+2,
                 query_hash_digest=n+seed+hit+3, result_digest=n+seed+hit+m+4,
-                bitmap_digest=n+seed+m if p['owner'] in ('candidate', 'old_k12', 'native_range') else None,
+                bitmap_digest=n+seed+m if bitmap_api[g['filter']] else None,
                 calibration_negatives=(1 << 26) if case['calibration_power'] else 0,
                 calibration_fp=0, calibration_digest=n+seed+m if case['calibration_power'] else None,
                 query_scratch_bytes=batch*8,
@@ -58,6 +61,40 @@ def set_fp(records, source, owner, seed, fp):
 
 
 class SummaryTests(unittest.TestCase):
+    def test_bitmap_availability_matches_preformal_public_caller(self):
+        api = s.read(s.HERE / 'BITMAP_API.json')
+        path = s.ROOT / api['proof_row_path']
+        data = path.read_bytes()
+        self.assertEqual(hashlib.sha256(data).hexdigest(), api['proof_row_sha256'])
+        self.assertEqual(data, subprocess.check_output(['git', 'show',
+            api['proof_commit']+':'+api['proof_row_path']], cwd=s.ROOT))
+        actual = {}
+        for line in data.decode().splitlines():
+            row = json.loads(line)
+            presence = row['bitmap_digest'] is not None
+            self.assertEqual(actual.setdefault(row['filter'], presence), presence)
+        self.assertEqual(actual, api['observed_types'])
+        self.assertEqual(len(actual), 17)
+        self.assertEqual(set(api['types']) - set(actual), {'Boost192Multi32K4', 'RocksDBFastLocalBloom64K8Batch32'})
+        self.assertTrue(all(api['types'][name] == value for name, value in actual.items()))
+        for name, digest in api['source_files'].items():
+            source_data = (s.ROOT / name).read_bytes()
+            self.assertEqual(hashlib.sha256(source_data).hexdigest(), digest)
+            self.assertEqual(source_data, subprocess.check_output(['git', 'show', api['proof_commit']+':'+name], cwd=s.ROOT))
+        self.assertEqual({name for name, present in api['types'].items() if present}, s.PUBLIC_BITMAP_FILTERS)
+        source, records = fixture()
+        s.calculate(records, source)
+        # Missing a public Rocks bitmap and inventing an opaque Boost bitmap
+        # must both reject; availability is a public API property, not owner class.
+        for filter_name, replacement in (('RocksDBFastLocalBloom64K8', None),
+                                         ('RocksDBFastLocalBloom64K8Batch32', None),
+                                         ('Boost192Multi32K8', 99)):
+            bad = copy.deepcopy(records)
+            row = next(r for rec in bad for r in rec['rows'] if r['filter'] == filter_name)
+            row['bitmap_digest'] = replacement
+            with self.assertRaisesRegex(ValueError, 'bitmap availability'):
+                s.calculate(bad, source)
+
     def test_cardinalities_values_rounds_and_render(self):
         source, records = fixture()
         result = s.calculate(records, source)
