@@ -1,0 +1,612 @@
+
+/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal/release/native-rust-k12-port-proof:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000021a50 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel>:
+   21a50:	push   %rbp
+   21a51:	push   %r15
+   21a53:	push   %r14
+   21a55:	push   %r13
+   21a57:	push   %r12
+   21a59:	push   %rbx
+   21a5a:	sub    $0x1b8,%rsp
+   21a61:	mov    %rdi,0x140(%rsp)
+   21a69:	mov    %rcx,0x20(%rsp)
+   21a6e:	mov    %rsi,0x98(%rsp)
+   21a76:	mov    %rdx,0x148(%rsp)
+   21a7e:	mov    %r8,0x150(%rsp)
+   21a86:	cmp    %r8,%rdx
+   21a89:	jne    221c9 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x779>
+   21a8f:	mov    %rdi,%rbx
+   21a92:	mov    %rdx,%r13
+   21a95:	mov    %rdx,%rdi
+   21a98:	mov    %r9,%rsi
+   21a9b:	mov    $0xffffffffffffffff,%rdx
+   21aa2:	call   *0x4c8f8(%rip)        # 6e3a0 <_DYNAMIC+0x508>
+   21aa8:	cmp    $0x1,%rax
+   21aac:	jne    21adb <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x8b>
+   21aae:	mov    %rbx,%rdi
+   21ab1:	mov    0x98(%rsp),%rsi
+   21ab9:	mov    %r13,%rdx
+   21abc:	mov    0x20(%rsp),%rcx
+   21ac1:	mov    %r13,%r8
+   21ac4:	add    $0x1b8,%rsp
+   21acb:	pop    %rbx
+   21acc:	pop    %r12
+   21ace:	pop    %r13
+   21ad0:	pop    %r14
+   21ad2:	pop    %r15
+   21ad4:	pop    %rbp
+   21ad5:	jmp    *0x4c89d(%rip)        # 6e378 <_DYNAMIC+0x4e0>
+   21adb:	mov    %rax,%r12
+   21ade:	call   *0x4c8cc(%rip)        # 6e3b0 <_DYNAMIC+0x518>
+   21ae4:	mov    %rax,%r15
+   21ae7:	movq   $0x1,0x30(%rsp)
+   21af0:	movq   $0x1,0x38(%rsp)
+   21af9:	mov    %rax,0x40(%rsp)
+   21afe:	movq   $0x0,0x48(%rsp)
+   21b07:	movb   $0x0,0x50(%rsp)
+   21b0c:	mov    $0x28,%edi
+   21b11:	call   *0x4c569(%rip)        # 6e080 <malloc@GLIBC_2.2.5>
+   21b17:	test   %rax,%rax
+   21b1a:	je     22215 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x7c5>
+   21b20:	mov    0x50(%rsp),%rcx
+   21b25:	mov    %rcx,0x20(%rax)
+   21b29:	vmovups 0x30(%rsp),%ymm0
+   21b2f:	vmovups %ymm0,(%rax)
+   21b33:	mov    %rax,0xa8(%rsp)
+   21b3b:	test   %r12,%r12
+   21b3e:	mov    %rax,0x8(%rsp)
+   21b43:	je     21b5b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x10b>
+   21b45:	mov    %r13,%rax
+   21b48:	shr    $0x20,%rax
+   21b4c:	je     21b79 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x129>
+   21b4e:	mov    %r13,%rax
+   21b51:	xor    %edx,%edx
+   21b53:	div    %r12
+   21b56:	mov    %rdx,%rsi
+   21b59:	jmp    21b83 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x133>
+   21b5b:	mov    %rax,%r15
+   21b5e:	movq   $0x0,0x28(%rsp)
+   21b67:	mov    0x18(%r15),%rax
+   21b6b:	test   %rax,%rax
+   21b6e:	jne    22423 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9d3>
+   21b74:	jmp    224cc <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa7c>
+   21b79:	mov    %r13d,%eax
+   21b7c:	xor    %edx,%edx
+   21b7e:	div    %r12d
+   21b81:	mov    %edx,%esi
+   21b83:	mov    %rax,0x90(%rsp)
+   21b8b:	movq   $0x0,0x28(%rsp)
+   21b94:	mov    %r13,0xa0(%rsp)
+   21b9c:	xor    %ecx,%ecx
+   21b9e:	mov    %r12,0x88(%rsp)
+   21ba6:	mov    %rsi,0x130(%rsp)
+   21bae:	jmp    21bce <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x17e>
+   21bb0:	mov    0x18(%rsp),%rax
+   21bb5:	mov    %rax,0x20(%rsp)
+   21bba:	mov    %rbx,%rcx
+   21bbd:	cmp    %r12,%rbx
+   21bc0:	mov    0x130(%rsp),%rsi
+   21bc8:	je     2211b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x6cb>
+   21bce:	mov    %rcx,%rax
+   21bd1:	imul   %rsi,%rax
+   21bd5:	mov    %rax,%rdx
+   21bd8:	shr    $0x20,%rdx
+   21bdc:	je     21bf0 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x1a0>
+   21bde:	xor    %edx,%edx
+   21be0:	div    %r12
+   21be3:	mov    %rax,%r14
+   21be6:	jmp    21bf8 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x1a8>
+   21be8:	nopl   0x0(%rax,%rax,1)
+   21bf0:	xor    %edx,%edx
+   21bf2:	div    %r12d
+   21bf5:	mov    %eax,%r14d
+   21bf8:	lea    0x1(%rcx),%rdi
+   21bfc:	mov    %rdi,%rax
+   21bff:	imul   %rsi,%rax
+   21c03:	mov    %rax,%rdx
+   21c06:	shr    $0x20,%rdx
+   21c0a:	je     21c20 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x1d0>
+   21c0c:	xor    %edx,%edx
+   21c0e:	div    %r12
+   21c11:	jmp    21c25 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x1d5>
+   21c13:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   21c20:	xor    %edx,%edx
+   21c22:	div    %r12d
+   21c25:	mov    0x90(%rsp),%rdx
+   21c2d:	imul   %rdx,%rcx
+   21c31:	add    %rcx,%r14
+   21c34:	mov    %rdi,0x138(%rsp)
+   21c3c:	mov    %rdi,%rsi
+   21c3f:	imul   %rdx,%rsi
+   21c43:	add    %rax,%rsi
+   21c46:	mov    %rsi,%rbx
+   21c49:	sub    %r14,%rbx
+   21c4c:	mov    0xa0(%rsp),%r15
+   21c54:	sub    %rbx,%r15
+   21c57:	jb     2215a <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x70a>
+   21c5d:	cmp    %r14,%rsi
+   21c60:	jb     2213f <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x6ef>
+   21c66:	cmp    %r13,%rsi
+   21c69:	ja     2213f <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x6ef>
+   21c6f:	mov    0x8(%rsp),%rax
+   21c74:	lock incq (%rax)
+   21c78:	jle    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   21c7e:	mov    %rax,0x158(%rsp)
+   21c86:	mov    0x4c72b(%rip),%rax        # 6e3b8 <_DYNAMIC+0x520>
+   21c8d:	mov    (%rax),%rbp
+   21c90:	test   %rbp,%rbp
+   21c93:	mov    %r15,0xa0(%rsp)
+   21c9b:	je     21cb0 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x260>
+   21c9d:	dec    %rbp
+   21ca0:	jmp    21e01 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x3b1>
+   21ca5:	data16 cs nopw 0x0(%rax,%rax,1)
+   21cb0:	mov    $0xe,%edx
+   21cb5:	lea    0xd0(%rsp),%rdi
+   21cbd:	lea    -0x18b4d(%rip),%rsi        # 9177 <core::unicode::unicode_data::white_space::WHITESPACE_MAP+0x60d>
+   21cc4:	vzeroupper
+   21cc7:	call   *0x4c6f3(%rip)        # 6e3c0 <_DYNAMIC+0x528>
+   21ccd:	mov    0xd0(%rsp),%r12
+   21cd5:	mov    $0x200000,%ebp
+   21cda:	movabs $0x8000000000000000,%rax
+   21ce4:	cmp    %rax,%r12
+   21ce7:	je     21df3 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x3a3>
+   21ced:	mov    0xd8(%rsp),%rsi
+   21cf5:	mov    0xe0(%rsp),%rdx
+   21cfd:	lea    0x30(%rsp),%rdi
+   21d02:	mov    %rsi,0x18(%rsp)
+   21d07:	call   *0x4c513(%rip)        # 6e220 <_DYNAMIC+0x388>
+   21d0d:	cmpl   $0x1,0x30(%rsp)
+   21d12:	je     21d3b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x2eb>
+   21d14:	mov    0x40(%rsp),%rsi
+   21d19:	test   %rsi,%rsi
+   21d1c:	je     21d3b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x2eb>
+   21d1e:	mov    0x38(%rsp),%rcx
+   21d23:	cmp    $0x1,%rsi
+   21d27:	jne    21d4e <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x2fe>
+   21d29:	movzbl (%rcx),%eax
+   21d2c:	cmp    $0x2b,%eax
+   21d2f:	je     21d3b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x2eb>
+   21d31:	mov    $0x1,%esi
+   21d36:	cmp    $0x2d,%eax
+   21d39:	jne    21db2 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x362>
+   21d3b:	mov    $0x200000,%ebp
+   21d40:	test   %r12,%r12
+   21d43:	jne    21de8 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x398>
+   21d49:	jmp    21df3 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x3a3>
+   21d4e:	cmpb   $0x2b,(%rcx)
+   21d51:	jne    21dac <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x35c>
+   21d53:	inc    %rcx
+   21d56:	cmp    $0x12,%rsi
+   21d5a:	lea    -0x1(%rsi),%rsi
+   21d5e:	jb     21db2 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x362>
+   21d60:	xor    %edi,%edi
+   21d62:	xor    %ebp,%ebp
+   21d64:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   21d70:	cmp    %rdi,%rsi
+   21d73:	je     21de3 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x393>
+   21d75:	movzbl (%rcx,%rdi,1),%r8d
+   21d7a:	add    $0xffffffd0,%r8d
+   21d7e:	cmp    $0x9,%r8d
+   21d82:	ja     22108 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x6b8>
+   21d88:	mov    %rbp,%rax
+   21d8b:	mov    $0xa,%edx
+   21d90:	mul    %rdx
+   21d93:	mov    %r8d,%ebp
+   21d96:	seto   %dl
+   21d99:	add    %rax,%rbp
+   21d9c:	setb   %al
+   21d9f:	test   %dl,%dl
+   21da1:	jne    21d3b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x2eb>
+   21da3:	inc    %rdi
+   21da6:	test   %al,%al
+   21da8:	je     21d70 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x320>
+   21daa:	jmp    21d3b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x2eb>
+   21dac:	cmp    $0x11,%rsi
+   21db0:	jae    21d60 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x310>
+   21db2:	xor    %eax,%eax
+   21db4:	xor    %ebp,%ebp
+   21db6:	cs nopw 0x0(%rax,%rax,1)
+   21dc0:	movzbl (%rcx,%rax,1),%edx
+   21dc4:	add    $0xffffffd0,%edx
+   21dc7:	cmp    $0x9,%edx
+   21dca:	ja     21d3b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x2eb>
+   21dd0:	lea    0x0(%rbp,%rbp,4),%rdi
+   21dd5:	mov    %edx,%edx
+   21dd7:	lea    (%rdx,%rdi,2),%rbp
+   21ddb:	inc    %rax
+   21dde:	cmp    %rax,%rsi
+   21de1:	jne    21dc0 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x370>
+   21de3:	test   %r12,%r12
+   21de6:	je     21df3 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x3a3>
+   21de8:	mov    0x18(%rsp),%rdi
+   21ded:	call   *0x4c29d(%rip)        # 6e090 <free@GLIBC_2.2.5>
+   21df3:	lea    0x1(%rbp),%rax
+   21df7:	mov    0x4c5ba(%rip),%rcx        # 6e3b8 <_DYNAMIC+0x520>
+   21dfe:	mov    %rax,(%rcx)
+   21e01:	mov    0x20(%rsp),%rax
+   21e06:	lea    (%rax,%rbx,4),%rcx
+   21e0a:	mov    0x98(%rsp),%rax
+   21e12:	lea    (%rax,%r14,8),%r12
+   21e16:	mov    0x4e60b(%rip),%rax        # 70428 <std::thread::ThreadId::new::COUNTER>
+   21e1d:	nopl   (%rax)
+   21e20:	cmp    $0xffffffffffffffff,%rax
+   21e24:	je     22132 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x6e2>
+   21e2a:	lea    0x1(%rax),%rdi
+   21e2e:	lock cmpxchg %rdi,0x4e5f1(%rip)        # 70428 <std::thread::ThreadId::new::COUNTER>
+   21e37:	jne    21e20 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x3d0>
+   21e39:	mov    %rcx,0x18(%rsp)
+   21e3e:	movabs $0x8000000000000000,%rax
+   21e48:	mov    %rax,0x30(%rsp)
+   21e4d:	lea    0x30(%rsp),%rsi
+   21e52:	vzeroupper
+   21e55:	call   *0x4c56d(%rip)        # 6e3c8 <_DYNAMIC+0x530>
+   21e5b:	mov    %rax,0x10(%rsp)
+   21e60:	lea    0x198(%rsp),%rdi
+   21e68:	lea    0x10(%rsp),%rsi
+   21e6d:	call   *0x4c55d(%rip)        # 6e3d0 <_DYNAMIC+0x538>
+   21e73:	mov    0x10(%rsp),%rax
+   21e78:	lock incq (%rax)
+   21e7c:	jle    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   21e82:	mov    %r13,%r15
+   21e85:	mov    0x10(%rsp),%r13
+   21e8a:	mov    %r13,0x160(%rsp)
+   21e92:	movq   $0x1,0x30(%rsp)
+   21e9b:	movq   $0x1,0x38(%rsp)
+   21ea4:	mov    0x8(%rsp),%rax
+   21ea9:	mov    %rax,0x40(%rsp)
+   21eae:	movq   $0x0,0x48(%rsp)
+   21eb7:	mov    $0x30,%edi
+   21ebc:	call   *0x4c1be(%rip)        # 6e080 <malloc@GLIBC_2.2.5>
+   21ec2:	test   %rax,%rax
+   21ec5:	je     2218e <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x73e>
+   21ecb:	mov    %rax,%r14
+   21ece:	vmovups 0x30(%rsp),%ymm0
+   21ed4:	vmovups 0x40(%rsp),%ymm1
+   21eda:	vmovups %ymm1,0x10(%rax)
+   21edf:	vmovups %ymm0,(%rax)
+   21ee3:	mov    %rax,0xb0(%rsp)
+   21eeb:	lock incq (%rax)
+   21eef:	jle    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   21ef5:	mov    %r13,0xf0(%rsp)
+   21efd:	lea    0x140(%rsp),%rax
+   21f05:	mov    %rax,0x100(%rsp)
+   21f0d:	mov    %r12,0x108(%rsp)
+   21f15:	mov    %rbx,0x110(%rsp)
+   21f1d:	mov    0x20(%rsp),%rax
+   21f22:	mov    %rax,0x118(%rsp)
+   21f2a:	mov    %rbx,0x120(%rsp)
+   21f32:	vmovups 0x198(%rsp),%ymm0
+   21f3b:	vmovups %ymm0,0xd0(%rsp)
+   21f44:	mov    %r14,0xf8(%rsp)
+   21f4c:	mov    0x10(%r14),%rdi
+   21f50:	test   %rdi,%rdi
+   21f53:	je     21f60 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x510>
+   21f55:	lock incq 0x18(%rdi)
+   21f5a:	jle    221b8 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x768>
+   21f60:	vmovups 0xd0(%rsp),%ymm0
+   21f69:	mov    0xf0(%rsp),%rax
+   21f71:	mov    0xf8(%rsp),%rcx
+   21f79:	mov    0x100(%rsp),%rdx
+   21f81:	mov    0x108(%rsp),%rsi
+   21f89:	mov    0x108(%rsp),%rdi
+   21f91:	mov    %rdi,0x68(%rsp)
+   21f96:	mov    0x110(%rsp),%rdi
+   21f9e:	mov    %rdi,0x70(%rsp)
+   21fa3:	mov    0x118(%rsp),%rdi
+   21fab:	mov    %rdi,0x78(%rsp)
+   21fb0:	mov    0x120(%rsp),%rdi
+   21fb8:	mov    %rdi,0x80(%rsp)
+   21fc0:	mov    %rax,0x50(%rsp)
+   21fc5:	mov    %rcx,0x58(%rsp)
+   21fca:	mov    %rdx,0x60(%rsp)
+   21fcf:	mov    %rsi,0x68(%rsp)
+   21fd4:	vmovups %ymm0,0x30(%rsp)
+   21fda:	mov    $0x58,%edi
+   21fdf:	vzeroupper
+   21fe2:	call   *0x4c098(%rip)        # 6e080 <malloc@GLIBC_2.2.5>
+   21fe8:	test   %rax,%rax
+   21feb:	je     221a3 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x753>
+   21ff1:	vmovups 0xd0(%rsp),%ymm0
+   21ffa:	vmovups 0xf0(%rsp),%ymm1
+   22003:	vmovups 0x108(%rsp),%ymm2
+   2200c:	vmovups %ymm2,0x38(%rax)
+   22011:	vmovups %ymm1,0x20(%rax)
+   22016:	vmovups %ymm0,(%rax)
+   2201a:	mov    0x18(%r13),%rsi
+   2201e:	test   %rsi,%rsi
+   22021:	je     22040 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x5f0>
+   22023:	mov    0x20(%r13),%rdx
+   22027:	dec    %rdx
+   2202a:	mov    0x88(%rsp),%r12
+   22032:	jmp    22080 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x630>
+   22034:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   22040:	mov    0x4e3d1(%rip),%rcx        # 70418 <std::thread::main_thread::MAIN>
+   22047:	test   %rcx,%rcx
+   2204a:	mov    0x88(%rsp),%r12
+   22052:	je     2206f <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x61f>
+   22054:	cmp    0x10(%r13),%rcx
+   22058:	mov    $0x0,%esi
+   2205d:	lea    -0x1aae8(%rip),%rcx        # 757c <anon.25805f450824d4a1248fcaae526abf58.283.llvm.3576388159787090369>
+   22064:	cmove  %rcx,%rsi
+   22068:	mov    $0x4,%edx
+   2206d:	jmp    22080 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x630>
+   2206f:	xor    %esi,%esi
+   22071:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   22080:	mov    %rbp,%rdi
+   22083:	mov    %rax,%rcx
+   22086:	lea    0x492e3(%rip),%r8        # 6b370 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x228>
+   2208d:	vzeroupper
+   22090:	call   *0x4c342(%rip)        # 6e3d8 <_DYNAMIC+0x540>
+   22096:	test   $0x1,%al
+   22098:	jne    2222f <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x7df>
+   2209e:	mov    %r15,%r13
+   220a1:	mov    0x10(%rsp),%rbx
+   220a6:	mov    %rbx,0xb8(%rsp)
+   220ae:	mov    %r14,0xc0(%rsp)
+   220b6:	mov    %rdx,0xc8(%rsp)
+   220be:	mov    %rdx,%rdi
+   220c1:	call   *0x4c319(%rip)        # 6e3e0 <pthread_detach@GLIBC_2.34>
+   220c7:	lock decq (%rbx)
+   220cb:	jne    220db <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x68b>
+   220cd:	lea    0xb8(%rsp),%rdi
+   220d5:	call   *0x4c25d(%rip)        # 6e338 <_DYNAMIC+0x4a0>
+   220db:	mov    0xc0(%rsp),%rax
+   220e3:	lock decq (%rax)
+   220e7:	mov    0x138(%rsp),%rbx
+   220ef:	jne    21bb0 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x160>
+   220f5:	lea    0xc0(%rsp),%rdi
+   220fd:	call   *0x4c23d(%rip)        # 6e340 <_DYNAMIC+0x4a8>
+   22103:	jmp    21bb0 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x160>
+   22108:	mov    $0x200000,%ebp
+   2210d:	test   %r12,%r12
+   22110:	jne    21de8 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x398>
+   22116:	jmp    21df3 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x3a3>
+   2211b:	mov    0x8(%rsp),%r15
+   22120:	mov    0x18(%r15),%rax
+   22124:	test   %rax,%rax
+   22127:	jne    22423 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9d3>
+   2212d:	jmp    224cc <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa7c>
+   22132:	vzeroupper
+   22135:	call   495b0 <std::thread::ThreadId::new::exhausted>
+   2213a:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   2213f:	lea    0x49592(%rip),%rcx        # 6b6d8 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x590>
+   22146:	mov    %r14,%rdi
+   22149:	mov    %r13,%rdx
+   2214c:	vzeroupper
+   2214f:	call   *0x4c0c3(%rip)        # 6e218 <_DYNAMIC+0x380>
+   22155:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   2215a:	lea    0x4938f(%rip),%rax        # 6b4f0 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x3a8>
+   22161:	mov    %rax,0x30(%rsp)
+   22166:	vmovaps -0x1aa6e(%rip),%ymm0        # 7700 <anon.25805f450824d4a1248fcaae526abf58.283.llvm.3576388159787090369+0x184>
+   2216e:	vmovups %ymm0,0x38(%rsp)
+   22174:	lea    0x49545(%rip),%rsi        # 6b6c0 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x578>
+   2217b:	lea    0x30(%rsp),%rdi
+   22180:	vzeroupper
+   22183:	call   *0x4bfbf(%rip)        # 6e148 <_DYNAMIC+0x2b0>
+   22189:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   2218e:	mov    $0x8,%edi
+   22193:	mov    $0x30,%esi
+   22198:	call   *0x4bf8a(%rip)        # 6e128 <_DYNAMIC+0x290>
+   2219e:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   221a3:	mov    $0x8,%edi
+   221a8:	mov    $0x58,%esi
+   221ad:	call   *0x4bf75(%rip)        # 6e128 <_DYNAMIC+0x290>
+   221b3:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   221b8:	add    $0x10,%rdi
+   221bc:	vzeroupper
+   221bf:	call   49300 <std::thread::scoped::ScopeData::overflow>
+   221c4:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   221c9:	lea    0x49390(%rip),%rax        # 6b560 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x418>
+   221d0:	mov    %rax,0x30(%rsp)
+   221d5:	movq   $0x1,0x38(%rsp)
+   221de:	movq   $0x8,0x40(%rsp)
+   221e7:	vxorps %xmm0,%xmm0,%xmm0
+   221eb:	vmovups %xmm0,0x48(%rsp)
+   221f1:	lea    0x49378(%rip),%r8        # 6b570 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x428>
+   221f8:	lea    0x148(%rsp),%rsi
+   22200:	lea    0x150(%rsp),%rdx
+   22208:	lea    0x30(%rsp),%rcx
+   2220d:	xor    %edi,%edi
+   2220f:	call   *0x4c0ab(%rip)        # 6e2c0 <_DYNAMIC+0x428>
+   22215:	lea    0x40(%rsp),%rbx
+   2221a:	mov    $0x8,%edi
+   2221f:	mov    $0x28,%esi
+   22224:	call   *0x4befe(%rip)        # 6e128 <_DYNAMIC+0x290>
+   2222a:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   2222f:	mov    %rdx,%rbx
+   22232:	lock decq (%r14)
+   22236:	jne    22246 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x7f6>
+   22238:	lea    0xb0(%rsp),%rdi
+   22240:	call   *0x4c0fa(%rip)        # 6e340 <_DYNAMIC+0x4a8>
+   22246:	mov    0x10(%rsp),%rax
+   2224b:	lock decq (%rax)
+   2224f:	jne    2225c <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x80c>
+   22251:	lea    0x10(%rsp),%rdi
+   22256:	call   *0x4c0dc(%rip)        # 6e338 <_DYNAMIC+0x4a0>
+   2225c:	mov    %rbx,0x30(%rsp)
+   22261:	lea    -0x190a4(%rip),%rdi        # 91c4 <core::unicode::unicode_data::white_space::WHITESPACE_MAP+0x65a>
+   22268:	lea    0x494f9(%rip),%rcx        # 6b768 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x620>
+   2226f:	lea    0x49362(%rip),%r8        # 6b5d8 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x490>
+   22276:	lea    0x30(%rsp),%rdx
+   2227b:	mov    $0x16,%esi
+   22280:	call   *0x4be9a(%rip)        # 6e120 <_DYNAMIC+0x288>
+   22286:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   2228b:	mov    %rax,%rbp
+   2228e:	test   %r12,%r12
+   22291:	je     223ec <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x99c>
+   22297:	mov    0x18(%rsp),%rdi
+   2229c:	call   *0x4bdee(%rip)        # 6e090 <free@GLIBC_2.2.5>
+   222a2:	jmp    223ec <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x99c>
+   222a7:	mov    %rax,%rbp
+   222aa:	xor    %ebx,%ebx
+   222ac:	jmp    22312 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x8c2>
+   222ae:	jmp    223e9 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x999>
+   222b3:	jmp    223df <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x98f>
+   222b8:	mov    %rax,%rbp
+   222bb:	mov    0xc0(%rsp),%rax
+   222c3:	lock decq (%rax)
+   222c7:	jne    223e2 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x992>
+   222cd:	lea    0xc0(%rsp),%rdi
+   222d5:	call   *0x4c065(%rip)        # 6e340 <_DYNAMIC+0x4a8>
+   222db:	mov    0x8(%rsp),%r15
+   222e0:	jmp    22405 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9b5>
+   222e5:	call   *0x4bfed(%rip)        # 6e2d8 <_DYNAMIC+0x440>
+   222eb:	mov    %rax,%rbp
+   222ee:	lea    0x30(%rsp),%rdi
+   222f3:	call   1dcb0 <core::ptr::drop_in_place::<std::io::error::Error>>
+   222f8:	jmp    223e2 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x992>
+   222fd:	call   *0x4bfd5(%rip)        # 6e2d8 <_DYNAMIC+0x440>
+   22303:	mov    %rax,%rbp
+   22306:	mov    0x8(%rsp),%r15
+   2230b:	jmp    2236b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x91b>
+   2230d:	mov    %rax,%rbp
+   22310:	mov    $0x1,%bl
+   22312:	mov    0x8(%rsp),%r15
+   22317:	jmp    223bd <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x96d>
+   2231c:	jmp    223e9 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x999>
+   22321:	mov    %rax,%r14
+   22324:	lock decq (%r15)
+   22328:	jne    22570 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb20>
+   2232e:	mov    %rbx,%rdi
+   22331:	call   *0x4c001(%rip)        # 6e338 <_DYNAMIC+0x4a0>
+   22337:	jmp    22570 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb20>
+   2233c:	call   *0x4bf96(%rip)        # 6e2d8 <_DYNAMIC+0x440>
+   22342:	mov    %rax,%rbp
+   22345:	lea    0xd0(%rsp),%rdi
+   2234d:	call   1dbc0 <core::ptr::drop_in_place::<<std::thread::Builder>::spawn_unchecked_<fastest_bloom_filter::k12_parallel::insert<fastest_bloom_filter::four_sector_range12::Line, <fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::insert_hashes_parallel::{closure#0}, <fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::insert_hashes_parallel::{closure#1}>::{closure#1}::{closure#0}, ()>::{closure#1}>>
+   22352:	mov    0x8(%rsp),%r15
+   22357:	jmp    2236b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x91b>
+   22359:	mov    %rax,%rbp
+   2235c:	lea    0x30(%rsp),%rdi
+   22361:	call   1dbc0 <core::ptr::drop_in_place::<<std::thread::Builder>::spawn_unchecked_<fastest_bloom_filter::k12_parallel::insert<fastest_bloom_filter::four_sector_range12::Line, <fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::insert_hashes_parallel::{closure#0}, <fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::insert_hashes_parallel::{closure#1}>::{closure#1}::{closure#0}, ()>::{closure#1}>>
+   22366:	mov    0x8(%rsp),%r15
+   2236b:	lock decq (%r14)
+   2236f:	jne    223bb <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x96b>
+   22371:	lea    0xb0(%rsp),%rdi
+   22379:	call   *0x4bfc1(%rip)        # 6e340 <_DYNAMIC+0x4a8>
+   2237f:	jmp    223bb <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x96b>
+   22381:	call   *0x4bf51(%rip)        # 6e2d8 <_DYNAMIC+0x440>
+   22387:	mov    %rax,%rbp
+   2238a:	lea    0x40(%rsp),%rdi
+   2238f:	call   1d6f0 <core::ptr::drop_in_place::<std::thread::Packet<()>>>
+   22394:	mov    0x8(%rsp),%r15
+   22399:	lock decq 0x0(%r13)
+   2239e:	jne    223ae <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x95e>
+   223a0:	lea    0x160(%rsp),%rdi
+   223a8:	call   *0x4bf8a(%rip)        # 6e338 <_DYNAMIC+0x4a0>
+   223ae:	lea    0x198(%rsp),%rdi
+   223b6:	call   1dd40 <core::ptr::drop_in_place::<std::thread::spawnhook::ChildSpawnHooks>>
+   223bb:	xor    %ebx,%ebx
+   223bd:	mov    0x10(%rsp),%rax
+   223c2:	lock decq (%rax)
+   223c6:	jne    223d3 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x983>
+   223c8:	lea    0x10(%rsp),%rdi
+   223cd:	call   *0x4bf65(%rip)        # 6e338 <_DYNAMIC+0x4a0>
+   223d3:	test   %bl,%bl
+   223d5:	jne    223f1 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9a1>
+   223d7:	jmp    22405 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9b5>
+   223d9:	call   *0x4bef9(%rip)        # 6e2d8 <_DYNAMIC+0x440>
+   223df:	mov    %rax,%rbp
+   223e2:	mov    0x8(%rsp),%r15
+   223e7:	jmp    22405 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9b5>
+   223e9:	mov    %rax,%rbp
+   223ec:	mov    0x8(%rsp),%r15
+   223f1:	lock decq (%r15)
+   223f5:	jne    22405 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9b5>
+   223f7:	lea    0x158(%rsp),%rdi
+   223ff:	call   *0x4bf13(%rip)        # 6e318 <_DYNAMIC+0x480>
+   22405:	mov    %rbp,%rdi
+   22408:	call   *0x4bf1a(%rip)        # 6e328 <_DYNAMIC+0x490>
+   2240e:	mov    %rax,0x28(%rsp)
+   22413:	mov    %rdx,%r14
+   22416:	mov    0x18(%r15),%rax
+   2241a:	test   %rax,%rax
+   2241d:	je     224cc <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa7c>
+   22423:	lea    0x170(%rsp),%rbx
+   2242b:	xor    %r12d,%r12d
+   2242e:	mov    0x4beeb(%rip),%r13        # 6e320 <syscall@GLIBC_2.2.5>
+   22435:	mov    0x4bfac(%rip),%rbp        # 6e3e8 <__errno_location@GLIBC_2.2.5>
+   2243c:	jmp    2244e <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9fe>
+   2243e:	xchg   %ax,%ax
+   22440:	mov    0x8(%rsp),%r15
+   22445:	mov    0x18(%r15),%rax
+   22449:	test   %rax,%rax
+   2244c:	je     224cc <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa7c>
+   2244e:	mov    0x10(%r15),%r15
+   22452:	lock decl 0x28(%r15)
+   22457:	je     22440 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9f0>
+   22459:	add    $0x28,%r15
+   2245d:	jmp    2246c <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa1c>
+   2245f:	nop
+   22460:	mov    $0x1,%eax
+   22465:	lock cmpxchg %r12d,(%r15)
+   2246a:	je     22440 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0x9f0>
+   2246c:	movq   $0x0,0x168(%rsp)
+   22478:	nopl   0x0(%rax,%rax,1)
+   22480:	mov    (%r15),%eax
+   22483:	cmp    $0xffffffff,%eax
+   22486:	jne    22460 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa10>
+   22488:	cmpb   $0x0,0x168(%rsp)
+   22490:	mov    $0x0,%r8d
+   22496:	cmovne %rbx,%r8
+   2249a:	movl   $0xffffffff,(%rsp)
+   224a1:	mov    $0xca,%edi
+   224a6:	mov    %r15,%rsi
+   224a9:	mov    $0x89,%edx
+   224ae:	mov    $0xffffffff,%ecx
+   224b3:	xor    %r9d,%r9d
+   224b6:	xor    %eax,%eax
+   224b8:	vzeroupper
+   224bb:	call   *%r13
+   224be:	test   %rax,%rax
+   224c1:	jns    22460 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa10>
+   224c3:	call   *%rbp
+   224c5:	cmpl   $0x4,(%rax)
+   224c8:	je     22480 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa30>
+   224ca:	jmp    22460 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xa10>
+   224cc:	mov    0x28(%rsp),%rdi
+   224d1:	test   %rdi,%rdi
+   224d4:	jne    22545 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xaf5>
+   224d6:	movzbl 0x20(%r15),%eax
+   224db:	test   %al,%al
+   224dd:	jne    2250b <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xabb>
+   224df:	lock decq (%r15)
+   224e3:	jne    224f6 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xaa6>
+   224e5:	lea    0xa8(%rsp),%rdi
+   224ed:	vzeroupper
+   224f0:	call   *0x4be22(%rip)        # 6e318 <_DYNAMIC+0x480>
+   224f6:	add    $0x1b8,%rsp
+   224fd:	pop    %rbx
+   224fe:	pop    %r12
+   22500:	pop    %r13
+   22502:	pop    %r14
+   22504:	pop    %r15
+   22506:	pop    %rbp
+   22507:	vzeroupper
+   2250a:	ret
+   2250b:	lea    0x4908e(%rip),%rax        # 6b5a0 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x458>
+   22512:	mov    %rax,0x168(%rsp)
+   2251a:	vmovaps -0x1ae22(%rip),%ymm0        # 7700 <anon.25805f450824d4a1248fcaae526abf58.283.llvm.3576388159787090369+0x184>
+   22522:	vmovups %ymm0,0x170(%rsp)
+   2252b:	lea    0x49056(%rip),%rsi        # 6b588 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x440>
+   22532:	lea    0x168(%rsp),%rdi
+   2253a:	vzeroupper
+   2253d:	call   *0x4bc05(%rip)        # 6e148 <_DYNAMIC+0x2b0>
+   22543:	jmp    22551 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb01>
+   22545:	mov    %r14,%rsi
+   22548:	vzeroupper
+   2254b:	call   *0x4bea7(%rip)        # 6e3f8 <_DYNAMIC+0x560>
+   22551:	ud2
+   22553:	call   *0x4bd7f(%rip)        # 6e2d8 <_DYNAMIC+0x440>
+   22559:	mov    %rax,%r14
+   2255c:	lock decq (%r15)
+   22560:	jne    22570 <<fastest_bloom_filter::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes_parallel+0xb20>
+   22562:	lea    0xa8(%rsp),%rdi
+   2256a:	call   *0x4bda8(%rip)        # 6e318 <_DYNAMIC+0x480>
+   22570:	mov    %r14,%rdi
+   22573:	call   69e40 <_Unwind_Resume@plt>
+   22578:	call   *0x4bd5a(%rip)        # 6e2d8 <_DYNAMIC+0x440>
