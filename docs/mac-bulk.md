@@ -67,10 +67,15 @@ storage lines, preserving colliding OR updates, and `LookupParallel` partitions
 the input/output arrays. Partition scratch and fresh thread creation can dominate
 small jobs. A storage line is 64 bytes even though this M5 Pro's hardware line
 is 128 bytes. These methods are not concurrent-writer APIs.
+Partition histograms are padded to 128 bytes on Apple arm64 to separate worker
+counters; bitmap storage and ownership remain in 64-byte units.
 
 ## Reproducing the comparisons
 
-The regular comparator runs without external dependencies:
+The regular comparator runs without external dependencies. The new layouts
+require explicit selection; existing default selections retain
+their historical membership and order. They are also explicit families in the
+parallel CLI; `all` continues to select the original four families.
 
 ```bash
 # keys=2^24, requested bpk=8 (32 MiB actual), 0% hits, queries=2^22,

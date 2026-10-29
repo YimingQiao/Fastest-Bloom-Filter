@@ -10,11 +10,11 @@ Times are ns/key: lower is better. Values below are medians across three seed me
 
 | Bitmap | Word64 insert | Split16 insert | External insert | Word64 query | Split16 query | External query |
 |---|---:|---:|---:|---:|---:|---:|
-| 128 KiB | 0.516 | 0.529 | 0.518 | 0.439 | 0.491 | 0.508 |
-| 2 MiB | 0.746 | 0.758 | 0.747 | 0.592 | 0.596 | 0.650 |
-| 8 MiB | 0.818 | 0.836 | 0.816 | 0.738 | 0.698 | 0.766 |
-| 32 MiB | 1.530 | 1.584 | 1.624 | 1.553 | 1.672 | 1.717 |
-| 64 MiB | 2.526 | 2.548 | 2.580 | 2.507 | 2.380 | 2.387 |
+| 128 KiB | 0.519 | 0.532 | 0.516 | 0.440 | 0.494 | 0.504 |
+| 2 MiB | 0.756 | 0.767 | 0.753 | 0.599 | 0.601 | 0.651 |
+| 8 MiB | 0.818 | 0.839 | 0.816 | 0.740 | 0.700 | 0.740 |
+| 32 MiB | 1.458 | 1.511 | 1.533 | 1.487 | 1.680 | 1.651 |
+| 64 MiB | 2.428 | 2.371 | 2.438 | 2.301 | 2.327 | 2.313 |
 
 ## Wins, ties and losses
 
@@ -22,12 +22,12 @@ A ±3% band is used for classification, not a statistical confidence interval. T
 
 | Metric | Native wins | Within ±3% | Native losses | Native/external speedup range |
 |---|---:|---:|---:|---:|
-| insert_ns | 4 | 11 | 0 | 0.976–1.104× |
-| allocate_insert_ns | 4 | 11 | 0 | 0.976–1.103× |
-| hash_insert_ns | 4 | 11 | 0 | 0.973–1.083× |
-| allocate_hash_insert_ns | 4 | 11 | 0 | 0.973–1.082× |
-| lookup_ns | 12 | 3 | 0 | 0.970–1.157× |
-| hash_lookup_ns | 10 | 4 | 1 | 0.964–1.132× |
+| insert_ns | 5 | 10 | 0 | 0.986–1.082× |
+| allocate_insert_ns | 5 | 10 | 0 | 0.988–1.082× |
+| hash_insert_ns | 3 | 11 | 1 | 0.961–1.063× |
+| allocate_hash_insert_ns | 3 | 11 | 1 | 0.961–1.062× |
+| lookup_ns | 12 | 3 | 0 | 1.002–1.160× |
+| hash_lookup_ns | 11 | 4 | 0 | 0.987–1.106× |
 
 ## Accuracy and preservation
 
@@ -37,6 +37,36 @@ A ±3% band is used for classification, not a statistical confidence interval. T
 - FastPatternBF: measured FPR 0.1987–0.2065%; maximum Wilson upper bound 0.2109%.
 
 All ByteSplit/FastPattern checksums, timed and calibration FPR counts, and bitmap bytes exactly match their frozen pre-optimization controls in every primary case.
+
+## Short batches and present-key guardrails
+
+The secondary screen uses 128 KiB, 8 MiB and 64 MiB bitmaps, 0/50/100% hits, query batches 1/31/4096 and seed 8191. Insert batches remain 4096. These are performance guardrails, not independent proof that all hit mixes are optimal. Short-batch dispatch was adjusted after an earlier guardrail screen; its rows remain in `guardrails-before-final.csv`.
+
+| Existing layout | Original/new insert speedup range | Original/new query speedup range |
+|---|---:|---:|
+| ByteSplitBloomFilter | 4.252–8.233× | 3.715–9.325× |
+| FastPatternBF | 0.946–2.201× | 0.981–1.829× |
+
+Ratios below 1 mean a regression versus the same-process frozen original. All 27 cases preserve existing output checksums, false-positive counts and bitmap bytes exactly.
+
+For the two new layouts, the following table compares the faster of Word64/Split16 per case against FastFilter ARM only. Boost is included in the primary screen, not this secondary screen.
+
+| Query batch | Native wins | Within ±3% | Native losses | Query speedup range |
+|---|---:|---:|---:|---:|
+| 1 | 6 | 1 | 2 | 0.835–1.200× |
+| 31 | 7 | 2 | 0 | 1.016–1.147× |
+| 4096 | 9 | 0 | 0 | 1.051–1.655× |
+
+## Correctness and build validation
+
+- Native Apple Silicon: 23/23 CTest checks passed.
+- ASan/UBSan: 23/23 checks passed, including portable fallback targets.
+- Default ARM compiler target without `BF_NATIVE`: 23/23 checks passed.
+- Rust: 48 tests passed. Existing four layouts agree with C++ on checksums, FPR counts and bytes in 24 workloads. Optional Range/K12 CLI parity also passed after upstream integration.
+- Intel macOS targets cross-compiled successfully; they were not executed or timed.
+- Mask oracles cover all 65,536 Split16 input codes, all 4,096 Word64 cyclic masks and ByteSplit signed-high/shuffle semantics. Bitmap, collisions, duplicates, tails, copies and parallel construction/query checks are retained in the test suite.
+
+Validation logs are stored as `validation-*.txt`. The parallel before/after-padding CSVs are exploratory one-seed screens; serial controls varied too much to attribute a speedup to padding. They are excluded from the primary performance claim.
 
 ## Limits and reproducibility
 

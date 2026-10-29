@@ -80,7 +80,57 @@ def main():
             for field in ('result_checksum','false_positives','calibration_false_positives','filter_bytes'):
                 assert by_name[a][field]==by_name[b][field],(a,field)
     text += ['', 'All ByteSplit/FastPattern checksums, timed and calibration FPR counts, and bitmap bytes '
-             'exactly match their frozen pre-optimization controls in every primary case.', '',
+             'exactly match their frozen pre-optimization controls in every primary case.']
+    guardrails = list(csv.DictReader((HERE / 'guardrails.csv').open()))
+    assert len(guardrails) == 189, len(guardrails)
+    guard_groups = defaultdict(dict)
+    for row in guardrails:
+        assert wilson(row) < 0.01
+        guard_groups[int(row['keys']), int(row['hit_percent']), int(row['batch'])][row['filter']] = row
+    assert len(guard_groups) == 27
+    text += ['', '## Short batches and present-key guardrails', '',
+             'The secondary screen uses 128 KiB, 8 MiB and 64 MiB bitmaps, 0/50/100% hits, '
+             'query batches 1/31/4096 and seed 8191. Insert batches remain 4096. '
+             'These are performance guardrails, not independent proof that all hit mixes are optimal. '
+             'Short-batch dispatch was adjusted after an earlier guardrail screen; its rows remain in '
+             '`guardrails-before-final.csv`.', '',
+             '| Existing layout | Original/new insert speedup range | Original/new query speedup range |',
+             '|---|---:|---:|']
+    for current, original in (('ByteSplitBloomFilter', 'MacOriginalByteSplit'),
+                              ('FastPatternBF', 'MacOriginalPattern')):
+        ratios = {}
+        for metric in ('insert_ns', 'lookup_ns'):
+            ratios[metric] = [float(g[original][metric])/float(g[current][metric]) for g in guard_groups.values()]
+        for g in guard_groups.values():
+            for field in ('result_checksum', 'false_positives', 'calibration_false_positives', 'filter_bytes'):
+                assert g[current][field] == g[original][field], (current, field)
+        text.append(f'| {current} | ' + ' | '.join(
+            f'{min(ratios[m]):.3f}–{max(ratios[m]):.3f}×' for m in ('insert_ns', 'lookup_ns')) + ' |')
+    text += ['', 'Ratios below 1 mean a regression versus the same-process frozen original. '
+             'All 27 cases preserve existing output checksums, false-positive counts and bitmap bytes exactly.', '',
+             'For the two new layouts, the following table compares the faster of Word64/Split16 per case '
+             'against FastFilter ARM only. Boost is included in the primary screen, not this secondary screen.', '',
+             '| Query batch | Native wins | Within ±3% | Native losses | Query speedup range |',
+             '|---|---:|---:|---:|---:|']
+    for batch in (1, 31, 4096):
+        ratios = [float(g['FastFilterArm16']['lookup_ns']) / min(float(g[n]['lookup_ns'])
+                  for n in ('Word64BloomFilter', 'Split16BloomFilter'))
+                  for (_, _, b), g in guard_groups.items() if b == batch]
+        text.append(f'| {batch} | {sum(x>1.03 for x in ratios)} | {sum(0.97<=x<=1.03 for x in ratios)} | '
+                    f'{sum(x<0.97 for x in ratios)} | {min(ratios):.3f}–{max(ratios):.3f}× |')
+    text += ['', '## Correctness and build validation', '',
+             '- Native Apple Silicon: 23/23 CTest checks passed.',
+             '- ASan/UBSan: 23/23 checks passed, including portable fallback targets.',
+             '- Default ARM compiler target without `BF_NATIVE`: 23/23 checks passed.',
+             '- Rust: 48 tests passed. Existing four layouts agree with C++ on checksums, '
+             'FPR counts and bytes in 24 workloads. Optional Range/K12 CLI parity also passed after upstream integration.',
+             '- Intel macOS targets cross-compiled successfully; they were not executed or timed.',
+             '- Mask oracles cover all 65,536 Split16 input codes, all 4,096 Word64 cyclic masks and '
+             'ByteSplit signed-high/shuffle semantics. Bitmap, collisions, duplicates, tails, copies and parallel '
+             'construction/query checks are retained in the test suite.', '',
+             'Validation logs are stored as `validation-*.txt`. The parallel before/after-padding CSVs '
+             'are exploratory one-seed screens; serial controls varied too much to attribute a speedup to padding. '
+             'They are excluded from the primary performance claim.', '',
              '## Limits and reproducibility', '',
              '- This machine is an Apple M5 Pro with 48 GiB RAM and 128-byte hardware cache lines. '
              'Other M-series and Intel Macs have not been timed. macOS scheduling and clock variation remain; cores were not pinned.',

@@ -23,6 +23,7 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 
 | Evidence | What it supports | Remaining loss or limit |
 |---|---|---|
+| [Apple M5 Pro bulk APIs](experiments/2026-10-29-mac-neon/RESULTS.md) | Native scenario leaders win 12/15 absent-query cases and are within ±3% in three against the selected Boost/FastFilter ARM leaders. | 16-bpk/1% ceilings, batch4096, three seeds; one hash-inclusive build loss remains. Other Macs have not been timed. |
 | [C++ held-out large batches](docs/modern-confirmation-2026-10-28.md) | Eligible native leaders are **1.10–1.73×** faster than the fastest eligible external configuration across the tested ceilings. | 65K–32M keys,50% hits,batch4096,16/32-bpk targets; singleton and finer-capacity rankings differ. |
 | [Finer-capacity confirmation](experiments/2026-10-29-exact-budget-confirmation/screen/RESULTS.md) | Experimental Split64Range24 has **4.3–6.7% lower** hash+query latency than Boost24 at32M keys and0.01% FPR. | Production FastPattern loses two of three seeds; Range is an optional capacity choice. |
 | [Single-key confirmation](docs/byte-confirmation-2026-10-29.md) | C++ Split64 leads the tested0.1% band by **1.10–1.20×** including hashing. | FastFilter wins the strict0.01% and large-filter1% bands; Rust retains Bloomsday losses. |
