@@ -58,3 +58,27 @@ compares Range24 with the training-selected public Fastbloom K7 at equal bytes
 and a0.01% measured-FPR ceiling. Both pass every seed-specific gate; Range wins
 all retained query/build pairs. That capacity-specific result does not remove
 the documented equal16/32-bpk losses against ordinary Split64.
+
+## Ordinary benchmark selection
+
+Use `--filters Split64RangeBloomFilter` with `scripts/run_comparison.py`, or
+`--filters Split64Range` with `scripts/run_parallel.py`. Both runners accept the
+native C++ or Rust executable. For example:
+
+```sh
+python3 scripts/run_comparison.py --executable rust/target/release/compare_benchmark \
+  --output-dir results/range-rust --cpu 3 --key-powers 16 --bits-per-key 24 \
+  --filters Split64RangeBloomFilter,FourSectorRange12BloomFilter
+python3 scripts/run_parallel.py --executable build/native/parallel_benchmark \
+  --output-dir results/range-cpp-parallel --cpus 2,4,6 --threads 1,3 \
+  --key-powers 16 --bits-per-key 24 --filters Split64,Split64Range
+```
+
+Choose allowed physical CPU IDs for your machine. Defaults and the parallel
+`all` selection keep their historical layouts; optional names are explicit.
+Each family is validated separately even when names share a prefix. Requested
+bits per key retain each constructor's own allocation rule, with actual bytes
+reported in CSV. Invalid optional budgets fail before workload allocation or
+CSV output. The CLI retains `n * bits_per_key < 2^31`, which is stricter than
+the API at exactly 256 MiB. These are ordinary benchmark contracts, not a replay
+of the frozen exact-capacity experiments.

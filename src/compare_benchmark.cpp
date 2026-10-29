@@ -16,6 +16,8 @@
 #include "four_sector_bloom.h"
 #include "split64_bloom.h"
 #include "byte_split_bloom.h"
+#include "split64_range_bloom.h"
+#include "four_sector_range12_bloom.h"
 #endif
 #ifdef BF_EXPERIMENTS
 #include "direct_split_BF.h"
@@ -363,11 +365,23 @@ int main(int argc, char **argv) {
 		ADD(ImpalaBlockedBF64BitAVX512, uint64_t);
 #endif
 #endif
+#ifndef BF_EXTERNAL_ONLY
+		// Optional exact-capacity layouts require an explicit name. Keep the
+		// historical empty-selection registry (and its seeded order) unchanged.
+		if (!selection.empty()) {
+			ADD(Split64RangeBloomFilter, uint64_t);
+			ADD(FourSectorRange12BloomFilter, uint64_t);
+		}
+#endif
 #undef ADD
 		if (!unmatched.empty())
 			throw std::invalid_argument("unknown filter name: " + *unmatched.begin());
 		if (jobs.empty())
 			throw std::invalid_argument("no matching filters");
+#ifndef BF_EXTERNAL_ONLY
+		if (requested.count("Split64RangeBloomFilter") || requested.count("FourSectorRange12BloomFilter"))
+			(void)range_detail::BudgetBytes(n, bpk);
+#endif
 		// Permuted unique integers give disjoint hit/miss sets; hashing is separately timed.
 		ins.resize(n);
 		query.resize(q);

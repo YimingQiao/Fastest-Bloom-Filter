@@ -64,7 +64,7 @@ def main():
     parser.add_argument('--query-power', type=int, default=22)
     parser.add_argument('--repeats', type=int, default=5)
     parser.add_argument('--cpu', type=int, default=min(os.sched_getaffinity(0)))
-    parser.add_argument('--filters', default='', help='Comma-separated exact class names; empty selects all')
+    parser.add_argument('--filters', default='', help='Comma-separated exact class names; empty keeps the default suite. Native optional names: Split64RangeBloomFilter,FourSectorRange12BloomFilter')
     parser.add_argument('--binary-source-revision', help='Explicit source commit for an already-built, frozen executable; launch workspace provenance is retained separately')
     parser.add_argument('--insert-batch', type=int, default=None, help='Independent build batch size; 0=all inserted keys; default equals query batch')
     parser.add_argument('--calibration-power', type=int, default=0, help='Extra untimed disjoint negative probes; 0=disabled; requires a current calibrated harness')

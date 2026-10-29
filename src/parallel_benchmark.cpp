@@ -1,4 +1,6 @@
 #include "parallel_layout_bloom.h"
+#include "parallel_split64_range_bloom.h"
+#include "parallel_four_sector_range12_bloom.h"
 #include <algorithm>
 #include <chrono>
 #include <iostream>
@@ -36,6 +38,8 @@ using Serial = SerialLayout<FastPatternBF>;
 using FourSerial = SerialLayout<FourSectorBloomFilter>;
 using SplitSerial = SerialLayout<Split64BloomFilter>;
 using ByteSerial = SerialLayout<ByteSplitBloomFilter>;
+using RangeSerial = SerialLayout<Split64RangeBloomFilter>;
+using K12Serial = SerialLayout<FourSectorRange12BloomFilter>;
 template <class BF, class = void>
 struct HasBuildAccounting : std::false_type {};
 template <class BF>
@@ -124,10 +128,12 @@ int main(int argc, char **argv) {
 		if (n * bpk >= (size_t {1} << 31))
 			throw std::invalid_argument("capacity exceeded");
 		const std::string selection = argc > 8 ? argv[8] : "FastPattern";
-		const std::set<std::string> available {"FastPattern", "FourSector", "Split64", "ByteSplit"};
+		const std::set<std::string> defaults {"FastPattern", "FourSector", "Split64", "ByteSplit"};
+		const std::set<std::string> available {"FastPattern", "FourSector", "Split64", "ByteSplit",
+		                                     "Split64Range", "FourSectorRange12"};
 		std::set<std::string> families;
 		if (selection == "all") {
-			families = available;
+			families = defaults;
 		} else {
 			size_t begin = 0;
 			for (;;) {
@@ -140,6 +146,8 @@ int main(int argc, char **argv) {
 				begin = end + 1;
 			}
 		}
+		if (families.count("Split64Range") || families.count("FourSectorRange12"))
+			(void)range_detail::BudgetBytes(n, static_cast<uint32_t>(bpk));
 		RNG rng {seed};
 		uint64_t base = rng.next() % ((uint64_t {1} << 32) - n - q);
 		std::vector<uint64_t> keys(n), query(q);
@@ -172,6 +180,10 @@ int main(int argc, char **argv) {
 			order.insert(order.end(), {5, 6});
 		if (selected("ByteSplit"))
 			order.insert(order.end(), {7, 8});
+		if (selected("Split64Range"))
+			order.insert(order.end(), {9, 10});
+		if (selected("FourSectorRange12"))
+			order.insert(order.end(), {11, 12});
 		if (order.empty())
 			throw std::invalid_argument("no matching filter families");
 		for (size_t i = order.size(); i > 1; --i)
@@ -197,6 +209,14 @@ int main(int argc, char **argv) {
 				Run<ByteSerial>("ByteSplitSerial", keys, query, truth, bpk, threads, reps, seed, hit);
 			if (mode == 8)
 				Run<ParallelByteSplitBloomFilter>("ByteSplitPartitioned", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 9)
+				Run<RangeSerial>("Split64RangeSerial", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 10)
+				Run<ParallelSplit64RangeBloomFilter>("Split64RangePartitioned", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 11)
+				Run<K12Serial>("FourSectorRange12Serial", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 12)
+				Run<ParallelFourSectorRange12BloomFilter>("FourSectorRange12Partitioned", keys, query, truth, bpk, threads, reps, seed, hit);
 		}
 	} catch (const std::exception &e) {
 		std::cerr << e.what() << '\n';

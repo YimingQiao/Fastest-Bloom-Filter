@@ -1,6 +1,7 @@
 use fastest_bloom_filter::{
     hash64, AtomicFastPatternBloomFilter, ByteSplitBloomFilter, FastPatternBloomFilter,
-    FourSectorBloomFilter, Split64BloomFilter,
+    FourSectorBloomFilter, FourSectorRange12BloomFilter, Split64BloomFilter,
+    Split64RangeBloomFilter,
 };
 use std::{hint::black_box, time::Instant};
 struct Rng(u64);
@@ -40,6 +41,8 @@ enum Filter {
     Split(Split64BloomFilter),
     Byte(ByteSplitBloomFilter),
     Atomic(AtomicFastPatternBloomFilter),
+    Range(Split64RangeBloomFilter),
+    K12(FourSectorRange12BloomFilter),
 }
 impl Filter {
     fn new(n: usize, bpk: u32, mode: usize) -> Self {
@@ -49,6 +52,8 @@ impl Filter {
             3 | 4 => Self::Four(FourSectorBloomFilter::new(n, bpk).unwrap()),
             5 | 6 => Self::Split(Split64BloomFilter::new(n, bpk).unwrap()),
             7 | 8 => Self::Byte(ByteSplitBloomFilter::new(n, bpk).unwrap()),
+            9 | 10 => Self::Range(Split64RangeBloomFilter::new(n, bpk).unwrap()),
+            11 | 12 => Self::K12(FourSectorRange12BloomFilter::new(n, bpk).unwrap()),
             _ => unreachable!(),
         }
     }
@@ -59,6 +64,8 @@ impl Filter {
             Self::Split(b) => b.size_in_bytes(),
             Self::Byte(b) => b.size_in_bytes(),
             Self::Atomic(b) => b.size_in_bytes(),
+            Self::Range(b) => b.size_in_bytes(),
+            Self::K12(b) => b.size_in_bytes(),
         }
     }
     fn build_stats(&self, n: usize, t: usize) -> (usize, usize) {
@@ -68,10 +75,12 @@ impl Filter {
             Self::Split(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
             Self::Byte(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
             Self::Atomic(_) => (workers(n, t), 0),
+            Self::Range(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
+            Self::K12(b) => (b.build_workers(n, t), b.build_scratch_bytes(n, t)),
         }
     }
     fn insert(&mut self, h: &[u64], mode: usize, t: usize) {
-        let partitioned = matches!(mode, 1 | 4 | 6 | 8);
+        let partitioned = matches!(mode, 1 | 4 | 6 | 8 | 10 | 12);
         match self {
             Self::Plain(b) => {
                 if partitioned {
@@ -102,10 +111,24 @@ impl Filter {
                 }
             }
             Self::Atomic(b) => b.insert_hashes_parallel(h, t),
+            Self::Range(b) => {
+                if partitioned {
+                    b.insert_hashes_parallel(h, t)
+                } else {
+                    b.insert_hashes(h)
+                }
+            }
+            Self::K12(b) => {
+                if partitioned {
+                    b.insert_hashes_parallel(h, t)
+                } else {
+                    b.insert_hashes(h)
+                }
+            }
         }
     }
     fn lookup(&self, h: &[u64], out: &mut [u32], mode: usize, t: usize) {
-        let parallel = matches!(mode, 1 | 2 | 4 | 6 | 8);
+        let parallel = matches!(mode, 1 | 2 | 4 | 6 | 8 | 10 | 12);
         match self {
             Self::Plain(b) => {
                 if parallel {
@@ -142,6 +165,20 @@ impl Filter {
                     b.lookup_hashes(h, out)
                 }
             }
+            Self::Range(b) => {
+                if parallel {
+                    b.lookup_hashes_parallel(h, out, t)
+                } else {
+                    b.lookup_hashes(h, out)
+                }
+            }
+            Self::K12(b) => {
+                if parallel {
+                    b.lookup_hashes_parallel(h, out, t)
+                } else {
+                    b.lookup_hashes(h, out)
+                }
+            }
         }
     }
 }
@@ -163,6 +200,10 @@ fn run(mode: usize, keys: &[u64], query: &[u64], truth: &[bool], c: &Config) {
         "Split64Partitioned",
         "ByteSplitSerial",
         "ByteSplitPartitioned",
+        "Split64RangeSerial",
+        "Split64RangePartitioned",
+        "FourSectorRange12Serial",
+        "FourSectorRange12Partitioned",
     ][mode];
     let mut out = vec![0; query.len()];
     let mut check = vec![0; 4096];
@@ -173,7 +214,7 @@ fn run(mode: usize, keys: &[u64], query: &[u64], truth: &[bool], c: &Config) {
     for _ in 0..c.reps {
         let mut bf = Filter::new(keys.len(), c.bpk, mode);
         bytes = bf.bytes();
-        if matches!(mode, 1 | 2 | 4 | 6 | 8) {
+        if matches!(mode, 1 | 2 | 4 | 6 | 8 | 10 | 12) {
             (bw, scratch) = bf.build_stats(keys.len(), c.threads);
             qw = workers(query.len(), c.threads);
         }
@@ -268,9 +309,22 @@ fn main() {
         eprintln!("parallel filter family selection must not be empty");
         std::process::exit(2);
     }
+    let defaults = ["FastPattern", "FourSector", "Split64", "ByteSplit"];
+    let available = [
+        "FastPattern",
+        "FourSector",
+        "Split64",
+        "ByteSplit",
+        "Split64Range",
+        "FourSectorRange12",
+    ];
     let families = filter_selection::select_filters(
         if selection == "all" { "" } else { selection },
-        &["FastPattern", "FourSector", "Split64", "ByteSplit"],
+        if selection == "all" {
+            &defaults
+        } else {
+            &available
+        },
     )
     .unwrap_or_else(|error| {
         eprintln!("{error}");
@@ -279,6 +333,13 @@ fn main() {
     let n = 1usize << kp;
     let q = 1usize << qp;
     assert!(n * (bpk as usize) < (1usize << 31));
+    if families.contains(&"Split64Range") || families.contains(&"FourSectorRange12") {
+        let bytes = n * bpk as usize / 8;
+        if !(128..=1 << 28).contains(&bytes) {
+            eprintln!("optional layout byte budget must be in 128..256 MiB");
+            std::process::exit(2);
+        }
+    }
     let mut rng = Rng(seed);
     let base = rng.next() % ((1u64 << 32) - n as u64 - q as u64);
     let mut keys: Vec<_> = (0..n).map(|i| hash64(base + i as u64)).collect();
@@ -309,6 +370,8 @@ fn main() {
         ("FourSector", &[3, 4][..]),
         ("Split64", &[5, 6][..]),
         ("ByteSplit", &[7, 8][..]),
+        ("Split64Range", &[9, 10][..]),
+        ("FourSectorRange12", &[11, 12][..]),
     ] {
         if families.contains(&family) {
             order.extend_from_slice(modes);

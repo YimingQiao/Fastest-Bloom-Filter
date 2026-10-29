@@ -10,6 +10,7 @@ from pathlib import Path
 import subprocess
 import time
 from run_comparison import capture, numbers
+from parallel_selection import selected_families, mode_names, family_rows
 
 
 def main():
@@ -36,21 +37,14 @@ def main():
     p.add_argument(
         "--filters",
         default="FastPattern",
-        help="Comma-separated families: FastPattern,FourSector,Split64,ByteSplit; or all",
+        help="Families: FastPattern,FourSector,Split64,ByteSplit; all selects these four. "
+             "Optional explicit families: Split64Range,FourSectorRange12",
     )
     args = p.parse_args()
-    families = (
-        ["FastPattern", "FourSector", "Split64", "ByteSplit"]
-        if args.filters == "all"
-        else args.filters.split(",")
-    )
-    if len(set(families)) != len(families) or not set(families) <= {
-        "FastPattern",
-        "FourSector",
-        "Split64",
-        "ByteSplit",
-    }:
-        p.error("invalid or duplicate filter families")
+    try:
+        families = selected_families(args.filters)
+    except ValueError as error:
+        p.error(str(error))
     if (
         min(args.threads) < 1
         or max(args.threads) > len(args.cpus)
@@ -149,13 +143,9 @@ def main():
                         reader = csv.DictReader(io.StringIO(run.stdout))
                         rows = list(reader)
                         expected_names = {
-                            family + mode
+                            name
                             for family in families
-                            for mode in (
-                                ["Serial", "Partitioned", "Atomic"]
-                                if family == "FastPattern"
-                                else ["Serial", "Partitioned"]
-                            )
+                            for name in mode_names(family)
                         }
                         if (
                             len(rows) != len(expected_names)
@@ -163,7 +153,7 @@ def main():
                         ):
                             raise RuntimeError("missing or duplicate parallel modes")
                         for family in families:
-                            rr = [r for r in rows if r["filter"].startswith(family)]
+                            rr = family_rows(rows, family)
                             for field in (
                                 "result_checksum",
                                 "filter_bytes",

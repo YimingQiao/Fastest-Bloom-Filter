@@ -4,6 +4,10 @@ import csv
 import io
 import subprocess
 import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from parallel_selection import family_rows
 
 FAMILIES = ("FastPattern", "FourSector", "Split64", "ByteSplit")
 
@@ -53,7 +57,7 @@ for executable in sys.argv[1:]:
         assert len(rows) == len(names(families))
         assert {row["filter"] for row in rows} == names(families)
         for family in families:
-            group = [r for r in rows if r["filter"].startswith(family)]
+            group = family_rows(rows, family)
             for field in ("filter_bytes", "false_positives", "result_checksum"):
                 assert len({r[field] for r in group}) == 1, (family, field)
 print(f"Parallel CLI selection contracts passed for {len(sys.argv) - 1} executables")

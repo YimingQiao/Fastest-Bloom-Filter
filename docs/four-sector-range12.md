@@ -58,3 +58,18 @@ Insertion requires an exclusive `&mut self`. The dedicated scheduler partitions 
 The [actual native packaging proof](../experiments/2026-10-29-native-rust-k12-integration-plan/proof-final/REPORT.md) passes 40 normal library tests, six disabled-AVX512 K12 tests, six ASan K12 tests and 36 full native/reference fixtures on seven physical cores. Actual public pure/fused loops retain one line bounds check and no hot per-key helper call; scalar stack frames and batch/thread costs remain. This proof contains no throughput or new FPR measurements.
 
 The [SingleLine internal comparison](../experiments/2026-10-29-rust-k12-single-line-analysis/INTERPRETATION.md) retains 85/96 query wins and 11 regressions against original K12, plus 75/96 query losses and all 96 construction losses against Range. Its inputs were already seen, and it does not establish new external leadership. The C++ multithread results above do not establish Rust multithread speed. The optional Rust API is a capacity/bulk-query choice with explicit singleton and construction tradeoffs.
+
+## Ordinary benchmark selection
+
+Both languages' ordinary benchmark runners accept this layout explicitly:
+
+```sh
+python3 scripts/run_comparison.py --executable build/native/compare_benchmark \
+  --output-dir results/k12-cpp --cpu 2 --key-powers 16 --bits-per-key 24 \
+  --filters FourSectorRange12BloomFilter
+python3 scripts/run_parallel.py --executable rust/target/release/parallel_benchmark \
+  --output-dir results/k12-rust-parallel --cpus 3,5,7 --threads 1,3 \
+  --key-powers 16 --bits-per-key 24 --filters FourSectorRange12
+```
+
+Choose allowed physical CPU IDs for your machine. Either runner accepts the corresponding C++ or Rust executable. Empty comparison selection keeps its historical default suite; parallel default remains FastPattern, and `--filters all` retains the original four families. Name the optional layout explicitly. Invalid names and optional budgets below 128 bytes fail before workload allocation or CSV output. The CLI also retains its older global size limit (`n * bits_per_key < 2^31`), so it does not cover the API's inclusive 256 MiB endpoint. These commands use the ordinary benchmark timing contract, separate from the frozen research experiments.

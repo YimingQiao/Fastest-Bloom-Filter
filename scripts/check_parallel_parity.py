@@ -4,29 +4,21 @@ import csv
 import io
 import subprocess
 import argparse
+from parallel_selection import selected_families, mode_names, family_rows
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--cpp", default="build/native/parallel_benchmark")
 parser.add_argument("--rust", default="rust/target/release/parallel_benchmark")
 parser.add_argument("--families", default="all")
 args = parser.parse_args()
-families = (
-    ["FastPattern", "FourSector", "Split64", "ByteSplit"]
-    if args.families == "all"
-    else args.families.split(",")
-)
-if not set(families) <= {"FastPattern", "FourSector", "Split64", "ByteSplit"} or len(
-    set(families)
-) != len(families):
-    parser.error("invalid or duplicate families")
+try:
+    families = selected_families(args.families)
+except ValueError as error:
+    parser.error(str(error))
 expected = {
-    family + mode
+    name
     for family in families
-    for mode in (
-        ["Serial", "Partitioned", "Atomic"]
-        if family == "FastPattern"
-        else ["Serial", "Partitioned"]
-    )
+    for name in mode_names(family)
 }
 
 for threads in [1, 3, 8]:
@@ -49,7 +41,7 @@ for threads in [1, 3, 8]:
 
             rows = run(args.cpp) + run(args.rust)
             for family in families:
-                rr = [r for r in rows if r["filter"].startswith(family)]
+                rr = family_rows(rows, family)
                 for field in [
                     "result_checksum",
                     "false_positives",
