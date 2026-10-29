@@ -1,0 +1,160 @@
+{
+  "status": "source-only; no compilation, BF execution or timing",
+  "parent_commit": "e3e4b3f760aeb8d3b3370a82610f2653bac089fe",
+  "parent_manifest_sha256": "7d8df4339c66724da92b891ab96a699fdfbf6afaa6564558e02ed0fb1cc4731b",
+  "compiler": "GCC12.2.0",
+  "workers": {
+    "legacy": {
+      "boost": "1.83",
+      "native_controls": [
+        "FastPatternBF",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "ByteSplitBloomFilter"
+      ],
+      "original_configs": [
+        "sector32-u1",
+        "sector32-u2",
+        "sector32-u4",
+        "sector64-u1",
+        "sector64-u2",
+        "sector64-u4",
+        "register64-u0"
+      ],
+      "public_surfaces": [
+        "artifact_pimpl",
+        "public_dynamic",
+        "public_static"
+      ]
+    },
+    "modern": {
+      "boost": "1.92",
+      "native_controls": [
+        "FastPatternBF",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "ByteSplitBloomFilter"
+      ],
+      "external": [
+        "Boost192ClassicK11",
+        "Boost192Multi32K4",
+        "Boost192Multi32K8",
+        "Boost192Multi64K8",
+        "FastFilterFixed16",
+        "FastFilterFixed16SingleV1",
+        "FastFilterFixed32",
+        "FastFilterFixed32Bulk",
+        "FastFilterFixed64",
+        "FastFilterSimdBlock",
+        "FastFilterSimdBlockSingleV1",
+        "RocksDBFastLocalBloom64K8",
+        "RocksDBFastLocalBloom64K8Batch32",
+        "PageBloom4Default",
+        "PageBloom4Compact",
+        "PageBloom6Default",
+        "PageBloom6Compact",
+        "PageBloom8Default",
+        "PageBloom8Compact"
+      ]
+    }
+  },
+  "selection": {
+    "exact_external_union": [
+      "Boost192ClassicK11",
+      "Boost192Multi32K8",
+      "Boost192Multi64K8",
+      "FastFilterFixed16",
+      "FastFilterFixed16SingleV1",
+      "FastFilterFixed32",
+      "FastFilterFixed64",
+      "FastFilterSimdBlock",
+      "FastFilterSimdBlockSingleV1"
+    ],
+    "visible_external_union": [
+      "Boost192Multi32K4",
+      "Boost192Multi64K8",
+      "FastFilterFixed16",
+      "FastFilterFixed16SingleV1",
+      "FastFilterFixed32Bulk",
+      "FastFilterFixed64",
+      "FastFilterSimdBlock",
+      "FastFilterSimdBlockSingleV1",
+      "RocksDBFastLocalBloom64K8"
+    ],
+    "extra_controls": [
+      "RocksDBFastLocalBloom64K8Batch32",
+      "PageBloom4Default",
+      "PageBloom4Compact",
+      "PageBloom6Default",
+      "PageBloom6Compact",
+      "PageBloom8Default",
+      "PageBloom8Compact"
+    ],
+    "source_files": [
+      "experiments/2026-10-29-exact-budget-confirmation/selected-geometries.csv",
+      "experiments/2026-10-29-inline-single-query/screen/summary.json"
+    ]
+  },
+  "screen": {
+    "key_powers": [
+      16,
+      25
+    ],
+    "bitmap_cap_bpk": [
+      12,
+      16,
+      24,
+      32
+    ],
+    "query_power": 22,
+    "calibration_power": 24,
+    "hit_percent": 50,
+    "seeds": [
+      42
+    ],
+    "query_modes": [
+      "public_single",
+      "dense_batch1",
+      "dense_batch4096"
+    ],
+    "query_repeats": 6,
+    "launch_rounds": 2,
+    "worker_orders": [
+      [
+        "legacy",
+        "modern"
+      ],
+      [
+        "modern",
+        "legacy"
+      ]
+    ],
+    "build_repeats": 0,
+    "fpr_caps": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "deduplicate_actual_geometry": true,
+    "pool_alias_calibration": false,
+    "context_shift_correction": false
+  },
+  "preflight": {
+    "backends": [
+      "native",
+      "avx2",
+      "native-asan"
+    ],
+    "cases_per_backend": 56,
+    "inserted_fixture": 65536,
+    "query_fixture": 8192,
+    "long_lengths": [
+      4096,
+      4097,
+      4127
+    ],
+    "tail_max": 131,
+    "offsets": 8,
+    "timing_permitted": false
+  }
+}
