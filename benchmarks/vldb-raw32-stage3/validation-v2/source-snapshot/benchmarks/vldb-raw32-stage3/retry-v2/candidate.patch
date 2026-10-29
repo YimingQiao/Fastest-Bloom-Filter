@@ -1,0 +1,11 @@
+--- stage3-v1/modern.cpp
++++ retry-v2/modern.cpp
+@@ -22,7 +22,7 @@
+     geometry_.bytes=geometry_.logical=geometry_.units*geometry_.unit;geometry_.argument=geometry_.units;
+     geometry_.probes=K;geometry_.kind="page_raw4_bytes";geometry_.surface="upstream_raw4_byte_api";
+     geometry_.metadata="{\"key_bytes\":4,\"page_level\":"+std::to_string(level)+"}";
+-    Need(bool(filter_) && filter_.data_size()==geometry_.bytes,"PageBloom allocation/constructor failed");
++    Need(filter_.data()!=nullptr && filter_.data_size()==geometry_.bytes,"PageBloom allocation/constructor failed");
+   }
+   Geometry Info()const{return geometry_;}
+   void Insert(uint32_t n,const uint32_t* raw){for(size_t i=0;i<n;++i)filter_.set(reinterpret_cast<const uint8_t*>(raw+i),sizeof(uint32_t));}
