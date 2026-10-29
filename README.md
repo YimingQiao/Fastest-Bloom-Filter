@@ -164,8 +164,8 @@ filter itself. See the [C++/Rust API guide](docs/four-sector-range12.md),
 Backend, sanitizer and non-divisible three/seven-worker checks pass. The
 [C++ eight-core comparison](experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md)
 supports strict24 query use, while construction loses to Range and small builds
-slow down with eight threads. Rust native performance remains to be measured;
-its isolated kernel's singleton and construction losses remain relevant.
+slow down with eight threads. Rust K12's external performance is still being
+investigated; the SIMD study above is an internal query comparison.
 
 ## Historical comparison and FastPattern scaling
 
