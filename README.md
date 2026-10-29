@@ -171,6 +171,11 @@ before/after experiments for false sharing and the AVX2 kernels.
 
 ## Build
 
+**Apple Silicon:** C++ now builds natively on arm64 macOS, with NEON bulk kernels,
+`Word64BloomFilter` and `Split16BloomFilter`, and the existing layouts. See the
+[Mac build/API guide](docs/mac-bulk.md) and [M5 Pro benchmark evidence](experiments/2026-10-29-mac-neon/RESULTS.md).
+The new layouts are C++ additions; the existing Rust types remain available.
+
 ```bash
 cmake -S . -B build/native -DCMAKE_CXX_COMPILER=clang++ -DBF_NATIVE=ON
 cmake --build build/native -j
@@ -180,7 +185,8 @@ ctest --test-dir build/native --output-on-failure
 `BF_NATIVE=ON` gives **all implementations** the same host instruction set. The resulting
 binary is specific to the build CPU. For an AVX2-only build, omit `BF_NATIVE`; for AVX-512,
 use `-DUSE_AVX512=ON`. These cache options now respect command-line values.
-The comparison targets x86 with AVX2 or newer. `compare_benchmark` measures one
+The legacy comparisons target x86 with AVX2 or newer and are omitted on ARM.
+On arm64, `BF_NATIVE` uses `-mcpu=native`. `compare_benchmark` measures one
 thread; `parallel_benchmark` measures scaling across cores.
 
 ## Native Rust

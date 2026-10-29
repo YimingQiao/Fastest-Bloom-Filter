@@ -8,6 +8,8 @@ import subprocess
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--cpp", default="build/native/compare_benchmark")
 parser.add_argument("--rust", default="rust/target/release/compare_benchmark")
+parser.add_argument("--filters", default="CacheSectorizedBF32Bit,FastPatternBF",
+                    help="Exact shared filter names; use native types on ARM")
 args = parser.parse_args()
 fields = [
     "keys",
@@ -31,7 +33,7 @@ for bpk in [4, 8, 16, 32]:
                 "31",
                 "1",
                 str(seed),
-                "CacheSectorizedBF32Bit,FastPatternBF",
+                args.filters,
             ]
 
             def run(executable):

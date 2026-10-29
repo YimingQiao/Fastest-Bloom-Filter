@@ -29,7 +29,11 @@ public:
 		return blocks_.size() * sizeof(uint32_t);
 	}
 	void Insert(uint32_t num, const uint64_t *keys) {
+#if defined(__aarch64__)
+		if (num > 64 && SizeInBytes() > (1u << 23))
+#else
 		if (SizeInBytes() > (1u << 21))
+#endif
 			InsertImpl<true>(num, keys);
 		else
 			InsertImpl<false>(num, keys);
@@ -45,7 +49,11 @@ public:
 			}
 			return num;
 		}
-		if (SizeInBytes() > (1u << 21))
+		if (
+#if defined(__aarch64__)
+		    num > 64 &&
+#endif
+		    SizeInBytes() > (1u << 21))
 			LookupImpl<true>(num, keys, out);
 		else
 			LookupImpl<false>(num, keys, out);
@@ -135,6 +143,12 @@ private:
 		}
 #endif
 		for (; i < num; ++i) {
+#if defined(__aarch64__)
+			if constexpr (Prefetch) {
+				if (i + 64 < num)
+					__builtin_prefetch(blocks_.data() + Block(keys[i + 64]), 1, 3);
+			}
+#endif
 			const uint64_t h = keys[i];
 			const uint32_t a = Block(h);
 			blocks_[a] |= Pattern(static_cast<uint32_t>(h));
@@ -218,6 +232,12 @@ private:
 		}
 #endif
 		for (; i < num; ++i) {
+#if defined(__aarch64__)
+			if constexpr (Prefetch) {
+				if (i + 64 < num)
+					__builtin_prefetch(blocks_.data() + Block(keys[i + 64]), 0, 3);
+			}
+#endif
 			const uint64_t h = keys[i];
 			const uint32_t a = Block(h);
 			const uint32_t m1 = Pattern(static_cast<uint32_t>(h)), m2 = Pattern(static_cast<uint32_t>(h) >> 10);

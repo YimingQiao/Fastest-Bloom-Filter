@@ -38,6 +38,8 @@ using Serial = SerialLayout<FastPatternBF>;
 using FourSerial = SerialLayout<FourSectorBloomFilter>;
 using SplitSerial = SerialLayout<Split64BloomFilter>;
 using ByteSerial = SerialLayout<ByteSplitBloomFilter>;
+using Split16Serial = SerialLayout<Split16BloomFilter>;
+using Word64Serial = SerialLayout<Word64BloomFilter>;
 using RangeSerial = SerialLayout<Split64RangeBloomFilter>;
 using K12Serial = SerialLayout<FourSectorRange12BloomFilter>;
 template <class BF, class = void>
@@ -130,7 +132,7 @@ int main(int argc, char **argv) {
 		const std::string selection = argc > 8 ? argv[8] : "FastPattern";
 		const std::set<std::string> defaults {"FastPattern", "FourSector", "Split64", "ByteSplit"};
 		const std::set<std::string> available {"FastPattern", "FourSector", "Split64", "ByteSplit",
-		                                     "Split64Range", "FourSectorRange12"};
+		                                     "Split64Range", "FourSectorRange12", "Split16", "Word64"};
 		std::set<std::string> families;
 		if (selection == "all") {
 			families = defaults;
@@ -184,6 +186,10 @@ int main(int argc, char **argv) {
 			order.insert(order.end(), {9, 10});
 		if (selected("FourSectorRange12"))
 			order.insert(order.end(), {11, 12});
+		if (selected("Split16"))
+			order.insert(order.end(), {13, 14});
+		if (selected("Word64"))
+			order.insert(order.end(), {15, 16});
 		if (order.empty())
 			throw std::invalid_argument("no matching filter families");
 		for (size_t i = order.size(); i > 1; --i)
@@ -217,6 +223,14 @@ int main(int argc, char **argv) {
 				Run<K12Serial>("FourSectorRange12Serial", keys, query, truth, bpk, threads, reps, seed, hit);
 			if (mode == 12)
 				Run<ParallelFourSectorRange12BloomFilter>("FourSectorRange12Partitioned", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 13)
+				Run<Split16Serial>("Split16Serial", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 14)
+				Run<ParallelSplit16BloomFilter>("Split16Partitioned", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 15)
+				Run<Word64Serial>("Word64Serial", keys, query, truth, bpk, threads, reps, seed, hit);
+			if (mode == 16)
+				Run<ParallelWord64BloomFilter>("Word64Partitioned", keys, query, truth, bpk, threads, reps, seed, hit);
 		}
 	} catch (const std::exception &e) {
 		std::cerr << e.what() << '\n';

@@ -18,6 +18,8 @@
 #include "byte_split_bloom.h"
 #include "split64_range_bloom.h"
 #include "four_sector_range12_bloom.h"
+#include "split16_bloom.h"
+#include "word64_bloom.h"
 #endif
 #ifdef BF_EXPERIMENTS
 #include "direct_split_BF.h"
@@ -25,6 +27,8 @@
 #include "pattern32_BF.h"
 #include "pipelined_sectorized_BF.h"
 #endif
+#if defined(__AVX2__) && !defined(BF_EXTERNAL_ONLY)
+#define BF_LEGACY_X86 1
 #include "cache_sectorized_BF_32bit.h"
 #include "new_cache_sectorized_BF_32bit.h"
 #include "register_blocked_BF_32bit.h"
@@ -35,6 +39,7 @@
 #include "impala_blocked_BF_64bit.h"
 #ifdef __AVX512F__
 #include "impala_blocked_BF_64bit_avx512.h"
+#endif
 #endif
 
 #ifdef BF_EXTERNAL_HEADER
@@ -334,13 +339,19 @@ int main(int argc, char **argv) {
 #ifndef BF_EXTERNAL_ONLY
 		ADD(FourSectorBloomFilter, uint64_t);
 		ADD(Split64BloomFilter, uint64_t);
-			ADD(ByteSplitBloomFilter, uint64_t);
+		ADD(ByteSplitBloomFilter, uint64_t);
+		if (!selection.empty()) {
+			ADD(Split16BloomFilter, uint64_t);
+			ADD(Word64BloomFilter, uint64_t);
+		}
+#ifdef BF_LEGACY_X86
 		ADD(RegisterBlockedBF32Bit, uint32_t);
 		ADD(RegisterBlockedBF32BitMasks, uint32_t);
 		ADD(RegisterBlockedBF64Bit, uint64_t);
 		ADD(RegisterBlockedBF64BitMasks, uint64_t);
 		ADD(RegisterBlockedBF2x32Bit, uint64_t);
 		ADD(CacheSectorizedBF32Bit, uint64_t);
+#endif
 #ifdef BF_EXPERIMENTS
 		ADD(PipelinedSectorizedBF, uint64_t);
 #endif
@@ -358,7 +369,7 @@ int main(int argc, char **argv) {
 #ifdef BF_REGISTER_EXTERNAL_FILTERS
 		BF_REGISTER_EXTERNAL_FILTERS(ADD);
 #endif
-#ifndef BF_EXTERNAL_ONLY
+#ifdef BF_LEGACY_X86
 		ADD(NewCacheSectorizedBF32Bit, uint64_t);
 		ADD(ImpalaBlockedBF64Bit, uint64_t);
 #ifdef __AVX512F__

@@ -9,7 +9,9 @@ for hit in (0, 50, 100):
     result = subprocess.run([exe, '10', '16', str(hit), '12', '31', '2', '42'],
                             text=True, capture_output=True, check=True)
     rows = list(csv.DictReader(io.StringIO(result.stdout)))
-    assert len(rows) >= 8
+    names = {row['filter'] for row in rows}
+    assert {'FastPatternBF', 'FourSectorBloomFilter', 'Split64BloomFilter', 'ByteSplitBloomFilter'} <= names
+    assert len(rows) == len(names)
     for row in rows:
         assert int(row['filter_bytes']) == 4096
         assert float(row['actual_bpk']) == 32
