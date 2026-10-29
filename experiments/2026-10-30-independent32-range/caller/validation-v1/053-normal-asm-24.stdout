@@ -1,0 +1,115 @@
+
+/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002d9c0 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj>:
+   2d9c0:	test   %rsi,%rsi
+   2d9c3:	je     2db7d <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x1bd>
+   2d9c9:	push   %r14
+   2d9cb:	push   %rbx
+   2d9cc:	mov    %rdx,%rax
+   2d9cf:	movabs $0xf1357aea2e62a9c5,%r9
+   2d9d9:	movabs $0xd6e8feb86659fd93,%r10
+   2d9e3:	cmp    $0x1,%rsi
+   2d9e7:	jne    2d9f1 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x31>
+   2d9e9:	xor    %r8d,%r8d
+   2d9ec:	jmp    2db01 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x141>
+   2d9f1:	mov    %rsi,%r11
+   2d9f4:	and    $0xfffffffffffffffe,%r11
+   2d9f8:	xor    %r8d,%r8d
+   2d9fb:	vmovdqa -0x2c063(%rip),%ymm0        # 19a0 <_IO_stdin_used+0x2c0>
+   2da03:	vpbroadcastd -0x2c338(%rip),%ymm1        # 16d4 <__abi_tag+0x1410>
+   2da0c:	nopl   0x0(%rax)
+   2da10:	mov    (%rax,%r8,8),%rdx
+   2da14:	mov    %rdx,%rbx
+   2da17:	shr    $0x20,%rbx
+   2da1b:	xor    %rdx,%rbx
+   2da1e:	imul   %r10,%rbx
+   2da22:	mov    %rbx,%r14
+   2da25:	shr    $0x20,%r14
+   2da29:	xor    %rbx,%r14
+   2da2c:	imul   %r10,%r14
+   2da30:	mov    %r14,%rdx
+   2da33:	shr    $0x20,%rdx
+   2da37:	xor    %r14,%rdx
+   2da3a:	or     $0x1,%rdx
+   2da3e:	mov    0x20(%rdi),%rbx
+   2da42:	mulx   0x10(%rdi),%r14,%r14
+   2da48:	imul   %r9,%rdx
+   2da4c:	shl    $0x5,%r14
+   2da50:	vmovdqa (%rbx,%r14,1),%ymm2
+   2da56:	vpbroadcastq %rdx,%ymm3
+   2da5c:	vpsllvq %ymm0,%ymm3,%ymm3
+   2da61:	vpsrld $0x1b,%ymm3,%ymm3
+   2da66:	vpsllvd %ymm3,%ymm1,%ymm3
+   2da6b:	xor    %edx,%edx
+   2da6d:	vptest %ymm3,%ymm2
+   2da72:	prefetcht0 (%rbx,%r14,1)
+   2da77:	setb   %dl
+   2da7a:	mov    %edx,(%rcx,%r8,4)
+   2da7e:	mov    0x8(%rax,%r8,8),%rdx
+   2da83:	mov    %rdx,%rbx
+   2da86:	shr    $0x20,%rbx
+   2da8a:	xor    %rdx,%rbx
+   2da8d:	imul   %r10,%rbx
+   2da91:	mov    %rbx,%r14
+   2da94:	shr    $0x20,%r14
+   2da98:	xor    %rbx,%r14
+   2da9b:	imul   %r10,%r14
+   2da9f:	mov    %r14,%rdx
+   2daa2:	shr    $0x20,%rdx
+   2daa6:	xor    %r14,%rdx
+   2daa9:	or     $0x1,%rdx
+   2daad:	mov    0x20(%rdi),%rbx
+   2dab1:	mulx   0x10(%rdi),%r14,%r14
+   2dab7:	imul   %r9,%rdx
+   2dabb:	shl    $0x5,%r14
+   2dabf:	prefetcht0 (%rbx,%r14,1)
+   2dac4:	vmovdqa (%rbx,%r14,1),%ymm2
+   2daca:	vpbroadcastq %rdx,%ymm3
+   2dad0:	vpsllvq %ymm0,%ymm3,%ymm3
+   2dad5:	vpsrld $0x1b,%ymm3,%ymm3
+   2dada:	vpsllvd %ymm3,%ymm1,%ymm3
+   2dadf:	xor    %edx,%edx
+   2dae1:	vptest %ymm3,%ymm2
+   2dae6:	setb   %dl
+   2dae9:	mov    %edx,0x4(%rcx,%r8,4)
+   2daee:	add    $0x2,%r8
+   2daf2:	cmp    %r8,%r11
+   2daf5:	jne    2da10 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x50>
+   2dafb:	test   $0x1,%sil
+   2daff:	je     2db7a <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x1ba>
+   2db01:	mov    (%rax,%r8,8),%rax
+   2db05:	mov    %rax,%rdx
+   2db08:	shr    $0x20,%rdx
+   2db0c:	xor    %rax,%rdx
+   2db0f:	imul   %r10,%rdx
+   2db13:	mov    %rdx,%rax
+   2db16:	shr    $0x20,%rax
+   2db1a:	xor    %rdx,%rax
+   2db1d:	imul   %r10,%rax
+   2db21:	mov    %rax,%rdx
+   2db24:	shr    $0x20,%rdx
+   2db28:	xor    %rax,%rdx
+   2db2b:	or     $0x1,%rdx
+   2db2f:	mov    0x20(%rdi),%rax
+   2db33:	mulx   0x10(%rdi),%rsi,%rsi
+   2db39:	imul   %r9,%rdx
+   2db3d:	shl    $0x5,%rsi
+   2db41:	prefetcht0 (%rax,%rsi,1)
+   2db45:	vmovdqa (%rax,%rsi,1),%ymm0
+   2db4a:	vpbroadcastq %rdx,%ymm1
+   2db50:	vpsllvq -0x2c1b9(%rip),%ymm1,%ymm1        # 19a0 <_IO_stdin_used+0x2c0>
+   2db59:	vpsrld $0x1b,%ymm1,%ymm1
+   2db5e:	vpbroadcastd -0x2c493(%rip),%ymm2        # 16d4 <__abi_tag+0x1410>
+   2db67:	vpsllvd %ymm1,%ymm2,%ymm1
+   2db6c:	xor    %eax,%eax
+   2db6e:	vptest %ymm1,%ymm0
+   2db73:	setb   %al
+   2db76:	mov    %eax,(%rcx,%r8,4)
+   2db7a:	pop    %rbx
+   2db7b:	pop    %r14
+   2db7d:	vzeroupper
+   2db80:	ret

@@ -1,0 +1,90 @@
+
+/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002d2d0 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj>:
+   2d2d0:	test   %esi,%esi
+   2d2d2:	je     2d42d <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0x15d>
+   2d2d8:	cmp    $0x1,%esi
+   2d2db:	jne    2d324 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0x54>
+   2d2dd:	mov    (%rdx),%rax
+   2d2e0:	vpbroadcastd %eax,%xmm0
+   2d2e6:	shr    $0x20,%rax
+   2d2ea:	mov    (%rdi),%edx
+   2d2ec:	imul   %rax,%rdx
+   2d2f0:	vpmulhw -0x2b858(%rip),%xmm0,%xmm0        # 1aa0 <_IO_stdin_used+0x3c0>
+   2d2f8:	vpbroadcastq -0x2b921(%rip),%xmm1        # 19e0 <_IO_stdin_used+0x300>
+   2d301:	vpshufb %xmm0,%xmm1,%xmm0
+   2d306:	mov    0x8(%rdi),%rax
+   2d30a:	shr    $0x1c,%rdx
+   2d30e:	and    $0xfffffffffffffff0,%rdx
+   2d312:	vmovdqu (%rax,%rdx,1),%xmm1
+   2d317:	xor    %eax,%eax
+   2d319:	vptest %xmm0,%xmm1
+   2d31e:	setb   %al
+   2d321:	mov    %eax,(%rcx)
+   2d323:	ret
+   2d324:	cmp    $0x1,%esi
+   2d327:	jne    2d330 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0x60>
+   2d329:	xor    %eax,%eax
+   2d32b:	jmp    2d3e5 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0x115>
+   2d330:	mov    %esi,%r8d
+   2d333:	and    $0xfffffffe,%r8d
+   2d337:	xor    %eax,%eax
+   2d339:	vmovdqa -0x2b8a1(%rip),%xmm0        # 1aa0 <_IO_stdin_used+0x3c0>
+   2d341:	vpbroadcastq -0x2b96a(%rip),%xmm1        # 19e0 <_IO_stdin_used+0x300>
+   2d34a:	nopw   0x0(%rax,%rax,1)
+   2d350:	mov    (%rdx,%rax,8),%r9
+   2d354:	vpbroadcastd %r9d,%xmm2
+   2d35a:	shr    $0x20,%r9
+   2d35e:	mov    (%rdi),%r10d
+   2d361:	imul   %r9,%r10
+   2d365:	vpmulhw %xmm0,%xmm2,%xmm2
+   2d369:	vpshufb %xmm2,%xmm1,%xmm2
+   2d36e:	mov    0x8(%rdi),%r9
+   2d372:	shr    $0x1c,%r10
+   2d376:	and    $0xfffffffffffffff0,%r10
+   2d37a:	vmovdqu (%r9,%r10,1),%xmm3
+   2d380:	xor    %r9d,%r9d
+   2d383:	vptest %xmm2,%xmm3
+   2d388:	setb   %r9b
+   2d38c:	mov    %r9d,(%rcx,%rax,4)
+   2d390:	mov    0x8(%rdx,%rax,8),%r9
+   2d395:	vpbroadcastd %r9d,%xmm2
+   2d39b:	shr    $0x20,%r9
+   2d39f:	mov    (%rdi),%r10d
+   2d3a2:	imul   %r9,%r10
+   2d3a6:	vpmulhw %xmm0,%xmm2,%xmm2
+   2d3aa:	vpshufb %xmm2,%xmm1,%xmm2
+   2d3af:	mov    0x8(%rdi),%r9
+   2d3b3:	shr    $0x1c,%r10
+   2d3b7:	and    $0xfffffffffffffff0,%r10
+   2d3bb:	vmovdqu (%r9,%r10,1),%xmm3
+   2d3c1:	xor    %r9d,%r9d
+   2d3c4:	vptest %xmm2,%xmm3
+   2d3c9:	setb   %r9b
+   2d3cd:	mov    %r9d,0x4(%rcx,%rax,4)
+   2d3d2:	add    $0x2,%rax
+   2d3d6:	cmp    %rax,%r8
+   2d3d9:	jne    2d350 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0x80>
+   2d3df:	test   $0x1,%sil
+   2d3e3:	je     2d42d <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0x15d>
+   2d3e5:	mov    (%rdx,%rax,8),%rdx
+   2d3e9:	vpbroadcastd %edx,%xmm0
+   2d3ef:	shr    $0x20,%rdx
+   2d3f3:	mov    (%rdi),%esi
+   2d3f5:	imul   %rdx,%rsi
+   2d3f9:	vpmulhw -0x2b961(%rip),%xmm0,%xmm0        # 1aa0 <_IO_stdin_used+0x3c0>
+   2d401:	vpbroadcastq -0x2ba2a(%rip),%xmm1        # 19e0 <_IO_stdin_used+0x300>
+   2d40a:	vpshufb %xmm0,%xmm1,%xmm0
+   2d40f:	mov    0x8(%rdi),%rdx
+   2d413:	shr    $0x1c,%rsi
+   2d417:	and    $0xfffffffffffffff0,%rsi
+   2d41b:	vmovdqu (%rdx,%rsi,1),%xmm1
+   2d420:	xor    %edx,%edx
+   2d422:	vptest %xmm0,%xmm1
+   2d427:	setb   %dl
+   2d42a:	mov    %edx,(%rcx,%rax,4)
+   2d42d:	ret

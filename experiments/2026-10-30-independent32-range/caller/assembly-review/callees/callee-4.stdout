@@ -1,0 +1,70 @@
+
+/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000029bc0 <_ZNK13bloom_filters21FourSectorBloomFilter12LookupScalarEjPKmPj>:
+   29bc0:	mov    %esi,%eax
+   29bc2:	test   %esi,%esi
+   29bc4:	je     29cca <_ZNK13bloom_filters21FourSectorBloomFilter12LookupScalarEjPKmPj+0x10a>
+   29bca:	push   %r15
+   29bcc:	push   %r14
+   29bce:	push   %r12
+   29bd0:	push   %rbx
+   29bd1:	mov    %eax,%esi
+   29bd3:	xor    %r8d,%r8d
+   29bd6:	lea    -0x2670d(%rip),%r9        # 34d0 <_ZN13bloom_filters21FourSectorBloomFilter9patterns2E>
+   29bdd:	vmovdqa -0x28195(%rip),%xmm0        # 1a50 <_IO_stdin_used+0x370>
+   29be5:	vmovdqa -0x2811d(%rip),%xmm1        # 1ad0 <_IO_stdin_used+0x3f0>
+   29bed:	vmovdqa -0x280f5(%rip),%xmm2        # 1b00 <_IO_stdin_used+0x420>
+   29bf5:	vmovdqa -0x2814d(%rip),%xmm3        # 1ab0 <_IO_stdin_used+0x3d0>
+   29bfd:	nopl   (%rax)
+   29c00:	mov    (%rdx,%r8,8),%r15
+   29c04:	mov    %r15d,%r10d
+   29c07:	mov    %r15d,%r11d
+   29c0a:	mov    %r15d,%ebx
+   29c0d:	rorx   $0x18,%r15d,%r14d
+   29c13:	vmovd  %r14d,%xmm4
+   29c18:	vpinsrd $0x1,%r15d,%xmm4,%xmm4
+   29c1e:	shr    $0x20,%r15
+   29c22:	and    $0xf,%r10d
+   29c26:	shr    $0x6,%r11d
+   29c2a:	and    $0x3c,%r11d
+   29c2e:	shr    $0xe,%ebx
+   29c31:	and    $0x3c,%ebx
+   29c34:	and    $0xf,%r14d
+   29c38:	mov    (%rdi),%r12
+   29c3b:	vpbroadcastd %r15d,%xmm5
+   29c41:	and    0x18(%rdi),%r15d
+   29c45:	vpsrlvd %xmm0,%xmm5,%xmm5
+   29c4a:	vpand  %xmm1,%xmm5,%xmm5
+   29c4e:	vpbroadcastd %r15d,%xmm6
+   29c54:	vpternlogd $0x1e,%xmm2,%xmm5,%xmm6
+   29c5b:	vpshufd $0x54,%xmm4,%xmm4
+   29c60:	vpmovzxdq %xmm6,%ymm5
+   29c65:	kxnorw %k0,%k0,%k1
+   29c69:	vpxor  %xmm6,%xmm6,%xmm6
+   29c6d:	vpgatherqd (%r12,%ymm5,4),%xmm6{%k1}
+   29c74:	vpsrlvd %xmm3,%xmm4,%xmm4
+   29c79:	vmovd  (%r9,%r14,4),%xmm5
+   29c7f:	vpinsrd $0x1,(%rbx,%r9,1),%xmm5,%xmm5
+   29c86:	vpinsrd $0x2,(%r11,%r9,1),%xmm5,%xmm5
+   29c8d:	vpinsrd $0x3,(%r9,%r10,4),%xmm5,%xmm5
+   29c94:	vprolvd %xmm4,%xmm5,%xmm4
+   29c9a:	vpand  %xmm6,%xmm4,%xmm5
+   29c9e:	vpcmpeqd %xmm4,%xmm5,%k0
+   29ca4:	kmovd  %k0,%r10d
+   29ca8:	xor    %r11d,%r11d
+   29cab:	cmp    $0xf,%r10b
+   29caf:	sete   %r11b
+   29cb3:	mov    %r11d,(%rcx,%r8,4)
+   29cb7:	inc    %r8
+   29cba:	cmp    %r8,%rsi
+   29cbd:	jne    29c00 <_ZNK13bloom_filters21FourSectorBloomFilter12LookupScalarEjPKmPj+0x40>
+   29cc3:	pop    %rbx
+   29cc4:	pop    %r12
+   29cc6:	pop    %r14
+   29cc8:	pop    %r15
+   29cca:	vzeroupper
+   29ccd:	ret

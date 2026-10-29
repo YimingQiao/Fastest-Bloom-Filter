@@ -1,0 +1,112 @@
+
+/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000026cb0 <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj>:
+   26cb0:	test   %rsi,%rsi
+   26cb3:	je     26e5d <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x1ad>
+   26cb9:	push   %rbx
+   26cba:	movabs $0xd6e8feb86659fd93,%r8
+   26cc4:	cmp    $0x1,%rsi
+   26cc8:	jne    26cd1 <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x21>
+   26cca:	xor    %eax,%eax
+   26ccc:	jmp    26ddf <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x12f>
+   26cd1:	mov    %rsi,%r9
+   26cd4:	and    $0xfffffffffffffffe,%r9
+   26cd8:	xor    %eax,%eax
+   26cda:	vpbroadcastq -0x2530b(%rip),%xmm0        # 19d8 <_IO_stdin_used+0x2f8>
+   26ce3:	vpbroadcastd -0x25618(%rip),%ymm1        # 16d4 <__abi_tag+0x1410>
+   26cec:	nopl   0x0(%rax)
+   26cf0:	mov    (%rdx,%rax,8),%r10
+   26cf4:	mov    %r10,%r11
+   26cf7:	shr    $0x20,%r11
+   26cfb:	xor    %r10,%r11
+   26cfe:	imul   %r8,%r11
+   26d02:	mov    %r11,%r10
+   26d05:	shr    $0x20,%r10
+   26d09:	xor    %r11,%r10
+   26d0c:	imul   %r8,%r10
+   26d10:	mov    %r10,%r11
+   26d13:	shr    $0x20,%r11
+   26d17:	xor    %r10,%r11
+   26d1a:	shr    $0x28,%r10
+   26d1e:	mov    0x18(%rdi),%ebx
+   26d21:	imul   %r10,%rbx
+   26d25:	mov    (%rdi),%r10
+   26d28:	shr    $0x13,%rbx
+   26d2c:	and    $0xffffffffffffffe0,%rbx
+   26d30:	vmovdqa (%r10,%rbx,1),%ymm2
+   26d36:	vpbroadcastq %r11,%xmm3
+   26d3c:	vpmultishiftqb %xmm3,%xmm0,%xmm3
+   26d42:	vpmovzxbd %xmm3,%ymm3
+   26d47:	vprolvd %ymm3,%ymm1,%ymm3
+   26d4d:	xor    %r10d,%r10d
+   26d50:	vptest %ymm3,%ymm2
+   26d55:	setb   %r10b
+   26d59:	mov    %r10d,(%rcx,%rax,4)
+   26d5d:	mov    0x8(%rdx,%rax,8),%r10
+   26d62:	mov    %r10,%r11
+   26d65:	shr    $0x20,%r11
+   26d69:	xor    %r10,%r11
+   26d6c:	imul   %r8,%r11
+   26d70:	mov    %r11,%r10
+   26d73:	shr    $0x20,%r10
+   26d77:	xor    %r11,%r10
+   26d7a:	imul   %r8,%r10
+   26d7e:	mov    %r10,%r11
+   26d81:	shr    $0x20,%r11
+   26d85:	xor    %r10,%r11
+   26d88:	shr    $0x28,%r10
+   26d8c:	mov    0x18(%rdi),%ebx
+   26d8f:	imul   %r10,%rbx
+   26d93:	mov    (%rdi),%r10
+   26d96:	shr    $0x13,%rbx
+   26d9a:	and    $0xffffffffffffffe0,%rbx
+   26d9e:	vmovdqa (%r10,%rbx,1),%ymm2
+   26da4:	vpbroadcastq %r11,%xmm3
+   26daa:	vpmultishiftqb %xmm3,%xmm0,%xmm3
+   26db0:	vpmovzxbd %xmm3,%ymm3
+   26db5:	vprolvd %ymm3,%ymm1,%ymm3
+   26dbb:	xor    %r10d,%r10d
+   26dbe:	vptest %ymm3,%ymm2
+   26dc3:	setb   %r10b
+   26dc7:	mov    %r10d,0x4(%rcx,%rax,4)
+   26dcc:	add    $0x2,%rax
+   26dd0:	cmp    %rax,%r9
+   26dd3:	jne    26cf0 <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x40>
+   26dd9:	test   $0x1,%sil
+   26ddd:	je     26e5c <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x1ac>
+   26ddf:	mov    (%rdx,%rax,8),%rdx
+   26de3:	mov    %rdx,%rsi
+   26de6:	shr    $0x20,%rsi
+   26dea:	xor    %rdx,%rsi
+   26ded:	imul   %r8,%rsi
+   26df1:	mov    %rsi,%rdx
+   26df4:	shr    $0x20,%rdx
+   26df8:	xor    %rsi,%rdx
+   26dfb:	imul   %r8,%rdx
+   26dff:	mov    %rdx,%rsi
+   26e02:	shr    $0x20,%rsi
+   26e06:	xor    %rdx,%rsi
+   26e09:	shr    $0x28,%rdx
+   26e0d:	mov    0x18(%rdi),%r8d
+   26e11:	imul   %rdx,%r8
+   26e15:	mov    (%rdi),%rdx
+   26e18:	shr    $0x13,%r8
+   26e1c:	and    $0xffffffffffffffe0,%r8
+   26e20:	vmovdqa (%rdx,%r8,1),%ymm0
+   26e26:	vpbroadcastq %rsi,%xmm1
+   26e2c:	vpbroadcastq -0x2545d(%rip),%xmm2        # 19d8 <_IO_stdin_used+0x2f8>
+   26e35:	vpmultishiftqb %xmm1,%xmm2,%xmm1
+   26e3b:	vpmovzxbd %xmm1,%ymm1
+   26e40:	vpbroadcastd -0x25775(%rip),%ymm2        # 16d4 <__abi_tag+0x1410>
+   26e49:	vprolvd %ymm1,%ymm2,%ymm1
+   26e4f:	xor    %edx,%edx
+   26e51:	vptest %ymm1,%ymm0
+   26e56:	setb   %dl
+   26e59:	mov    %edx,(%rcx,%rax,4)
+   26e5c:	pop    %rbx
+   26e5d:	vzeroupper
+   26e60:	ret
