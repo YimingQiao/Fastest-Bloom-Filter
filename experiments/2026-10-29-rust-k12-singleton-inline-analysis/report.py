@@ -28,7 +28,7 @@ All24 commands completed in one measurement session onCPU3 under the whole socke
 
 ## All comparisons retained
 
-The tables show the minimum–maximum ratio across all three seeds, followed by win/loss counts. Ratio=rival latency/candidate latency; **greater than1 favors the two-hint candidate**. The eight samples within each query-trial vector, full minima/maxima and individual losses remain in `report/pairs.csv`. There are576 named pairs,192 three-seed condition groups,384 pair-order strata and144 staged/visible API ratios.
+The tables show the minimum–maximum ratio across all three seeds, followed by win/loss counts. Ratio=rival latency/candidate latency; **greater than1 favors the denominator (candidate named in that row)**. The eight samples within each query-trial vector, full minima/maxima and individual losses remain in `report/pairs.csv`. There are576 named pairs,192 three-seed condition groups,384 pair-order strata and144 staged/visible API ratios.
 
 | Rival / candidate | Query win/loss/tie (96) | Build win/loss/tie (96) |
 |---|---:|---:|
