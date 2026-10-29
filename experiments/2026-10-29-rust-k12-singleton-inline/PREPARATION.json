@@ -1,0 +1,547 @@
+{
+  "scope": "Single two-hint caller correctness and ASM; no performance or calibration",
+  "parents": {
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/PREPARATION.json": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "ec89f5ec38957e0d98f2d1e0e2d85e200ca36da60ee5cd392bcf85ac0f7f9666"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/PLAN.json": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "59411bb8d43e94a1308bbe494a533f3305093ff7251983b47c14c56e85f5dd73"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/README.md": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "c4dc8d12924a7cee450676ff88ea8d0a84d83ef08f88b90e08c3798b0de242c4"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/Cargo.lock": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "faed3b56292418349b26f9e5eb08abfc0207642657c60d2c19f97c304c119ded"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/Cargo.toml": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "8dc277cf427caf32fa4cb388ab41c9da568771bc64ed5369c98563f271e75c30"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/exact_tests.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "f201b3f267addf6778395eff6a2282e0c4fae6bafd7820640d537f6b7088a564"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/fixed_fastbloom.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "818e2d7f77da76976e1a9c468263a98ee706a3db048e89ac9956cb042ec11fde"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/geometry.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "0a6fcb51955d672c2f5fc2d1e7811ed12d52e560d415dceff40dedaefa2fab10"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/k12_adapter.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "df32c30d11be25e0e6f02cb4dd9f3c641eadc81edb9da3e8e681a7bf768a67ea"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/k12_tests.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "a9f2b53ec5c94810c6e76cc358358d40b659f00174a143e35fadaa2df3978ae3"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/main.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "5d67a0a4220a75376356d8c9a9cfe15445d9b0037f6aeae5f4d6db9ea0bb7554"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/sbbf.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "f07c1945774dc84b9eb5c4cded8b0e4ba33337e2baee2741bcba66b8cdb6d100"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/support/filter_selection.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "42194dbae3711fc4af6dbca23c9fe80e04471c3c214e96c4939518e72aa39b3e"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/support/query_validation.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "1a569d05ccaccd315e05000896da1efac17ee901e267ea5e4e993cf14f4165d3"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/benchmark/src/tests.rs": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "fe718b6e50b52ab37ac27fde464df3a2c783bde99453efc8bf7efb6f834af272"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/caller.patch": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "d81a64e0ebaa5a60f98f8bc55bd92208927e8f71dbb1a9dd651ee6e87955a569"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/derive-v1.stderr": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "9f823830d408ad5eed9efc1160414d17fa5af8c003237a5776f2c825f7097133"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/derive-v1.stdout": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/derive-v2.stderr": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/derive-verify.json": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "37277cb847fab6eeff0f3fb89fd7257d79573294114b234321acac3ed7ca6b71"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/derive.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "fe873cc7c8c97f8b372eeee22a64c79a76bf68af7489a551cff3d6626f75d0fc"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/derived.json": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "37277cb847fab6eeff0f3fb89fd7257d79573294114b234321acac3ed7ca6b71"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/asm.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "a7378686170e8c4fb445a830c311a3f00556e0d7ba8ea97a4d29349aa329b99a"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/bindings.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "29cc78b67d59f0415ea9a1d7d986dc3538182dd02fcc6c17524363663c9a5ca8"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/contract.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "41e62e7ccdbc4f206bb8880f694d5f0e7f71a27ead28979844cd7875f43cb463"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/dependencies-parent.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "039934c28eb3e6ec0d52c1a1b6fdb63fe1f795214e33177692640d996a5ebb6d"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/dependencies.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "5d9980576478ee8d44b4efd7ef3a68b8e5d7ea58b20b8c73c08d49c84d3c1b29"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/derive_guard.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "75916716e58d397b3b69e09de166e4f662fbd072c637444a4df24bb9f4f527f9"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/guard.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "584536c9606f030f6b37bd09b7476af67446eb1b0c0c3c14d6c7e47b61c2bb04"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/offline-v1.stderr": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "5b8a3ccb28c32f172271a641e8142fdb66c37cd396f681ca016266abfdb51bb3"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/offline-v1.stdout": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/source_guard.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "549aa953c8d1c8d2f8d3d27adc3b5de83c7e97dd3c20db7a50efa640979a5d22"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/test_preflight.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "58fdfac5451dede1a9a98090871d528a70931110cbc10134c2bf848ff6a0343e"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/preflight/validate.py": {
+      "commit": "72625673e6b5bb57874a5fa53e04d23ffb8c6ab2",
+      "sha256": "1b2100a4e3cc1b69c772a6f2d6aec03f1e7d63695dbfeccd8cf55bba83964b28"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/PREPARATION.json": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "c5632bdfed45cd4ff40924bdb7a6daf2c151730a67886e8b2dc116964f1ac42c"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes-screen/PERFORMANCE_COMPILED_FREEZE.json": {
+      "commit": "c5ed7d7d23f9c481dc61990544b0827502d187c4",
+      "sha256": "7f41753ed570b87cc671d14a0771770255ef5dc11f8b419d874eb39dab544a4d"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes-screen/external-tree.json": {
+      "commit": "c5ed7d7d23f9c481dc61990544b0827502d187c4",
+      "sha256": "80458c7adb98d03d3567558e6d8797442e15e3792aa074b1a0161c4db736e64d"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes-screen/guard.py": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "9069063a9dafc9ac8a164d8be312fbada152966b25ffa5bc93cae6cfbd2fafeb"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes-screen/source_guard.py": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "549aa953c8d1c8d2f8d3d27adc3b5de83c7e97dd3c20db7a50efa640979a5d22"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/PREFLIGHT_FREEZE.json": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "fb28d4c3f55f8653916dd109f255d28e68024c85cda64e9a1f871385c0209d5b"
+    },
+    "experiments/2026-10-29-native-build-policy-controls/caller/preflight/dependencies.py": {
+      "commit": "ec44c93cde22ea5c30ffd4d2bca5bc6e5eaaf63b",
+      "sha256": "039934c28eb3e6ec0d52c1a1b6fdb63fe1f795214e33177692640d996a5ebb6d"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/.gitattributes": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "b95357803c03ba40f5e35ab78e3a42c0997a597f9bd46b4c65c50967364444ea"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/.gitignore": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "32dae3052f331ee34d628ef535709b301259a45df7c7522c4d35dcf49873f00b"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/README.md": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "ab726c1b3bc1736951d33bbeec4041def230452e3787f04189963db041452ad9"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/derive-v1.stderr": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "5282e01eb3f86c6d1fce8533fe3b7c180624996c4070029d034358eb12e0c526"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/derive-v1.stdout": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/derive-v2.stderr": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/derive-v2.stdout": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "4007d53dcd4d1f31bc27e57c7d9f52102bf5f21c362b44a7ecbc9812af7f843a"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/offline-tests.txt": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "357761de973a080051958068d7b5f0deecdc3b826c553a14de7fe86480760eff"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/plan.py": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "4877ae5254f47fb1687f41babef2ad6b54a4623e2ef416cd0386484e7636e27d"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/protocol.json": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "d47bf79361d0e585088adfdfd122a13868037c7b73cbdb8c5c40876639ed73df"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/selection.json": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "229f8b013ce3adef73104de81a95f8d65d52bca882bf60a8454bc40b41f61c2f"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/test_plan.py": {
+      "commit": "21c8202ab8b742579e45180c91de7e3582465ac3",
+      "sha256": "c116883da4c3cafc297dc2ec0340c59cdfacc84516ed67fd8b3ef769fcb836cf"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/Cargo.lock": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "9463976a7e2fe1f4c1c0fa289ea3444dbb7bf1fdeedbe73e1e53ce600ac8938a"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/Cargo.toml": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "9442dc6ac23584f0126d81c0e2490741a8afeab1729bfa6f8214fb1ece713f69"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/LICENSE-APACHE": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "3f1c443ccd7c4e45549fb7f32e499fe63eab4a5876cf9772c185e087808f4957"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/LICENSE-MIT": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "396b9a45f46ed8a8bcd7c1ac83d5af587240d2093e3a02275bfe486867df8177"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/NOTICE": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "d81571b80f8e2f3e0e17875ade27739fb51e9e9e3f2319f9179e15cae5f31099"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/examples/parity.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "bb38fe8cb07422e1378b96e31fb3e64db55c93eb91aa1c6b9a174d120d14ece4"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/byte_split.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "631fd01c09f40d5d08120ee3cdafb048a51cf4874a16a93776ecf0b30277d01b"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/four_sector.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "51737bec1c5855c683bf94b88c8512241240647d424fcaf5ca5adf700de97f38"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/layout_parallel.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "6e3fe5d56304de040bfb1c72c3de62d12f497ebdd9972c3eee4ea3e32f062dd0"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/lib.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "9b489fd27e8ba6fb7dd98325a056eaf28333414b356a178400dea926dec7f6f7"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/parallel.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "e361f421a79cab9cad7de4ef4f7074a07f1b7bcccfb0d01e443dd4c26ee86a96"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/patterns.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "fcdf871e1f92a7ba94b6bb71a9215c26168904faa96713401c06d308e380726f"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/range_parallel.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "c37b85424205f4a65f1f1d65953499e189eea724d446b481f37979682d3096c7"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/split64.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "d9facc9aaab86e094348c7acd7575b92d20a9e467bba9133842b38220de73944"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/split64_range.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "82e8ba93a9c215bd1850bafdf4e414d696a6cb3975a275f9eb505e517601579c"
+    },
+    "experiments/2026-10-29-split64-range-rust-screen/native/src/split64_range/tests.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "79c14b1a95cfa1343bbc0f3782543e478246ce8264c0e9d1f5b2f47de451f515"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/Cargo.lock": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "5746708dad9360b686e1afed2de0ac029c1c297ff1bc0ecf45577a6b4bc7105a"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/Cargo.toml": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "d84b43f609fb08606522217ffd3fb7e1ad0d421161f6574ac934486150adcb54"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/LICENSE-MIT": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "396b9a45f46ed8a8bcd7c1ac83d5af587240d2093e3a02275bfe486867df8177"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/src/bin/fixture.rs": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "6801004104954093977a5cebaa73747b07963cd87f05238e09d5d99c96439f1f"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/src/four_sector_range12.rs": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "2d789419e0bde65277af1f2acac59c74d2063ed9c8044aa7c88a06638f8253b0"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/src/layout_parallel.rs": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "d43d9d9c507f9ad561ba1055813657d592bdf6f166884d5ca8ffb2911bb05660"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/src/lib.rs": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "fff4992da3389e572c786644eeda8ea7e13becd484a25b21e8bb5e9111d2f2c4"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/src/parallel.rs": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "a0004bd74b13b20ceea17d6d8c4e61a80868582aade6e4bba7d2c05dc8dc8e78"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-port/native/src/tests.rs": {
+      "commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+      "sha256": "de37fee7961ce5f67a61f3d16f317ab448b36b3371167c4ef350ccc5409fa3b5"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/Cargo.lock": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "f46da17ce50d07064c840e92a575127373d915db14cd9e0124a02e0ab3f1cd31"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/Cargo.toml": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "d84bdf0698e57b8d04c0319ed67b7c088c2601da0c321279b98a81eae606f021"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/src/exact_tests.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "f201b3f267addf6778395eff6a2282e0c4fae6bafd7820640d537f6b7088a564"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/src/fixed_fastbloom.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "818e2d7f77da76976e1a9c468263a98ee706a3db048e89ac9956cb042ec11fde"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/src/geometry.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "a4bf00b6730ddac40f5c0b97a9db0b0f084bff4ec5c2922b7adc8642a534dc2c"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/src/main.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "61b3e4847fa74ff21b1c67bda349a13dcfd93a936ab0e55f621b099638b31a10"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/src/sbbf.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "f07c1945774dc84b9eb5c4cded8b0e4ba33337e2baee2741bcba66b8cdb6d100"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/src/support/filter_selection.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "42194dbae3711fc4af6dbca23c9fe80e04471c3c214e96c4939518e72aa39b3e"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/src/support/query_validation.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "1a569d05ccaccd315e05000896da1efac17ee901e267ea5e4e993cf14f4165d3"
+    },
+    "experiments/2026-10-29-rust-fastbloom-fixed-probes/benchmark/src/tests.rs": {
+      "commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+      "sha256": "fe718b6e50b52ab37ac27fde464df3a2c783bde99453efc8bf7efb6f834af272"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller-proof/COMPILED_FREEZE.json": {
+      "commit": "a2d6f832a77d251ec44429ea7f13a37eafa2c0a6",
+      "sha256": "967b139dbf8585181a395a6f8baa0a52ef82d013328dc6cfa808705abedcb799"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/validation-v1/metadata.json": {
+      "commit": "a2d6f832a77d251ec44429ea7f13a37eafa2c0a6",
+      "sha256": "0b27ad43d1df6e4f7783a551a7f059c133eb6ecd87478077e211e6873da52844"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller/validation-v1/normal-case-0.stdout": {
+      "commit": "a2d6f832a77d251ec44429ea7f13a37eafa2c0a6",
+      "sha256": "60ab31a2b5acde4300241c6582cf3a2728e09078cbcfc9bd9e1e0560f919130c"
+    },
+    "experiments/2026-10-29-four-sector-range12-rust-screen/caller-asm-v2/capture-v2/CAPTURE.json": {
+      "commit": "a2d6f832a77d251ec44429ea7f13a37eafa2c0a6",
+      "sha256": "2af5a538f6f8e427a07d0e4706b709c392ee1cc12994610cce478e1da3b4bab5"
+    }
+  },
+  "files": {
+    ".gitattributes": {
+      "sha256": "a287cb93b3b57db8d1f6fe2ba5e466f300ece434e0f9bf12002f7fd0ed5212a8",
+      "bytes": 52
+    },
+    ".gitignore": {
+      "sha256": "10d652a39e3c4b1fbc87e0d2458110bdf83b0fd694d269d38b2652b6c7e9bb37",
+      "bytes": 28
+    },
+    "DERIVED.json": {
+      "sha256": "edac27f7d70785dfb792d093b6a92d1b28a278b32356b06bb4f469535da30e1a",
+      "bytes": 8198
+    },
+    "ORDER.json": {
+      "sha256": "ec7bd13b1e27bf7cfcd1a022126a3cad15691826984780fc82577cec842e50b6",
+      "bytes": 3286
+    },
+    "README.md": {
+      "sha256": "2a7b72e00467fe18a541d015f828ac0f1886ec8f76a0ef4581e7df49a0a69249",
+      "bytes": 2546
+    },
+    "benchmark/Cargo.lock": {
+      "sha256": "ddcd3684df55ba7239b182631f6d3402e78edb1711496eef2c6993849e9734c7",
+      "bytes": 3113
+    },
+    "benchmark/Cargo.toml": {
+      "sha256": "7f08e96531a94b10c62bbb9a937647f20c86dff673f1f2d1fb1502205d046f58",
+      "bytes": 891
+    },
+    "benchmark/src/exact_tests.rs": {
+      "sha256": "f201b3f267addf6778395eff6a2282e0c4fae6bafd7820640d537f6b7088a564",
+      "bytes": 5081
+    },
+    "benchmark/src/fixed_fastbloom.rs": {
+      "sha256": "818e2d7f77da76976e1a9c468263a98ee706a3db048e89ac9956cb042ec11fde",
+      "bytes": 6871
+    },
+    "benchmark/src/geometry.rs": {
+      "sha256": "a336131d233cd731064b0be9a91fbdd8bf180dae36821e8707d1be16f23eb00d",
+      "bytes": 6826
+    },
+    "benchmark/src/inline_adapter.rs": {
+      "sha256": "dba7b1afef967e1fdc74f5409698b38a844c183bff7c6be4766e30ad8ecccab4",
+      "bytes": 634
+    },
+    "benchmark/src/inline_tests.rs": {
+      "sha256": "c3d6345e7b55a5e489a6f3614ce6f6e9c53923018df0fccc8a313f3ce961c43c",
+      "bytes": 2796
+    },
+    "benchmark/src/k12_adapter.rs": {
+      "sha256": "df32c30d11be25e0e6f02cb4dd9f3c641eadc81edb9da3e8e681a7bf768a67ea",
+      "bytes": 637
+    },
+    "benchmark/src/k12_tests.rs": {
+      "sha256": "a9f2b53ec5c94810c6e76cc358358d40b659f00174a143e35fadaa2df3978ae3",
+      "bytes": 1948
+    },
+    "benchmark/src/main.rs": {
+      "sha256": "cdc5c21acaf1fbf49e93c0fdabbb77d0a447c176cc101390d9fdc74918dba44a",
+      "bytes": 24733
+    },
+    "benchmark/src/sbbf.rs": {
+      "sha256": "f07c1945774dc84b9eb5c4cded8b0e4ba33337e2baee2741bcba66b8cdb6d100",
+      "bytes": 7031
+    },
+    "benchmark/src/support/filter_selection.rs": {
+      "sha256": "42194dbae3711fc4af6dbca23c9fe80e04471c3c214e96c4939518e72aa39b3e",
+      "bytes": 2320
+    },
+    "benchmark/src/support/query_validation.rs": {
+      "sha256": "1a569d05ccaccd315e05000896da1efac17ee901e267ea5e4e993cf14f4165d3",
+      "bytes": 1078
+    },
+    "benchmark/src/tests.rs": {
+      "sha256": "fe718b6e50b52ab37ac27fde464df3a2c783bde99453efc8bf7efb6f834af272",
+      "bytes": 8156
+    },
+    "derive.py": {
+      "sha256": "387a82f0f400109b1817f79a6dc20eea2723a1ab6c649c551ea9f8cb662db6f6",
+      "bytes": 5658
+    },
+    "native/Cargo.lock": {
+      "sha256": "9c8a286debe5839977193845213da1ef3c8dc7ef091614e5a33b97b941dc6102",
+      "bytes": 179
+    },
+    "native/Cargo.toml": {
+      "sha256": "289ed97b8812a954a0bd669af7af2e0051b4e1021c4b6c77218d22e71887c2ea",
+      "bytes": 278
+    },
+    "native/LICENSE-MIT": {
+      "sha256": "396b9a45f46ed8a8bcd7c1ac83d5af587240d2093e3a02275bfe486867df8177",
+      "bytes": 1096
+    },
+    "native/src/bin/fixture.rs": {
+      "sha256": "c9a0d61e8c62282e3577420cd5c4a3dbd1f662148a721563fcffe62c030f192e",
+      "bytes": 1344
+    },
+    "native/src/four_sector_range12.rs": {
+      "sha256": "d5788d52952d3f2822f2132ac188325692b807e15ec55b346f9d712cb02175be",
+      "bytes": 28519
+    },
+    "native/src/layout_parallel.rs": {
+      "sha256": "d43d9d9c507f9ad561ba1055813657d592bdf6f166884d5ca8ffb2911bb05660",
+      "bytes": 7116
+    },
+    "native/src/lib.rs": {
+      "sha256": "fff4992da3389e572c786644eeda8ea7e13becd484a25b21e8bb5e9111d2f2c4",
+      "bytes": 463
+    },
+    "native/src/parallel.rs": {
+      "sha256": "a0004bd74b13b20ceea17d6d8c4e61a80868582aade6e4bba7d2c05dc8dc8e78",
+      "bytes": 349
+    },
+    "native/src/tests.rs": {
+      "sha256": "de37fee7961ce5f67a61f3d16f317ab448b36b3371167c4ef350ccc5409fa3b5",
+      "bytes": 7497
+    },
+    "offline-v1.stderr": {
+      "sha256": "119eb158af9c8a17b35e94789e871de6f57880473f2db9e480f799d8e7a49d2d",
+      "bytes": 102
+    },
+    "offline-v1.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "preflight/README.md": {
+      "sha256": "26ca1382a7d324d7b55c4ba94b5f516f292938491514c9dd76f70f903586c7b6",
+      "bytes": 2410
+    },
+    "preflight/asm.py": {
+      "sha256": "59cb111fea089dbe2423801f8e8dcaac6606fea66ad667bd9eddb27011818816",
+      "bytes": 2763
+    },
+    "preflight/bindings.py": {
+      "sha256": "55324859aa1ae4cd1112bd17ce627bea02faa19d8bc020330a62d65b4e60bcb3",
+      "bytes": 6432
+    },
+    "preflight/contract.py": {
+      "sha256": "e79e50513120f59e3bcb4e11797d0c821b29b39de49ee9c2a314585096635326",
+      "bytes": 1715
+    },
+    "preflight/dependencies.py": {
+      "sha256": "5d9980576478ee8d44b4efd7ef3a68b8e5d7ea58b20b8c73c08d49c84d3c1b29",
+      "bytes": 6477
+    },
+    "preflight/derive_guard.py": {
+      "sha256": "2787fb76fe687753662277e94931a1c27ef9cf34314395fd4d5472dd73742dcf",
+      "bytes": 1784
+    },
+    "preflight/guard.py": {
+      "sha256": "ba5688d2ca33816d735fbf7c3c6365ab695537cf3545363c17e3efeaffd08c98",
+      "bytes": 11988
+    },
+    "preflight/source_guard.py": {
+      "sha256": "549aa953c8d1c8d2f8d3d27adc3b5de83c7e97dd3c20db7a50efa640979a5d22",
+      "bytes": 1460
+    },
+    "preflight/test_source.py": {
+      "sha256": "9e024d0ead2a502be995eabc429e3e40ea1254319b2f34b82733c6ba0c69f09a",
+      "bytes": 2150
+    },
+    "preflight/validate.py": {
+      "sha256": "a90209cae5c4bf8a3db6872c6ff532f4cde0ef07cf146c8a3443c90fb7409de1",
+      "bytes": 9893
+    },
+    "protocol.json": {
+      "sha256": "c6c259cde6a3e755988d17ed7eab1aa244ccf4d834a518a63e046ab5b2791ac1",
+      "bytes": 1242
+    },
+    "source.patch": {
+      "sha256": "917c9fae1cc1e2d8c4b5ef0f44963131150155f79b3120476171134d3fe17607",
+      "bytes": 5405
+    }
+  }
+}
