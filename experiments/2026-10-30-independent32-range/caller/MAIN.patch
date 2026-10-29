@@ -1,0 +1,82 @@
+--- proved-cpp616-caller
++++ same-clocks-fixed-independent32-panel
+@@ -109,13 +109,15 @@
+ template<class BF> void Allocation(const Point& p) {
+     const auto filter=exact_budget::Traits<BF>::Make(p.keys,p.bpk);
+     GeometryCheck(filter,p);
+-    std::cout << '{';PointFields(p);std::cout << ",\"allocation_only\":true}\n" << std::flush;
++    std::cout << '{';PointFields(p);std::cout << ",\"bitmap_available\":" << (HasData<BF>::value?"true":"false") << ",\"allocation_only\":true}\n" << std::flush;
+ }
+ template<class BF> void Run(const Point& p, const Case& c, const Input& d) {
+     const size_t n=d.inserted.size(),q=d.query.size();
+     auto filter=exact_budget::Traits<BF>::Make(n,p.bpk);
+     GeometryCheck(filter,p);
+     filter.Insert(static_cast<uint32_t>(n),d.inserted.data());
++    uint64_t initial_bitmap = 0;
++    if constexpr(HasData<BF>::value) initial_bitmap = Digest(static_cast<const uint8_t*>(static_cast<const void*>(filter.Data())),filter.SizeInBytes());
+     Output out(std::max<size_t>(q,c.batch));
+     std::vector<uint64_t> scratch(c.batch);
+     for(size_t i=0;i<n;i+=c.batch) {
+@@ -212,6 +214,9 @@
+     if(Digest(d.inserted_raw.data(),n)!=d.inserted_digest || Digest(d.query_raw.data(),q)!=d.query_digest ||
+        Digest(d.inserted.data(),n)!=d.inserted_hash_digest || Digest(d.query.data(),q)!=d.query_hash_digest)
+         throw std::runtime_error("input mutated");
++    if constexpr(HasData<BF>::value)
++        if(initial_bitmap != Digest(static_cast<const uint8_t*>(static_cast<const void*>(filter.Data())),filter.SizeInBytes()))
++            throw std::runtime_error("query mutated bitmap");
+     const char* mode_names[]={"generic_pure","generic_staged_common_hash","visible_public_pure","visible_public_fused_common_hash"};
+     std::cout<<std::setprecision(17)<<'{';PointFields(p);
+     std::cout<<",\"queries\":"<<q<<",\"hit\":"<<c.hit<<",\"batch\":"<<c.batch<<",\"repeats\":"<<c.repeats
+@@ -224,6 +229,7 @@
+              <<",\"calibration_negatives\":"<<calibration_count<<",\"calibration_fp\":"<<calibration_fp
+              <<",\"calibration_digest\":";
+     if(calibration_count)std::cout<<calibration_digest;else std::cout<<"null";
++    std::cout<<",\"bitmap_available\":"<<(HasData<BF>::value?"true":"false");
+     std::cout<<",\"bitmap_digest\":";BitmapField(filter);
+     std::cout<<",\"query_scratch_bytes\":"<<scratch.size()*sizeof(uint64_t)<<",\"phase_order\":[";
+     for(size_t i=0;i<phase_order.size();++i){if(i)std::cout<<',';std::cout<<phase_order[i];}
+@@ -237,15 +243,14 @@
+ }
+ 
+ struct Job {Point point;void(*run)(const Point&,const Case&,const Input&);void(*allocation)(const Point&);};
+-bool Diagnostic(const char* owner) {
+-    const std::string value=owner;
+-    return value=="old_k12" || value=="candidate" || value=="native_range";
+-}
+-std::vector<Job> Jobs(size_t n,bool primary) {
++std::vector<Job> Jobs(size_t n,bool proof) {
+     std::vector<Job> jobs;
+ #define ADD(TYPE,NAME,ID,OWNER,N,BPK,BACKING,LOGICAL,UNIT_BYTES,UNITS,PROBES,ARG,KIND,POLICY,NATIVE_BPK) \
+-    if(n==(N) && (primary || Diagnostic(OWNER)))jobs.push_back({{NAME,ID,OWNER,N,BPK,BACKING,LOGICAL,UNIT_BYTES,UNITS,PROBES,ARG,KIND,POLICY,NATIVE_BPK},&Run<TYPE>,&Allocation<TYPE>});
++    if(n==(N))jobs.push_back({{NAME,ID,OWNER,N,BPK,BACKING,LOGICAL,UNIT_BYTES,UNITS,PROBES,ARG,KIND,POLICY,NATIVE_BPK},&Run<TYPE>,&Allocation<TYPE>});
+ #include "points.inc"
++    if(proof) {
++#include "proof-point.inc"
++    }
+ #undef ADD
+     return jobs;
+ }
+@@ -256,11 +261,9 @@
+         const std::string mode=argv[1];
+         if(mode!="--measure"&&mode!="--check"&&mode!="--fault"&&mode!="--geometry")throw std::invalid_argument("unknown mode");
+         Case c{Number(2),Number(3),Number(4),Number(5),Number(6),Number(8),Number(9),Number(7),mode=="--measure",mode=="--fault",mode=="--geometry"};
+-        if(c.order>1 || (c.hit!=0&&c.hit!=50&&c.hit!=100) ||
+-           (c.batch!=1&&c.batch!=3&&c.batch!=31&&c.batch!=4096))throw std::invalid_argument("unsupported grid");
+-        const bool primary=c.hit==50&&c.batch==1;
+-        if(c.batch!=1&&c.hit!=50&&(c.measure||c.hit!=100||c.batch!=31))
+-            throw std::invalid_argument("unsupported diagnostic");
++        if(c.order>1 || c.hit!=50 || (c.batch!=1&&c.batch!=31&&c.batch!=4096))
++            throw std::invalid_argument("unsupported grid");
++        const bool primary=c.batch==1;
+         if(c.measure) {
+             if((c.power!=16&&c.power!=25)||c.query_power!=22||c.repeats!=8||
+                (c.seed!=982451653&&c.seed!=961748941)||c.calibration_power!=(primary&&c.order==0?26u:0u))
+@@ -270,7 +273,7 @@
+                   c.calibration_power!=(primary&&!c.allocation_only?10u:0u))
+             throw std::invalid_argument("proof grid mismatch");
+         const size_t n=size_t{1}<<c.power,q=size_t{1}<<c.query_power;
+-        auto jobs=Jobs(n,c.allocation_only||primary);
++        auto jobs=Jobs(n,!c.measure&&!c.allocation_only);
+         if(c.allocation_only){for(const auto&job:jobs)job.allocation(job.point);return 0;}
+         Input d;d.inserted_raw.resize(n);d.query_raw.resize(q);d.inserted.resize(n);d.query.resize(q);
+         SplitMix64 rng{c.seed};d.key_base=rng()%((uint64_t{1}<<32)-n-q);
