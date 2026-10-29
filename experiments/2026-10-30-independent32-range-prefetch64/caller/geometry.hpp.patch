@@ -1,0 +1,13 @@
+--- geometry.hpp@968361dbcceabecdb2eb17daf069dee058c28bb4
++++ geometry.hpp
+@@ -91,4 +91,10 @@
+         return g;
+     }
+ };
++template<> struct Traits<Independent32RangePrefetch64BloomFilter>
++    : ExternalMake<Independent32RangePrefetch64BloomFilter> {
++    static Geometry Plan(size_t n, uint32_t bpk) {
++        return Traits<Independent32RangeBloomFilter>::Plan(n, bpk);
++    }
++};
+ } // namespace exact_budget

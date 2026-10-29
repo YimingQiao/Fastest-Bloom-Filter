@@ -1,0 +1,28 @@
+--- test_contract.py@968361dbcceabecdb2eb17daf069dee058c28bb4
++++ test_contract.py
+@@ -31,8 +31,8 @@
+         records=[]
+         for case in c.CASES:
+             rows=c.parse(stream(fixture(case)),case);records.append(dict(case=case,rows=rows))
+-        self.assertEqual(sum(len(r['rows'])for r in records),33);c.cross_batch(records)
+-        self.assertEqual(sum(len(c.parse(stream(fixture(case,True)),case,True))for case in c.ALLOCATION_CASES),18)
++        self.assertEqual(sum(len(r['rows'])for r in records),30);c.cross_batch(records)
++        self.assertEqual(sum(len(c.parse(stream(fixture(case,True)),case,True))for case in c.ALLOCATION_CASES),16)
+     def test_empty_missing_duplicate_or_reordered_rows_reject(self):
+         rows=fixture(c.CASES[0])
+         for changed in ([],rows[:-1],rows+[rows[0]],list(reversed(rows))):
+@@ -78,4 +78,14 @@
+             self.assertEqual(len(group['rows']),7)
+             self.assertTrue(all('samples'not in row for row in group['rows']))
+ 
++    def test_new_pipeline_mapping_alias_rejects_output_drift(self):
++        rows=fixture(c.CASES[0])
++        candidate=next(r for r in rows if r['owner']=='candidate')
++        control=next(r for r in rows if r['owner']=='range_control')
++        self.assertEqual(candidate['actual_bytes'],control['actual_bytes'])
++        for field in ('bitmap_digest','false_positives','result_digest','calibration_fp'):
++            bad=copy.deepcopy(rows)
++            next(r for r in bad if r['owner']=='candidate')[field]+=1
++            with self.assertRaises(ValueError):c.parse(stream(bad),c.CASES[0])
++
+ if __name__=='__main__':unittest.main()

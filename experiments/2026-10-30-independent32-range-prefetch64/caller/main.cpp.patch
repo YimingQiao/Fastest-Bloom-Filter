@@ -1,0 +1,15 @@
+--- main.cpp@968361dbcceabecdb2eb17daf069dee058c28bb4
++++ main.cpp
+@@ -1,3 +1,4 @@
++#include "focused.hpp"
+ #include "adapters.hpp"
+ #include "geometry.hpp"
+ #include "query_helpers.hpp"
+@@ -256,6 +257,7 @@
+ }
+ int main(int argc,char** argv) {
+     try {
++        if(argc==2 && std::string(argv[1])=="--prefetch-check")return prefetch64_proof::Run();
+         if(argc!=10)throw std::invalid_argument("expected mode power hit query_power batch repeats seed reverse calibration_power");
+         auto Number=[&](int i){std::string s=argv[i];if(s.empty()||s.find_first_not_of("0123456789")!=std::string::npos)throw std::invalid_argument("unsigned integer required");const auto v=std::stoull(s);if(v>UINT32_MAX)throw std::invalid_argument("integer too large");return static_cast<unsigned>(v);};
+         const std::string mode=argv[1];
