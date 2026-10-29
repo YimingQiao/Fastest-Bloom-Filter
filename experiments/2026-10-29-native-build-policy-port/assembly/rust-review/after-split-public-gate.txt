@@ -1,0 +1,58 @@
+   36030:	55                   	push   %rbp
+   36031:	41 57                	push   %r15
+   36033:	41 56                	push   %r14
+   36035:	41 55                	push   %r13
+   36037:	41 54                	push   %r12
+   36039:	53                   	push   %rbx
+   3603a:	48 81 ec b8 04 00 00 	sub    $0x4b8,%rsp
+   36041:	49 89 d6             	mov    %rdx,%r14
+   36044:	49 89 f5             	mov    %rsi,%r13
+   36047:	4c 8b 7f 10          	mov    0x10(%rdi),%r15
+   3604b:	49 81 ff 01 10 00 00 	cmp    $0x1001,%r15
+   36052:	be 01 00 00 00       	mov    $0x1,%esi
+   36057:	48 0f 43 f1          	cmovae %rcx,%rsi
+   3605b:	48 81 fa 01 00 01 00 	cmp    $0x10001,%rdx
+   36062:	48 0f 43 f1          	cmovae %rcx,%rsi
+   36066:	8b 47 18             	mov    0x18(%rdi),%eax
+   36069:	89 84 24 c4 00 00 00 	mov    %eax,0xc4(%rsp)
+   36070:	0f b6 47 1c          	movzbl 0x1c(%rdi),%eax
+   36074:	0f b6 4f 1d          	movzbl 0x1d(%rdi),%ecx
+   36078:	88 44 24 26          	mov    %al,0x26(%rsp)
+   3607c:	88 4c 24 27          	mov    %cl,0x27(%rsp)
+   36080:	48 8d 84 24 c4 00 00 	lea    0xc4(%rsp),%rax
+   36087:	00 
+   36088:	48 89 84 24 40 04 00 	mov    %rax,0x440(%rsp)
+   3608f:	00 
+   36090:	48 8d 4c 24 26       	lea    0x26(%rsp),%rcx
+   36095:	48 89 8c 24 48 04 00 	mov    %rcx,0x448(%rsp)
+   3609c:	00 
+   3609d:	4c 8b 67 08          	mov    0x8(%rdi),%r12
+   360a1:	48 8d 4c 24 27       	lea    0x27(%rsp),%rcx
+   360a6:	48 89 8c 24 50 04 00 	mov    %rcx,0x450(%rsp)
+   360ad:	00 
+   360ae:	48 89 84 24 c0 03 00 	mov    %rax,0x3c0(%rsp)
+   360b5:	00 
+   360b6:	48 89 d7             	mov    %rdx,%rdi
+   360b9:	4c 89 fa             	mov    %r15,%rdx
+   360bc:	ff 15 96 b0 05 00    	call   *0x5b096(%rip)        # 91158 <_DYNAMIC+0x648>
+   360c2:	48 89 44 24 58       	mov    %rax,0x58(%rsp)
+   360c7:	48 83 f8 01          	cmp    $0x1,%rax
+   360cb:	75 3e                	jne    3610b <<fastest_bloom_filter::split64::Split64BloomFilter>::insert_hashes_parallel+0xdb>
+   360cd:	8b 8c 24 c4 00 00 00 	mov    0xc4(%rsp),%ecx
+   360d4:	44 0f b6 44 24 26    	movzbl 0x26(%rsp),%r8d
+   360da:	44 0f b6 4c 24 27    	movzbl 0x27(%rsp),%r9d
+   360e0:	4c 89 74 24 08       	mov    %r14,0x8(%rsp)
+   360e5:	4c 89 2c 24          	mov    %r13,(%rsp)
+   360e9:	4c 89 e7             	mov    %r12,%rdi
+   360ec:	4c 89 fe             	mov    %r15,%rsi
+   360ef:	31 d2                	xor    %edx,%edx
+   360f1:	e8 5a f3 ff ff       	call   35450 <<fastest_bloom_filter::split64::Split64BloomFilter>::insert_into>
+   360f6:	48 81 c4 b8 04 00 00 	add    $0x4b8,%rsp
+   360fd:	5b                   	pop    %rbx
+   360fe:	41 5c                	pop    %r12
+   36100:	41 5d                	pop    %r13
+   36102:	41 5e                	pop    %r14
+   36104:	41 5f                	pop    %r15
+   36106:	5d                   	pop    %rbp
+   36107:	c5 f8 77             	vzeroupper
+   3610a:	c3                   	ret

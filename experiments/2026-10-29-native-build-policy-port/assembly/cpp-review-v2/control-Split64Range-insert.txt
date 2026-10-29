@@ -1,0 +1,29 @@
+    be50:	c5 f8 77             	vzeroupper
+    be53:	e8 a8 d0 01 00       	call   28f00 <sched_setaffinity@plt>
+    be58:	85 c0                	test   %eax,%eax
+    be5a:	0f 85 98 21 00 00    	jne    dff8 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x4718>
+    be60:	e8 ab d0 01 00       	call   28f10 <std::chrono::_V2::steady_clock::now()@plt>
+    be65:	48 89 c5             	mov    %rax,%rbp
+    be68:	41 8b 76 10          	mov    0x10(%r14),%esi
+    be6c:	48 8b 94 24 80 00 00 	mov    0x80(%rsp),%rdx
+    be73:	00 
+    be74:	49 8b 4e 18          	mov    0x18(%r14),%rcx
+    be78:	48 8d 7c 24 20       	lea    0x20(%rsp),%rdi
+    be7d:	e8 1e 33 01 00       	call   1f1a0 <native_before::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    be82:	e9 49 06 00 00       	jmp    c4d0 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2bf0>
+    be87:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+    be8e:	00 00 
+    be90:	48 83 c0 04          	add    $0x4,%rax
+    be94:	48 39 c8             	cmp    %rcx,%rax
+
+SHARED STOP-CLOCK TARGET
+    c4c1:	48 39 d0             	cmp    %rdx,%rax
+    c4c4:	75 ba                	jne    c480 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2ba0>
+    c4c6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+    c4cd:	00 00 00 
+    c4d0:	c5 f8 77             	vzeroupper
+    c4d3:	e8 38 ca 01 00       	call   28f10 <std::chrono::_V2::steady_clock::now()@plt>
+    c4d8:	48 8b 0c 24          	mov    (%rsp),%rcx
+    c4dc:	48 8b 49 40          	mov    0x40(%rcx),%rcx
+    c4e0:	8b 09                	mov    (%rcx),%ecx
+    c4e2:	c5 f9 ef c0          	vpxor  %xmm0,%xmm0,%xmm0

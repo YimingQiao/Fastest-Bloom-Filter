@@ -1,0 +1,60 @@
+   1bd4e:	cc                   	int3
+   1bd4f:	cc                   	int3
+
+000000000001bd50 <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>:
+   1bd50:	55                   	push   %rbp
+   1bd51:	41 57                	push   %r15
+   1bd53:	41 56                	push   %r14
+   1bd55:	41 55                	push   %r13
+   1bd57:	41 54                	push   %r12
+   1bd59:	53                   	push   %rbx
+   1bd5a:	48 81 ec b8 00 00 00 	sub    $0xb8,%rsp
+   1bd61:	89 f5                	mov    %esi,%ebp
+   1bd63:	48 89 fb             	mov    %rdi,%rbx
+   1bd66:	89 74 24 14          	mov    %esi,0x14(%rsp)
+   1bd6a:	48 89 94 24 98 00 00 	mov    %rdx,0x98(%rsp)
+   1bd71:	00 
+   1bd72:	81 fe 00 40 00 00    	cmp    $0x4000,%esi
+   1bd78:	73 12                	jae    1bd8c <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x3c>
+   1bd7a:	89 e8                	mov    %ebp,%eax
+   1bd7c:	83 fd 21             	cmp    $0x21,%ebp
+   1bd7f:	0f 83 88 00 00 00    	jae    1be0d <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0xbd>
+   1bd85:	31 c9                	xor    %ecx,%ecx
+   1bd87:	e9 1d 02 00 00       	jmp    1bfa9 <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x259>
+   1bd8c:	48 8b 03             	mov    (%rbx),%rax
+   1bd8f:	4c 8b 73 08          	mov    0x8(%rbx),%r14
+   1bd93:	49 29 c6             	sub    %rax,%r14
+   1bd96:	49 c1 fe 06          	sar    $0x6,%r14
+   1bd9a:	48 8b 73 10          	mov    0x10(%rbx),%rsi
+   1bd9e:	48 29 c6             	sub    %rax,%rsi
+   1bda1:	48 81 fe 01 00 04 00 	cmp    $0x40001,%rsi
+   1bda8:	b8 01 00 00 00       	mov    $0x1,%eax
+   1bdad:	48 0f 43 c1          	cmovae %rcx,%rax
+   1bdb1:	81 fd 01 00 01 00    	cmp    $0x10001,%ebp
+   1bdb7:	48 0f 43 c1          	cmovae %rcx,%rax
+   1bdbb:	48 85 c0             	test   %rax,%rax
+   1bdbe:	75 11                	jne    1bdd1 <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x81>
+   1bdc0:	49 89 d7             	mov    %rdx,%r15
+   1bdc3:	e8 b8 d1 00 00       	call   28f80 <std::thread::hardware_concurrency()@plt>
+   1bdc8:	4c 89 fa             	mov    %r15,%rdx
+   1bdcb:	83 f8 01             	cmp    $0x1,%eax
+   1bdce:	83 d0 00             	adc    $0x0,%eax
+   1bdd1:	89 e9                	mov    %ebp,%ecx
+   1bdd3:	c1 e9 0c             	shr    $0xc,%ecx
+   1bdd6:	49 39 c6             	cmp    %rax,%r14
+   1bdd9:	49 0f 42 c6          	cmovb  %r14,%rax
+   1bddd:	48 39 c1             	cmp    %rax,%rcx
+   1bde0:	48 0f 42 c1          	cmovb  %rcx,%rax
+   1bde4:	48 83 f8 01          	cmp    $0x1,%rax
+   1bde8:	48 89 c1             	mov    %rax,%rcx
+   1bdeb:	48 83 d1 00          	adc    $0x0,%rcx
+   1bdef:	48 81 f9 00 04 00 00 	cmp    $0x400,%rcx
+   1bdf6:	41 be 00 04 00 00    	mov    $0x400,%r14d
+   1bdfc:	4c 0f 42 f1          	cmovb  %rcx,%r14
+   1be00:	4c 89 74 24 08       	mov    %r14,0x8(%rsp)
+   1be05:	48 83 f8 01          	cmp    $0x1,%rax
+   1be09:	77 13                	ja     1be1e <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0xce>
+   1be0b:	89 e8                	mov    %ebp,%eax
+   1be0d:	48 8d 48 e0          	lea    -0x20(%rax),%rcx
+   1be11:	48 83 f8 21          	cmp    $0x21,%rax
+   1be15:	75 3c                	jne    1be53 <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x103>
