@@ -1,0 +1,81 @@
+--- control.h
++++ candidate.h
+@@ -12,8 +12,8 @@
+ // Four distinct 32-bit sectors in one cache line, three cyclic mask bits per sector.
+ // Single-writer insertion; immutable queries can run concurrently. Uniform 64-bit
+ // hashes are required. Empirical FPR is workload-dependent; this is not a hard cap.
+-class FourSectorRange12BloomFilter {
+-	friend class ParallelFourSectorRange12BloomFilter;
++class FourSectorRange12SingletonVectorExperiment {
++	friend class ParallelFourSectorRange12SingletonVectorExperiment;
+ 	size_t CacheLineCount() const {
+ 		return words_.size() / 16;
+ 	}
+@@ -63,16 +63,49 @@
+ 		}
+ 	}
+ 
++#if defined(__AVX512F__)
++    bool ContainsHash512(uint64_t h) const {
++        const uint32_t hi = h >> 32, lo = h;
++        const __m512i hi4 = _mm512_set1_epi32(hi);
++        const __m512i offset_shifts = _mm512_setr_epi32(
++            32, 2, 4, 6, 32, 2, 4, 6, 32, 2, 4, 6, 32, 2, 4, 6);
++        const __m512i quarters = _mm512_setr_epi32(
++            0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12);
++        // VPSRLVD gives zero for count32, preserving the first sector's offset.
++        const __m512i local = _mm512_xor_si512(quarters, _mm512_and_si512(
++            _mm512_xor_si512(hi4, _mm512_srlv_epi32(hi4, offset_shifts)),
++            _mm512_set1_epi32(3)));
++        const __m512i line = _mm512_load_si512(
++            words_.data() + static_cast<size_t>(Block(hi)) * 16);
++        const __m512i selected = _mm512_permutexvar_epi32(local, line);
++        const __m512i rotations = _mm512_setr_epi32(
++            0, 8, 16, 24, 0, 8, 16, 24, 0, 8, 16, 24, 0, 8, 16, 24);
++        const __m512i code = _mm512_rorv_epi32(_mm512_set1_epi32(lo), rotations);
++        // VPERMD uses only code bits0..3; no explicit dictionary-index AND.
++        const __m512i pattern = _mm512_permutexvar_epi32(
++            code, _mm512_loadu_si512(patterns3));
++        // VPROLVD uses only shift bits0..4, exactly (code >> 4) & 31.
++        const __m512i masks = _mm512_rolv_epi32(pattern, _mm512_srli_epi32(code, 4));
++        return (_mm512_cmpeq_epi32_mask(_mm512_and_si512(selected, masks), masks) & 15) == 15;
++    }
++#endif
++
+ public:
+-	explicit FourSectorRange12BloomFilter(RangeBytes budget)
++	explicit FourSectorRange12SingletonVectorExperiment(RangeBytes budget)
+         : words_(range_detail::LineCount(budget.bytes) * 16), line_count_(words_.size() / 16) {
+         if (SizeInBytes() > budget.bytes) throw std::length_error("actual backing exceeds budget");
+     }
+-    explicit FourSectorRange12BloomFilter(size_t n, uint32_t bpk)
+-        : FourSectorRange12BloomFilter(RangeBytes{range_detail::BudgetBytes(n, bpk)}) {}
++    explicit FourSectorRange12SingletonVectorExperiment(size_t n, uint32_t bpk)
++        : FourSectorRange12SingletonVectorExperiment(RangeBytes{range_detail::BudgetBytes(n, bpk)}) {}
+     const uint32_t* Data() const { return words_.data(); }
+     uint32_t LineIndex(uint64_t h) const { return Block(static_cast<uint32_t>(h >> 32)); }
+-    bool ContainsHash(uint64_t h) const { uint32_t out; LookupScalar(1, &h, &out); return out != 0; }
++    bool ContainsHash(uint64_t h) const {
++#if defined(__AVX512F__)
++        return ContainsHash512(h);
++#else
++        uint32_t out; LookupScalar(1, &h, &out); return out != 0;
++#endif
++    }
+ 
+ 	size_t SizeInBytes() const {
+ 		return words_.capacity() * 4;
+@@ -112,8 +145,11 @@
+ 		if (!n)
+ 			return 0;
+ #if defined(__AVX512F__)
+-		if (n < 4)
+-			return LookupScalar(n, h, out);
++		if (n < 4) {
++			for (uint32_t i = 0; i < n; ++i)
++				out[i] = ContainsHash512(h[i]);
++			return n;
++		}
+ 		if (n < 64) {
+ 			const bool large = SizeInBytes() > (1u << 21);
+ 			if (large)
