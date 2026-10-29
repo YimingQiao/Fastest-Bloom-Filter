@@ -70,6 +70,13 @@ keeps the fast gather kernels but fails the same24-bpk quality gate. Fitting
 the desired memory budget and preserving a fast kernel are both insufficient
 without testing the resulting probe distribution.
 
+Baseline configuration needs the same care. The [complete Fastbloom probe
+calibration](../experiments/2026-10-29-rust-fastbloom-fixed-probes-analysis/report/REPORT.md)
+finds that K7 at 24 bpk passes the 0.01% gate at both tested sizes, while its
+automatic default uses K17 for greater accuracy. Counting a win over that
+default alone can overstate our advantage. The next timing comparison keeps
+every tested K; the fewest qualifying probes need not give the lowest latency.
+
 Compiler boundaries also matter. Exposing Rust ByteSplit's public singleton
 body removed a hot per-key call and improved fused throughput16–38% in the
 isolated comparison, with2–3% losses in some short batches. The
