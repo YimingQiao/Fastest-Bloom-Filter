@@ -1,0 +1,67 @@
+--- frozen-v1/validate.py
++++ repair-v2/validate.py
+@@ -8,14 +8,14 @@
+ import subprocess
+ import sys
+ import traceback
+-from guards import HERE,ROOT,need,sha,save,verify,packages,artifacts
++from bindings import HERE,ROOT,need,sha,save,verify,packages,artifacts,reuse_native
+ from contract import cases,argv,validate_rows,invalid,SEMANTIC
+ from dependencies import collect
+ from lease import require_lease
+ from asm import capture
+ 
+-TARGET=Path('/tmp/fastest-bf-rust-k12-simd-caller-v1-cpu3')
+-OUTPUT=HERE/'validation-v1'
++TARGET=Path('/tmp/fastest-bf-rust-k12-simd-caller-v2-cpu3')
++OUTPUT=HERE/'repair-v2/validation-v1'
+ FORBIDDEN=['RUSTFLAGS','RUSTDOCFLAGS','CARGO_ENCODED_RUSTFLAGS','CARGO_ENCODED_RUSTDOCFLAGS',
+  'RUSTC_WRAPPER','RUSTC_WORKSPACE_WRAPPER','CARGO_TARGET_DIR','RUSTC','RUSTDOC','RUSTUP_TOOLCHAIN',
+  'CARGO_BUILD_RUSTFLAGS','CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS',
+@@ -63,25 +63,34 @@
+     try:
+         run('source-derivation',[sys.executable,HERE/'derive.py'])
+         run('offline-guards',[sys.executable,'-m','unittest','discover','-s',HERE,'-p','test_contract.py'])
++        run('workspace-dep-guards',[sys.executable,'-m','unittest','discover','-s',HERE/'repair-v2','-p','test_dependencies.py'])
+         signatures={};executables={}
+         for mode,flags,disabled,nightly in PROFILES:
+             cargo=['cargo']+(['+nightly']if nightly else[])
+             extra=['--target','x86_64-unknown-linux-gnu']if nightly else[]
+             features=['--features','disable-avx512']if disabled else[]
+             env=dict(CARGO_TARGET_DIR=str(TARGET/mode),RUSTFLAGS=flags+' -C symbol-mangling-version=v0')
+-            for tool in ['cargo','rustc']:
+-                path=run(mode+'-'+tool+'-path',['rustup','which',*(['--toolchain','nightly']if nightly else[]),tool],env).strip()
+-                need(Path(path).is_file(),'missing actual toolchain tool');meta['toolchains'][path]=sha(path)
+-            run(mode+'-rustc-version',['rustc']+(['+nightly']if nightly else[])+['-Vv'],env)
+-            closure()
+-            known=packages(run(mode+'-metadata',cargo+['metadata','--format-version=1','--locked','--offline','--manifest-path',HERE/'Cargo.toml',*features],env))
+-            common=['--release','--locked','--offline','--manifest-path',HERE/'Cargo.toml',*extra,*features,'--message-format=json']
+-            test_text=run(mode+'-tests-build',cargo+['test',*common,'--workspace','--lib','--no-run'],env)
+-            build_text=run(mode+'-caller-build',cargo+['build',*common,'--bin','rust-k12-simd-caller'],env)
+-            test_bins=artifacts(test_text,True,TARGET/mode,known)
+-            binary=artifacts(build_text,False,TARGET/mode,known)['rust-k12-simd-caller']
++            build_path=TARGET/mode
++            if mode=='native':
++                reused=reuse_native()
++                known=reused['packages'];test_text=reused['tests'];build_text=reused['build']
++                build_path=Path(reused['target']);env['CARGO_TARGET_DIR']=str(build_path)
++                meta['toolchains'].update(reused['toolchains'])
++                meta['reused_native']=reused['descriptor'];persist();closure()
++            else:
++                for tool in ['cargo','rustc']:
++                    path=run(mode+'-'+tool+'-path',['rustup','which',*(['--toolchain','nightly']if nightly else[]),tool],env).strip()
++                    need(Path(path).is_file(),'missing actual toolchain tool');meta['toolchains'][path]=sha(path)
++                run(mode+'-rustc-version',['rustc']+(['+nightly']if nightly else[])+['-Vv'],env)
++                closure()
++                known=packages(run(mode+'-metadata',cargo+['metadata','--format-version=1','--locked','--offline','--manifest-path',HERE/'Cargo.toml',*features],env))
++                common=['--release','--locked','--offline','--manifest-path',HERE/'Cargo.toml',*extra,*features,'--message-format=json']
++                test_text=run(mode+'-tests-build',cargo+['test',*common,'--workspace','--lib','--no-run'],env)
++                build_text=run(mode+'-caller-build',cargo+['build',*common,'--bin','rust-k12-simd-caller'],env)
++            test_bins=artifacts(test_text,True,build_path,known)
++            binary=artifacts(build_text,False,build_path,known)['rust-k12-simd-caller']
+             for path in [*test_bins.values(),binary]:meta['binaries'][str(path)]=sha(path)
+-            consumed,rules=collect(TARGET/mode,TARGET/mode,[test_text,build_text],inventory,ROOT,known)
++            consumed,rules=collect(build_path,build_path,[test_text,build_text],inventory,ROOT,known)
+             required=[HERE/'main.rs',HERE/'query.rs']+[HERE/arm/'src'/name for arm in ['control','candidate']for name in ['lib.rs','four_sector_range12.rs','k12_parallel.rs','simd_singleton_focused.rs']]
+             need(all(str(path.resolve())in consumed for path in required),'missing actual caller/native/test input')
+             for index,rule in enumerate(rules):(OUTPUT/f'{mode}-dependency-{index}.d').write_text(rule['text'])

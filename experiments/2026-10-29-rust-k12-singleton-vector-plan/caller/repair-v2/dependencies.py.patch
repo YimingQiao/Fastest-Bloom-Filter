@@ -1,0 +1,42 @@
+--- frozen-v1/dependencies.py
++++ repair-v2/dependencies.py
+@@ -25,6 +25,7 @@
+                 if artifact.name.startswith('lib') and artifact.suffix in ('.rlib','.rmeta'):
+                     candidates.append(artifact.with_name(artifact.name[3:]).with_suffix('.d'))
+                 identity={'manifest':str(manifest),'package_id':package,'source':str(source)}
++                if '_workspace_root' in known:identity['workspace_root']=known['_workspace_root']
+                 for d in candidates:
+                     key=str(d)
+                     need(key not in roots or roots[key]==identity,'Ambiguous Cargo dep-info owner')
+@@ -76,6 +77,21 @@
+     need(len(matches)<=1,'Ambiguous nightly binary provenance')
+     return matches[0] if matches else None
+ 
++
++def select_dep_base(tokens,owner):
++    """Exactly identify package-relative or metadata-workspace-relative RHS."""
++    manifest_base=Path(owner['manifest']).parent.resolve()
++    source=Path(owner['source']).resolve()
++    need(source.is_relative_to(manifest_base),'Target source escapes package')
++    bases={manifest_base}
++    if 'workspace_root' in owner:
++        workspace=Path(owner['workspace_root']).resolve()
++        need(manifest_base.is_relative_to(workspace),'Package escapes structured workspace')
++        bases.add(workspace)
++    matches=[base for base in bases if source in [(base/t).resolve()for t in tokens]]
++    need(len(matches)==1,'No unique structured target-source dep-info base')
++    return matches[0]
++
+ def collect(build,target,cargo_texts,repo_sources,root,packages):
+     build=Path(build).resolve();target=Path(target).resolve();root=Path(root).resolve()
+     owners=cargo_roots(cargo_texts,target,packages);consumed={};rules=[]
+@@ -91,8 +107,7 @@
+             need(lhs==[str(dep)],'Relative Cargo rule LHS is not its actual dep-info artifact')
+             owner=owner_for(dep,owners)
+             need(owner is not None,'No unique Cargo artifact owner for relative dep-info '+str(dep))
+-            base=Path(owner['manifest']).parent
+-            need(Path(owner['source']) in [(base/t).resolve() for t in tokens],'Cargo target source absent from its dep-info')
++            base=select_dep_base(tokens,owner)
+         else:base=root
+         resolved=[]
+         for token in tokens:
