@@ -224,7 +224,8 @@ query views against both external and optional-Range leaders. Across the wider
 against retained project layouts. All5,328 allocation alternatives and98
 unpooled quality identities remain. Its weakest hash+query margins are2.84%
 and3.47%, requiring fresh confirmation;16bpk fails0.1% and32bpk is not a general
-replacement. The native Rust K12 port and parallel K12 construction are unmeasured.
+replacement. Rust performance and native integration evidence follow below;
+parallel K12 construction performance remains unmeasured.
 
 The [fixed three-seed K12 confirmation](../experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md)
 retains all78 rows and qualifies all13 API geometries on all three separate
@@ -234,6 +235,26 @@ All180 named pairs remain; the primary native margin falls to1.96% in one cell.
 The secondary views reuse primary observations and add separate-process28/32-bpk
 controls. First/middle/last candidate order is balanced across the three seeds,
 without claiming complete position balance or separating seed from order effects.
+
+The [fixed108-row Rust K12 confirmation](../experiments/2026-10-29-four-sector-range12-rust-analysis/REPORT.md)
+passes all12 separate three-seed quality gates and retains all720 named outcomes:
+324 wins and396 losses. At equal24 bits/key it beats Range in staged batch31 at
+both sizes and small-table batch4096; both singleton modes, all visible-single
+queries, every construction contract and large-table batch4096 lose. At cap32
+it wins only6/144 views against retained project leaders. The actual linked
+visible caller still invokes the scalar helper per key. This is a specific
+optimization hypothesis, not proof that inlining will remove the losses.
+All36 Wilson records,720 paired ratios, trial summaries and288 nested views
+were independently recomputed; secondary32-bpk observations remain separate
+processes from primary24-bpk comparisons.
+
+The [optional native C++ K12 integration](../experiments/2026-10-29-native-k12-cpp/RESULTS.md)
+preserves the measured serial kernel and adds a dedicated parallel wrapper.
+Native AVX-512, AVX2, portable and ASan/UBSan checks pass, including complete
+bitmap/output oracles, actual three/seven-worker execution and non-divisible
+physical-line ownership. Its source is now available through the native headers;
+the generic power-of-two wrapper is intentionally inaccessible for this layout.
+This is correctness and packaging evidence, with no parallel-speed claim.
 
 The [actual-native96-pair policy comparison](../experiments/2026-10-29-native-build-policy-port-analysis/DECISION.md)
 measures the public before/after C++ and Rust implementations with policy

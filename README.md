@@ -5,6 +5,7 @@ parallel membership queries, and an atomic FastPattern type for concurrent reade
 Four native layouts cover different throughput/accuracy tradeoffs: **FastPattern**,
 **FourSector**, **Split64**, and **ByteSplit**. Each keeps a key's probes within one cache line.
 An optional **Split64Range** type also supports explicit byte budgets between powers of two.
+Optional **FourSectorRange12** is available in C++ for the measured strict-FPR bulk-query use case.
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
 
@@ -31,6 +32,7 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | [Original and modern raw-u32 APIs](experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md) | Native leaders win **72/72** comparable original-artifact views and **55/84** modern-library views. | One seed, two launch rounds, three API contracts; **29 modern losses**, including both large strict bulk comparisons against Boost24. |
 | [Rust Range24 fresh confirmation](experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md) | Range24 is **2.65–7.46×** faster in pure batch-API queries and **2.04–6.09×** including hashing against the fixed external K7 leader. | Two fresh seeds, 65K/32M keys, batches1/31/4096, 24-bpk/0.01% ceiling; K7 was selected by the complete public-probe training screen. |
 | [C++ K12 strict24 confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md) | Experimental K12 is **1.09–1.83×** faster than the strongest eligible selected external across all 24 primary views. | Three fresh seeds, 65K/32M keys, batches31/4096, 24-bpk/0.01% ceiling; this confirmation excludes singleton, build and parallel K12. |
+| [Rust K12 fresh confirmation](experiments/2026-10-29-four-sector-range12-rust-analysis/REPORT.md) | At equal24 bits/key, small-table batch4096 gains **1.27–1.28×** over Range including hashing. | Three fresh seeds; singleton, visible public-single queries, large4096 and every construction contract lose to Range. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
 **Recent experiments:** The complete 336-row Rust comparison finds that
@@ -65,8 +67,11 @@ then wins all24 primary views with every selected rival passing all three qualit
 gates. The smallest primary gain over native Range is only **1.96%**. The isolated
 [Rust K12 port](experiments/2026-10-29-four-sector-range12-rust-port/PREFLIGHT_REPORT.md)
 now passes full C++ bitmap/output parity and real multicore build/query checks
-under normal, AVX2 and ASan profiles. Its Rust performance comparison is pending;
-K12 remains experimental.
+under normal, AVX2 and ASan profiles. The completed
+[108-row Rust confirmation](experiments/2026-10-29-four-sector-range12-rust-analysis/REPORT.md)
+passes all12 three-seed quality gates, but retains324 wins and396 losses across
+720 named comparisons. Equal-byte Range wins every singleton, visible-single
+and construction comparison. The Rust K12 port remains isolated.
 
 The [160-row public raw-u32 comparison](experiments/2026-10-29-vldb-nearby-raw32-analysis/INTERPRETATION.md)
 also gives the original VLDB baselines nearby capacity choices. Project controls
@@ -119,6 +124,15 @@ Range supports exclusive parallel construction and immutable parallel queries.
 Its capacity benefit is confirmed above, while equal-allocation speed losses
 remain documented. Large builds benefit from parallelism; small builds still
 expose overhead. The bounded build-policy experiment has not changed defaults.
+
+**FourSectorRange12BloomFilter** and **ParallelFourSectorRange12BloomFilter**
+are optional C++ types with the same byte-budget range. They set12 bits across
+four sectors and partition parallel construction by the actual physical cache
+line. See the [API guide](docs/four-sector-range12.md) and
+[native integration checks](experiments/2026-10-29-native-k12-cpp/RESULTS.md).
+AVX-512, AVX2, portable and sanitizer checks pass, including non-divisible
+three/seven-worker ownership. Parallel K12 speed has not yet been measured;
+its singleton losses above remain relevant when choosing a layout.
 
 ## Historical comparison and FastPattern scaling
 
@@ -218,6 +232,8 @@ For FourSector, Split64 and ByteSplit, C++ provides `ParallelFourSectorBloomFilt
 by its layout's actual cache-line index; it does not replicate the bitmap per worker.
 `ParallelSplit64RangeBloomFilter` is provided separately in
 `parallel_split64_range_bloom.h`; Rust Range exposes the same parallel methods.
+Optional C++ K12 uses `ParallelFourSectorRange12BloomFilter` in
+`parallel_four_sector_range12_bloom.h`, with its dedicated physical-line ownership.
 The overlapping reader/writer atomic type is currently FastPattern only.
 
 The new-layout [1–8 core measurements](docs/layout-parallel-2026-10-28.md) cover
