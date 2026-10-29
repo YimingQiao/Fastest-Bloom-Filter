@@ -198,17 +198,21 @@ impl Split64RangeBloomFilter {
             *answer = self.contains_scalar(h) as u32;
         }
     }
-    /// Effective build workers; tiny inputs run serially, request 0 uses available parallelism.
+    /// Effective build workers. Batches up to 65,536 hashes in bitmaps up to
+    /// 256 KiB use one worker. Outside that gate, request 0 uses available parallelism.
     pub fn build_workers(&self, n: usize, requested: usize) -> usize {
+        let requested = crate::split64::build_request(n, self.size_in_bytes(), requested);
         layout_parallel::build_workers(n, requested, self.lines.len())
     }
     /// Peak explicit build scratch, excluding allocator metadata and OS thread stacks.
     /// Panics with `build scratch size overflow` if a multiworker estimate cannot fit in `usize`.
     pub fn build_scratch_bytes(&self, n: usize, requested: usize) -> usize {
+        let requested = crate::split64::build_request(n, self.size_in_bytes(), requested);
         layout_parallel::scratch_bytes(n, requested, self.lines.len())
     }
     /// Exclusive cache-line-partitioned construction, including partitioning and thread launch.
     pub fn insert_hashes_parallel(&mut self, hashes: &[u64], requested: usize) {
+        let requested = crate::split64::build_request(hashes.len(), self.size_in_bytes(), requested);
         let count = self.block_count;
         let (avx512, avx2) = (self.avx512, self.avx2);
         range_parallel::insert(&mut self.lines, hashes, requested, |lines, begin, input| {

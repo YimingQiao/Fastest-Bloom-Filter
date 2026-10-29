@@ -3,6 +3,8 @@
 #include "four_sector_bloom.h"
 #include "split64_bloom.h"
 #include "byte_split_bloom.h"
+#include "split64_build_policy.h"
+#include <type_traits>
 
 namespace bloom_filters {
 // Exclusive construction assigns complete cache lines to workers. Different
@@ -28,6 +30,8 @@ public:
 		return filter_.Lookup(n, keys, out);
 	}
 	size_t BuildWorkers(size_t n, size_t requested) const {
+		if constexpr (std::is_same_v<Filter, Split64BloomFilter>)
+			requested = parallel_detail::Split64BuildRequest(n, filter_.SizeInBytes(), requested);
 		return parallel_detail::Workers(n, requested, filter_.CacheLineCount());
 	}
 	size_t BuildScratchBytes(size_t n, size_t requested) const {

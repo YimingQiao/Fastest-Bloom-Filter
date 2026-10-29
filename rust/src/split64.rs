@@ -13,6 +13,17 @@ const SALTS: [u32; 8] = [
     0x5c6b_fb31,
 ];
 const PREFETCH: usize = 32;
+
+// Split64/Range only: n is this insertion's length, not constructor capacity.
+#[inline]
+pub(crate) fn build_request(n: usize, bytes: usize, requested: usize) -> usize {
+    if n <= 65_536 && bytes <= 262_144 {
+        1
+    } else {
+        requested
+    }
+}
+
 #[repr(C, align(64))]
 #[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
 struct Line([u64; 8]);
@@ -162,17 +173,21 @@ impl Split64BloomFilter {
             *answer = self.contains_scalar(h) as u32;
         }
     }
-    /// Effective build workers; tiny inputs run serially, request 0 uses available parallelism.
+    /// Effective build workers. Batches up to 65,536 hashes in bitmaps up to
+    /// 256 KiB use one worker. Outside that gate, request 0 uses available parallelism.
     pub fn build_workers(&self, n: usize, requested: usize) -> usize {
+        let requested = build_request(n, self.size_in_bytes(), requested);
         layout_parallel::build_workers(n, requested, self.lines.len())
     }
     /// Peak explicit build scratch, excluding allocator metadata and OS thread stacks.
     /// Panics with `build scratch size overflow` if a multiworker estimate cannot fit in `usize`.
     pub fn build_scratch_bytes(&self, n: usize, requested: usize) -> usize {
+        let requested = build_request(n, self.size_in_bytes(), requested);
         layout_parallel::scratch_bytes(n, requested, self.lines.len())
     }
     /// Exclusive cache-line-partitioned construction, including partitioning and thread launch.
     pub fn insert_hashes_parallel(&mut self, hashes: &[u64], requested: usize) {
+        let requested = build_request(hashes.len(), self.size_in_bytes(), requested);
         let mask = self.block_mask;
         let (avx512, avx2) = (self.avx512, self.avx2);
         layout_parallel::insert(
@@ -619,3 +634,7 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "split64_build_policy_tests.rs"]
+mod build_policy_tests;

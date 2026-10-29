@@ -1,6 +1,7 @@
 #pragma once
 #include "parallel_bloom.h"
 #include "split64_range_bloom.h"
+#include "split64_build_policy.h"
 
 namespace bloom_filters {
 struct RangePartition {
@@ -41,6 +42,7 @@ public:
 		return filter_.Lookup(n, keys, out);
 	}
 	size_t BuildWorkers(size_t n, size_t requested) const {
+		requested = parallel_detail::Split64BuildRequest(n, filter_.SizeInBytes(), requested);
 		return parallel_detail::Workers(n, requested, filter_.CacheLineCount());
 	}
 	size_t BuildScratchBytes(size_t n, size_t requested) const {
