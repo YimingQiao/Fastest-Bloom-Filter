@@ -1,0 +1,74 @@
+[
+  {
+    "label": "derive-source",
+    "argv": [
+      "/usr/bin/python3",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-singleton-external-plan/caller/derive.py"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/000-derive-source.stdout",
+    "stderr": "validation-v1/000-derive-source.stderr",
+    "stdout_sha256": "4aa6dd8f39660fd2a7fbb5e7533ae8365cc7079caccad4a1cf88839e889d2208",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "input_sha256": null
+  },
+  {
+    "label": "compiler-version",
+    "argv": [
+      "/usr/bin/clang++",
+      "--version"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/001-compiler-version.stdout",
+    "stderr": "validation-v1/001-compiler-version.stderr",
+    "stdout_sha256": "a6552fa81dddd84c51cfe609282aee41acd279a764d24f83c1811dece3f88719",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "input_sha256": null
+  },
+  {
+    "label": "normal-configure",
+    "argv": [
+      "/usr/bin/cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-singleton-external-plan/caller",
+      "-B",
+      "/tmp/fastest-bf-k12-singleton-external-v1-cpu3/normal",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++",
+      "-DBF_PROFILE=native",
+      "-DBF_SANITIZERS=OFF"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/002-normal-configure.stdout",
+    "stderr": "validation-v1/002-normal-configure.stderr",
+    "stdout_sha256": "34d682ba397648ad4f29be471fccbb8ed71e3b1db776875deb536eff6176724e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "input_sha256": null
+  },
+  {
+    "label": "normal-build",
+    "argv": [
+      "/usr/bin/cmake",
+      "--build",
+      "/tmp/fastest-bf-k12-singleton-external-v1-cpu3/normal",
+      "--target",
+      "main",
+      "-j",
+      "1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 2,
+    "expected_success": true,
+    "stdout": "validation-v1/003-normal-build.stdout",
+    "stderr": "validation-v1/003-normal-build.stderr",
+    "stdout_sha256": "6e5112973b694e569b754ad665f86746c316a648160e86c997e461f0048ed1a1",
+    "stderr_sha256": "42e3aa1ac1f25ca6b5df0b00fc43befc4b1b7406ae36dcf54b4b6c5e42b7485e",
+    "input_sha256": null
+  }
+]
