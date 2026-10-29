@@ -140,5 +140,10 @@ The [Poppy public-constructor plan](../experiments/2026-10-29-poppy-public-const
 fixes real-n sizing, full optional-cache accounting, ordinary requested-FPR
 controls and every public-derived probe count at each largest-fitting geometry.
 It preserves the upstream8-byte input and mandatory internal hash work. Seven
-immutable source blobs were checked against a local pinned checkout. This is
-source preparation only; Poppy is not yet part of a measured ranking.
+immutable source blobs were checked against a local pinned checkout. The
+[completed public-constructor proof](../experiments/2026-10-29-poppy-public-geometry/GEOMETRY_REPORT.md)
+validates all 86 selected configurations against actual public metadata and live
+allocation accounting, including the cache. The finite geometry-only search
+retains all 25,318 candidate capacities, 62 distinct public-K representatives
+and 24 ordinary controls, including over-budget controls. No insertion, accuracy
+or speed workload has run yet; Poppy is not part of a measured ranking.

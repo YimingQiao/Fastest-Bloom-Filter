@@ -225,3 +225,10 @@ against retained project layouts. All5,328 allocation alternatives and98
 unpooled quality identities remain. Its weakest hash+query margins are2.84%
 and3.47%, requiring fresh confirmation;16bpk fails0.1% and32bpk is not a general
 replacement. The native Rust K12 port and parallel K12 construction are unmeasured.
+
+The [Poppy public-constructor proof](../experiments/2026-10-29-poppy-public-geometry/GEOMETRY_REPORT.md)
+checks all 86 source-selected public configurations against actual constructor
+metadata and requested live heap bytes. Both bucket and cache allocations are
+charged; the public serializer's separate 8 KiB temporary buffer is recorded.
+All configurations and over-budget controls remain. This is geometry/accounting
+evidence only: no keys were inserted and no accuracy or throughput claim follows.
