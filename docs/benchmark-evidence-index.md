@@ -224,8 +224,8 @@ query views against both external and optional-Range leaders. Across the wider
 against retained project layouts. All5,328 allocation alternatives and98
 unpooled quality identities remain. Its weakest hash+query margins are2.84%
 and3.47%, requiring fresh confirmation;16bpk fails0.1% and32bpk is not a general
-replacement. Rust performance and native integration evidence follow below;
-parallel K12 construction performance remains unmeasured.
+replacement. Rust performance, native integration and the later multithreaded comparison
+follow below; this first screen itself contains no parallel measurements.
 
 The [fixed three-seed K12 confirmation](../experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md)
 retains all78 rows and qualifies all13 API geometries on all three separate
@@ -256,6 +256,20 @@ physical-line ownership. Its source is now available through the native headers;
 the generic power-of-two wrapper is intentionally inaccessible for this layout.
 This is correctness and packaging evidence, with no parallel-speed claim.
 
+The [complete195 native K12 multithread comparison](../experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md)
+retains147 shared-executor query rows and48 actual public-native rows. At the
+24-bpk/0.01% ceiling K12 wins all24 query views across two sizes, four timing
+boundaries and three seen seeds. Large hash+query end-to-end latency is6.6–9.4%
+lower than Boost24, including fresh thread startup/join. Wider K12 results are
+93 wins/75 losses/48 unavailable; production retains six large strict-cap32
+hash+query losses. The combined native set's192 comparable wins must not be
+relabeled as production-only or one-layout leadership. Public K12 beats Range
+in36/36 same-byte queries but loses72/72 build boundaries. All small T8 builds
+lose to T1; all large builds improve. Quality aliases are unpooled, smaller
+external allocations remain eligible, and public validation-bitmap working-set
+differences are explicit. Raw trial vectors, nested leader choices and paired
+ratios were independently recomputed from all195 rows.
+
 The [balanced C++ whole-line insertion screen](../experiments/2026-10-29-k12-line-or-analysis/DECISION.md)
 replaces four scalar word ORs per key with one sequential vector line update.
 Before measurement, an explicit post-shuffle reversal balances relative filter
@@ -274,6 +288,16 @@ there are19 wins and173 losses. Small visible gains coexist with repeatable
 short/bulk regressions, so the change is not promoted. All576 named pairs,
 query trials and historical unpooled quality context remain. The eight query
 samples per vector and all paired ratios were independently checked against raw.
+
+The [safe Rust single-line screen](../experiments/2026-10-29-rust-k12-single-line-analysis/INTERPRETATION.md)
+changes one scalar body while preserving the original ordinary inline hints.
+One safe cache-line borrow replaces four global line accesses; actual visible
+callers emit one line bound check and no successful-path scalar helper call.
+All72 rows retain85/96 query wins against original K12, including1.19–1.46×
+visible-single gains, but all six small batch31 staged pairs regress mildly and
+batch4096 is mixed. Against Range,21/96 queries and0/96 builds win. No new
+calibration or external comparison ran; historical12 quality contexts remain
+unpooled aliases. Exact native Rust packaging is a separate pending step.
 
 The [actual-native96-pair policy comparison](../experiments/2026-10-29-native-build-policy-port-analysis/DECISION.md)
 measures the public before/after C++ and Rust implementations with policy

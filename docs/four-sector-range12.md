@@ -26,3 +26,11 @@ A key's line is `floor((hash >> 40) * line_count / 2^24)`. Construction owns exa
 Construction calls require exclusive mutation. After they return, immutable queries may run concurrently. A second construction batch preserves previous insertions. Overlapping writes and reads, simultaneous independent construction calls, resizing and destruction during access require external synchronization. This wrapper does not provide atomic concurrent insertion.
 
 Measured evidence supports considering this layout for bulk queries. Its public-singleton and batch1 paths have substantial losses against Split64Range in the tested GCC/raw-u32 context; it is not a universal replacement. False-positive rates depend on the construction and query distribution. Neither twelve probes nor a requested bits-per-key value is a guaranteed error bound. Use the empirical quality results and actual allocation when choosing a layout.
+
+The [fixed195-row multithread comparison](../experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md)
+now measures both a common eight-core executor against external public APIs and
+actual native T1/T8 calls. K12 leads all24 tested strict24 query views, including
+thread startup/join. The wider panel retains75 K12 external-query losses;
+all72 same-byte construction comparisons against Range lose. Small parallel
+builds also lose to serial. These seen-seed results support an optional query
+choice, with distinct construction and singleton tradeoffs.

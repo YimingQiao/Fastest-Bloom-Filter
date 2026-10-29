@@ -32,6 +32,7 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | [Original and modern raw-u32 APIs](experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md) | Native leaders win **72/72** comparable original-artifact views and **55/84** modern-library views. | One seed, two launch rounds, three API contracts; **29 modern losses**, including both large strict bulk comparisons against Boost24. |
 | [Rust Range24 fresh confirmation](experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md) | Range24 is **2.65–7.46×** faster in pure batch-API queries and **2.04–6.09×** including hashing against the fixed external K7 leader. | Two fresh seeds, 65K/32M keys, batches1/31/4096, 24-bpk/0.01% ceiling; K7 was selected by the complete public-probe training screen. |
 | [C++ K12 strict24 confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md) | Experimental K12 is **1.09–1.83×** faster than the strongest eligible selected external across all 24 primary views. | Three fresh seeds, 65K/32M keys, batches31/4096, 24-bpk/0.01% ceiling; this confirmation excludes singleton, build and parallel K12. |
+| [Native C++ K12 eight-core comparison](experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md) | K12 wins **24/24** strict24-bpk/0.01% query views; large hash+query throughput gains **1.07–1.10×** including startup/join over Boost24. | Three seen seeds, batch4096; wider K12 results include **75 external losses**, and every equal-byte build comparison loses to Range. |
 | [Rust K12 fresh confirmation](experiments/2026-10-29-four-sector-range12-rust-analysis/REPORT.md) | At equal24 bits/key, small-table batch4096 gains **1.27–1.28×** over Range including hashing. | Three fresh seeds; singleton, visible public-single queries, large4096 and every construction contract lose to Range. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
@@ -51,7 +52,10 @@ A [C++ insertion experiment](experiments/2026-10-29-k12-line-or-analysis/DECISIO
 reduces complete 96 MiB K12 construction latency by **14–23%** against the old
 kernel, but small whole-input builds regress **4–10%**. It remains experimental.
 The [Rust two-hint inline experiment](experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
-also retains batch regressions despite eliminating per-key helper calls.
+also retains batch regressions despite eliminating per-key helper calls. A subsequent
+[safe single-line Rust rewrite](experiments/2026-10-29-rust-k12-single-line-analysis/INTERPRETATION.md)
+improves K12 visible-single throughput **1.19–1.46×**, with small batch31
+regressions of up to0.8%; Range still wins every singleton and build comparison.
 
 The [four-arm small-build experiment](experiments/2026-10-29-native-build-policy-controls-analysis/DECISION.md)
 observes **2.28–4.76×** gains where serial fallback applies. Unchanged-code
@@ -67,7 +71,9 @@ rounds. These GCC12.2 results do not replace the separate modern-library ranking
 [Poppy's complete public accuracy calibration](experiments/2026-10-29-poppy-public-accuracy-analysis/REPORT.md)
 now retains all 86 configurations. Six small-table and four large-table public
 configurations meet the 24-bpk/0.01% gate, including policy aliases. Its speed
-comparison is pending; requested FPP alone is never used as an eligibility gate.
+comparison has a [fixed public-API caller](experiments/2026-10-29-poppy-public-speed-caller/README.md)
+covering47 fitting mappings and all prior Rust query/build leaders. Timing is
+pending; requested FPP alone is never used as an eligibility gate.
 
 See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
 [baseline survey](docs/external-survey-2026-10-28.md),
@@ -120,8 +126,9 @@ four sectors and partition parallel construction by the actual physical cache
 line. See the [API guide](docs/four-sector-range12.md) and
 [native integration checks](experiments/2026-10-29-native-k12-cpp/RESULTS.md).
 AVX-512, AVX2, portable and sanitizer checks pass, including non-divisible
-three/seven-worker ownership. Parallel K12 speed has not yet been measured;
-its singleton losses above remain relevant when choosing a layout.
+three/seven-worker ownership. The [eight-core comparison](experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md)
+supports strict24 query use, while construction loses to Range and small builds
+slow down with eight threads. Its singleton losses remain relevant.
 
 ## Historical comparison and FastPattern scaling
 

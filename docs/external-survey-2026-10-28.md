@@ -158,3 +158,13 @@ including policy aliases. The ordinary Best control qualifies at approximately
 controls miss their requested quality ceilings. All failures and 1032 allocation
 alternatives remain. Timing is still pending; accuracy alone supplies no speed
 ranking.
+
+The [fixed Poppy speed selection](../experiments/2026-10-29-poppy-public-speed-plan/README.md)
+retains47 fitting source mappings (including quality failures),32 exact prior
+query/build leader points and original K12@24 at both sizes. Source aliases use
+the first original constructor; two33-bpk mappings remain documented over-cap
+exclusions. The [actual shared Rust caller](../experiments/2026-10-29-poppy-public-speed-caller/README.md)
+uses public eight-byte operations with mandatory cache/hash/error work inside
+timing. Its dependency lock resolves offline without changing existing common
+package versions. Focused caller validation and the fixed486-row speed run are
+pending; this preparation establishes no new ranking.
