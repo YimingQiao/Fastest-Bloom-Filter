@@ -14,79 +14,64 @@ The project name is an ambition, not a claim that one implementation wins every 
 
 ## Modern external comparison
 
-Comparisons constrain **actual bitmap bytes and measured false-positive rate**,
-with hashing, public API shape, construction and thread startup reported explicitly.
+Comparisons constrain **actual bitmap bytes and measured false-positive rate**.
+Reports distinguish hashing, public API shape, construction and thread startup.
 Pinned baselines include FastFilter, Boost.Bloom1.92, RocksDB FastLocalBloom,
 PageBloomFilter, fastbloom, Bloomsday, SBBF and BlowChoc. The
 [988-row C++ screen](experiments/2026-10-29-exact-budget-range/screen/OBSERVATIONS.md)
-checks68 external configurations at12–32 actual bits/key. No layout wins every workload.
+covers 68 external configurations at 12–32 actual bits/key. **No layout wins every workload.**
 
-| Evidence | What it supports | Remaining loss or limit |
+| Workload | Measured result | Scope and remaining limitation |
 |---|---|---|
-| [C++ held-out large batches](docs/modern-confirmation-2026-10-28.md) | Eligible native leaders are **1.10–1.73×** faster than the fastest eligible external configuration across the tested ceilings. | 65K–32M keys,50% hits,batch4096,16/32-bpk targets; singleton and finer-capacity rankings differ. |
-| [Finer-capacity confirmation](experiments/2026-10-29-exact-budget-confirmation/screen/RESULTS.md) | Experimental Split64Range24 has **4.3–6.7% lower** hash+query latency than Boost24 at32M keys and0.01% FPR. | Production FastPattern loses two of three seeds; Range is an optional capacity choice. |
-| [Single-key confirmation](docs/byte-confirmation-2026-10-29.md) | C++ Split64 leads the tested0.1% band by **1.10–1.20×** including hashing. | FastFilter wins the strict0.01% and large-filter1% bands; Rust retains Bloomsday losses. |
-| [Eight-core external confirmation](docs/external-parallel-confirmation-2026-10-29.md) | C++ native scenario leaders are **1.06–1.59×** faster including hashing and fresh thread startup/join. | Fixed23-configuration shortlist,65K/32M keys,50% hits,batch4096; individual losses remain. |
-| [Eight-core exact-capacity screen](experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md) | At 32M keys and the 24-bpk/0.01% ceiling, experimental Range improves throughput **2.7–5.4%** over the fastest eligible external configuration. | One seed and fixed phase order; equal-allocation and wider-scenario losses remain. |
-| [Native C++/Rust API scaling](experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md) | At 32M keys, 8-core allocation+build gains **2.18–2.61×**, and whole-array queries gain **6.83–7.81×**, against each row's own serial control. | All ten 65K-key build configurations regress; one seed, Split64/Range only, 4M prehashed queries. |
-| [Original and modern raw-u32 APIs](experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md) | Native leaders win **72/72** comparable original-artifact views and **55/84** modern-library views. | One seed, two launch rounds, three API contracts; **29 modern losses**, including both large strict bulk comparisons against Boost24. |
-| [Rust Range24 fresh confirmation](experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md) | Range24 is **2.65–7.46×** faster in pure batch-API queries and **2.04–6.09×** including hashing against the fixed external K7 leader. | Two fresh seeds, 65K/32M keys, batches1/31/4096, 24-bpk/0.01% ceiling; K7 was selected by the complete public-probe training screen. |
-| [C++ K12 strict24 confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md) | Experimental K12 is **1.09–1.83×** faster than the strongest eligible selected external across all 24 primary views. | Three fresh seeds, 65K/32M keys, batches31/4096, 24-bpk/0.01% ceiling; this confirmation excludes singleton, build and parallel K12. |
-| [Native C++ K12 eight-core comparison](experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md) | K12 wins **24/24** strict24-bpk/0.01% query views; large hash+query throughput gains **1.07–1.10×** including startup/join over Boost24. | Three seen seeds, batch4096; wider K12 results include **75 external losses**, and every equal-byte build comparison loses to Range. |
-| [Rust K12 fresh confirmation](experiments/2026-10-29-four-sector-range12-rust-analysis/REPORT.md) | At equal24 bits/key, small-table batch4096 gains **1.27–1.28×** over Range including hashing. | Three fresh seeds; singleton, visible public-single queries, large4096 and every construction contract lose to Range. |
-| [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
+| [C++ single-key queries](docs/byte-confirmation-2026-10-29.md) | Split64 gains **1.10–1.20×** throughput including hashing in the 0.1% FPR band. | FastFilter wins the strict 0.01% and large-filter 1% bands. |
+| [C++ large batches](docs/modern-confirmation-2026-10-28.md) | Eligible native leaders gain **1.10–1.73×** against the fastest eligible external. | 65K/32M keys, 50% hits, batch4096, 16/32-bpk targets; the winning layout varies. |
+| [C++ K12 strict-accuracy batches](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md) | K12 gains **1.09–1.83×** across all 24 primary views. | Three fresh seeds, 65K/32M keys, batches31/4096, 24-bpk/0.01% ceiling; excludes singleton, build and multithreading. |
+| [C++ K12 eight-core queries](experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md) | Wins **24/24** strict24-bpk/0.01% views; large hash+query gains **1.07–1.10×** over Boost24 including thread startup/join. | Three seen seeds, batch4096; wider K12 results retain **75 external losses**, and all equal-byte build comparisons lose to Range. |
+| [Rust Range24 queries](experiments/2026-10-29-split64-range-rust-strict24-analysis/REPORT.md) | Gains **2.04–6.09×** including hashing against the fixed external K7 leader. | Two fresh seeds, 65K/32M keys, batches1/31/4096, 24-bpk/0.01% ceiling; K7 was selected by the complete public-probe training screen. |
 
-**Choosing a layout:** The complete [336-row Rust public-probe comparison](experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md)
+**Choose by workload.** The [336-row Rust public-probe comparison](experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md)
 strengthens external leaders in 48/216 query views, by up to **1.97×**.
-Range's finer capacity can help under a strict byte ceiling, while production
-Split64 wins most equal-allocation comparisons in that screen. The original
-power-of-two types remain available alongside optional Range.
+Range's intermediate capacity helps under some byte ceilings, while production
+Split64 wins most equal-allocation comparisons in that screen. Rust also retains
+Bloomsday singleton losses. The [original and modern raw-u32 comparison](experiments/2026-10-29-vldb-raw32-analysis/RESULTS.md)
+retains **29 modern-library losses**, including both large strict bulk comparisons
+against Boost24. API and compiler context can change the ranking.
 
-K12 also has a specific bulk-query niche. Its [Rust port](experiments/2026-10-29-four-sector-range12-rust-port/PREFLIGHT_REPORT.md)
-passes C++ bitmap/output parity and multicore correctness, but the complete
-Rust confirmation retains **324 wins and 396 losses** across 720 named pairs.
-Range wins every singleton, visible-single and construction comparison.
-Both languages now expose K12 as an optional native type. Rust uses the safe
-single-line scalar rewrite described below; its native integration has
+K12 is an optional bulk-query choice in both native libraries. Its
+[Rust confirmation](experiments/2026-10-29-four-sector-range12-rust-analysis/REPORT.md)
+retains **324 wins and 396 losses** across 720 named pairs; Range wins every
+singleton, visible-single and construction comparison. The subsequently integrated
+[safe single-line rewrite](experiments/2026-10-29-rust-k12-single-line-analysis/INTERPRETATION.md)
+improves K12 visible-single throughput **1.19–1.46×** against its old kernel,
+but Range still wins every singleton and build comparison. Native packaging has
 [correctness and assembly validation](experiments/2026-10-29-native-rust-k12-integration-plan/proof-final/REPORT.md),
-with no new performance claim from packaging alone.
+not a new performance claim.
 
-A [C++ insertion experiment](experiments/2026-10-29-k12-line-or-analysis/DECISION.md)
-reduces complete 96 MiB K12 construction latency by **14–23%** against the old
-kernel, but small whole-input builds regress **4–10%**. A subsequent
-[conditional follow-up](experiments/2026-10-29-k12-prefetch-line-or-analysis/DECISION.md)
-confirms the 96 MiB benefit but finds stable 3 MiB insertion losses, so neither
-variant replaces native insertion.
-The [Rust two-hint inline experiment](experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
-also retains batch regressions despite eliminating per-key helper calls. A subsequent
-[safe single-line Rust rewrite](experiments/2026-10-29-rust-k12-single-line-analysis/INTERPRETATION.md)
-improves K12 visible-single throughput **1.19–1.46×**, with small batch31
-regressions of up to0.8%; Range still wins every singleton and build comparison.
+**Parallelism has a size cost.** The [native C++/Rust scaling study](experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md)
+measures **2.18–2.61×** allocation+build and **6.83–7.81×** whole-array query
+speedups at 32M keys with eight cores against each configuration's serial control.
+All ten 65K-key build configurations regress. The
+[small-build policy experiment](experiments/2026-10-29-native-build-policy-controls-analysis/DECISION.md)
+has not changed default worker selection; its unchanged-code controls leave
+31/36 two-seed classifications unresolved under the preset ±3% stability band.
 
-The [four-arm small-build experiment](experiments/2026-10-29-native-build-policy-controls-analysis/DECISION.md)
-observes **2.28–4.76×** gains where serial fallback applies. Unchanged-code
-controls leave 31/36 two-seed classifications unresolved under the preset ±3%
-stability band, so default worker selection stays unchanged.
+Experiments retain regressions. For example, [conditional C++ insertion](experiments/2026-10-29-k12-prefetch-line-or-analysis/DECISION.md)
+helps the 96 MiB K12 filter but causes stable 3 MiB insertion losses, so it is not
+integrated. [Rust inline hints](experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
+also retain batch regressions. These results and all other comparisons are in the
+[evidence index](docs/benchmark-evidence-index.md).
 
-The [160-row original public raw-u32 comparison](experiments/2026-10-29-vldb-nearby-raw32-analysis/INTERPRETATION.md)
-includes nearby capacity choices: project controls win 42 comparable views,
-while 30 views have no eligible comparison. K12 singleton latency is
-**2.33–3.26×** Range's, and large strict bulk results change direction between
-rounds. These GCC12.2 results do not replace the separate modern-library ranking.
+The external set is still expanding. [Poppy's complete accuracy calibration](experiments/2026-10-29-poppy-public-accuracy-analysis/REPORT.md)
+retains all 86 configurations; its [public-API speed comparison](experiments/2026-10-29-poppy-public-speed-caller/README.md)
+is in progress. A separate [fastbloom-rs raw-byte caller](experiments/2026-10-29-fastbloom-rs-raw8-caller/README.md)
+is prepared, with its mandatory hashes inside the clock and required build scratch
+included in allocation+build. Neither pending comparison supports a speed claim.
 
-[Poppy's complete public accuracy calibration](experiments/2026-10-29-poppy-public-accuracy-analysis/REPORT.md)
-now retains all 86 configurations. Six small-table and four large-table public
-configurations meet the 24-bpk/0.01% gate, including policy aliases. Its speed
-comparison has a [fixed public-API caller](experiments/2026-10-29-poppy-public-speed-caller/README.md)
-covering47 fitting mappings and all prior Rust query/build leaders. Timing is
-pending; requested FPP alone is never used as an eligibility gate.
-
-See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
-[baseline survey](docs/external-survey-2026-10-28.md),
-[benchmark contract](#what-the-numbers-mean), and
-[bbtree lessons](docs/bbtree-lessons.md). Quality gates use pointwise95% Wilson
-upper bounds, not hard guarantees. Reports retain all timings, allocations,
-calibration failures and compiler/API boundaries needed to interpret a lead.
+See the [baseline survey](docs/external-survey-2026-10-28.md),
+[benchmark contract](#what-the-numbers-mean), and [bbtree lessons](docs/bbtree-lessons.md).
+Quality gates use pointwise 95% Wilson upper bounds, not hard guarantees.
+Complete reports retain timings, allocations, quality failures and compiler/API
+boundaries needed to interpret each lead.
 
 ## Native layouts
 
