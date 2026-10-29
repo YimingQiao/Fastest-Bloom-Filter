@@ -1,0 +1,193 @@
+{
+  "complete": false,
+  "source_commit": "dd13d1e829d4482d70093497b8d470bd09be22ac",
+  "started": "2026-10-29T09:00:25.044351+00:00",
+  "commands": [
+    {
+      "label": "proposal-derivation",
+      "command": [
+        "python3",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/derive.py"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-lab",
+      "started": "2026-10-29T09:00:25.083443+00:00",
+      "expected_success": true,
+      "stdout": "proposal-derivation.stdout",
+      "stderr": "proposal-derivation.stderr",
+      "environment_delta": {},
+      "complete": true,
+      "returncode": 0,
+      "finished": "2026-10-29T09:00:25.124767+00:00",
+      "stdout_sha256": "21ecdc1d7c7579b1ddba6889b96ceade1f14056394d9b676d76775c1b043500f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "caller-derivation",
+      "command": [
+        "python3",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/derive.py"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-lab",
+      "started": "2026-10-29T09:00:25.125296+00:00",
+      "expected_success": true,
+      "stdout": "caller-derivation.stdout",
+      "stderr": "caller-derivation.stderr",
+      "environment_delta": {},
+      "complete": true,
+      "returncode": 0,
+      "finished": "2026-10-29T09:00:25.157322+00:00",
+      "stdout_sha256": "c734e8c7800096ed3aba839935b4bf74f632eba8b39ad4426347a581ae84c561",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "compiler-version",
+      "command": [
+        "/usr/lib/llvm-23/bin/clang",
+        "--version"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-lab",
+      "started": "2026-10-29T09:00:25.157894+00:00",
+      "expected_success": true,
+      "stdout": "compiler-version.stdout",
+      "stderr": "compiler-version.stderr",
+      "environment_delta": {},
+      "complete": true,
+      "returncode": 0,
+      "finished": "2026-10-29T09:00:25.178078+00:00",
+      "stdout_sha256": "a6552fa81dddd84c51cfe609282aee41acd279a764d24f83c1811dece3f88719",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "cmake-version",
+      "command": [
+        "cmake",
+        "--version"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-lab",
+      "started": "2026-10-29T09:00:25.178417+00:00",
+      "expected_success": true,
+      "stdout": "cmake-version.stdout",
+      "stderr": "cmake-version.stderr",
+      "environment_delta": {},
+      "complete": true,
+      "returncode": 0,
+      "finished": "2026-10-29T09:00:25.185807+00:00",
+      "stdout_sha256": "f4a9d760d2f9fe05719f20377b3562eb9c97c65aac742714d3f095d6aa4086a9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "native-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller",
+        "-B",
+        "/home/yiming/projects/fastest-bf-lab/build/k12-line-or-v1-cpu3-native",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_CXX_COMPILER=/usr/lib/llvm-23/bin/clang",
+        "-DBF_ISA=native",
+        "-DBF_SANITIZERS=OFF"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-lab",
+      "started": "2026-10-29T09:00:25.186331+00:00",
+      "expected_success": true,
+      "stdout": "native-configure.stdout",
+      "stderr": "native-configure.stderr",
+      "environment_delta": {},
+      "complete": true,
+      "returncode": 0,
+      "finished": "2026-10-29T09:00:25.371326+00:00",
+      "stdout_sha256": "b6c4cf89c2e4e623b5d44fde089bf59a770b225a56ffb9713822e7c101fcc57b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "native-build",
+      "command": [
+        "cmake",
+        "--build",
+        "/home/yiming/projects/fastest-bf-lab/build/k12-line-or-v1-cpu3-native",
+        "--parallel",
+        "1"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-lab",
+      "started": "2026-10-29T09:00:25.371753+00:00",
+      "expected_success": true,
+      "stdout": "native-build.stdout",
+      "stderr": "native-build.stderr",
+      "environment_delta": {},
+      "complete": true,
+      "returncode": 2,
+      "finished": "2026-10-29T09:00:27.334982+00:00",
+      "stdout_sha256": "6cb43ea37c6615f5ea20b794c14fc11e5f58fabd3c2b5ac845e9b549f8f00559",
+      "stderr_sha256": "91e2f78d2e3d0a6e6389bf509698a3dbf4b3afd878b7262fdb21ed5b3a5efb89"
+    }
+  ],
+  "profiles": {},
+  "performance_run": false,
+  "lease": {
+    "cpu": 3,
+    "socket": 1,
+    "node": 1,
+    "core": 26,
+    "affinity": [
+      3
+    ],
+    "lock_path": "/tmp/fastest-bf-socket1.lock",
+    "inherited_lock_descriptors": [
+      3
+    ],
+    "environment": {
+      "LD_PRELOAD": null,
+      "LD_LIBRARY_PATH": null,
+      "MALLOC_CONF": null,
+      "GLIBC_TUNABLES": null,
+      "MALLOC_ARENA_MAX": null,
+      "CFLAGS": null,
+      "CXXFLAGS": null,
+      "CPPFLAGS": null,
+      "LDFLAGS": null,
+      "CC": null,
+      "CXX": null,
+      "CPATH": null,
+      "CPLUS_INCLUDE_PATH": null,
+      "LIBRARY_PATH": null,
+      "ASAN_OPTIONS": null,
+      "UBSAN_OPTIONS": null
+    },
+    "memory_policy": "No explicit NUMA binding in this correctness-only preflight"
+  },
+  "source_sha256": {
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/CALLER.patch": "d97bc0044f4b3605941139cddcd5cbae539903a6419d2f2bd76aad21dac8739b",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/CMakeLists.txt": "22ff71550f4cc990d23c6d87a1b77781b6e2581a69e8cf443e38acbf7602678e",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/DERIVATION.json": "75f4526573d3aa1bd9ab17b636141ae48ac22a37884df515d23fb3387b41f096",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/OFFLINE_CHECKS.json": "930a846cbced3545adedf2b7e6e65f7f73a4cd44397e333912ac27d39e503e84",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/README.md": "608c9e5e0d1f88ee51ea3d85b9311292e707443ee3384c546578fb3a93927471",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/check.cpp": "9a45656647fb0be12684656cd2ce2592b86b4890fc76c7a1f1223e718c1a169b",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/compare_benchmark.cpp": "8a4fef5c3fd9aef3de6d234a4b53a3067eea03249af52ab14728965baa88c6f8",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/contract.py": "f156163a04dc70ad8c6357f3d586bafd47c841c798bf2428491bc281c9faf64a",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/derive.py": "5d3380c49193ce7180451380ce923fc0da5df3417db715dda6c966dc26436245",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/geometry.hpp": "838d99932dce06c6aed16313eba89ae9f6d43501dc6fcc0c0a639afed441e2c3",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/lease.py": "08a272fd1a1084e2f5b24e5332ef7b0e5022d00333d4d57f46bbcf61f43084ab",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/source_guard.py": "b7fe0916e71ca8f3638e15ca9ecc05517d5253bfdff7cbb9b10fa6145b9c6be3",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/test_contract.py": "17a7fa8dc227cab833a716e525a3a5772f9ba42b605a3f65d4bc5fdbc79b3fea",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/validate.py": "a572b826f0ed61ab27a37a42144890dff6762050dcf1ed5caf8cb909962d5ff0",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/caller/PREPARATION.json": "24231aff33664131a8e538b1ef3e48c8197d455ae67fe5b78edfdf8e6c15e84d",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/CHANGE.patch": "6b7bc2363cb55e6f08d445dce8a28870254133c011fbd9f406b65dde6daa740e",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/DERIVATION.json": "049d9dfa34e34ba5231f66e9c53b4c97ffe0f116394889a5bb351e43080f396a",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/README.md": "b1cfc75156eb4f6302fc7f7047859ac7308f55cf7bf6770af837d97d22950d3c",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/candidate.hpp": "05cc9b99d26b36c3561e1e8966828193137688626a33b2dd01324425b68ffeab",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/control.hpp": "342da7c27db9aab23de9fade055d3f1cf134d33fd0eedeb3fa431203ea273626",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/derive.py": "40a70bd7faf5664cea0afe213bd46cb94dc8822185ec612d5e2dc2106b1855ad",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/plan.json": "7edfdcaa3a899f1e4d7e8bb20b9f85a5cb8b4ff820e491df41a27ff76d9a28d9",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/protocol.json": "68e046bc5a549b2c9858897fd43ecedba766d0078c4527fa68bda227ec08b11e",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/range_size.hpp": "4079c6b70c2dbff115411f0f71f262904a28aa20fac60a5508fe4189642fd703",
+    "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-k12-line-or/PREPARATION.json": "92caa1478df3d281251905579fd5c27f1446b26753de691b800bdc9fd1235bcc"
+  },
+  "compiler": {
+    "path": "/usr/lib/llvm-23/bin/clang",
+    "sha256": "ab4fa0735b6c74f65ea7abf25675982179378518c2eb86e10396712691d575a0"
+  },
+  "finished": "2026-10-29T09:00:27.335491+00:00",
+  "error": "RuntimeError('Unexpected command outcome: native-build')"
+}

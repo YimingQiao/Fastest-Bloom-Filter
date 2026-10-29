@@ -1,0 +1,44 @@
+--- committed-v1/validate.py
++++ preflight-v2/validate.py
+@@ -5,6 +5,8 @@
+ import json
+ import os
+ from pathlib import Path
++import sys
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ import shlex
+ import subprocess
+ import traceback
+@@ -13,7 +15,8 @@
+     raise SystemExit('Python -O is not supported')
+ from contract import CASES, SEMANTICS, TYPES, command, need, rows
+ from lease import require
+-from source_guard import HERE, ROOT, sha, verify
++from source_guard import HERE, ROOT, sha
++from repair_guard import verify
+ 
+ MINIMAL = ['-march=x86-64','-mavx512f','-mno-avx512vl','-mno-avx512dq','-mno-avx512bw','-mno-avx512bitalg','-mno-avx512vbmi']
+ PROFILES = ('native','minimal-f','asan')
+@@ -50,7 +53,7 @@
+     parser.add_argument('--cpu',type=int,choices=(2,3),required=True)
+     parser.add_argument('--execute-correctness',action='store_true');args=parser.parse_args()
+     need(args.execute_correctness, 'Explicit correctness execution required; no performance mode exists')
+-    output=HERE/'validation-v1';new_path(output);output.mkdir()
++    output=HERE/'validation-v2';new_path(output);output.mkdir()
+     meta=dict(complete=False,source_commit=args.source_commit,started=now(),commands=[],profiles={},performance_run=False)
+     def save(): (output/'metadata.json').write_text(json.dumps(meta,indent=2)+'\n')
+     save()
+@@ -68,11 +71,11 @@
+         meta['lease']=require(args.cpu);meta['source_sha256']=verify(args.source_commit);save()
+         run('proposal-derivation',['python3',str(HERE.parent/'derive.py')])
+         run('caller-derivation',['python3',str(HERE/'derive.py')])
+-        compiler=Path('/usr/bin/clang++').resolve();meta['compiler']=dict(path=str(compiler),sha256=sha(compiler))
++        compiler=Path('/usr/bin/clang++');meta['compiler']=dict(path=str(compiler),resolved_path=str(compiler.resolve()),sha256=sha(compiler))
+         run('compiler-version',[str(compiler),'--version']);run('cmake-version',['cmake','--version'])
+         all_inputs={};all_bins={};semantics={};oracle=None;all_rows=[]
+         for profile in PROFILES:
+-            build=ROOT/'build'/f'k12-line-or-v1-cpu{args.cpu}-{profile}';new_path(build)
++            build=ROOT/'build'/f'k12-line-or-v2-cpu{args.cpu}-{profile}';new_path(build)
+             isa='minimal-f' if profile=='minimal-f' else 'native'
+             env={'ASAN_OPTIONS':'detect_leaks=1:halt_on_error=1','UBSAN_OPTIONS':'print_stacktrace=1:halt_on_error=1'} if profile=='asan' else {}
+             run(profile+'-configure',['cmake','-S',HERE,'-B',build,'-DCMAKE_BUILD_TYPE=Release',
