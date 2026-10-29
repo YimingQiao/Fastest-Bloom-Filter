@@ -1,0 +1,17 @@
+[package]
+name = "native-build-policy-confirmation"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+native-build-policy-experiment = { path = "../../rust" }
+fastest-bloom-filter = { path = "../../../2026-10-29-split64-range-native-scaling/rust/native" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[[bin]]
+name = "policy_confirmation"
+path = "src/main.rs"
