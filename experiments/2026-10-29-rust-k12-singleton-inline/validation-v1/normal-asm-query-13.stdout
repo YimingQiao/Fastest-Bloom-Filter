@@ -1,0 +1,45 @@
+
+/tmp/fastest-bf-rust-k12-inline-v1-cpu3/normal/release/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000a2990 <<fastest_bloom_filter::split64_range::Split64RangeBloomFilter>::contains_scalar>:
+   a2990:	mov    %rdi,%rax
+   a2993:	mov    %rsi,%rcx
+   a2996:	shr    $0x20,%rcx
+   a299a:	mov    0x18(%rdi),%edi
+   a299d:	imul   %rcx,%rdi
+   a29a1:	shr    $0x20,%rdi
+   a29a5:	mov    0x10(%rax),%rcx
+   a29a9:	cmp    %rcx,%rdi
+   a29ac:	jae    a2a05 <<fastest_bloom_filter::split64_range::Split64RangeBloomFilter>::contains_scalar+0x75>
+   a29ae:	vpbroadcastq %rsi,%zmm0
+   a29b4:	vpmullq -0x967fe(%rip),%zmm0,%zmm0        # c1c0 <anon.663c38bb301f18615f4d3110a8e62152.0.llvm.1231715614483663210+0x70>
+   a29be:	mov    0x8(%rax),%rax
+   a29c2:	shl    $0x6,%rdi
+   a29c6:	vpsrlq $0x1a,%zmm0,%zmm0
+   a29cd:	vpandq -0x99c3f(%rip){1to8},%zmm0,%zmm0        # 8d98 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x40>
+   a29d7:	vpbroadcastq -0x99cb9(%rip),%zmm1        # 8d28 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2c0>
+   a29e1:	vpsllvq %zmm0,%zmm1,%zmm0
+   a29e7:	vmovdqu64 (%rax,%rdi,1),%zmm1
+   a29ee:	vpandnq %zmm0,%zmm1,%zmm0
+   a29f4:	vptestmd %zmm0,%zmm0,%k0
+   a29fa:	kortestw %k0,%k0
+   a29fe:	sete   %al
+   a2a01:	vzeroupper
+   a2a04:	ret
+   a2a05:	push   %rax
+   a2a06:	lea    0x47dfb(%rip),%rdx        # ea808 <anon.663c38bb301f18615f4d3110a8e62152.2.llvm.1231715614483663210+0x118>
+   a2a0d:	mov    %rcx,%rsi
+   a2a10:	call   *0x4a3ba(%rip)        # ecdd0 <_DYNAMIC+0x230>
+   a2a16:	int3
+   a2a17:	int3
+   a2a18:	int3
+   a2a19:	int3
+   a2a1a:	int3
+   a2a1b:	int3
+   a2a1c:	int3
+   a2a1d:	int3
+   a2a1e:	int3
+   a2a1f:	int3
