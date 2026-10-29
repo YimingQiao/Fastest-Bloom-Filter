@@ -1,0 +1,87 @@
+--- original/Cargo.lock
++++ single-line/Cargo.lock
+@@ -3,5 +3,5 @@
+ version = 4
+ 
+ [[package]]
+-name = "four-sector-range12-isolated"
++name = "four-sector-range12-single-line-isolated"
+ version = "0.0.0"
+--- original/Cargo.toml
++++ single-line/Cargo.toml
+@@ -1,5 +1,5 @@
+ [package]
+-name = "four-sector-range12-isolated"
++name = "four-sector-range12-single-line-isolated"
+ version = "0.0.0"
+ edition = "2021"
+ rust-version = "1.89"
+@@ -10,7 +10,7 @@
+ disable-avx512 = []
+ 
+ [lib]
+-name = "four_sector_range12_isolated"
++name = "four_sector_range12_single_line_isolated"
+ 
+ [profile.release]
+ lto = "thin"
+--- original/src/bin/fixture.rs
++++ single-line/src/bin/fixture.rs
+@@ -1,4 +1,4 @@
+-use four_sector_range12_isolated::FourSectorRange12BloomFilter;
++use four_sector_range12_single_line_isolated::FourSectorRange12BloomFilter;
+ use std::io::{self,Write};
+ fn hash(mut z:u64)->u64 {z=(z^(z>>30)).wrapping_mul(0xbf58476d1ce4e5b9);z=(z^(z>>27)).wrapping_mul(0x94d049bb133111eb);z^(z>>31)}
+ fn main(){
+--- original/src/four_sector_range12.rs
++++ single-line/src/four_sector_range12.rs
+@@ -105,9 +105,11 @@
+     #[inline]
+     fn contains_scalar(&self, hash: u64) -> bool {
+         let (indices, masks) = self.probe(hash);
++        // probe_mask changes only the low four word-index bits across sectors.
++        let line = &self.lines[indices[0] as usize >> 4].0;
+         let mut pass = true;
+         for (index, mask) in indices.into_iter().zip(masks) {
+-            pass &= self.lines[index as usize >> 4].0[index as usize & 15] & mask == mask;
++            pass &= line[index as usize & 15] & mask == mask;
+         }
+         pass
+     }
+--- original/src/tests.rs
++++ single-line/src/tests.rs
+@@ -128,3 +128,34 @@
+     assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(||f.lookup_hashes_parallel(&[1,2],&mut out,7))).is_err());assert_eq!(out,[0xfeed;3]);
+     assert!(std::panic::catch_unwind(||f.build_scratch_bytes(usize::MAX,3)).is_err());
+ }
++
++#[test]
++fn single_line_probe_physical_owner_invariant() {
++    // No bitmap allocation: test the actual probe at the maximum allowed size
++    // and nonpower-of-two line counts, independent u128 quotient as oracle.
++    for count in [2u32,3,17,3072,32768,32769,1_572_864,1<<22] {
++        let denominator=1u128<<24;
++        let mut addresses=vec![0u32,1,(1<<24)-2,(1<<24)-1];
++        for line in [1u32,count/3,count/2,count-1] {
++            let boundary=(line as u128*denominator).div_ceil(count as u128) as u32;
++            addresses.extend([boundary.saturating_sub(1),boundary.min((1<<24)-1)]);
++        }
++        addresses.sort_unstable();addresses.dedup();
++        for address in addresses {
++            let expected=(address as u128*count as u128/denominator)as u32;
++            assert!(expected<count);
++            for offsets in 0..256u64 {
++                for low in [0u32,1,0x0123_4567,0x89ab_cdef,u32::MAX] {
++                    let h=((address as u64)<<40)|(offsets<<32)|low as u64;
++                    let(indices,masks)=FourSectorRange12BloomFilter::probe_mask(h,count);
++                    for sector in 0..4 {
++                        assert_eq!(indices[sector]>>4,expected);
++                        assert_eq!((indices[sector]&15)>>2,sector as u32);
++                        assert!((indices[sector]&15)<16);
++                        assert_eq!(masks[sector].count_ones(),3);
++                    }
++                }
++            }
++        }
++    }
++}
