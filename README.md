@@ -69,9 +69,11 @@ also retain batch regressions. These results and all other comparisons are in th
 
 The external set is still expanding. [Poppy's complete accuracy calibration](experiments/2026-10-29-poppy-public-accuracy-analysis/REPORT.md)
 retains all 86 configurations; its [public-API speed comparison](experiments/2026-10-29-poppy-public-speed-caller/README.md)
-is in progress. A separate [fastbloom-rs raw-byte caller](experiments/2026-10-29-fastbloom-rs-raw8-caller/README.md)
-is prepared, with its mandatory hashes inside the clock and required build scratch
-included in allocation+build. Neither pending comparison supports a speed claim.
+is in progress. A separate [fastbloom-rs raw-byte caller](experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
+passes normal/ASan checks for all 24 public probe counts and 21 retained controls.
+Its hashes stay inside the clock, and required build scratch is included in
+allocation+build. Formal timing is pending; correctness checks alone do not
+support a speed claim.
 
 See the [baseline survey](docs/external-survey-2026-10-28.md),
 [benchmark contract](#what-the-numbers-mean), and [bbtree lessons](docs/bbtree-lessons.md).

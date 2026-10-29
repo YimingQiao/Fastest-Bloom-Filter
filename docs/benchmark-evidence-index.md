@@ -401,3 +401,16 @@ frame size and loop unrolling changes; four word probes already shared one cache
 line. All 480 vectors, 120 same-input round sensitivities and 60 seed/round ranges
 were independently recomputed from complete raw records. The prototype remains
 isolated, with no new external, accuracy, build, multithread or global claim.
+
+The [public raw8 caller proof](../experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
+adds fastbloom-rs0.5.10, distinct from fastbloom0.17, through its original public
+raw-byte API. Four normal/ASan executables pass 12 focused test invocations,
+122 tiny rows and 12 precisely checked invalid CLI cases. All 24 public probe
+counts match independent complete bitmap/output oracles; all 21 retained
+controls preserve public semantics. Real allocator checks and actual assembly
+place required hash scratch allocation/initialization inside complete build,
+with zero scratch for the direct API. Complete output poisoning detects skipped
+or wrong writes after warmup. Actual public hashes/probes remain inside query
+clocks, including the compiler's outlined upstream helper. The exact source,
+380/387 consumed input files and binary identities are archived. No formal
+accuracy qualification or performance comparison follows from these fixtures.

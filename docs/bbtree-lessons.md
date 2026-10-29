@@ -160,3 +160,11 @@ unrolls the loop. Visible fused throughput improves 1.91–2.27× over old K12,
 while large batch31 hash+query loses 1.8–3.0% despite unchanged bulk source paths.
 The useful lesson is to inspect the generated public caller and measure both
 tiny and bulk operations; the evidence cannot isolate SIMD as the sole cause.
+
+The [raw-byte baseline caller](../experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
+also makes temporary memory part of the complete-operation cost. A prehash API
+needs workspace to process raw keys in batches; that workspace's allocation
+and initialization belong inside complete construction, while a direct raw-byte
+API receives no unused buffer. The verified caller releases build scratch
+before queries and keeps every implementation's required hashing inside its
+raw operation. This prevents a faster inner loop from hiding prepaid work.
