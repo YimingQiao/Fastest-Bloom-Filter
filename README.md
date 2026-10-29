@@ -61,6 +61,18 @@ old K12. All 144 batch1/3 contrasts improve across two seeds and opposite launch
 rounds, but large batch31 hash+query regresses **1.8–3.0%**, and batch4096 is mixed.
 It remains experimental pending comparison with leading native/external controls.
 
+<details>
+<summary>See gains and regressions across every query contract</summary>
+
+![C++ K12 SIMD latency relative to old K12, including batch regressions](docs/figures/k12-singleton.svg)
+
+Each point summarizes two seeds and two opposite launch rounds; bars show the
+full observed range, not confidence intervals. The figure includes all 240
+contrasts from the [complete report](experiments/2026-10-29-k12-singleton-vector-analysis/INTERPRETATION.md).
+Regenerate it with `python3 scripts/plot_k12_singleton.py` (requires matplotlib).
+
+</details>
+
 Experiments retain regressions. For example, [conditional C++ insertion](experiments/2026-10-29-k12-prefetch-line-or-analysis/DECISION.md)
 helps the 96 MiB K12 filter but causes stable 3 MiB insertion losses, so it is not
 integrated. [Rust inline hints](experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
