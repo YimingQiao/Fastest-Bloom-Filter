@@ -1,0 +1,24 @@
+[package]
+name = "rust-k12-simd-caller"
+version = "0.1.0"
+edition = "2021"
+license = "MIT AND Apache-2.0"
+
+[workspace]
+members = ["control", "candidate"]
+resolver = "2"
+
+[dependencies]
+control_native = { package = "k12-simd-control", path = "control" }
+candidate_native = { package = "k12-simd-candidate", path = "candidate" }
+
+[features]
+disable-avx512 = ["control_native/disable-avx512", "candidate_native/disable-avx512"]
+
+[[bin]]
+name = "rust-k12-simd-caller"
+path = "main.rs"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
