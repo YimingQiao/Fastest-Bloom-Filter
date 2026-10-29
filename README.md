@@ -5,7 +5,7 @@ parallel membership queries, and an atomic FastPattern type for concurrent reade
 Four native layouts cover different throughput/accuracy tradeoffs: **FastPattern**,
 **FourSector**, **Split64**, and **ByteSplit**. Each keeps a key's probes within one cache line.
 An optional **Split64Range** type also supports explicit byte budgets between powers of two.
-Optional **FourSectorRange12** is available in C++ for the measured strict-FPR bulk-query use case.
+Optional **FourSectorRange12** is available in both languages for the measured strict-FPR bulk-query use case.
 The aim is to improve throughput while making the memory and false-positive tradeoffs visible.
 The project name is an ambition, not a claim that one implementation wins every workload.
 
@@ -46,7 +46,10 @@ K12 also has a specific bulk-query niche. Its [Rust port](experiments/2026-10-29
 passes C++ bitmap/output parity and multicore correctness, but the complete
 Rust confirmation retains **324 wins and 396 losses** across 720 named pairs.
 Range wins every singleton, visible-single and construction comparison.
-The Rust K12 port remains isolated; C++ K12 is an optional native type.
+Both languages now expose K12 as an optional native type. Rust uses the safe
+single-line scalar rewrite described below; its native integration has
+[correctness and assembly validation](experiments/2026-10-29-native-rust-k12-integration-plan/proof-final/REPORT.md),
+with no new performance claim from packaging alone.
 
 A [C++ insertion experiment](experiments/2026-10-29-k12-line-or-analysis/DECISION.md)
 reduces complete 96 MiB K12 construction latency by **14–23%** against the old
@@ -123,15 +126,18 @@ Its capacity benefit is confirmed above, while equal-allocation speed losses
 remain documented. Large builds benefit from parallelism; small builds still
 expose overhead. The bounded build-policy experiment has not changed defaults.
 
-**FourSectorRange12BloomFilter** and **ParallelFourSectorRange12BloomFilter**
-are optional C++ types with the same byte-budget range. They set12 bits across
-four sectors and partition parallel construction by the actual physical cache
-line. See the [API guide](docs/four-sector-range12.md) and
-[native integration checks](experiments/2026-10-29-native-k12-cpp/RESULTS.md).
-AVX-512, AVX2, portable and sanitizer checks pass, including non-divisible
-three/seven-worker ownership. The [eight-core comparison](experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md)
+**FourSectorRange12BloomFilter** is also available in C++ and Rust with the same
+byte-budget range. It sets 12 bits across four sectors and partitions parallel
+construction by the actual physical cache line. C++ provides
+`ParallelFourSectorRange12BloomFilter`; Rust exposes parallel methods on the
+filter itself. See the [C++/Rust API guide](docs/four-sector-range12.md),
+[C++ validation](experiments/2026-10-29-native-k12-cpp/RESULTS.md), and
+[Rust validation](experiments/2026-10-29-native-rust-k12-integration-plan/proof-final/REPORT.md).
+Backend, sanitizer and non-divisible three/seven-worker checks pass. The
+[C++ eight-core comparison](experiments/2026-10-29-native-k12-parallel-analysis/INTERPRETATION.md)
 supports strict24 query use, while construction loses to Range and small builds
-slow down with eight threads. Its singleton losses remain relevant.
+slow down with eight threads. Rust native performance remains to be measured;
+its isolated kernel's singleton and construction losses remain relevant.
 
 ## Historical comparison and FastPattern scaling
 
@@ -232,7 +238,8 @@ by its layout's actual cache-line index; it does not replicate the bitmap per wo
 `ParallelSplit64RangeBloomFilter` is provided separately in
 `parallel_split64_range_bloom.h`; Rust Range exposes the same parallel methods.
 Optional C++ K12 uses `ParallelFourSectorRange12BloomFilter` in
-`parallel_four_sector_range12_bloom.h`, with its dedicated physical-line ownership.
+`parallel_four_sector_range12_bloom.h`; Rust K12 exposes the same parallel
+methods as Range. Both partition by K12's actual physical-line mapping.
 The overlapping reader/writer atomic type is currently FastPattern only.
 
 The new-layout [1–8 core measurements](docs/layout-parallel-2026-10-28.md) cover

@@ -310,7 +310,16 @@ All72 rows retain85/96 query wins against original K12, including1.19–1.46×
 visible-single gains, but all six small batch31 staged pairs regress mildly and
 batch4096 is mixed. Against Range,21/96 queries and0/96 builds win. No new
 calibration or external comparison ran; historical12 quality contexts remain
-unpooled aliases. Exact native Rust packaging is a separate pending step.
+unpooled aliases.
+
+The [native Rust K12 integration proof](../experiments/2026-10-29-native-rust-k12-integration-plan/proof-final/REPORT.md)
+then packages that exact kernel as an optional native type. All 52 tests and
+36 complete bitmap/output fixtures pass across normal, disable-AVX512 and
+ASan profiles, including actual three/seven-worker construction. Public caller
+assembly preserves one line bounds check, no per-key scalar helper call, and
+the existing batch dispatch. Cargo target-name and folded-symbol validation
+failures remain archived; corrected checks reuse the same binaries. This is
+integration and code-generation evidence, with no new speed or FPR result.
 
 The [actual-native96-pair policy comparison](../experiments/2026-10-29-native-build-policy-port-analysis/DECISION.md)
 measures the public before/after C++ and Rust implementations with policy

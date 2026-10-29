@@ -34,3 +34,27 @@ thread startup/join. The wider panel retains75 K12 external-query losses;
 all72 same-byte construction comparisons against Range lose. Small parallel
 builds also lose to serial. These seen-seed results support an optional query
 choice, with distinct construction and singleton tradeoffs.
+
+## Rust API
+
+The optional native Rust type uses the same top24 physical-line mapping and twelve probes. It preserves the safe SingleLine scalar implementation and the existing batch dispatch. Current default types and benchmark selection remain unchanged.
+
+```rust
+use fastest_bloom_filter::{hash64, FourSectorRange12BloomFilter};
+
+let mut filter = FourSectorRange12BloomFilter::with_byte_budget(3 * 1024 * 1024).unwrap();
+let hashes: Vec<u64> = (0_u64..100_000).map(hash64).collect();
+filter.insert_hashes_parallel(&hashes, 7);
+
+let mut answers = vec![0_u32; hashes.len()];
+filter.lookup_hashes_parallel(&hashes, &mut answers, 7);
+assert!(answers.iter().all(|&answer| answer == 1));
+```
+
+`new(expected_keys, bits_per_key)` also accepts a real expected item count. Byte budgets floor to complete 64-byte lines within 128 bytes through 256 MiB. `size_in_bytes()` reports actual bitmap backing capacity; `build_workers(n, requested)` and `build_scratch_bytes(n, requested)` report effective workers and explicit partition scratch. Request 0 follows available parallelism, while small inputs can remain serial. Caller buffers, allocator bookkeeping and thread stacks are separate.
+
+Insertion requires an exclusive `&mut self`. The dedicated scheduler partitions the actual physical line, supports non-power-of-two line counts and three/seven-worker boundaries, and preserves prior batches. Immutable queries can run concurrently after construction. Parallel methods include partitioning or chunking and thread creation/join in the public call. Hash slices contain uniformly distributed prehashed u64 values, and every query output slice must have exactly the input length.
+
+The [actual native packaging proof](../experiments/2026-10-29-native-rust-k12-integration-plan/proof-final/REPORT.md) passes 40 normal library tests, six disabled-AVX512 K12 tests, six ASan K12 tests and 36 full native/reference fixtures on seven physical cores. Actual public pure/fused loops retain one line bounds check and no hot per-key helper call; scalar stack frames and batch/thread costs remain. This proof contains no throughput or new FPR measurements.
+
+The [SingleLine internal comparison](../experiments/2026-10-29-rust-k12-single-line-analysis/INTERPRETATION.md) retains 85/96 query wins and 11 regressions against original K12, plus 75/96 query losses and all 96 construction losses against Range. Its inputs were already seen, and it does not establish new external leadership. The C++ multithread results above do not establish Rust multithread speed. The optional Rust API is a capacity/bulk-query choice with explicit singleton and construction tradeoffs.
