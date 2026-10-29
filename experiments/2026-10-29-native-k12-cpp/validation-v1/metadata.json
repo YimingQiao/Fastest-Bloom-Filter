@@ -1,0 +1,479 @@
+{
+  "complete": true,
+  "source_commit": "fd798e7939e80ffb021d271b6e202da1f4b5ffc4",
+  "native_commit": "6e7df603a02e2e7d1c226afaff6d37c14f841f3b",
+  "affinity": [
+    2
+  ],
+  "execution_cpus": [
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14
+  ],
+  "topology": [
+    {
+      "cpu": 2,
+      "socket": 0,
+      "core": 27
+    },
+    {
+      "cpu": 4,
+      "socket": 0,
+      "core": 21
+    },
+    {
+      "cpu": 6,
+      "socket": 0,
+      "core": 47
+    },
+    {
+      "cpu": 8,
+      "socket": 0,
+      "core": 4
+    },
+    {
+      "cpu": 10,
+      "socket": 0,
+      "core": 30
+    },
+    {
+      "cpu": 12,
+      "socket": 0,
+      "core": 18
+    },
+    {
+      "cpu": 14,
+      "socket": 0,
+      "core": 44
+    }
+  ],
+  "locks": [
+    {
+      "fd": "3",
+      "info": "pos:\t0\nflags:\t0100000\nmnt_id:\t27\nino:\t8692422\nlock:\t1: FLOCK  ADVISORY  WRITE 372873 08:02:8692422 0 EOF\n"
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "--version"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "compiler.stdout",
+      "stderr": "compiler.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "uname",
+        "-a"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "uname.stdout",
+      "stderr": "uname.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "lscpu",
+        "-J"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "lscpu.stdout",
+      "stderr": "lscpu.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-k12-integration",
+        "-B",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/native",
+        "-DCMAKE_CXX_COMPILER=/usr/bin/g++",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TESTING=ON",
+        "-DBF_NATIVE=ON"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "native-configure.stdout",
+      "stderr": "native-configure.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "cmake",
+        "--build",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/native",
+        "--parallel",
+        "1",
+        "--target",
+        "test_four_sector_range12",
+        "test_four_sector_range12_portable"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "native-build.stdout",
+      "stderr": "native-build.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "-march=native",
+        "/dev/null"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "native-macros.stdout",
+      "stderr": "native-macros.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "taskset",
+        "-c",
+        "2,4,6,8,10,12,14",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/native/test_four_sector_range12"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "native-check.stdout",
+      "stderr": "native-check.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "/dev/null"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "portable-macros.stdout",
+      "stderr": "portable-macros.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "taskset",
+        "-c",
+        "2,4,6,8,10,12,14",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/native/test_four_sector_range12_portable"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "portable-check.stdout",
+      "stderr": "portable-check.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-k12-integration",
+        "-B",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/avx2",
+        "-DCMAKE_CXX_COMPILER=/usr/bin/g++",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TESTING=ON",
+        "-DBF_NATIVE=OFF",
+        "-DUSE_AVX2=ON"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "avx2-configure.stdout",
+      "stderr": "avx2-configure.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "cmake",
+        "--build",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/avx2",
+        "--parallel",
+        "1",
+        "--target",
+        "test_four_sector_range12"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "avx2-build.stdout",
+      "stderr": "avx2-build.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "-mavx2",
+        "/dev/null"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "avx2-macros.stdout",
+      "stderr": "avx2-macros.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "taskset",
+        "-c",
+        "2,4,6,8,10,12,14",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/avx2/test_four_sector_range12"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "avx2-check.stdout",
+      "stderr": "avx2-check.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-k12-integration",
+        "-B",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/asan",
+        "-DCMAKE_CXX_COMPILER=/usr/bin/g++",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TESTING=ON",
+        "-DBF_NATIVE=ON",
+        "-DBF_SANITIZERS=ON"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "asan-configure.stdout",
+      "stderr": "asan-configure.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "cmake",
+        "--build",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/asan",
+        "--parallel",
+        "1",
+        "--target",
+        "test_four_sector_range12"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "asan-build.stdout",
+      "stderr": "asan-build.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "-march=native",
+        "/dev/null"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "asan-macros.stdout",
+      "stderr": "asan-macros.stderr",
+      "environment_overrides": {}
+    },
+    {
+      "argv": [
+        "taskset",
+        "-c",
+        "2,4,6,8,10,12,14",
+        "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/asan/test_four_sector_range12"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 0,
+      "expected": 0,
+      "stdout": "asan-check.stdout",
+      "stderr": "asan-check.stderr",
+      "environment_overrides": {
+        "ASAN_OPTIONS": "detect_leaks=1:abort_on_error=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+      }
+    },
+    {
+      "argv": [
+        "/usr/bin/g++",
+        "-std=c++17",
+        "-fsyntax-only",
+        "-I",
+        "/home/yiming/projects/fastest-bf-k12-integration/include",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-k12-cpp/unsafe_generic.cpp"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-k12-integration",
+      "returncode": 1,
+      "expected": -1,
+      "stdout": "unsafe-generic-rejected.stdout",
+      "stderr": "unsafe-generic-rejected.stderr",
+      "environment_overrides": {}
+    }
+  ],
+  "binaries": {
+    "native": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/native/test_four_sector_range12",
+      "sha256": "0278158329268ae4dd636f8a2b98692a3b6a9d4c2a1712dd523852c23c4a5cf2"
+    },
+    "portable": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/native/test_four_sector_range12_portable",
+      "sha256": "20de48a0a9250cc36e3c32651e0e05b22de9fb346ff36b8eddaae81092d9b56f"
+    },
+    "avx2": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/avx2/test_four_sector_range12",
+      "sha256": "e14b3cae3a3d716f311b44e7ae4a939d302f33dd06aa30983588e11c0e0dbca9"
+    },
+    "asan": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/native-k12-integration-v1/asan/test_four_sector_range12",
+      "sha256": "772bdd57487aa248875793f83cf230c3e9513db0560ef2f8a4dcc8c6f6b25fb6"
+    }
+  },
+  "scope": "correctness only; execution may migrate among seven allowed physical cores",
+  "captured_build_records": [
+    "asan/CMakeCache.txt",
+    "asan/CMakeFiles/benchmark_api_test.dir/flags.make",
+    "asan/CMakeFiles/benchmark_api_test.dir/link.txt",
+    "asan/CMakeFiles/benchmark_query_validation_test.dir/flags.make",
+    "asan/CMakeFiles/benchmark_query_validation_test.dir/link.txt",
+    "asan/CMakeFiles/compare_benchmark.dir/flags.make",
+    "asan/CMakeFiles/compare_benchmark.dir/link.txt",
+    "asan/CMakeFiles/main_benchmark.dir/flags.make",
+    "asan/CMakeFiles/main_benchmark.dir/link.txt",
+    "asan/CMakeFiles/parallel_benchmark.dir/flags.make",
+    "asan/CMakeFiles/parallel_benchmark.dir/link.txt",
+    "asan/CMakeFiles/test_byte_split.dir/flags.make",
+    "asan/CMakeFiles/test_byte_split.dir/link.txt",
+    "asan/CMakeFiles/test_byte_split_portable.dir/flags.make",
+    "asan/CMakeFiles/test_byte_split_portable.dir/link.txt",
+    "asan/CMakeFiles/test_fast_pattern_portable.dir/flags.make",
+    "asan/CMakeFiles/test_fast_pattern_portable.dir/link.txt",
+    "asan/CMakeFiles/test_filters.dir/flags.make",
+    "asan/CMakeFiles/test_filters.dir/link.txt",
+    "asan/CMakeFiles/test_four_sector_range12.dir/flags.make",
+    "asan/CMakeFiles/test_four_sector_range12.dir/link.txt",
+    "asan/CMakeFiles/test_four_sector_range12.dir/tests/test_four_sector_range12.cpp.o.d",
+    "asan/CMakeFiles/test_four_sector_range12_portable.dir/flags.make",
+    "asan/CMakeFiles/test_four_sector_range12_portable.dir/link.txt",
+    "asan/CMakeFiles/test_layouts.dir/flags.make",
+    "asan/CMakeFiles/test_layouts.dir/link.txt",
+    "asan/CMakeFiles/test_layouts_portable.dir/flags.make",
+    "asan/CMakeFiles/test_layouts_portable.dir/link.txt",
+    "asan/CMakeFiles/test_parallel.dir/flags.make",
+    "asan/CMakeFiles/test_parallel.dir/link.txt",
+    "asan/CMakeFiles/test_split64_range.dir/flags.make",
+    "asan/CMakeFiles/test_split64_range.dir/link.txt",
+    "asan/CMakeFiles/test_split64_range_portable.dir/flags.make",
+    "asan/CMakeFiles/test_split64_range_portable.dir/link.txt",
+    "asan/compile_commands.json",
+    "avx2/CMakeCache.txt",
+    "avx2/CMakeFiles/benchmark_api_test.dir/flags.make",
+    "avx2/CMakeFiles/benchmark_api_test.dir/link.txt",
+    "avx2/CMakeFiles/benchmark_query_validation_test.dir/flags.make",
+    "avx2/CMakeFiles/benchmark_query_validation_test.dir/link.txt",
+    "avx2/CMakeFiles/compare_benchmark.dir/flags.make",
+    "avx2/CMakeFiles/compare_benchmark.dir/link.txt",
+    "avx2/CMakeFiles/main_benchmark.dir/flags.make",
+    "avx2/CMakeFiles/main_benchmark.dir/link.txt",
+    "avx2/CMakeFiles/parallel_benchmark.dir/flags.make",
+    "avx2/CMakeFiles/parallel_benchmark.dir/link.txt",
+    "avx2/CMakeFiles/test_byte_split.dir/flags.make",
+    "avx2/CMakeFiles/test_byte_split.dir/link.txt",
+    "avx2/CMakeFiles/test_byte_split_portable.dir/flags.make",
+    "avx2/CMakeFiles/test_byte_split_portable.dir/link.txt",
+    "avx2/CMakeFiles/test_fast_pattern_portable.dir/flags.make",
+    "avx2/CMakeFiles/test_fast_pattern_portable.dir/link.txt",
+    "avx2/CMakeFiles/test_filters.dir/flags.make",
+    "avx2/CMakeFiles/test_filters.dir/link.txt",
+    "avx2/CMakeFiles/test_four_sector_range12.dir/flags.make",
+    "avx2/CMakeFiles/test_four_sector_range12.dir/link.txt",
+    "avx2/CMakeFiles/test_four_sector_range12.dir/tests/test_four_sector_range12.cpp.o.d",
+    "avx2/CMakeFiles/test_four_sector_range12_portable.dir/flags.make",
+    "avx2/CMakeFiles/test_four_sector_range12_portable.dir/link.txt",
+    "avx2/CMakeFiles/test_layouts.dir/flags.make",
+    "avx2/CMakeFiles/test_layouts.dir/link.txt",
+    "avx2/CMakeFiles/test_layouts_portable.dir/flags.make",
+    "avx2/CMakeFiles/test_layouts_portable.dir/link.txt",
+    "avx2/CMakeFiles/test_parallel.dir/flags.make",
+    "avx2/CMakeFiles/test_parallel.dir/link.txt",
+    "avx2/CMakeFiles/test_split64_range.dir/flags.make",
+    "avx2/CMakeFiles/test_split64_range.dir/link.txt",
+    "avx2/CMakeFiles/test_split64_range_portable.dir/flags.make",
+    "avx2/CMakeFiles/test_split64_range_portable.dir/link.txt",
+    "avx2/compile_commands.json",
+    "native/CMakeCache.txt",
+    "native/CMakeFiles/benchmark_api_test.dir/flags.make",
+    "native/CMakeFiles/benchmark_api_test.dir/link.txt",
+    "native/CMakeFiles/benchmark_query_validation_test.dir/flags.make",
+    "native/CMakeFiles/benchmark_query_validation_test.dir/link.txt",
+    "native/CMakeFiles/compare_benchmark.dir/flags.make",
+    "native/CMakeFiles/compare_benchmark.dir/link.txt",
+    "native/CMakeFiles/main_benchmark.dir/flags.make",
+    "native/CMakeFiles/main_benchmark.dir/link.txt",
+    "native/CMakeFiles/parallel_benchmark.dir/flags.make",
+    "native/CMakeFiles/parallel_benchmark.dir/link.txt",
+    "native/CMakeFiles/test_byte_split.dir/flags.make",
+    "native/CMakeFiles/test_byte_split.dir/link.txt",
+    "native/CMakeFiles/test_byte_split_portable.dir/flags.make",
+    "native/CMakeFiles/test_byte_split_portable.dir/link.txt",
+    "native/CMakeFiles/test_fast_pattern_portable.dir/flags.make",
+    "native/CMakeFiles/test_fast_pattern_portable.dir/link.txt",
+    "native/CMakeFiles/test_filters.dir/flags.make",
+    "native/CMakeFiles/test_filters.dir/link.txt",
+    "native/CMakeFiles/test_four_sector_range12.dir/flags.make",
+    "native/CMakeFiles/test_four_sector_range12.dir/link.txt",
+    "native/CMakeFiles/test_four_sector_range12.dir/tests/test_four_sector_range12.cpp.o.d",
+    "native/CMakeFiles/test_four_sector_range12_portable.dir/flags.make",
+    "native/CMakeFiles/test_four_sector_range12_portable.dir/link.txt",
+    "native/CMakeFiles/test_four_sector_range12_portable.dir/tests/test_four_sector_range12.cpp.o.d",
+    "native/CMakeFiles/test_layouts.dir/flags.make",
+    "native/CMakeFiles/test_layouts.dir/link.txt",
+    "native/CMakeFiles/test_layouts_portable.dir/flags.make",
+    "native/CMakeFiles/test_layouts_portable.dir/link.txt",
+    "native/CMakeFiles/test_parallel.dir/flags.make",
+    "native/CMakeFiles/test_parallel.dir/link.txt",
+    "native/CMakeFiles/test_split64_range.dir/flags.make",
+    "native/CMakeFiles/test_split64_range.dir/link.txt",
+    "native/CMakeFiles/test_split64_range_portable.dir/flags.make",
+    "native/CMakeFiles/test_split64_range_portable.dir/link.txt",
+    "native/compile_commands.json"
+  ],
+  "compiler_inputs": 348
+}
