@@ -1,0 +1,87 @@
+--- scratch-corrected/proposed/reporter.rs
++++ poison-corrected/proposed/reporter.rs
+@@ -4,6 +4,8 @@
+ use crate::raw_contract::{RawFilter, raw_batched, raw_visible, raw_insert};
+ use crate::{Aligned, Config, SplitMix64, shuffle, consume, verify_dense_output};
+ use std::time::Instant;
++
++const OUTPUT_POISON: u32 = 0xffff_fffe;
+ 
+ pub struct Measurements {
+     pub raw_batched_trials: Vec<f64>,
+@@ -74,6 +76,7 @@
+         // Every inserted raw key is checked after every timed build. No second
+         // reference bitmap lives across a timed construction interval.
+         for chunk in raw_insert_keys.chunks(validation_batch) {
++            output[..chunk.len()].fill(OUTPUT_POISON);
+             raw_batched(&fresh, chunk, &mut output[..chunk.len()], build_scratch.as_mut_slice());
+             assert!(output[..chunk.len()].iter().all(|&x|x==1));
+             consume(&output[..chunk.len()]);
+@@ -92,6 +95,7 @@
+     // Only API-required batch workspace lives through the query phase.
+     let mut query_scratch=Scratch::new(query_words);
+     for &raw in raw_insert_keys { assert!(filter.contains_raw(raw), "raw public false negative"); }
++    output[..c.q].fill(OUTPUT_POISON);
+     for (input,out) in raw_query.chunks(c.batch).zip(output[..c.q].chunks_mut(c.batch)) {
+         raw_batched(&filter,input,out,query_scratch.as_mut_slice());
+     }
+@@ -102,11 +106,15 @@
+         if raw>=c.key_base && raw<c.key_base+c.n as u64 {present+=1;assert_eq!(answer,1);} else {absent+=1;fp+=answer as usize;}
+     }
+     let expected=output[..c.q].to_vec();
++    output[..c.q].fill(OUTPUT_POISON);
+     raw_visible(&filter,raw_query,&mut output[..c.q]);
+     verify_dense_output(&output[..c.q],&expected,before,after,checksum,"raw visible warmup");
+     let orders=phase_orders(c.seed,c.repeats);let mut times:[Vec<f64>;2]=std::array::from_fn(|_|Vec::new());
+     for order in &orders {
+         for &mode in order {
++            // Identical untimed poisoning prevents a skipped write or tail
++            // from inheriting a previously correct answer.
++            output[..c.q].fill(OUTPUT_POISON);
+             let start=Instant::now();
+             match mode {
+                 0=>for(input,out)in raw_query.chunks(c.batch).zip(output[..c.q].chunks_mut(c.batch)){raw_batched(&filter,input,out,query_scratch.as_mut_slice());},
+@@ -123,6 +131,7 @@
+     for i in(0..count).step_by(c.batch){
+         let len=c.batch.min(count-i);
+         for(j,raw)in calibration_raw[..len].iter_mut().enumerate(){*raw=c.key_base+c.n as u64+c.q as u64+(i+j)as u64;}
++        output[..len].fill(OUTPUT_POISON);
+         raw_batched(&filter,&calibration_raw[..len],&mut output[..len],query_scratch.as_mut_slice());
+         for(&raw,&answer)in calibration_raw[..len].iter().zip(output.iter()){
+             assert!(answer<=1);assert_eq!(answer,filter.contains_raw(raw)as u32);calibration_fp+=answer as usize;
+--- scratch-corrected/README.md
++++ poison-corrected/README.md
+@@ -39,10 +39,12 @@
+ 
+ A bounded future correctness stage should verify all24 K values on small ordinary/non-power-of-two word counts using an independent complete-bitmap oracle: public XXH3 seed0/32 on the same eight bytes, u128 progression modulo m, explicit per-bit setting. It should check every inserted key, duplicate/collision history, raw extrema and endian encoding, full dense query outputs, tails/offset guards, immutability and invalid output length before any write. The public `get_hash_indices` helper is not a timed shortcut and need not be used by the adapter. Validate constructor allocation/deallocation and zero extra bitmap copies, including the six formal sizes and K endpoints; confirm K cannot change the allocation formula from the pinned source and small all-K observations.
+ 
+-The actual caller then needs focused normal/ASan checks, old raw-control semantic reproduction on seen tiny inputs, exact CLI rejection, two-phase schedule and deliberate output-corruption guards. The proposed paired schedule is AB/BA/BA/AB with a seed-derived label permutation, repeated for eight samples per query contract. Every timed query's full vector, checksum and guards are checked outside its clock; every inserted raw key is checked after each timed build. Query and construction trial vectors are recorded directly; nothing is inferred from absent vectors. One filter lifetime is timed at once; the reference bitmap used in focused tests is destroyed before timed builds.
++The actual caller then needs focused normal/ASan checks, old raw-control semantic reproduction on seen tiny inputs, exact CLI rejection, two-phase schedule and deliberate output-corruption guards. The proposed paired schedule is AB/BA/BA/AB with a seed-derived label permutation, repeated for eight samples per query contract. Before each timed query, its complete output region is poisoned with a non-0/1 value outside the clock, identically for every implementation. Warmup, each build-validation chunk and each calibration chunk poison their written regions too. This prevents a skipped write or tail from inheriting a prior correct answer. Every timed query's full vector, checksum and guards are checked outside its clock; every inserted raw key is checked after each timed build. The actual caller fault gates include both skip-last-write and wrong-value corruption. Query and construction trial vectors are recorded directly; nothing is inferred from absent vectors. One filter lifetime is timed at once; the reference bitmap used in focused tests is destroyed before timed builds.
+ 
+ The calibration raw interval is exactly `[key_base+n+q, key_base+n+q+2^c)`, disjoint from insertion and timed-negative counters. It uses the same raw API as insertion/warmup/hits, then checks each dense answer against the public raw singleton. Common-hash and direct-raw data must never be mixed for one filter. Actual native/raw-visible and fastbloom-rs public call paths must be inspected in the new executable; old latency or old assembly is not imported.
+ 
+ The initial source draft preallocated `max(query_batch,insert_batch)` scratch outside construction clocks for every API. Root identified that unfair boundary before source commit/build/data. [scratch-accounting.patch](scratch-accounting.patch) records the exact pre-data correction; constructor catalog and upstream algorithms do not change.
+ 
++The later output-validation correction is separately preserved in [output-poison.patch](output-poison.patch). The [bounded allocation/caller proof plan](ALLOCATION_PROOF.md) requires runtime evidence for scratch sizes, lifetimes and clock events before execution.
++
+ No dependency resolver or compiler has run for this proposal. The upstream package also declares fastmurmur3, cuckoofilter and xorfilter-rs dependencies even though this adapter uses only BloomFilter; they must not be stripped or silently replaced. Exact upstream source/license, Cargo lock and all transitive package trees must be frozen before the focused actual-caller build. Shared dependency changes are reported and all controls use the same new binary/graph. Compiler inputs are collected by structured package/manifest/target identity, with exact literal/normalized Cargo dep-info aliases and ambiguity rejection; failed attempts remain immutable.
+--- scratch-corrected/protocol.json
++++ poison-corrected/protocol.json
+@@ -67,5 +67,6 @@
+     ],
+     "query": "only scratch_words(query_batch), allocated outside query timers and reported separately"
+   },
+-  "insert_batch_policy": "Independent configurable parameter; neither whole-input nor4096 is selected as the sole optimum. The later finite execution protocol must fix it before data."
++  "insert_batch_policy": "Independent configurable parameter; neither whole-input nor4096 is selected as the sole optimum. The later finite execution protocol must fix it before data.",
++  "output_validation": "Before every timed query (outside clock), warmup, build-validation chunk and calibration chunk, poison its output region with non-0/1; validate full outputs/guards after call. Required actual-caller faults: skip-last-write and wrong-value."
+ }
+--- scratch-corrected/ALLOCATION_PROOF.md
++++ poison-corrected/ALLOCATION_PROOF.md
+@@ -12,6 +12,6 @@
+ 4. At validation of each timed build, exactly that filter and its insertion scratch are live. After validation both are dropped before the next build. Canonical build scratch is released before query scratch is allocated. No timed fresh build overlaps a second reference bitmap. Test `insert_batch < query_batch`, equal batches, `insert_batch > query_batch`, insertion tails and `insert_batch > n`; do not require whole-input buffering.
+ 5. Query uses only the selected adapter's `scratch_words(query_batch)`, reported as caller workspace separately from filter bytes. Common dense-output and raw-input storage are benchmark resources, reported separately when total harness memory is described. The raw-visible contract itself uses no scratch; the paired query lifetime retains only the workspace needed by its raw-batched phase. There is no direct-API identity-copy buffer.
+ 
+-The functional gate uses an independent u128 bit-position oracle over the upstream public two-seed XXH3 outputs, full bitmap equality, every inserted raw key, complete guarded outputs, collisions/duplicates/endian extrema and immutable lookups. All old CommonHash controls use the same original raw stream for insertion, warmup, hits and disjoint negatives. Small seen-seed fixtures reproduce the retained controls' semantics without importing old timing. The actual caller additionally needs its two-phase balance, full-output corruption and malformed-CLI guards. These focused proofs replace neither the future fixed measurement protocol nor its per-construction quality gates.
++The functional gate uses an independent u128 bit-position oracle over the upstream public two-seed XXH3 outputs, full bitmap equality, every inserted raw key, complete guarded outputs, collisions/duplicates/endian extrema and immutable lookups. All old CommonHash controls use the same original raw stream for insertion, warmup, hits and disjoint negatives. Small seen-seed fixtures reproduce the retained controls' semantics without importing old timing. The actual caller additionally needs its two-phase balance, full-output corruption and malformed-CLI guards. Poisoning occurs before every query/warmup/build-validation/calibration write region and outside clocks. Fault controls must independently omit the last write and write a wrong value; both must fail after earlier successful calls, so stale correct output cannot mask the omission. These focused proofs replace neither the future fixed measurement protocol nor its per-construction quality gates.
+ 
+ After correctness, freeze the actual native/ASan executables and consumed dependency closures. Inspect the raw-visible, raw-batched and insertion public paths for both a current native control and the new direct API. All upstream-required hashing stays inside the raw clocks; ordinary compiler elimination is allowed. No existing prehash column is repurposed, no old throughput result is copied, and no performance ranking is produced during this proof.
