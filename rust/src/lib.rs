@@ -8,11 +8,14 @@ mod four_sector;
 mod layout_parallel;
 mod parallel;
 mod patterns;
+mod range_parallel;
 mod split64;
+mod split64_range;
 pub use byte_split::ByteSplitBloomFilter;
 pub use four_sector::FourSectorBloomFilter;
 pub use parallel::AtomicFastPatternBloomFilter;
 pub use split64::Split64BloomFilter;
+pub use split64_range::Split64RangeBloomFilter;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SizeError {
