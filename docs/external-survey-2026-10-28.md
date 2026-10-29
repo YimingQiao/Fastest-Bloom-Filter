@@ -150,5 +150,11 @@ and 24 ordinary controls, including over-budget controls. The subsequent
 passes all 86 configurations under normal Rust and ASan, with full byte/iterator
 serialization equality, mixed-query parity and insertion-error checks. All17
 same-parameter None/Space aliases pass full comparisons in both profiles.
-Independent accuracy calibration and timing remain pending; Poppy is not yet
-part of a measured ranking.
+The [complete full-load accuracy calibration](../experiments/2026-10-29-poppy-public-accuracy-analysis/REPORT.md)
+retains all 86 rows with separate 2^26-negative samples on seen seed42. Six small
+and four large public configurations qualify under the 24-bpk/0.01% gate,
+including policy aliases. The ordinary Best control qualifies at approximately
+20.5/20.17 actual bits/key, with its cache charged; large ordinary None/Space
+controls miss their requested quality ceilings. All failures and 1032 allocation
+alternatives remain. Timing is still pending; accuracy alone supplies no speed
+ranking.

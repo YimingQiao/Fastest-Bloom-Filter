@@ -35,50 +35,33 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | [Rust K12 fresh confirmation](experiments/2026-10-29-four-sector-range12-rust-analysis/REPORT.md) | At equal24 bits/key, small-table batch4096 gains **1.27–1.28×** over Range including hashing. | Three fresh seeds; singleton, visible public-single queries, large4096 and every construction contract lose to Range. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
-**Recent experiments:** The complete 336-row Rust comparison finds that
-public probe tuning strengthens the eligible external baseline in 48/216 query
-views, by up to **1.97×**. Range retains the constrained 24-bpk opportunity,
-but loses **46/48 equal-allocation query** and **47/48 build** comparisons to
-production Split64 in this screen. The fixed fresh confirmation passes all
-eight quality samples and favors Range in all48 query and48 build comparisons
-against K7. Range is now an optional native API; it does not replace the old
-power-of-two types. All default-only comparisons and interrupted-run provenance
-remain in the linked evidence.
+**Choosing a layout:** The complete [336-row Rust public-probe comparison](experiments/2026-10-29-rust-fastbloom-fixed-probes-performance-analysis/report/INTERPRETATION.md)
+strengthens external leaders in 48/216 query views, by up to **1.97×**.
+Range's finer capacity can help under a strict byte ceiling, while production
+Split64 wins most equal-allocation comparisons in that screen. The original
+power-of-two types remain available alongside optional Range.
 
-The [fresh four-arm small-build comparison](experiments/2026-10-29-native-build-policy-controls-analysis/DECISION.md)
-observes **2.28–4.76×** gains in all48 comparisons where serial fallback applies.
-However, unchanged-code controls fail the preset ±3% stability gate in31/36
-two-seed contracts, leaving those classifications unresolved. All outside-gate
-losses remain in the report; default worker selection is unchanged.
-The [Page pointer-caller control](experiments/2026-10-29-page-pointer-single-analysis/RESULTS.md)
-finds no stable advantage over its original value caller; all losses are retained.
+K12 also has a specific bulk-query niche. Its [Rust port](experiments/2026-10-29-four-sector-range12-rust-port/PREFLIGHT_REPORT.md)
+passes C++ bitmap/output parity and multicore correctness, but the complete
+Rust confirmation retains **324 wins and 396 losses** across 720 named pairs.
+Range wins every singleton, visible-single and construction comparison.
+The Rust K12 port remains isolated; C++ K12 is an optional native type.
 
-Multiply's earlier gain over Split64 also fails to beat the faster FourSector
-once a uniform larger accuracy sample qualifies all six constructions.
-A new [FourSector range probe pilot](experiments/2026-10-29-four-sector-range-probe-pilot/RESULTS.md)
-retains the failed 8-bit mapping and tests existing 9/10/12-bit masks. Only
-12 bits meet the 24-bpk/0.01% gate at both sizes. Its vector port passes
-[all three backends and sanitizers](experiments/2026-10-29-four-sector-range12-vector/VALIDATION.md).
-The completed [296-row bulk screen](experiments/2026-10-29-four-sector-range12-analysis/INTERPRETATION.md)
-wins all eight strict24-bpk views against both external and retained native
-leaders, while losing most wider comparisons. The fixed
-[three-seed confirmation](experiments/2026-10-29-four-sector-range12-strict24-analysis/REPORT.md)
-then wins all24 primary views with every selected rival passing all three quality
-gates. The smallest primary gain over native Range is only **1.96%**. The isolated
-[Rust K12 port](experiments/2026-10-29-four-sector-range12-rust-port/PREFLIGHT_REPORT.md)
-now passes full C++ bitmap/output parity and real multicore build/query checks
-under normal, AVX2 and ASan profiles. The completed
-[108-row Rust confirmation](experiments/2026-10-29-four-sector-range12-rust-analysis/REPORT.md)
-passes all12 three-seed quality gates, but retains324 wins and396 losses across
-720 named comparisons. Equal-byte Range wins every singleton, visible-single
-and construction comparison. The Rust K12 port remains isolated.
+The [four-arm small-build experiment](experiments/2026-10-29-native-build-policy-controls-analysis/DECISION.md)
+observes **2.28–4.76×** gains where serial fallback applies. Unchanged-code
+controls leave 31/36 two-seed classifications unresolved under the preset ±3%
+stability band, so default worker selection stays unchanged.
 
-The [160-row public raw-u32 comparison](experiments/2026-10-29-vldb-nearby-raw32-analysis/INTERPRETATION.md)
-also gives the original VLDB baselines nearby capacity choices. Project controls
-win42 comparable views;30 views have no eligible comparison and are not wins.
-K12 loses all8 singleton comparisons against Range, at **2.33–3.26×** its latency,
-and large strict bulk results change direction between rounds. These GCC12.2,
-seen-seed results reinforce keeping the layouts' different use cases visible.
+The [160-row original public raw-u32 comparison](experiments/2026-10-29-vldb-nearby-raw32-analysis/INTERPRETATION.md)
+includes nearby capacity choices: project controls win 42 comparable views,
+while 30 views have no eligible comparison. K12 singleton latency is
+**2.33–3.26×** Range's, and large strict bulk results change direction between
+rounds. These GCC12.2 results do not replace the separate modern-library ranking.
+
+[Poppy's complete public accuracy calibration](experiments/2026-10-29-poppy-public-accuracy-analysis/REPORT.md)
+now retains all 86 configurations. Six small-table and four large-table public
+configurations meet the 24-bpk/0.01% gate, including policy aliases. Its speed
+comparison is pending; requested FPP alone is never used as an eligibility gate.
 
 See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
 [baseline survey](docs/external-survey-2026-10-28.md),

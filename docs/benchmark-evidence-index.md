@@ -294,6 +294,18 @@ Zero/full-capacity and invalid-FPP cases also pass. The public byte-slice path
 retains the common first hash while preserving mandatory internal hash work.
 No accuracy or timing samples were collected in this stage.
 
+The [complete Poppy full-load accuracy stage](../experiments/2026-10-29-poppy-public-accuracy-analysis/REPORT.md)
+then checks all86 fixed public constructors with seen seed42 and separate
+2^26-negative streams. Every inserted key remains present. Under the actual
+24-bpk/0.01% ceiling, six small and four large public configurations qualify;
+these counts include policy aliases. The ordinary Best control qualifies at
+20.5/20.17 actual bits/key, while large ordinary None/Space controls exceed
+their requested quality bands. The analysis keeps86 records,24 cap/FPR views
+and1032 alternatives, with no pooled denominator or latency ranking. All17
+proved None/Space pairs reproduce full-load counts/checksums. Other mapping
+group equality is observational, not a full-bitmap assertion. The actual
+accuracy caller passed normal/ASan fixtures before the single complete run.
+
 The [complete160-row nearby public-capacity comparison](../experiments/2026-10-29-vldb-nearby-raw32-analysis/INTERPRETATION.md)
 retains20 APIs, two sizes, two capacity ceilings and two opposite launch rounds
 in one GCC12.2/Boost1.83 raw-u32 context. Project controls win42 comparable views;
