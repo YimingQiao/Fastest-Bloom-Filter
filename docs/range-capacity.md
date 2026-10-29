@@ -28,7 +28,6 @@ use fastest_bloom_filter::Split64RangeBloomFilter;
 let mut filter = Split64RangeBloomFilter::with_byte_budget(3 * 1024 * 1024)?;
 filter.insert_hashes_parallel(&hashes, 8);
 filter.lookup_hashes_parallel(&query_hashes, &mut out, 8);
-# Ok::<(), fastest_bloom_filter::SizeError>(())
 ```
 
 Inputs are uniformly hashed 64-bit keys. Insertion is incremental and duplicate
