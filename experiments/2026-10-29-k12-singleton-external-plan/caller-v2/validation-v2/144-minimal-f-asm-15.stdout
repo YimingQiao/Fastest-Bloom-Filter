@@ -1,0 +1,45 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004e4a0 <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj>:
+   4e4a0:	mov    $0xffffffff,%eax
+   4e4a5:	and    %rsi,%rax
+   4e4a8:	je     4e546 <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj+0xa6>
+   4e4ae:	xor    %esi,%esi
+   4e4b0:	vmovdqa -0x49d38(%rip),%ymm0        # 4780 <_IO_stdin_used+0x2888>
+   4e4b8:	vpxor  %xmm1,%xmm1,%xmm1
+   4e4bc:	vpbroadcastq -0x4c55d(%rip),%ymm2        # 1f68 <_IO_stdin_used+0x70>
+   4e4c5:	data16 cs nopw 0x0(%rax,%rax,1)
+   4e4d0:	mov    (%rdx,%rsi,8),%r8
+   4e4d4:	vmovd  %r8d,%xmm3
+   4e4d9:	shr    $0x20,%r8
+   4e4dd:	mov    (%rdi),%r9d
+   4e4e0:	imul   %r8,%r9
+   4e4e4:	vpbroadcastd %xmm3,%ymm3
+   4e4e9:	vpmulld %ymm0,%ymm3,%ymm3
+   4e4ee:	vpsrld $0x1a,%ymm3,%ymm3
+   4e4f3:	vpunpckhdq %ymm1,%ymm3,%ymm4
+   4e4f7:	vpsllvq %ymm4,%ymm2,%ymm4
+   4e4fc:	vpunpckldq %ymm1,%ymm3,%ymm3
+   4e500:	vpsllvq %ymm3,%ymm2,%ymm3
+   4e505:	mov    0x8(%rdi),%r8
+   4e509:	shr    $0x1a,%r9
+   4e50d:	and    $0xffffffffffffffc0,%r9
+   4e511:	vmovdqa (%r8,%r9,1),%ymm5
+   4e517:	vptest %ymm4,%ymm5
+   4e51c:	vmovdqa 0x20(%r8,%r9,1),%ymm4
+   4e523:	setb   %r8b
+   4e527:	vptest %ymm3,%ymm4
+   4e52c:	setb   %r9b
+   4e530:	xor    %r10d,%r10d
+   4e533:	test   %r8b,%r9b
+   4e536:	setne  %r10b
+   4e53a:	mov    %r10d,(%rcx,%rsi,4)
+   4e53e:	inc    %rsi
+   4e541:	cmp    %rsi,%rax
+   4e544:	jne    4e4d0 <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj+0x30>
+   4e546:	vzeroupper
+   4e549:	ret

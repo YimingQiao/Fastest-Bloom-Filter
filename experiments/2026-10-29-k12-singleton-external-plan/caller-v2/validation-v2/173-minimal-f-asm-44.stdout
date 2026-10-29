@@ -1,0 +1,60 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000057430 <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj>:
+   57430:	test   %rsi,%rsi
+   57433:	je     5752f <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0xff>
+   57439:	push   %rbx
+   5743a:	movabs $0xd6e8feb86659fd93,%rax
+   57444:	xor    %r8d,%r8d
+   57447:	vmovdqa64 -0x53891(%rip),%zmm0        # 3bc0 <_IO_stdin_used+0x1cc8>
+   57451:	vmovdqa64 -0x5385b(%rip),%zmm1        # 3c00 <_IO_stdin_used+0x1d08>
+   5745b:	vpbroadcastd -0x55589(%rip),%zmm2        # 1edc <__abi_tag+0x1c18>
+   57465:	vmovdqa64 -0x5382f(%rip),%zmm3        # 3c40 <_IO_stdin_used+0x1d48>
+   5746f:	vmovdqa64 -0x537f9(%rip),%zmm4        # 3c80 <_IO_stdin_used+0x1d88>
+   57479:	nopl   0x0(%rax)
+   57480:	mov    (%rdx,%r8,8),%r9
+   57484:	mov    %r9,%r10
+   57487:	shr    $0x20,%r10
+   5748b:	xor    %r9,%r10
+   5748e:	imul   %rax,%r10
+   57492:	mov    %r10,%r9
+   57495:	shr    $0x20,%r9
+   57499:	xor    %r10,%r9
+   5749c:	imul   %rax,%r9
+   574a0:	mov    %r9,%r10
+   574a3:	shr    $0x20,%r10
+   574a7:	vpbroadcastd %r10d,%zmm5
+   574ad:	mov    %r9d,%r11d
+   574b0:	xor    %r10d,%r11d
+   574b3:	vpsrlvd %zmm0,%zmm5,%zmm6
+   574b9:	vpxord %zmm6,%zmm5,%zmm5
+   574bf:	vpternlogd $0xec,%zmm2,%zmm1,%zmm5
+   574c6:	mov    (%rdi),%r10
+   574c9:	shr    $0x28,%r9
+   574cd:	mov    0x18(%rdi),%ebx
+   574d0:	imul   %r9,%rbx
+   574d4:	shr    $0x12,%rbx
+   574d8:	and    $0xffffffffffffffc0,%rbx
+   574dc:	vpermd (%r10,%rbx,1),%zmm5,%zmm5
+   574e3:	vpbroadcastd %r11d,%zmm6
+   574e9:	vprorvd %zmm3,%zmm6,%zmm6
+   574ef:	vpermd %zmm4,%zmm6,%zmm7
+   574f5:	vpsrld $0x4,%zmm6,%zmm6
+   574fc:	vprolvd %zmm6,%zmm7,%zmm6
+   57502:	vpandd %zmm5,%zmm6,%zmm5
+   57508:	vpcmpneqd %zmm6,%zmm5,%k0
+   5750f:	kmovw  %k0,%r9d
+   57513:	xor    %r10d,%r10d
+   57516:	test   $0xf,%r9b
+   5751a:	sete   %r10b
+   5751e:	mov    %r10d,(%rcx,%r8,4)
+   57522:	inc    %r8
+   57525:	cmp    %r8,%rsi
+   57528:	jne    57480 <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x50>
+   5752e:	pop    %rbx
+   5752f:	vzeroupper
+   57532:	ret

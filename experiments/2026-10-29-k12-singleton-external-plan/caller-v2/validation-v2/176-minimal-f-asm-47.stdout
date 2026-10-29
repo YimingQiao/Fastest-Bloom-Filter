@@ -1,0 +1,61 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004c140 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRKT0_mPKmPj>:
+   4c140:	test   %rsi,%rsi
+   4c143:	je     4c228 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRKT0_mPKmPj+0xe8>
+   4c149:	push   %rbx
+   4c14a:	mov    %rdx,%r8
+   4c14d:	movabs $0xd6e8feb86659fd93,%r10
+   4c157:	xor    %r11d,%r11d
+   4c15a:	movabs $0xf1357aea2e62a9c5,%rbx
+   4c164:	vmovdqa -0x4774c(%rip),%ymm0        # 4a20 <_IO_stdin_used+0x2b28>
+   4c16c:	vpbroadcastq -0x4a20d(%rip),%ymm1        # 1f68 <_IO_stdin_used+0x70>
+   4c175:	data16 cs nopw 0x0(%rax,%rax,1)
+   4c180:	mov    (%r8,%r11,8),%rax
+   4c184:	mov    %rax,%rdx
+   4c187:	shr    $0x20,%rdx
+   4c18b:	xor    %rax,%rdx
+   4c18e:	imul   %r10,%rdx
+   4c192:	mov    %rdx,%rax
+   4c195:	shr    $0x20,%rax
+   4c199:	xor    %rdx,%rax
+   4c19c:	imul   %r10,%rax
+   4c1a0:	mov    %rax,%r9
+   4c1a3:	shr    $0x20,%r9
+   4c1a7:	xor    %rax,%r9
+   4c1aa:	or     $0x1,%r9
+   4c1ae:	mov    %r9,%rax
+   4c1b1:	mulq   0x10(%rdi)
+   4c1b5:	mov    0x20(%rdi),%rax
+   4c1b9:	imul   %rbx,%r9
+   4c1bd:	shl    $0x6,%rdx
+   4c1c1:	vmovdqa (%rax,%rdx,1),%ymm2
+   4c1c6:	vmovdqa 0x20(%rax,%rdx,1),%ymm3
+   4c1cc:	vmovq  %r9,%xmm4
+   4c1d1:	vpbroadcastq %xmm4,%ymm4
+   4c1d6:	vpsllvq %ymm0,%ymm4,%ymm4
+   4c1db:	vpsrld $0x1a,%ymm4,%ymm4
+   4c1e0:	vpmovzxdq %xmm4,%ymm5
+   4c1e5:	vpsllvq %ymm5,%ymm1,%ymm5
+   4c1ea:	vextracti128 $0x1,%ymm4,%xmm4
+   4c1f0:	vpmovzxdq %xmm4,%ymm4
+   4c1f5:	vptest %ymm5,%ymm2
+   4c1fa:	vpsllvq %ymm4,%ymm1,%ymm2
+   4c1ff:	setb   %r9b
+   4c203:	vptest %ymm2,%ymm3
+   4c208:	prefetcht0 (%rax,%rdx,1)
+   4c20c:	setb   %al
+   4c20f:	xor    %edx,%edx
+   4c211:	test   %r9b,%al
+   4c214:	setne  %dl
+   4c217:	mov    %edx,(%rcx,%r11,4)
+   4c21b:	inc    %r11
+   4c21e:	cmp    %r11,%rsi
+   4c221:	jne    4c180 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRKT0_mPKmPj+0x40>
+   4c227:	pop    %rbx
+   4c228:	vzeroupper
+   4c22b:	ret

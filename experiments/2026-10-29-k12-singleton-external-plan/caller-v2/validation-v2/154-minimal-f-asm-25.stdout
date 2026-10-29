@@ -1,0 +1,47 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000057350 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj>:
+   57350:	test   %rsi,%rsi
+   57353:	je     5741d <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0xcd>
+   57359:	xor    %eax,%eax
+   5735b:	vmovdqa64 -0x538a5(%rip),%zmm0        # 3ac0 <_IO_stdin_used+0x1bc8>
+   57365:	vmovdqa64 -0x5386f(%rip),%zmm1        # 3b00 <_IO_stdin_used+0x1c08>
+   5736f:	vpbroadcastd -0x5549d(%rip),%zmm2        # 1edc <__abi_tag+0x1c18>
+   57379:	vmovdqa64 -0x53843(%rip),%zmm3        # 3b40 <_IO_stdin_used+0x1c48>
+   57383:	vmovdqa64 -0x5380d(%rip),%zmm4        # 3b80 <_IO_stdin_used+0x1c88>
+   5738d:	nopl   (%rax)
+   57390:	mov    (%rdx,%rax,8),%r8
+   57394:	mov    %r8,%r9
+   57397:	vpbroadcastd %r8d,%zmm5
+   5739d:	shr    $0x20,%r8
+   573a1:	vpbroadcastd %r8d,%zmm6
+   573a7:	vpsrlvd %zmm0,%zmm6,%zmm7
+   573ad:	vpxord %zmm7,%zmm6,%zmm6
+   573b3:	vpternlogd $0xec,%zmm2,%zmm1,%zmm6
+   573ba:	mov    (%rdi),%r8
+   573bd:	shr    $0x28,%r9
+   573c1:	mov    0x18(%rdi),%r10d
+   573c5:	imul   %r9,%r10
+   573c9:	shr    $0x12,%r10
+   573cd:	and    $0xffffffffffffffc0,%r10
+   573d1:	vpermd (%r8,%r10,1),%zmm6,%zmm6
+   573d8:	vprorvd %zmm3,%zmm5,%zmm5
+   573de:	vpermd %zmm4,%zmm5,%zmm7
+   573e4:	vpsrld $0x4,%zmm5,%zmm5
+   573eb:	vprolvd %zmm5,%zmm7,%zmm5
+   573f1:	vpandd %zmm6,%zmm5,%zmm6
+   573f7:	vpcmpneqd %zmm5,%zmm6,%k0
+   573fe:	kmovw  %k0,%r8d
+   57402:	xor    %r9d,%r9d
+   57405:	test   $0xf,%r8b
+   57409:	sete   %r9b
+   5740d:	mov    %r9d,(%rcx,%rax,4)
+   57411:	inc    %rax
+   57414:	cmp    %rax,%rsi
+   57417:	jne    57390 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x40>
+   5741d:	vzeroupper
+   57420:	ret

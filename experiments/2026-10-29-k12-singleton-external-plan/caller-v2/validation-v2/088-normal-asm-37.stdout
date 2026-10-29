@@ -1,0 +1,108 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000005a2d0 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj>:
+   5a2d0:	test   %rsi,%rsi
+   5a2d3:	je     5a49c <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0x1cc>
+   5a2d9:	push   %rbx
+   5a2da:	cmp    $0x1,%rsi
+   5a2de:	jne    5a2e7 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0x17>
+   5a2e0:	xor    %eax,%eax
+   5a2e2:	jmp    5a417 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0x147>
+   5a2e7:	mov    %rsi,%r8
+   5a2ea:	and    $0xfffffffffffffffe,%r8
+   5a2ee:	xor    %eax,%eax
+   5a2f0:	vmovdqa -0x55dd8(%rip),%ymm0        # 4520 <_IO_stdin_used+0x2628>
+   5a2f8:	vmovdqa -0x56000(%rip),%ymm1        # 4300 <_IO_stdin_used+0x2408>
+   5a300:	vpbroadcastd -0x58421(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   5a309:	nopl   0x0(%rax)
+   5a310:	mov    (%rdx,%rax,8),%r9
+   5a314:	mov    0x18(%rdi),%r10d
+   5a318:	mov    (%rdi),%r11
+   5a31b:	shr    $0x6,%r10d
+   5a31f:	mov    %r9d,%ebx
+   5a322:	imul   %r10,%rbx
+   5a326:	shr    $0x1a,%rbx
+   5a32a:	and    $0xffffffc0,%ebx
+   5a32d:	shr    $0x20,%r9
+   5a331:	prefetcht2 (%r11,%rbx,1)
+   5a336:	vpbroadcastd %r9d,%ymm3
+   5a33c:	vpmulld %ymm0,%ymm3,%ymm4
+   5a341:	vpsrld $0x1c,%ymm4,%ymm5
+   5a346:	vxorps %xmm6,%xmm6,%xmm6
+   5a34a:	vpermd (%r11,%rbx,1),%ymm5,%ymm6
+   5a350:	vpermd 0x20(%r11,%rbx,1),%ymm5,%ymm5
+   5a357:	vpsrad $0x1f,%ymm4,%ymm4
+   5a35c:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   5a362:	prefetcht2 0x3f(%r11,%rbx,1)
+   5a368:	vpmulld %ymm1,%ymm3,%ymm3
+   5a36d:	vpsrld $0x1b,%ymm3,%ymm3
+   5a372:	vpsllvd %ymm3,%ymm2,%ymm3
+   5a377:	xor    %r9d,%r9d
+   5a37a:	vptest %ymm3,%ymm4
+   5a37f:	setb   %r9b
+   5a383:	mov    %r9d,(%rcx,%rax,4)
+   5a387:	mov    0x8(%rdx,%rax,8),%r9
+   5a38c:	mov    0x18(%rdi),%r10d
+   5a390:	mov    (%rdi),%r11
+   5a393:	shr    $0x6,%r10d
+   5a397:	mov    %r9d,%ebx
+   5a39a:	imul   %r10,%rbx
+   5a39e:	shr    $0x1a,%rbx
+   5a3a2:	and    $0xffffffc0,%ebx
+   5a3a5:	shr    $0x20,%r9
+   5a3a9:	vpbroadcastd %r9d,%ymm3
+   5a3af:	vpmulld %ymm0,%ymm3,%ymm4
+   5a3b4:	prefetcht2 (%r11,%rbx,1)
+   5a3b9:	vpsrld $0x1c,%ymm4,%ymm5
+   5a3be:	vxorps %xmm6,%xmm6,%xmm6
+   5a3c2:	vpermd (%r11,%rbx,1),%ymm5,%ymm6
+   5a3c8:	vpermd 0x20(%r11,%rbx,1),%ymm5,%ymm5
+   5a3cf:	vpsrad $0x1f,%ymm4,%ymm4
+   5a3d4:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   5a3da:	vpmulld %ymm1,%ymm3,%ymm3
+   5a3df:	prefetcht2 0x3f(%r11,%rbx,1)
+   5a3e5:	vpsrld $0x1b,%ymm3,%ymm3
+   5a3ea:	vpsllvd %ymm3,%ymm2,%ymm3
+   5a3ef:	xor    %r9d,%r9d
+   5a3f2:	vptest %ymm3,%ymm4
+   5a3f7:	setb   %r9b
+   5a3fb:	mov    %r9d,0x4(%rcx,%rax,4)
+   5a400:	add    $0x2,%rax
+   5a404:	cmp    %rax,%r8
+   5a407:	jne    5a310 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0x40>
+   5a40d:	test   $0x1,%sil
+   5a411:	je     5a49b <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0x1cb>
+   5a417:	mov    (%rdx,%rax,8),%rdx
+   5a41b:	mov    0x18(%rdi),%esi
+   5a41e:	mov    (%rdi),%rdi
+   5a421:	shr    $0x6,%esi
+   5a424:	mov    %edx,%r8d
+   5a427:	imul   %rsi,%r8
+   5a42b:	shr    $0x1a,%r8
+   5a42f:	and    $0xffffffc0,%r8d
+   5a433:	shr    $0x20,%rdx
+   5a437:	vpbroadcastd %edx,%ymm0
+   5a43d:	vpmulld -0x55f26(%rip),%ymm0,%ymm1        # 4520 <_IO_stdin_used+0x2628>
+   5a446:	vpsrld $0x1c,%ymm1,%ymm2
+   5a44b:	vxorps %xmm3,%xmm3,%xmm3
+   5a44f:	vpermd (%rdi,%r8,1),%ymm2,%ymm3
+   5a455:	vpermd 0x20(%rdi,%r8,1),%ymm2,%ymm2
+   5a45c:	vpsrad $0x1f,%ymm1,%ymm1
+   5a461:	vpblendvb %ymm1,%ymm2,%ymm3,%ymm1
+   5a467:	vpmulld -0x56170(%rip),%ymm0,%ymm0        # 4300 <_IO_stdin_used+0x2408>
+   5a470:	prefetcht2 (%rdi,%r8,1)
+   5a475:	prefetcht2 0x3f(%rdi,%r8,1)
+   5a47b:	vpsrld $0x1b,%ymm0,%ymm0
+   5a480:	vpbroadcastd -0x585a1(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   5a489:	vpsllvd %ymm0,%ymm2,%ymm0
+   5a48e:	xor    %edx,%edx
+   5a490:	vptest %ymm0,%ymm1
+   5a495:	setb   %dl
+   5a498:	mov    %edx,(%rcx,%rax,4)
+   5a49b:	pop    %rbx
+   5a49c:	vzeroupper
+   5a49f:	ret

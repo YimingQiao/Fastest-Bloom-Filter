@@ -1,0 +1,31 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000054f70 <_Z20inline_single_kernelILb0EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj>:
+   54f70:	test   %rsi,%rsi
+   54f73:	je     54fd4 <_Z20inline_single_kernelILb0EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj+0x64>
+   54f75:	xor    %eax,%eax
+   54f77:	vmovdqa -0x52f4f(%rip),%xmm0        # 2030 <_IO_stdin_used+0x138>
+   54f7f:	vmovdqa -0x52f67(%rip),%xmm1        # 2020 <_IO_stdin_used+0x128>
+   54f87:	nopw   0x0(%rax,%rax,1)
+   54f90:	mov    (%rdx,%rax,8),%r8
+   54f94:	vmovd  %r8d,%xmm2
+   54f99:	shr    $0x20,%r8
+   54f9d:	and    0x18(%rdi),%r8d
+   54fa1:	mov    (%rdi),%r9
+   54fa4:	shl    $0x4,%r8
+   54fa8:	vmovdqa (%r9,%r8,1),%xmm3
+   54fae:	vpbroadcastd %xmm2,%xmm2
+   54fb3:	vpmulhw %xmm0,%xmm2,%xmm2
+   54fb7:	vpshufb %xmm2,%xmm1,%xmm2
+   54fbc:	xor    %r8d,%r8d
+   54fbf:	vptest %xmm2,%xmm3
+   54fc4:	setb   %r8b
+   54fc8:	mov    %r8d,(%rcx,%rax,4)
+   54fcc:	inc    %rax
+   54fcf:	cmp    %rax,%rsi
+   54fd2:	jne    54f90 <_Z20inline_single_kernelILb0EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj+0x20>
+   54fd4:	ret

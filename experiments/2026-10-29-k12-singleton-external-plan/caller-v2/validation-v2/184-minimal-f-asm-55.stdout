@@ -1,0 +1,54 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004f920 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj>:
+   4f920:	test   %rsi,%rsi
+   4f923:	je     4f9e6 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0xc6>
+   4f929:	push   %rbx
+   4f92a:	movabs $0xd6e8feb86659fd93,%rax
+   4f934:	xor    %r8d,%r8d
+   4f937:	vmovdqa -0x4aeff(%rip),%ymm0        # 4a40 <_IO_stdin_used+0x2b48>
+   4f93f:	vmovdqa -0x4b107(%rip),%ymm1        # 4840 <_IO_stdin_used+0x2948>
+   4f947:	vpbroadcastd -0x4da68(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   4f950:	mov    (%rdx,%r8,8),%r9
+   4f954:	mov    %r9,%r10
+   4f957:	shr    $0x20,%r10
+   4f95b:	xor    %r9,%r10
+   4f95e:	imul   %rax,%r10
+   4f962:	mov    %r10,%r9
+   4f965:	shr    $0x20,%r9
+   4f969:	xor    %r10,%r9
+   4f96c:	imul   %rax,%r9
+   4f970:	mov    %r9d,%r10d
+   4f973:	shr    $0x20,%r9
+   4f977:	mov    (%rdi),%r11
+   4f97a:	xor    %r9,%r10
+   4f97d:	mov    0x18(%rdi),%ebx
+   4f980:	shr    $0x6,%ebx
+   4f983:	imul   %r10,%rbx
+   4f987:	shr    $0x1a,%rbx
+   4f98b:	and    $0xffffffc0,%ebx
+   4f98e:	vmovd  %r9d,%xmm3
+   4f993:	vpbroadcastd %xmm3,%ymm3
+   4f998:	vpmulld %ymm0,%ymm3,%ymm4
+   4f99d:	vpsrld $0x1c,%ymm4,%ymm5
+   4f9a2:	vpermd (%r11,%rbx,1),%ymm5,%ymm6
+   4f9a8:	vpermd 0x20(%r11,%rbx,1),%ymm5,%ymm5
+   4f9af:	vpsrad $0x1f,%ymm4,%ymm4
+   4f9b4:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   4f9ba:	vpmulld %ymm1,%ymm3,%ymm3
+   4f9bf:	vpsrld $0x1b,%ymm3,%ymm3
+   4f9c4:	vpsllvd %ymm3,%ymm2,%ymm3
+   4f9c9:	xor    %r9d,%r9d
+   4f9cc:	vptest %ymm3,%ymm4
+   4f9d1:	setb   %r9b
+   4f9d5:	mov    %r9d,(%rcx,%r8,4)
+   4f9d9:	inc    %r8
+   4f9dc:	cmp    %r8,%rsi
+   4f9df:	jne    4f950 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x30>
+   4f9e5:	pop    %rbx
+   4f9e6:	vzeroupper
+   4f9e9:	ret

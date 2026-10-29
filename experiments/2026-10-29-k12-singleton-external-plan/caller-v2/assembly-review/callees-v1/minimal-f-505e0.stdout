@@ -1,0 +1,176 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000505e0 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj>:
+   505e0:	test   %esi,%esi
+   505e2:	je     508a5 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x2c5>
+   505e8:	mov    %rdx,%r8
+   505eb:	cmp    $0x1,%esi
+   505ee:	jne    50659 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x79>
+   505f0:	mov    (%r8),%r8
+   505f3:	or     $0x1,%r8
+   505f7:	mov    %r8,%rax
+   505fa:	mulq   0x10(%rdi)
+   505fe:	mov    0x20(%rdi),%rax
+   50602:	shl    $0x4,%rdx
+   50606:	prefetcht0 (%rax,%rdx,1)
+   5060a:	prefetcht0 0x40(%rax,%rdx,1)
+   5060f:	movabs $0xf1357aea2e62a9c5,%rdi
+   50619:	imul   %r8,%rdi
+   5061d:	vmovdqu (%rax,%rdx,1),%ymm0
+   50622:	vmovq  %rdi,%xmm1
+   50627:	vpbroadcastq %xmm1,%ymm1
+   5062c:	vpsllvq -0x4bb75(%rip),%ymm1,%ymm1        # 4ac0 <_IO_stdin_used+0x2bc8>
+   50635:	vpsrld $0x1b,%ymm1,%ymm1
+   5063a:	vmovdqa -0x4be82(%rip),%ymm2        # 47c0 <_IO_stdin_used+0x28c8>
+   50642:	vpsllvd %ymm1,%ymm2,%ymm1
+   50647:	xor    %eax,%eax
+   50649:	vptest %ymm1,%ymm0
+   5064e:	setb   %al
+   50651:	mov    %eax,(%rcx)
+   50653:	mov    %esi,%eax
+   50655:	vzeroupper
+   50658:	ret
+   50659:	push   %r15
+   5065b:	push   %r14
+   5065d:	push   %r12
+   5065f:	push   %rbx
+   50660:	sub    $0x188,%rsp
+   50667:	movabs $0xf1357aea2e62a9c5,%r10
+   50671:	mov    %esi,%r11d
+   50674:	cmp    $0x40,%esi
+   50677:	jb     5082a <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x24a>
+   5067d:	mov    0x10(%rdi),%rbx
+   50681:	mov    0x20(%rdi),%r14
+   50685:	mov    $0x1f,%r15d
+   5068b:	nopl   0x0(%rax,%rax,1)
+   50690:	mov    (%r8),%r9
+   50693:	or     $0x1,%r9
+   50697:	mov    %r9,%rax
+   5069a:	mul    %rbx
+   5069d:	imul   %r10,%r9
+   506a1:	mov    %r9,0x80(%rsp,%r15,8)
+   506a9:	shl    $0x4,%rdx
+   506ad:	lea    (%r14,%rdx,1),%rax
+   506b1:	prefetcht0 (%r14,%rdx,1)
+   506b6:	prefetcht0 0x40(%r14,%rdx,1)
+   506bc:	add    $0x8,%r8
+   506c0:	mov    %rax,-0x80(%rsp,%r15,8)
+   506c5:	add    $0xffffffffffffffff,%r15
+   506c9:	jb     50690 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0xb0>
+   506cb:	vmovdqa -0x4bc13(%rip),%ymm0        # 4ac0 <_IO_stdin_used+0x2bc8>
+   506d3:	vmovdqa -0x4bf1b(%rip),%ymm1        # 47c0 <_IO_stdin_used+0x28c8>
+   506db:	mov    %r11,%r15
+   506de:	xchg   %ax,%ax
+   506e0:	mov    %r8,%r9
+   506e3:	mov    %rcx,%rbx
+   506e6:	xor    %r12d,%r12d
+   506e9:	xor    %r14d,%r14d
+   506ec:	nopl   0x0(%rax)
+   506f0:	mov    (%r9,%r14,2),%rcx
+   506f4:	or     $0x1,%rcx
+   506f8:	mov    %rcx,%rax
+   506fb:	mulq   0x10(%rdi)
+   506ff:	mov    0x78(%rsp,%r12,1),%rax
+   50704:	mov    0x20(%rdi),%r8
+   50708:	vpbroadcastq 0x178(%rsp,%r12,1),%ymm2
+   50712:	imul   %r10,%rcx
+   50716:	vpsllvq %ymm0,%ymm2,%ymm2
+   5071b:	mov    %rcx,0x178(%rsp,%r12,1)
+   50723:	shl    $0x4,%rdx
+   50727:	lea    (%r8,%rdx,1),%rcx
+   5072b:	prefetcht0 (%r8,%rdx,1)
+   50730:	prefetcht0 0x40(%r8,%rdx,1)
+   50736:	mov    %rcx,0x78(%rsp,%r12,1)
+   5073b:	vmovdqu (%rax),%ymm3
+   5073f:	vpsrld $0x1b,%ymm2,%ymm2
+   50744:	vpsllvd %ymm2,%ymm1,%ymm2
+   50749:	xor    %eax,%eax
+   5074b:	vptest %ymm2,%ymm3
+   50750:	setb   %al
+   50753:	mov    %eax,(%rbx,%r14,1)
+   50757:	add    $0x4,%r14
+   5075b:	add    $0xfffffffffffffff8,%r12
+   5075f:	cmp    $0x80,%r14
+   50766:	jne    506f0 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x110>
+   50768:	add    $0xffffffffffffffe0,%r15
+   5076c:	lea    (%rbx,%r14,1),%rcx
+   50770:	mov    %r9,%r8
+   50773:	sub    %r12,%r8
+   50776:	cmp    $0x3f,%r15
+   5077a:	ja     506e0 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x100>
+   50780:	sub    %r12,%r9
+   50783:	xor    %eax,%eax
+   50785:	vmovdqa -0x4bccd(%rip),%ymm0        # 4ac0 <_IO_stdin_used+0x2bc8>
+   5078d:	vpbroadcastd -0x4e8ae(%rip),%xmm1        # 1ee8 <__abi_tag+0x1c24>
+   50796:	xor    %ecx,%ecx
+   50798:	nopl   0x0(%rax,%rax,1)
+   507a0:	lea    (%rbx,%rax,1),%rdx
+   507a4:	mov    0x78(%rsp,%rcx,2),%r8
+   507a9:	vpbroadcastq 0x178(%rsp,%rcx,2),%ymm2
+   507b3:	vmovdqu (%r8),%ymm3
+   507b8:	vpsllvq %ymm0,%ymm2,%ymm2
+   507bd:	vpsrld $0x1b,%ymm2,%ymm2
+   507c2:	vpsllvd %ymm2,%ymm1,%ymm2
+   507c7:	xor    %r8d,%r8d
+   507ca:	vptest %ymm2,%ymm3
+   507cf:	setb   %r8b
+   507d3:	mov    %r8d,(%r14,%rdx,1)
+   507d7:	mov    0x70(%rsp,%rcx,2),%r8
+   507dc:	vpbroadcastq 0x170(%rsp,%rcx,2),%ymm2
+   507e6:	vmovdqu (%r8),%ymm3
+   507eb:	vpsllvq %ymm0,%ymm2,%ymm2
+   507f0:	vpsrld $0x1b,%ymm2,%ymm2
+   507f5:	vpsllvd %ymm2,%ymm1,%ymm2
+   507fa:	xor    %r8d,%r8d
+   507fd:	vptest %ymm2,%ymm3
+   50802:	setb   %r8b
+   50806:	mov    %r8d,0x4(%r14,%rdx,1)
+   5080b:	add    $0xfffffffffffffff8,%rcx
+   5080f:	add    $0x8,%rax
+   50813:	cmp    $0xffffffffffffff80,%rcx
+   50817:	jne    507a0 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x1c0>
+   50819:	and    $0x1f,%r11
+   5081d:	je     50897 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x2b7>
+   5081f:	add    %r14,%rbx
+   50822:	add    %rax,%rbx
+   50825:	mov    %rbx,%rcx
+   50828:	jmp    5082d <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x24d>
+   5082a:	mov    %r8,%r9
+   5082d:	xor    %ebx,%ebx
+   5082f:	vmovdqa -0x4bd77(%rip),%ymm0        # 4ac0 <_IO_stdin_used+0x2bc8>
+   50837:	vmovdqa -0x4c07f(%rip),%ymm1        # 47c0 <_IO_stdin_used+0x28c8>
+   5083f:	nop
+   50840:	mov    (%r9,%rbx,8),%r8
+   50844:	or     $0x1,%r8
+   50848:	mov    %r8,%rax
+   5084b:	mulq   0x10(%rdi)
+   5084f:	mov    0x20(%rdi),%rax
+   50853:	shl    $0x4,%rdx
+   50857:	prefetcht0 (%rax,%rdx,1)
+   5085b:	prefetcht0 0x40(%rax,%rdx,1)
+   50860:	imul   %r10,%r8
+   50864:	vmovdqu (%rax,%rdx,1),%ymm2
+   50869:	vmovq  %r8,%xmm3
+   5086e:	vpbroadcastq %xmm3,%ymm3
+   50873:	vpsllvq %ymm0,%ymm3,%ymm3
+   50878:	vpsrld $0x1b,%ymm3,%ymm3
+   5087d:	vpsllvd %ymm3,%ymm1,%ymm3
+   50882:	xor    %eax,%eax
+   50884:	vptest %ymm3,%ymm2
+   50889:	setb   %al
+   5088c:	mov    %eax,(%rcx,%rbx,4)
+   5088f:	inc    %rbx
+   50892:	cmp    %rbx,%r11
+   50895:	jne    50840 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EE6LookupEjPKmPj+0x260>
+   50897:	add    $0x188,%rsp
+   5089e:	pop    %rbx
+   5089f:	pop    %r12
+   508a1:	pop    %r14
+   508a3:	pop    %r15
+   508a5:	mov    %esi,%eax
+   508a7:	vzeroupper
+   508aa:	ret

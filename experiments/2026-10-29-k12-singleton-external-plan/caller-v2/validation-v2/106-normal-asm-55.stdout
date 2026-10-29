@@ -1,0 +1,132 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000058210 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj>:
+   58210:	test   %rsi,%rsi
+   58213:	je     5842a <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x21a>
+   58219:	push   %r14
+   5821b:	push   %rbx
+   5821c:	movabs $0xd6e8feb86659fd93,%r8
+   58226:	cmp    $0x1,%rsi
+   5822a:	jne    58233 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x23>
+   5822c:	xor    %eax,%eax
+   5822e:	jmp    58391 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x181>
+   58233:	mov    %rsi,%r9
+   58236:	and    $0xfffffffffffffffe,%r9
+   5823a:	xor    %eax,%eax
+   5823c:	vmovdqa -0x53d24(%rip),%ymm0        # 4520 <_IO_stdin_used+0x2628>
+   58244:	vmovdqa -0x53f4c(%rip),%ymm1        # 4300 <_IO_stdin_used+0x2408>
+   5824c:	vpbroadcastd -0x5636d(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   58255:	data16 cs nopw 0x0(%rax,%rax,1)
+   58260:	mov    (%rdx,%rax,8),%r10
+   58264:	mov    %r10,%r11
+   58267:	shr    $0x20,%r11
+   5826b:	xor    %r10,%r11
+   5826e:	imul   %r8,%r11
+   58272:	mov    %r11,%r10
+   58275:	shr    $0x20,%r10
+   58279:	xor    %r11,%r10
+   5827c:	imul   %r8,%r10
+   58280:	mov    %r10d,%r11d
+   58283:	shr    $0x20,%r10
+   58287:	mov    (%rdi),%rbx
+   5828a:	xor    %r10,%r11
+   5828d:	mov    0x18(%rdi),%r14d
+   58291:	shr    $0x6,%r14d
+   58295:	imul   %r11,%r14
+   58299:	shr    $0x1a,%r14
+   5829d:	and    $0xffffffc0,%r14d
+   582a1:	vpbroadcastd %r10d,%ymm3
+   582a7:	vpmulld %ymm0,%ymm3,%ymm4
+   582ac:	vpsrld $0x1c,%ymm4,%ymm5
+   582b1:	vxorps %xmm6,%xmm6,%xmm6
+   582b5:	vpermd (%rbx,%r14,1),%ymm5,%ymm6
+   582bb:	vpermd 0x20(%rbx,%r14,1),%ymm5,%ymm5
+   582c2:	vpsrad $0x1f,%ymm4,%ymm4
+   582c7:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   582cd:	vpmulld %ymm1,%ymm3,%ymm3
+   582d2:	vpsrld $0x1b,%ymm3,%ymm3
+   582d7:	vpsllvd %ymm3,%ymm2,%ymm3
+   582dc:	xor    %r10d,%r10d
+   582df:	vptest %ymm3,%ymm4
+   582e4:	setb   %r10b
+   582e8:	mov    %r10d,(%rcx,%rax,4)
+   582ec:	mov    0x8(%rdx,%rax,8),%r10
+   582f1:	mov    %r10,%r11
+   582f4:	shr    $0x20,%r11
+   582f8:	xor    %r10,%r11
+   582fb:	imul   %r8,%r11
+   582ff:	mov    %r11,%r10
+   58302:	shr    $0x20,%r10
+   58306:	xor    %r11,%r10
+   58309:	imul   %r8,%r10
+   5830d:	mov    %r10d,%r11d
+   58310:	shr    $0x20,%r10
+   58314:	mov    (%rdi),%rbx
+   58317:	xor    %r10,%r11
+   5831a:	mov    0x18(%rdi),%r14d
+   5831e:	shr    $0x6,%r14d
+   58322:	imul   %r11,%r14
+   58326:	shr    $0x1a,%r14
+   5832a:	vpbroadcastd %r10d,%ymm3
+   58330:	vpmulld %ymm0,%ymm3,%ymm4
+   58335:	and    $0xffffffc0,%r14d
+   58339:	vpsrld $0x1c,%ymm4,%ymm5
+   5833e:	vxorps %xmm6,%xmm6,%xmm6
+   58342:	vpermd (%rbx,%r14,1),%ymm5,%ymm6
+   58348:	vpermd 0x20(%rbx,%r14,1),%ymm5,%ymm5
+   5834f:	vpsrad $0x1f,%ymm4,%ymm4
+   58354:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   5835a:	vpmulld %ymm1,%ymm3,%ymm3
+   5835f:	vpsrld $0x1b,%ymm3,%ymm3
+   58364:	vpsllvd %ymm3,%ymm2,%ymm3
+   58369:	xor    %r10d,%r10d
+   5836c:	vptest %ymm3,%ymm4
+   58371:	setb   %r10b
+   58375:	mov    %r10d,0x4(%rcx,%rax,4)
+   5837a:	add    $0x2,%rax
+   5837e:	cmp    %rax,%r9
+   58381:	jne    58260 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x50>
+   58387:	test   $0x1,%sil
+   5838b:	je     58427 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x217>
+   58391:	mov    (%rdx,%rax,8),%rdx
+   58395:	mov    %rdx,%rsi
+   58398:	shr    $0x20,%rsi
+   5839c:	xor    %rdx,%rsi
+   5839f:	imul   %r8,%rsi
+   583a3:	mov    %rsi,%rdx
+   583a6:	shr    $0x20,%rdx
+   583aa:	xor    %rsi,%rdx
+   583ad:	imul   %r8,%rdx
+   583b1:	mov    %edx,%esi
+   583b3:	shr    $0x20,%rdx
+   583b7:	mov    (%rdi),%r8
+   583ba:	xor    %rdx,%rsi
+   583bd:	mov    0x18(%rdi),%edi
+   583c0:	shr    $0x6,%edi
+   583c3:	imul   %rsi,%rdi
+   583c7:	shr    $0x1a,%rdi
+   583cb:	and    $0xffffffc0,%edi
+   583ce:	vpbroadcastd %edx,%ymm0
+   583d4:	vpmulld -0x53ebd(%rip),%ymm0,%ymm1        # 4520 <_IO_stdin_used+0x2628>
+   583dd:	vpsrld $0x1c,%ymm1,%ymm2
+   583e2:	vxorps %xmm3,%xmm3,%xmm3
+   583e6:	vpermd (%r8,%rdi,1),%ymm2,%ymm3
+   583ec:	vpermd 0x20(%r8,%rdi,1),%ymm2,%ymm2
+   583f3:	vpsrad $0x1f,%ymm1,%ymm1
+   583f8:	vpblendvb %ymm1,%ymm2,%ymm3,%ymm1
+   583fe:	vpmulld -0x54107(%rip),%ymm0,%ymm0        # 4300 <_IO_stdin_used+0x2408>
+   58407:	vpsrld $0x1b,%ymm0,%ymm0
+   5840c:	vpbroadcastd -0x5652d(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   58415:	vpsllvd %ymm0,%ymm2,%ymm0
+   5841a:	xor    %edx,%edx
+   5841c:	vptest %ymm0,%ymm1
+   58421:	setb   %dl
+   58424:	mov    %edx,(%rcx,%rax,4)
+   58427:	pop    %rbx
+   58428:	pop    %r14
+   5842a:	vzeroupper
+   5842d:	ret

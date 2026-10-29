@@ -1,0 +1,74 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000055010 <_Z20inline_single_kernelILb0EN14external_bloom7Fixed32ILb0EEEmEvRKT0_mPKmPj>:
+   55010:	test   %rsi,%rsi
+   55013:	je     5512f <_Z20inline_single_kernelILb0EN14external_bloom7Fixed32ILb0EEEmEvRKT0_mPKmPj+0x11f>
+   55019:	cmp    $0x1,%rsi
+   5501d:	jne    55026 <_Z20inline_single_kernelILb0EN14external_bloom7Fixed32ILb0EEEmEvRKT0_mPKmPj+0x16>
+   5501f:	xor    %eax,%eax
+   55021:	jmp    550e1 <_Z20inline_single_kernelILb0EN14external_bloom7Fixed32ILb0EEEmEvRKT0_mPKmPj+0xd1>
+   55026:	mov    %rsi,%r8
+   55029:	and    $0xfffffffffffffffe,%r8
+   5502d:	xor    %eax,%eax
+   5502f:	vmovdqa -0x50df7(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   55037:	vpbroadcastd -0x53158(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   55040:	mov    (%rdx,%rax,8),%r9
+   55044:	vpbroadcastd %r9d,%ymm2
+   5504a:	shr    $0x20,%r9
+   5504e:	mov    (%rdi),%r10d
+   55051:	vpmulld %ymm0,%ymm2,%ymm2
+   55056:	imul   %r9,%r10
+   5505a:	vpsrld $0x1b,%ymm2,%ymm2
+   5505f:	vpsllvd %ymm2,%ymm1,%ymm2
+   55064:	mov    0x8(%rdi),%r9
+   55068:	shr    $0x1b,%r10
+   5506c:	and    $0xffffffffffffffe0,%r10
+   55070:	vmovdqa (%r9,%r10,1),%ymm3
+   55076:	xor    %r9d,%r9d
+   55079:	vptest %ymm2,%ymm3
+   5507e:	setb   %r9b
+   55082:	mov    %r9d,(%rcx,%rax,4)
+   55086:	mov    0x8(%rdx,%rax,8),%r9
+   5508b:	vpbroadcastd %r9d,%ymm2
+   55091:	shr    $0x20,%r9
+   55095:	mov    (%rdi),%r10d
+   55098:	imul   %r9,%r10
+   5509c:	vpmulld %ymm0,%ymm2,%ymm2
+   550a1:	vpsrld $0x1b,%ymm2,%ymm2
+   550a6:	vpsllvd %ymm2,%ymm1,%ymm2
+   550ab:	mov    0x8(%rdi),%r9
+   550af:	shr    $0x1b,%r10
+   550b3:	and    $0xffffffffffffffe0,%r10
+   550b7:	vmovdqa (%r9,%r10,1),%ymm3
+   550bd:	xor    %r9d,%r9d
+   550c0:	vptest %ymm2,%ymm3
+   550c5:	setb   %r9b
+   550c9:	mov    %r9d,0x4(%rcx,%rax,4)
+   550ce:	add    $0x2,%rax
+   550d2:	cmp    %rax,%r8
+   550d5:	jne    55040 <_Z20inline_single_kernelILb0EN14external_bloom7Fixed32ILb0EEEmEvRKT0_mPKmPj+0x30>
+   550db:	test   $0x1,%sil
+   550df:	je     5512f <_Z20inline_single_kernelILb0EN14external_bloom7Fixed32ILb0EEEmEvRKT0_mPKmPj+0x11f>
+   550e1:	mov    (%rdx,%rax,8),%rdx
+   550e5:	vpbroadcastd %edx,%ymm0
+   550eb:	shr    $0x20,%rdx
+   550ef:	mov    (%rdi),%esi
+   550f1:	imul   %rdx,%rsi
+   550f5:	vpmulld -0x50ebe(%rip),%ymm0,%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   550fe:	vpsrld $0x1b,%ymm0,%ymm0
+   55103:	vpbroadcastd -0x53224(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   5510c:	vpsllvd %ymm0,%ymm1,%ymm0
+   55111:	mov    0x8(%rdi),%rdx
+   55115:	shr    $0x1b,%rsi
+   55119:	and    $0xffffffffffffffe0,%rsi
+   5511d:	vmovdqa (%rdx,%rsi,1),%ymm1
+   55122:	xor    %edx,%edx
+   55124:	vptest %ymm0,%ymm1
+   55129:	setb   %dl
+   5512c:	mov    %edx,(%rcx,%rax,4)
+   5512f:	vzeroupper
+   55132:	ret

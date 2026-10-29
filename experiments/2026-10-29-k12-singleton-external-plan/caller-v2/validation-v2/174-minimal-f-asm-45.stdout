@@ -1,0 +1,53 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004fe60 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EEEmEvRKT0_mPKmPj>:
+   4fe60:	test   %rsi,%rsi
+   4fe63:	je     4ff1f <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EEEmEvRKT0_mPKmPj+0xbf>
+   4fe69:	push   %rbx
+   4fe6a:	mov    %rdx,%r8
+   4fe6d:	movabs $0xd6e8feb86659fd93,%r10
+   4fe77:	xor    %r11d,%r11d
+   4fe7a:	movabs $0xf1357aea2e62a9c5,%rbx
+   4fe84:	vmovdqa -0x4b3cc(%rip),%ymm0        # 4ac0 <_IO_stdin_used+0x2bc8>
+   4fe8c:	vmovdqa -0x4b6d4(%rip),%ymm1        # 47c0 <_IO_stdin_used+0x28c8>
+   4fe94:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   4fea0:	mov    (%r8,%r11,8),%rax
+   4fea4:	mov    %rax,%rdx
+   4fea7:	shr    $0x20,%rdx
+   4feab:	xor    %rax,%rdx
+   4feae:	imul   %r10,%rdx
+   4feb2:	mov    %rdx,%rax
+   4feb5:	shr    $0x20,%rax
+   4feb9:	xor    %rdx,%rax
+   4febc:	imul   %r10,%rax
+   4fec0:	mov    %rax,%r9
+   4fec3:	shr    $0x20,%r9
+   4fec7:	xor    %rax,%r9
+   4feca:	or     $0x1,%r9
+   4fece:	mov    %r9,%rax
+   4fed1:	mulq   0x10(%rdi)
+   4fed5:	mov    0x20(%rdi),%rax
+   4fed9:	shl    $0x4,%rdx
+   4fedd:	prefetcht0 (%rax,%rdx,1)
+   4fee1:	prefetcht0 0x40(%rax,%rdx,1)
+   4fee6:	imul   %rbx,%r9
+   4feea:	vmovdqu (%rax,%rdx,1),%ymm2
+   4feef:	vmovq  %r9,%xmm3
+   4fef4:	vpbroadcastq %xmm3,%ymm3
+   4fef9:	vpsllvq %ymm0,%ymm3,%ymm3
+   4fefe:	vpsrld $0x1b,%ymm3,%ymm3
+   4ff03:	vpsllvd %ymm3,%ymm1,%ymm3
+   4ff08:	xor    %eax,%eax
+   4ff0a:	vptest %ymm3,%ymm2
+   4ff0f:	setb   %al
+   4ff12:	mov    %eax,(%rcx,%r11,4)
+   4ff16:	inc    %r11
+   4ff19:	cmp    %r11,%rsi
+   4ff1c:	jne    4fea0 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm4EEELm0EEEmEvRKT0_mPKmPj+0x40>
+   4ff1e:	pop    %rbx
+   4ff1f:	vzeroupper
+   4ff22:	ret

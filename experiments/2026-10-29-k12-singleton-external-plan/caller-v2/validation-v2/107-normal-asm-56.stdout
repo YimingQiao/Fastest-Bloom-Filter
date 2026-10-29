@@ -1,0 +1,56 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000005a4a0 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj>:
+   5a4a0:	test   %rsi,%rsi
+   5a4a3:	je     5a574 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0xd4>
+   5a4a9:	push   %rbx
+   5a4aa:	movabs $0xd6e8feb86659fd93,%rax
+   5a4b4:	xor    %r8d,%r8d
+   5a4b7:	vmovdqa -0x55f9f(%rip),%ymm0        # 4520 <_IO_stdin_used+0x2628>
+   5a4bf:	vmovdqa -0x561c7(%rip),%ymm1        # 4300 <_IO_stdin_used+0x2408>
+   5a4c7:	vpbroadcastd -0x585e8(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   5a4d0:	mov    (%rdx,%r8,8),%r9
+   5a4d4:	mov    %r9,%r10
+   5a4d7:	shr    $0x20,%r10
+   5a4db:	xor    %r9,%r10
+   5a4de:	imul   %rax,%r10
+   5a4e2:	mov    %r10,%r11
+   5a4e5:	shr    $0x20,%r11
+   5a4e9:	xor    %r10,%r11
+   5a4ec:	imul   %rax,%r11
+   5a4f0:	mov    %r11d,%r9d
+   5a4f3:	shr    $0x20,%r11
+   5a4f7:	mov    0x18(%rdi),%r10d
+   5a4fb:	mov    (%rdi),%rbx
+   5a4fe:	shr    $0x6,%r10d
+   5a502:	xor    %r11,%r9
+   5a505:	imul   %r10,%r9
+   5a509:	shr    $0x1a,%r9
+   5a50d:	vpbroadcastd %r11d,%ymm3
+   5a513:	vpmulld %ymm0,%ymm3,%ymm4
+   5a518:	and    $0xffffffc0,%r9d
+   5a51c:	vpsrld $0x1c,%ymm4,%ymm5
+   5a521:	vxorps %xmm6,%xmm6,%xmm6
+   5a525:	vpermd (%rbx,%r9,1),%ymm5,%ymm6
+   5a52b:	vpermd 0x20(%rbx,%r9,1),%ymm5,%ymm5
+   5a532:	vpsrad $0x1f,%ymm4,%ymm4
+   5a537:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   5a53d:	vpmulld %ymm1,%ymm3,%ymm3
+   5a542:	prefetcht2 (%rbx,%r9,1)
+   5a547:	vpsrld $0x1b,%ymm3,%ymm3
+   5a54c:	vpsllvd %ymm3,%ymm2,%ymm3
+   5a551:	xor    %r10d,%r10d
+   5a554:	vptest %ymm3,%ymm4
+   5a559:	prefetcht2 0x3f(%rbx,%r9,1)
+   5a55f:	setb   %r10b
+   5a563:	mov    %r10d,(%rcx,%r8,4)
+   5a567:	inc    %r8
+   5a56a:	cmp    %r8,%rsi
+   5a56d:	jne    5a4d0 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0x30>
+   5a573:	pop    %rbx
+   5a574:	vzeroupper
+   5a577:	ret

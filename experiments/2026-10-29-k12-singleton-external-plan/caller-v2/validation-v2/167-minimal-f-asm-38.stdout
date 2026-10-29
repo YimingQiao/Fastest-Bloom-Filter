@@ -1,0 +1,65 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000051580 <_Z20inline_single_kernelILb1EN13bloom_filters13FastPatternBFEmEvRKT0_mPKmPj>:
+   51580:	test   %rsi,%rsi
+   51583:	je     51639 <_Z20inline_single_kernelILb1EN13bloom_filters13FastPatternBFEmEvRKT0_mPKmPj+0xb9>
+   51589:	push   %rbp
+   5158a:	push   %r14
+   5158c:	push   %rbx
+   5158d:	mov    %rcx,%rax
+   51590:	movabs $0xd6e8feb86659fd93,%r8
+   5159a:	xor    %r9d,%r9d
+   5159d:	nopl   (%rax)
+   515a0:	mov    (%rdx,%r9,8),%rcx
+   515a4:	mov    %rcx,%r11
+   515a7:	shr    $0x20,%r11
+   515ab:	xor    %rcx,%r11
+   515ae:	imul   %r8,%r11
+   515b2:	mov    %r11,%r10
+   515b5:	shr    $0x20,%r10
+   515b9:	xor    %r11,%r10
+   515bc:	imul   %r8,%r10
+   515c0:	mov    %r10,%r11
+   515c3:	shr    $0x20,%r11
+   515c7:	xor    %r11d,%r10d
+   515ca:	and    0x8(%rdi),%r11d
+   515ce:	mov    %r10d,%ecx
+   515d1:	and    $0x1f,%ecx
+   515d4:	mov    (%rdi),%rbx
+   515d7:	mov    (%rbx,%rcx,4),%ebp
+   515da:	mov    %r10d,%ecx
+   515dd:	shr    $0x5,%ecx
+   515e0:	rol    %cl,%ebp
+   515e2:	mov    0x10(%rdi),%r14
+   515e6:	mov    %r10d,%ecx
+   515e9:	shr    $0x8,%ecx
+   515ec:	and    $0x7c,%ecx
+   515ef:	mov    (%rbx,%rcx,1),%ebx
+   515f2:	mov    %r10d,%ecx
+   515f5:	shr    $0xf,%ecx
+   515f8:	rol    %cl,%ebx
+   515fa:	mov    (%r14,%r11,4),%ecx
+   515fe:	not    %ecx
+   51600:	and    %ebp,%ecx
+   51602:	shr    $0x14,%r10d
+   51606:	and    $0x7,%r10d
+   5160a:	or     $0x8,%r10d
+   5160e:	xor    %r11d,%r10d
+   51611:	mov    (%r14,%r10,4),%r10d
+   51615:	not    %r10d
+   51618:	and    %ebx,%r10d
+   5161b:	xor    %r11d,%r11d
+   5161e:	or     %ecx,%r10d
+   51621:	sete   %r11b
+   51625:	mov    %r11d,(%rax,%r9,4)
+   51629:	inc    %r9
+   5162c:	cmp    %r9,%rsi
+   5162f:	jne    515a0 <_Z20inline_single_kernelILb1EN13bloom_filters13FastPatternBFEmEvRKT0_mPKmPj+0x20>
+   51635:	pop    %rbx
+   51636:	pop    %r14
+   51638:	pop    %rbp
+   51639:	ret

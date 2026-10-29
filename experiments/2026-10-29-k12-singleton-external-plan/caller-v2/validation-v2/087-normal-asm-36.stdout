@@ -1,0 +1,102 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000058060 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj>:
+   58060:	test   %rsi,%rsi
+   58063:	je     58202 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x1a2>
+   58069:	push   %rbx
+   5806a:	cmp    $0x1,%rsi
+   5806e:	jne    58077 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x17>
+   58070:	xor    %eax,%eax
+   58072:	jmp    58189 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x129>
+   58077:	mov    %rsi,%r8
+   5807a:	and    $0xfffffffffffffffe,%r8
+   5807e:	xor    %eax,%eax
+   58080:	vmovdqa -0x53b68(%rip),%ymm0        # 4520 <_IO_stdin_used+0x2628>
+   58088:	vmovdqa -0x53d90(%rip),%ymm1        # 4300 <_IO_stdin_used+0x2408>
+   58090:	vpbroadcastd -0x561b1(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   58099:	nopl   0x0(%rax)
+   580a0:	mov    (%rdx,%rax,8),%r9
+   580a4:	mov    (%rdi),%r10
+   580a7:	mov    %r9d,%r11d
+   580aa:	mov    0x18(%rdi),%ebx
+   580ad:	shr    $0x6,%ebx
+   580b0:	imul   %r11,%rbx
+   580b4:	shr    $0x1a,%rbx
+   580b8:	and    $0xffffffc0,%ebx
+   580bb:	shr    $0x20,%r9
+   580bf:	vpbroadcastd %r9d,%ymm3
+   580c5:	vpmulld %ymm0,%ymm3,%ymm4
+   580ca:	vpsrld $0x1c,%ymm4,%ymm5
+   580cf:	vxorps %xmm6,%xmm6,%xmm6
+   580d3:	vpermd (%r10,%rbx,1),%ymm5,%ymm6
+   580d9:	vpermd 0x20(%r10,%rbx,1),%ymm5,%ymm5
+   580e0:	vpsrad $0x1f,%ymm4,%ymm4
+   580e5:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   580eb:	vpmulld %ymm1,%ymm3,%ymm3
+   580f0:	vpsrld $0x1b,%ymm3,%ymm3
+   580f5:	vpsllvd %ymm3,%ymm2,%ymm3
+   580fa:	xor    %r9d,%r9d
+   580fd:	vptest %ymm3,%ymm4
+   58102:	setb   %r9b
+   58106:	mov    %r9d,(%rcx,%rax,4)
+   5810a:	mov    0x8(%rdx,%rax,8),%r9
+   5810f:	mov    (%rdi),%r10
+   58112:	mov    %r9d,%r11d
+   58115:	mov    0x18(%rdi),%ebx
+   58118:	shr    $0x6,%ebx
+   5811b:	imul   %r11,%rbx
+   5811f:	shr    $0x1a,%rbx
+   58123:	shr    $0x20,%r9
+   58127:	vpbroadcastd %r9d,%ymm3
+   5812d:	vpmulld %ymm0,%ymm3,%ymm4
+   58132:	and    $0xffffffc0,%ebx
+   58135:	vpsrld $0x1c,%ymm4,%ymm5
+   5813a:	vxorps %xmm6,%xmm6,%xmm6
+   5813e:	vpermd (%r10,%rbx,1),%ymm5,%ymm6
+   58144:	vpermd 0x20(%r10,%rbx,1),%ymm5,%ymm5
+   5814b:	vpsrad $0x1f,%ymm4,%ymm4
+   58150:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   58156:	vpmulld %ymm1,%ymm3,%ymm3
+   5815b:	vpsrld $0x1b,%ymm3,%ymm3
+   58160:	vpsllvd %ymm3,%ymm2,%ymm3
+   58165:	xor    %r9d,%r9d
+   58168:	vptest %ymm3,%ymm4
+   5816d:	setb   %r9b
+   58171:	mov    %r9d,0x4(%rcx,%rax,4)
+   58176:	add    $0x2,%rax
+   5817a:	cmp    %rax,%r8
+   5817d:	jne    580a0 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x40>
+   58183:	test   $0x1,%sil
+   58187:	je     58201 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x1a1>
+   58189:	mov    (%rdx,%rax,8),%rdx
+   5818d:	mov    (%rdi),%rsi
+   58190:	mov    %edx,%r8d
+   58193:	mov    0x18(%rdi),%edi
+   58196:	shr    $0x6,%edi
+   58199:	imul   %r8,%rdi
+   5819d:	shr    $0x1a,%rdi
+   581a1:	and    $0xffffffc0,%edi
+   581a4:	shr    $0x20,%rdx
+   581a8:	vpbroadcastd %edx,%ymm0
+   581ae:	vpmulld -0x53c97(%rip),%ymm0,%ymm1        # 4520 <_IO_stdin_used+0x2628>
+   581b7:	vpsrld $0x1c,%ymm1,%ymm2
+   581bc:	vxorps %xmm3,%xmm3,%xmm3
+   581c0:	vpermd (%rsi,%rdi,1),%ymm2,%ymm3
+   581c6:	vpermd 0x20(%rsi,%rdi,1),%ymm2,%ymm2
+   581cd:	vpsrad $0x1f,%ymm1,%ymm1
+   581d2:	vpblendvb %ymm1,%ymm2,%ymm3,%ymm1
+   581d8:	vpmulld -0x53ee1(%rip),%ymm0,%ymm0        # 4300 <_IO_stdin_used+0x2408>
+   581e1:	vpsrld $0x1b,%ymm0,%ymm0
+   581e6:	vpbroadcastd -0x56307(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   581ef:	vpsllvd %ymm0,%ymm2,%ymm0
+   581f4:	xor    %edx,%edx
+   581f6:	vptest %ymm0,%ymm1
+   581fb:	setb   %dl
+   581fe:	mov    %edx,(%rcx,%rax,4)
+   58201:	pop    %rbx
+   58202:	vzeroupper
+   58205:	ret

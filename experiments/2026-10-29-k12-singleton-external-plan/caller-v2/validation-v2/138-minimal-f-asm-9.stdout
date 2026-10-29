@@ -1,0 +1,53 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004bfb0 <_Z13lookup_kernelIN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRT_mPKT0_Pj>:
+   4bfb0:	test   %esi,%esi
+   4bfb2:	je     4c070 <_Z13lookup_kernelIN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRT_mPKT0_Pj+0xc0>
+   4bfb8:	cmp    $0x1,%esi
+   4bfbb:	jne    4c050 <_Z13lookup_kernelIN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRT_mPKT0_Pj+0xa0>
+   4bfc1:	mov    (%rdx),%rsi
+   4bfc4:	or     $0x1,%rsi
+   4bfc8:	mov    0x20(%rdi),%r8
+   4bfcc:	mov    %rsi,%rax
+   4bfcf:	mulq   0x10(%rdi)
+   4bfd3:	movabs $0xf1357aea2e62a9c5,%rax
+   4bfdd:	imul   %rsi,%rax
+   4bfe1:	shl    $0x6,%rdx
+   4bfe5:	prefetcht0 (%r8,%rdx,1)
+   4bfea:	vmovdqa (%r8,%rdx,1),%ymm0
+   4bff0:	vmovdqa 0x20(%r8,%rdx,1),%ymm1
+   4bff7:	vmovq  %rax,%xmm2
+   4bffc:	vpbroadcastq %xmm2,%ymm2
+   4c001:	vpsllvq -0x475ea(%rip),%ymm2,%ymm2        # 4a20 <_IO_stdin_used+0x2b28>
+   4c00a:	vpsrld $0x1a,%ymm2,%ymm2
+   4c00f:	vpmovzxdq %xmm2,%ymm3
+   4c014:	vpbroadcastq -0x4a0b5(%rip),%ymm4        # 1f68 <_IO_stdin_used+0x70>
+   4c01d:	vpsllvq %ymm3,%ymm4,%ymm3
+   4c022:	vextracti128 $0x1,%ymm2,%xmm2
+   4c028:	vpmovzxdq %xmm2,%ymm2
+   4c02d:	vpsllvq %ymm2,%ymm4,%ymm2
+   4c032:	vptest %ymm3,%ymm0
+   4c037:	setb   %al
+   4c03a:	vptest %ymm2,%ymm1
+   4c03f:	setb   %dl
+   4c042:	xor    %esi,%esi
+   4c044:	test   %al,%dl
+   4c046:	setne  %sil
+   4c04a:	mov    %esi,(%rcx)
+   4c04c:	vzeroupper
+   4c04f:	ret
+   4c050:	push   %rax
+   4c051:	add    $0x8,%rdi
+   4c055:	mov    %esi,%eax
+   4c057:	mov    %rcx,(%rsp)
+   4c05b:	mov    %rsp,%r8
+   4c05e:	mov    %rdi,%rsi
+   4c061:	mov    %rax,%rcx
+   4c064:	mov    %rdx,%r9
+   4c067:	call   4c8a0 <_ZNK5boost5bloom6detail11filter_coreILm1ENS0_17fast_multiblock64ILm8EEELm0EN14boost_baseline17CountingAllocatorIhEEE16bulk_may_containIZNKS0_6filterImLm1ES4_Lm0ENS5_12IdentityHashES7_E11may_containIPKmZNKS5_7AdapterILm1ES4_Lm0EE6LookupEjSF_PjEUlRSE_bE_EEvT_SL_T0_EUlvE_ZNKSD_ISF_SK_EEvSL_SL_SM_EUlbE_EEvSL_mSM_>
+   4c06c:	add    $0x8,%rsp
+   4c070:	ret
