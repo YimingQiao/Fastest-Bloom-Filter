@@ -150,3 +150,13 @@ instruction cost are plausible explanations, not measured hardware-counter
 causality. The existing2MiB dispatch therefore does not justify enabling this
 kernel throughout that interval. Evaluate the complete operation and actual
 working set before turning a local improvement into a default policy.
+
+The [C++ singleton SIMD experiment](../experiments/2026-10-29-k12-singleton-vector-analysis/INTERPRETATION.md)
+loads one aligned line and selects its four words with register permutations.
+Its dictionary lookup and rotations also use SIMD. This preserves the original
+one-cache-line footprint: it does not reduce cache lines fetched. The actual
+visible caller also inlines the public method, shrinks its frame and sometimes
+unrolls the loop. Visible fused throughput improves 1.91–2.27× over old K12,
+while large batch31 hash+query loses 1.8–3.0% despite unchanged bulk source paths.
+The useful lesson is to inspect the generated public caller and measure both
+tiny and bulk operations; the evidence cannot isolate SIMD as the sole cause.

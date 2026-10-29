@@ -389,3 +389,15 @@ remain, with no pooled negatives or imported old latencies. The full trial
 summaries, Wilson gates, paired ratios and nested group minima were independently
 recomputed. These are original public-PImpl results, not a modern-library or
 global ranking.
+
+The [complete C++ singleton SIMD comparison](../experiments/2026-10-29-k12-singleton-vector-analysis/INTERPRETATION.md)
+retains 96 processes, 192 rows, 240 paired contrasts and all 3,840 trial values.
+Both seeds see opposite API and launch orders at 65K/32M keys, 24 bits/key and
+0/50/100% hits. All 144 batch1/3 contrasts improve over old K12; visible fused
+single-key throughput gains 1.91–2.27×. Larger unchanged-source paths retain
+47 losses across 96 contrasts: large batch31 hash+query loses all 12 comparisons
+by 1.8–3.0%, while batch4096 is mixed. Actual assembly couples SIMD, inlining,
+frame size and loop unrolling changes; four word probes already shared one cache
+line. All 480 vectors, 120 same-input round sensitivities and 60 seed/round ranges
+were independently recomputed from complete raw records. The prototype remains
+isolated, with no new external, accuracy, build, multithread or global claim.

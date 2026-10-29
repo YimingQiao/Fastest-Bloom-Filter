@@ -55,6 +55,12 @@ All ten 65K-key build configurations regress. The
 has not changed default worker selection; its unchanged-code controls leave
 31/36 two-seed classifications unresolved under the preset ±3% stability band.
 
+A [C++ single-key SIMD experiment](experiments/2026-10-29-k12-singleton-vector-analysis/INTERPRETATION.md)
+improves visible single-key throughput including hashing **1.91–2.27×** against
+old K12. All 144 batch1/3 contrasts improve across two seeds and opposite launch
+rounds, but large batch31 hash+query regresses **1.8–3.0%**, and batch4096 is mixed.
+It remains experimental pending comparison with leading native/external controls.
+
 Experiments retain regressions. For example, [conditional C++ insertion](experiments/2026-10-29-k12-prefetch-line-or-analysis/DECISION.md)
 helps the 96 MiB K12 filter but causes stable 3 MiB insertion losses, so it is not
 integrated. [Rust inline hints](experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
