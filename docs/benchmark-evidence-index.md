@@ -402,6 +402,17 @@ line. All 480 vectors, 120 same-input round sensitivities and 60 seed/round rang
 were independently recomputed from complete raw records. The prototype remains
 isolated, with no new external, accuracy, build, multithread or global claim.
 
+The [expanded C++ public-caller proof](../experiments/2026-10-29-k12-singleton-external-plan/caller-v2/PROOF_REPORT.md)
+validates the candidate against seven native, three Boost, seven FastFilter and
+two RocksDB types. Normal, minimal-F and sanitizers pass 366 small query rows,
+192 capacity checks, six old semantic matches and eleven precise rejection/fault
+checks. Actual assembly covers 152 typed bodies and 32 callees; all 38 timing
+windows retain their public query work, hashes and output stores. The old K12
+scalar API itself receives some compiler vectorization. Page headers are included
+but no Page type is instantiated in this panel. The preserved first compile
+failure was fixed with narrow namespace bindings. The formal 616-row comparison
+has not run; this proof adds no performance ranking.
+
 The [Rust singleton SIMD proof](../experiments/2026-10-29-rust-k12-singleton-vector-plan/caller/proof-final/REPORT.md)
 passes four build profiles, 16 focused test executions, 96 public caller rows,
 24 invalid-input cases and eight injected output faults. Full bitmap and output

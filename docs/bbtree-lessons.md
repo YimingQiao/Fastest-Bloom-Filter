@@ -160,6 +160,9 @@ unrolls the loop. Visible fused throughput improves 1.91–2.27× over old K12,
 while large batch31 hash+query loses 1.8–3.0% despite unchanged bulk source paths.
 The useful lesson is to inspect the generated public caller and measure both
 tiny and bulk operations; the evidence cannot isolate SIMD as the sole cause.
+In the [expanded external caller](../experiments/2026-10-29-k12-singleton-external-plan/caller-v2/PROOF_REPORT.md),
+even old K12's source-level scalar oracle contains compiler-generated 128-bit
+vector operations. API names alone do not describe the instructions being timed.
 
 The [Rust SIMD caller proof](../experiments/2026-10-29-rust-k12-singleton-vector-plan/caller/assembly-review/REVIEW.md)
 shows why this must be checked separately for each language and build profile.
