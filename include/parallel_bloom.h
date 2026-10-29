@@ -8,6 +8,15 @@
 
 namespace bloom_filters {
 namespace parallel_detail {
+#if defined(__APPLE__) && defined(__aarch64__)
+inline constexpr size_t CounterAlignment = 128;
+#else
+inline constexpr size_t CounterAlignment = 64;
+#endif
+inline size_t CounterStride(size_t workers) {
+	constexpr size_t per_line = CounterAlignment / sizeof(size_t);
+	return ((workers + per_line - 1) / per_line) * per_line;
+}
 inline size_t Workers(size_t items, size_t requested, size_t limit = SIZE_MAX) {
 	if (items < (1u << 14))
 		return 1;
@@ -65,7 +74,7 @@ public:
 		return parallel_detail::Workers(n, requested, filter_.blocks_.size() / 16);
 	}
 	size_t BuildScratchBytes(size_t n, size_t requested) const {
-		const size_t workers = BuildWorkers(n, requested), stride = (workers + 7) & ~size_t {7};
+		const size_t workers = BuildWorkers(n, requested), stride = parallel_detail::CounterStride(workers);
 		return workers == 1 ? 0 : n * sizeof(uint64_t) + (workers * stride + workers + 1) * sizeof(size_t);
 	}
 	void InsertParallel(uint32_t n, const uint64_t *keys, size_t requested = 0) {
@@ -75,10 +84,10 @@ public:
 			return;
 		}
 		const unsigned line_shift = parallel_detail::Log2(filter_.blocks_.size() / 16);
-		const size_t stride = (workers + 7) & ~size_t {7};
+		const size_t stride = parallel_detail::CounterStride(workers);
 		// Padding alone is insufficient: align the allocation too, otherwise
 		// adjacent histogram rows can still share a boundary cache line.
-		std::vector<size_t, AlignedAllocator<size_t, 64>> counts(workers * stride, 0);
+		std::vector<size_t, AlignedAllocator<size_t, parallel_detail::CounterAlignment>> counts(workers * stride, 0);
 		std::vector<size_t> starts(workers + 1);
 		std::unique_ptr<uint64_t[]> partitioned(new uint64_t[n]);
 		auto shard = [&](uint64_t h) {

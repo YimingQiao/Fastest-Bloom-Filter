@@ -13,6 +13,9 @@
 #if defined(__SSSE3__) && defined(__SSE4_1__)
 #include <immintrin.h>
 #endif
+#if defined(__aarch64__) && defined(__ARM_NEON) && !defined(BF_DISABLE_NEON) && defined(__AARCH64EL__)
+#include <arm_neon.h>
+#endif
 
 namespace bloom_filters {
 // Four independent 16-byte buckets share each owned 64-byte cache line.
@@ -67,6 +70,19 @@ private:
 		return _mm_shuffle_epi8(_mm_set_epi8(1, 2, 4, 8, 16, 32, 64, -128, 1, 2, 4, 8, 16, 32, 64, -128), products);
 	}
 #endif
+#if defined(__aarch64__) && defined(__ARM_NEON) && !defined(BF_DISABLE_NEON) && defined(__AARCH64EL__)
+	static uint8x16_t NeonMask(uint64_t hash) {
+		const int16x8_t salts = {18357, 17559, -30685, -23881, 28755, 11761, -24836, 23659};
+		const int16x8_t words = vreinterpretq_s16_u32(vdupq_n_u32(static_cast<uint32_t>(hash)));
+		// No salt is -32768: doubling these signed products cannot saturate.
+		// Arithmetic halving of SQDMULH is exactly the signed high 16 bits.
+		const uint8x16_t products = vreinterpretq_u8_s16(vshrq_n_s16(vqdmulhq_s16(words, salts), 1));
+		const uint8x16_t table = {128, 64, 32, 16, 8, 4, 2, 1, 128, 64, 32, 16, 8, 4, 2, 1};
+		// TBL zeros out-of-range indices. Keep the pshufb sign bit so that
+		// signed controls, including the all-zero mask, match x86 exactly.
+		return vqtbl1q_u8(table, vandq_u8(products, vdupq_n_u8(0x8f)));
+	}
+#endif
 	void InsertOne(uint64_t hash) {
 		const uint32_t index = BucketIndex(hash);
 #if defined(__SSSE3__) && defined(__SSE4_1__)
@@ -75,6 +91,9 @@ private:
 		// A flat byte offset avoids separate line/slot address instructions.
 		auto *p = reinterpret_cast<__m128i *>(reinterpret_cast<uint8_t *>(lines_.data()) + size_t(index) * 16);
 		_mm_store_si128(p, _mm_or_si128(_mm_load_si128(p), Mask(hash)));
+#elif defined(__aarch64__) && defined(__ARM_NEON) && !defined(BF_DISABLE_NEON) && defined(__AARCH64EL__)
+		auto *p = lines_[index >> 2].buckets[index & 3].bytes;
+		vst1q_u8(p, vorrq_u8(vld1q_u8(p), NeonMask(hash)));
 #else
 		auto &bucket = lines_[index >> 2].buckets[index & 3];
 		const auto mask = ScalarMask(hash);
@@ -87,6 +106,9 @@ private:
 #if defined(__SSSE3__) && defined(__SSE4_1__)
 		const auto *p = reinterpret_cast<const __m128i *>(reinterpret_cast<const uint8_t *>(lines_.data()) + size_t(index) * 16);
 		return _mm_testc_si128(_mm_load_si128(p), Mask(hash));
+#elif defined(__aarch64__) && defined(__ARM_NEON) && !defined(BF_DISABLE_NEON) && defined(__AARCH64EL__)
+		const auto *p = lines_[index >> 2].buckets[index & 3].bytes;
+		return vmaxvq_u8(vbicq_u8(NeonMask(hash), vld1q_u8(p))) == 0;
 #else
 		const auto &bucket = lines_[index >> 2].buckets[index & 3];
 		const auto mask = ScalarMask(hash);
@@ -97,6 +119,34 @@ private:
 #endif
 	}
 
+#if defined(__aarch64__) && defined(__ARM_NEON) && !defined(BF_DISABLE_NEON) && defined(__AARCH64EL__)
+	void InsertNeonPrefetched(uint32_t n, const uint64_t *hashes) {
+		// Loads/ORs/stores stay in input order, even when buckets collide.
+#if defined(__clang__)
+#pragma clang loop unroll_count(4)
+#endif
+		for (size_t i = 0; i < n; ++i) {
+			if (i + 64 < n)
+				__builtin_prefetch(&lines_[BucketIndex(hashes[i + 64]) >> 2], 1, 3);
+			InsertOne(hashes[i]);
+		}
+	}
+	template <bool Prefetch>
+	uint32_t LookupNeon(uint32_t n, const uint64_t *hashes, uint32_t *out) const {
+#if defined(__clang__)
+#pragma clang loop unroll_count(4)
+#endif
+		for (size_t i = 0; i < n; ++i) {
+			if constexpr (Prefetch) {
+				if (i + 64 < n)
+					__builtin_prefetch(&lines_[BucketIndex(hashes[i + 64]) >> 2], 0, 3);
+			}
+			out[i] = LookupOne(hashes[i]);
+		}
+		return n;
+	}
+#endif
+
 public:
 	explicit ByteSplitBloomFilter(size_t n, uint32_t bpk)
 	    : lines_(layout_detail::WordCount(n, bpk) / 16), bucket_mask_(lines_.size() * 4 - 1) {
@@ -105,6 +155,12 @@ public:
 		return lines_.capacity() * sizeof(Line);
 	}
 	void Insert(uint32_t n, const uint64_t *hashes) {
+#if defined(__aarch64__) && defined(__ARM_NEON) && !defined(BF_DISABLE_NEON) && defined(__AARCH64EL__)
+		if (n > 64 && SizeInBytes() > (1u << 21)) {
+			InsertNeonPrefetched(n, hashes);
+			return;
+		}
+#endif
 		for (size_t i = 0; i < n; ++i)
 			InsertOne(hashes[i]);
 	}
@@ -113,6 +169,11 @@ public:
 			out[0] = LookupOne(hashes[0]);
 			return 1;
 		}
+#if defined(__aarch64__) && defined(__ARM_NEON) && !defined(BF_DISABLE_NEON) && defined(__AARCH64EL__)
+		if (n > 64 && SizeInBytes() > (1u << 21))
+			return LookupNeon<true>(n, hashes, out);
+		return LookupNeon<false>(n, hashes, out);
+#endif
 		for (size_t i = 0; i < n; ++i)
 			out[i] = LookupOne(hashes[i]);
 		return n;

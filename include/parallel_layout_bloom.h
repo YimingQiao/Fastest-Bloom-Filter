@@ -3,6 +3,8 @@
 #include "four_sector_bloom.h"
 #include "split64_bloom.h"
 #include "byte_split_bloom.h"
+#include "split16_bloom.h"
+#include "word64_bloom.h"
 
 namespace bloom_filters {
 // Exclusive construction assigns complete cache lines to workers. Different
@@ -10,9 +12,8 @@ namespace bloom_filters {
 // Thread creation, partitioning and scratch allocation are included in build work.
 template <class Filter>
 class ParallelLayoutBloomFilter {
-	static constexpr size_t CountersPerLine = 64 / sizeof(size_t);
 	static size_t CounterStride(size_t workers) {
-		return ((workers + CountersPerLine - 1) / CountersPerLine) * CountersPerLine;
+		return parallel_detail::CounterStride(workers);
 	}
 
 public:
@@ -49,7 +50,7 @@ public:
 		const size_t stride = CounterStride(workers);
 		// Padding alone is insufficient: align the allocation too, otherwise
 		// adjacent histogram rows can still share a boundary cache line.
-		std::vector<size_t, AlignedAllocator<size_t, 64>> counts(workers * stride, 0);
+		std::vector<size_t, AlignedAllocator<size_t, parallel_detail::CounterAlignment>> counts(workers * stride, 0);
 		std::vector<size_t> starts(workers + 1);
 		std::unique_ptr<uint64_t[]> partitioned(new uint64_t[n]);
 		auto shard = [&](uint64_t h) {
@@ -98,4 +99,6 @@ private:
 using ParallelFourSectorBloomFilter = ParallelLayoutBloomFilter<FourSectorBloomFilter>;
 using ParallelSplit64BloomFilter = ParallelLayoutBloomFilter<Split64BloomFilter>;
 using ParallelByteSplitBloomFilter = ParallelLayoutBloomFilter<ByteSplitBloomFilter>;
+using ParallelSplit16BloomFilter = ParallelLayoutBloomFilter<Split16BloomFilter>;
+using ParallelWord64BloomFilter = ParallelLayoutBloomFilter<Word64BloomFilter>;
 } // namespace bloom_filters

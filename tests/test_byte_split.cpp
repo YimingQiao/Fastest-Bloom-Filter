@@ -77,6 +77,11 @@ static void CheckMasks() {
 			_mm_storeu_si128(reinterpret_cast<__m128i *>(simd.data()), ByteSplitBloomFilter::Mask(hash));
 			Require(expected == simd, "SIMD mask mismatch");
 #endif
+#if defined(__aarch64__) && defined(__ARM_NEON) && !defined(BF_DISABLE_NEON) && defined(__AARCH64EL__)
+			std::array<uint8_t, 16> neon;
+			vst1q_u8(neon.data(), ByteSplitBloomFilter::NeonMask(hash));
+			Require(expected == neon, "NEON mask mismatch");
+#endif
 		}
 	}
 }

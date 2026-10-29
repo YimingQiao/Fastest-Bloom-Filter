@@ -20,7 +20,12 @@ def main():
         temporary = archive_path.with_suffix('.part')
         urllib.request.urlretrieve(URL, temporary)
         temporary.rename(archive_path)
-    digest = hashlib.file_digest(archive_path.open('rb'), 'sha256').hexdigest()
+    # macOS installations can still use Python 3.9/3.10 (no file_digest).
+    hasher = hashlib.sha256()
+    with archive_path.open('rb') as source:
+        for block in iter(lambda: source.read(1024 * 1024), b''):
+            hasher.update(block)
+    digest = hasher.hexdigest()
     if digest != SHA256:
         raise RuntimeError(f'Boost archive SHA-256 mismatch: {digest}')
     marker = ROOT / VERSION / 'boost/version.hpp'
