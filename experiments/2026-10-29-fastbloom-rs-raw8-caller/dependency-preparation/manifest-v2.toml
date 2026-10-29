@@ -1,0 +1,27 @@
+[package]
+name = "fastest-bloom-filter-raw8-public-caller"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "raw8_benchmark"
+path = "src/main.rs"
+
+[features]
+disable-avx512 = ["fastest-bloom-filter/disable-avx512"]
+
+[dependencies]
+fastest-bloom-filter = { path = "../native" }
+fastbloom-rs = { path = "../upstream/fastbloom-rs", default-features = false }
+bloomsday = { git = "https://github.com/sidd-27/Bloomsday.git", rev = "11f16a91a1c8a20344cd263e908f957dac7cf5d0" }
+fastbloom = { version = "=0.17.0", default-features = false, features = ["std"] }
+sbbf-rs = "=0.2.8"
+sbbf-rs-safe = "=0.3.2"
+
+[dev-dependencies]
+xxhash-rust = { version = "=0.8.19", features = ["xxh3"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

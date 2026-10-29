@@ -1,0 +1,81 @@
+{
+  "status": "Bounded correctness proposal only; no compile/BF until actual source and driver review",
+  "profiles": [
+    "normal",
+    "address-sanitizer"
+  ],
+  "query_oracle": "full dense guarded output and independent raw bit oracle; no sampled-only validation",
+  "native_test_scope": "caller tests only; existing broad native suites not repeated",
+  "new_oracle_geometries": {
+    "keys": [
+      64,
+      97
+    ],
+    "bpk": [
+      16,
+      24,
+      32
+    ],
+    "public_k": [
+      1,
+      24
+    ],
+    "public_k_inclusive": true,
+    "small_constructors": 144
+  },
+  "empty_formal_constructor_checks": 12,
+  "retained_public_adapters": 21,
+  "caller_cli_arguments_per_profile": [
+    [
+      "7",
+      "24",
+      "50",
+      "12",
+      "31",
+      "4",
+      "42",
+      "",
+      "31",
+      "12"
+    ],
+    [
+      "7",
+      "24",
+      "50",
+      "12",
+      "1",
+      "4",
+      "42",
+      "FourSectorRange12BloomFilter,Split64RangeBloomFilter,FastPatternBF,ByteSplitBloomFilter,BloomsdayPinned,SbbfSafePinned,Fastbloom017K7,FastbloomRsRawK12",
+      "31",
+      "12"
+    ],
+    [
+      "7",
+      "24",
+      "50",
+      "12",
+      "4096",
+      "4",
+      "42",
+      "FourSectorRange12BloomFilter,Split64RangeBloomFilter,FastPatternBF,ByteSplitBloomFilter,BloomsdayPinned,SbbfSafePinned,Fastbloom017K7,FastbloomRsRawK12",
+      "31",
+      "12"
+    ]
+  ],
+  "caller_rows_per_profile": [
+    45,
+    8,
+    8
+  ],
+  "total_tiny_rows": 122,
+  "invalid_cli_checks": 12,
+  "calibration": "2^12 absent negatives only to test the actual raw validation path; no quality selection or FPR claim",
+  "mandatory_faults": [
+    "skip-last-write after valid warmup: batched and visible",
+    "wrong boolean after valid warmup: batched and visible"
+  ],
+  "required_compiler_proof": "Structured Cargo package/manifest/target identity; all actual dep-info + full frozen package trees; no first-existing-path resolution. Tests no-run/build then closure verification before runtime. Fresh normal/ASan targets and preserve failures.",
+  "required_asm": "Actual raw-visible/batched/insertion callers: required hashes inside clock; no direct identity-copy; complete build scratch allocation lies inside full clock. Bound ELF symbol spans by address+size with aliases, never objdump display-label identity.",
+  "formal_measurement": "Not authorized or selected. No262/786 execution ledger."
+}
