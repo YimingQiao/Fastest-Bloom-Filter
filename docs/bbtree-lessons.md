@@ -42,9 +42,11 @@ comparison views. It was [rejected](../experiments/2026-10-29-cyclic-split64-ana
 A fixed multiply-code mask keeps a short dependency chain while passing the
 first16/24-bpk quality gates. Its [70-row screen](../experiments/2026-10-29-multiply-code-split64-performance-analysis/report/RESULTS.md)
 improves small equal-space Split64Range throughput by about8–10%, yet loses on
-large tables. Historical quality failures also change which rivals qualify:
-excluding the previously failed FourSector16 exposes a small16-bpk/0.1% gap
-worth [fresh-seed confirmation](../experiments/2026-10-29-multiply-code-small-confirmation/README.md).
+large tables. Quality estimates need sufficient precision too: a
+[new disjoint sample](../experiments/2026-10-29-four-sector-quality-resolution/RESULTS.md)
+qualifies both FourSector16 constructions whose earlier confidence upper
+endpoints narrowly failed0.1%. The stronger rival remains visible in the
+[fresh-seed comparison](../experiments/2026-10-29-multiply-code-small-confirmation/README.md).
 The mask remains experimental; fewer instructions alone do not establish a win.
 
 Compiler boundaries also matter. Exposing Rust ByteSplit's public singleton

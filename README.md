@@ -74,11 +74,13 @@ also stays experimental: fewer mask instructions raised the required space,
 and it lost 15 of 16 eligible views against the retained external leaders.
 A [70-row multiply-code experiment](experiments/2026-10-29-multiply-code-split64-performance-analysis/report/RESULTS.md)
 improves small-table Split64Range throughput by about 8–10%, but loses to the
-best current-seed project controls. Respecting FourSector16's earlier quality
-failure leaves a possible small-table, 16-bpk / 0.1% gap; a
-[fixed fresh-seed comparison](experiments/2026-10-29-multiply-code-small-confirmation/README.md)
-will test that gap across singleton, short and large batches. The new mask
-remains experimental; large-table losses are retained.
+best current-seed project controls. A
+[higher-resolution accuracy check](experiments/2026-10-29-four-sector-quality-resolution/RESULTS.md)
+qualifies both previously inconclusive FourSector16 constructions on new
+disjoint negatives, with upper FPR bounds of **0.09906% and 0.09816%**.
+The [fixed fresh-seed comparison](experiments/2026-10-29-multiply-code-small-confirmation/README.md)
+retains FourSector alongside the other rivals across singleton, short and
+large batches. The new mask remains experimental; large-table losses remain visible.
 
 ![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
 
