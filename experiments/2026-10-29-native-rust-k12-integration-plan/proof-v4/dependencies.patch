@@ -1,0 +1,11 @@
+--- proof-v3/dependencies.py
++++ proof-v4/dependencies.py
+@@ -63,7 +63,7 @@
+         if not key.startswith('nightly-bin:'):continue
+         package,target_name=key[len('nightly-bin:'):].split(':',1)
+         reported=Path(record['reported_artifact'])
+-        if (dep.name==target_name+'.d' and dep.parent.name=='out'
++        if (dep.name in {target_name+'.d',target_name.replace('-', '_')+'.d'} and dep.parent.name=='out'
+             and re.fullmatch('[0-9a-f]{16}',dep.parent.parent.name)
+             and dep.parent.parent.parent.name==package
+             and dep.parent.parent.parent.parent==reported.parent/'build'):
