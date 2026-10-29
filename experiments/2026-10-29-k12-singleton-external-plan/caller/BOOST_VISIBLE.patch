@@ -1,0 +1,13 @@
+--- frozen-exact-boost
++++ same-constructor-with-proved-public-facade
+@@ -99,6 +99,10 @@
+ 		else if (n)
+ 			filter_.insert(keys, keys + n);
+ 	}
++	// Direct unchanged upstream one-key API for the optimizer-visible track.
++	BOOST_FORCEINLINE uint32_t ScalarContains(uint64_t hash) const {
++		return filter_.may_contain(hash);
++	}
+ 	uint32_t Lookup(uint32_t n, const uint64_t *keys, uint32_t *out) const {
+ 		if (n == 1)
+ 			*out = filter_.may_contain(*keys);
