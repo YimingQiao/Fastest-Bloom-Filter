@@ -1,0 +1,64 @@
+--- original/screen_contract.py
++++ actual-native/screen_contract.py
+@@ -7,7 +7,7 @@
+ import sys
+ 
+ HERE = Path(__file__).resolve().parent
+-PRODUCER = HERE.parent
++PRODUCER = HERE.parent / "proof"
+ sys.path.insert(0, str(PRODUCER))
+ import contract as original
+ import preflight
+--- original/run.py
++++ actual-native/run.py
+@@ -31,7 +31,7 @@
+     need(not output.exists() and not output.is_symlink(), "Preserve all previous attempts")
+     output.mkdir()
+     meta = dict(complete=False, source_commit=args.source_commit, proof_commit=PROOF,
+-                source_sha256=sources, compiled_freeze_sha256=sha(HERE.parent / "COMPILED_FREEZE.json"),
++                source_sha256=sources, compiled_freeze_sha256=sha(HERE.parent / "provenance-v3/combined-proof.json"),
+                 protocol_sha256=sha(HERE / "protocol.json"), binaries=binaries, placement=placed,
+                 started_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), cases=[], counts=None)
+     dump(output / "metadata.json", meta)
+--- original/audit.py
++++ actual-native/audit.py
+@@ -11,7 +11,7 @@
+     metadata = json.loads((output / "metadata.json").read_text())
+     need(metadata["complete"] is True and metadata["final_frozen_inputs_equal"] is True, "Incomplete run")
+     need(metadata["source_commit"] == commit and metadata["proof_commit"] == PROOF and metadata["source_sha256"] == sources, "Wrong source/proof closure")
+-    need(metadata["compiled_freeze_sha256"] == sha(HERE.parent / "COMPILED_FREEZE.json") and
++    need(metadata["compiled_freeze_sha256"] == sha(HERE.parent / "provenance-v3/combined-proof.json") and
+          metadata["protocol_sha256"] == sha(HERE / "protocol.json"), "Frozen descriptors changed")
+     binaries = compiled["selected_normal_executables"]
+     need(metadata["binaries"] == binaries, "Wrong measured binaries")
+--- original/test_run.py
++++ actual-native/test_run.py
+@@ -10,9 +10,9 @@
+ from test_contract import row as synthetic_row
+ from freeze import ENVIRONMENT, validate_placement
+ 
+-LEASE = dict(cpu=3, socket=1, node=1, lock_path="/tmp/fastest-bf-socket1.lock",
+-             inherited_lock_descriptors=[3], child_cpus=list(range(3, 18, 2)),
+-             topology=[dict(cpu=cpu, socket=1, nodes=[1], core=i) for i, cpu in enumerate(range(3, 18, 2))])
++LEASE = dict(cpu=2, socket=0, node=0, lock_path="/tmp/fastest-bf-socket0.lock",
++             environment={}, inherited_lock_descriptors=[3], child_cpus=list(range(2, 17, 2)),
++             topology=[dict(cpu=cpu, socket=0, nodes=[0], core=i) for i, cpu in enumerate(range(2, 17, 2))])
+ BINARIES = {language: dict(path="/frozen/" + language, sha256=language) for language in ("cpp", "rust")}
+ 
+ 
+@@ -71,11 +71,11 @@
+         with self.assertRaises(ValueError): parse('{"arms": {}, "arms": {}}')
+ 
+     def test_archived_placement(self):
+-        good = dict(lease=LEASE, affinity=[3], host={}, environment={x: None for x in ENVIRONMENT}, inherited_write_verified=True)
++        good = dict(lease=LEASE, affinity=[2], host={}, environment={x: None for x in ENVIRONMENT}, inherited_write_verified=True)
+         validate_placement(good)
+-        for mutate in (lambda x: x.update(inherited_write_verified=False), lambda x: x.update(affinity=[2]),
+-                       lambda x: x["lease"].update(child_cpus=[3]), lambda x: x["environment"].update(LD_PRELOAD="bad"),
+-                       lambda x: x["lease"]["topology"][0].update(nodes=[0])):
++        for mutate in (lambda x: x.update(inherited_write_verified=False), lambda x: x.update(affinity=[3]),
++                       lambda x: x["lease"].update(child_cpus=[2]), lambda x: x["environment"].update(LD_PRELOAD="bad"),
++                       lambda x: x["lease"]["topology"][0].update(nodes=[1])):
+             changed = copy.deepcopy(good); mutate(changed)
+             with self.assertRaises(ValueError): validate_placement(changed)
+ 
