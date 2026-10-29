@@ -1,0 +1,60 @@
+
+/tmp/fastest-bf-k12-singleton-vector-v1-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000000beb0 <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj>:
+    beb0:	test   %rsi,%rsi
+    beb3:	je     bfad <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0xfd>
+    beb9:	push   %rbx
+    beba:	movabs $0xd6e8feb86659fd93,%rax
+    bec4:	mov    (%rdi),%r8
+    bec7:	xor    %r9d,%r9d
+    beca:	vmovdqa64 -0x9dd4(%rip),%zmm0        # 2100 <_IO_stdin_used+0xa68>
+    bed4:	vmovdqa64 -0x9d9e(%rip),%zmm1        # 2140 <_IO_stdin_used+0xaa8>
+    bede:	vpbroadcastd -0xa85c(%rip),%zmm2        # 168c <__abi_tag+0x13c8>
+    bee8:	vmovdqa64 -0x9d72(%rip),%zmm3        # 2180 <_IO_stdin_used+0xae8>
+    bef2:	vmovdqa64 -0x9d3c(%rip),%zmm4        # 21c0 <_IO_stdin_used+0xb28>
+    befc:	nopl   0x0(%rax)
+    bf00:	mov    (%rdx,%r9,8),%r10
+    bf04:	mov    %r10,%r11
+    bf07:	shr    $0x20,%r11
+    bf0b:	xor    %r10,%r11
+    bf0e:	imul   %rax,%r11
+    bf12:	mov    %r11,%r10
+    bf15:	shr    $0x20,%r10
+    bf19:	xor    %r11,%r10
+    bf1c:	imul   %rax,%r10
+    bf20:	mov    %r10,%r11
+    bf23:	shr    $0x20,%r11
+    bf27:	vpbroadcastd %r11d,%zmm5
+    bf2d:	mov    %r10d,%ebx
+    bf30:	xor    %r11d,%ebx
+    bf33:	vpsrlvd %zmm0,%zmm5,%zmm6
+    bf39:	vpxord %zmm6,%zmm5,%zmm5
+    bf3f:	vpternlogd $0xec,%zmm2,%zmm1,%zmm5
+    bf46:	shr    $0x28,%r10
+    bf4a:	mov    0x18(%rdi),%r11d
+    bf4e:	imul   %r10,%r11
+    bf52:	shr    $0x12,%r11
+    bf56:	and    $0xffffffffffffffc0,%r11
+    bf5a:	vpermd (%r8,%r11,1),%zmm5,%zmm5
+    bf61:	vpbroadcastd %ebx,%zmm6
+    bf67:	vprorvd %zmm3,%zmm6,%zmm6
+    bf6d:	vpermd %zmm4,%zmm6,%zmm7
+    bf73:	vpsrld $0x4,%zmm6,%zmm6
+    bf7a:	vprolvd %zmm6,%zmm7,%zmm6
+    bf80:	vpandd %zmm5,%zmm6,%zmm5
+    bf86:	vpcmpneqd %zmm6,%zmm5,%k0
+    bf8d:	kmovw  %k0,%r10d
+    bf91:	xor    %r11d,%r11d
+    bf94:	test   $0xf,%r10b
+    bf98:	sete   %r11b
+    bf9c:	mov    %r11d,(%rcx,%r9,4)
+    bfa0:	inc    %r9
+    bfa3:	cmp    %r9,%rsi
+    bfa6:	jne    bf00 <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x50>
+    bfac:	pop    %rbx
+    bfad:	vzeroupper
+    bfb0:	ret

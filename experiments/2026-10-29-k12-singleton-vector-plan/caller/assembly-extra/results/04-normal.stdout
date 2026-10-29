@@ -1,0 +1,76 @@
+
+/tmp/fastest-bf-k12-singleton-vector-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000000c5e0 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment12LookupScalarEjPKmPj>:
+    c5e0:	mov    %esi,%eax
+    c5e2:	test   %esi,%esi
+    c5e4:	je     c704 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment12LookupScalarEjPKmPj+0x124>
+    c5ea:	push   %r14
+    c5ec:	push   %rbx
+    c5ed:	mov    %eax,%esi
+    c5ef:	mov    (%rdi),%r8
+    c5f2:	xor    %r9d,%r9d
+    c5f5:	lea    -0x959c(%rip),%r10        # 3060 <_ZN13bloom_filters42FourSectorRange12SingletonVectorExperiment9patterns3E>
+    c5fc:	vmovdqa -0x9a34(%rip),%xmm0        # 2bd0 <_IO_stdin_used+0x1538>
+    c604:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+    c610:	mov    (%rdx,%r9,8),%r11
+    c614:	mov    %r11,%rbx
+    c617:	shr    $0x28,%rbx
+    c61b:	mov    0x18(%rdi),%r14d
+    c61f:	imul   %rbx,%r14
+    c623:	mov    %r11,%rbx
+    c626:	shr    $0x20,%rbx
+    c62a:	shr    $0x14,%r14
+    c62e:	and    $0xfffffff0,%r14d
+    c632:	and    $0x3,%ebx
+    c635:	or     %r14d,%ebx
+    c638:	rorx   $0x18,%r11d,%r14d
+    c63e:	vmovd  %r14d,%xmm1
+    c643:	and    $0xf,%r14d
+    c647:	vmovd  (%r10,%r14,4),%xmm2
+    c64d:	mov    %r11d,%r14d
+    c650:	shr    $0xe,%r14d
+    c654:	and    $0x3c,%r14d
+    c658:	vpinsrd $0x1,(%r14,%r10,1),%xmm2,%xmm2
+    c65f:	mov    %r11d,%r14d
+    c662:	shr    $0x6,%r14d
+    c666:	and    $0x3c,%r14d
+    c66a:	vpinsrd $0x2,(%r14,%r10,1),%xmm2,%xmm2
+    c671:	mov    %r11d,%r14d
+    c674:	and    $0xf,%r14d
+    c678:	vpinsrd $0x3,(%r10,%r14,4),%xmm2,%xmm2
+    c67f:	mov    %r11,%r14
+    c682:	shr    $0x26,%r14
+    c686:	and    $0x3,%r14d
+    c68a:	xor    %ebx,%r14d
+    c68d:	vmovd  0x30(%r8,%r14,4),%xmm3
+    c694:	mov    %r11,%r14
+    c697:	shr    $0x24,%r14
+    c69b:	and    $0x3,%r14d
+    c69f:	xor    %ebx,%r14d
+    c6a2:	vpinsrd $0x1,0x20(%r8,%r14,4),%xmm3,%xmm3
+    c6aa:	vpinsrd $0x1,%r11d,%xmm1,%xmm1
+    c6b0:	shr    $0x22,%r11
+    c6b4:	and    $0x3,%r11d
+    c6b8:	xor    %ebx,%r11d
+    c6bb:	vpshufd $0x54,%xmm1,%xmm1
+    c6c0:	vpsrlvd %xmm0,%xmm1,%xmm1
+    c6c5:	vpinsrd $0x2,0x10(%r8,%r11,4),%xmm3,%xmm3
+    c6cd:	vprolvd %xmm1,%xmm2,%xmm1
+    c6d3:	vpinsrd $0x3,(%r8,%rbx,4),%xmm3,%xmm2
+    c6da:	vpand  %xmm2,%xmm1,%xmm2
+    c6de:	vpcmpeqd %xmm1,%xmm2,%k0
+    c6e4:	kmovd  %k0,%r11d
+    c6e8:	xor    %ebx,%ebx
+    c6ea:	cmp    $0xf,%r11b
+    c6ee:	sete   %bl
+    c6f1:	mov    %ebx,(%rcx,%r9,4)
+    c6f5:	inc    %r9
+    c6f8:	cmp    %r9,%rsi
+    c6fb:	jne    c610 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment12LookupScalarEjPKmPj+0x30>
+    c701:	pop    %rbx
+    c702:	pop    %r14
+    c704:	ret

@@ -1,0 +1,47 @@
+
+/tmp/fastest-bf-k12-singleton-vector-v1-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000000bdd0 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj>:
+    bdd0:	test   %rsi,%rsi
+    bdd3:	je     beaa <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0xda>
+    bdd9:	mov    (%rdi),%rax
+    bddc:	xor    %r8d,%r8d
+    bddf:	vmovdqa64 -0x9de9(%rip),%zmm0        # 2000 <_IO_stdin_used+0x968>
+    bde9:	vmovdqa64 -0x9db3(%rip),%zmm1        # 2040 <_IO_stdin_used+0x9a8>
+    bdf3:	vpbroadcastd -0xa771(%rip),%zmm2        # 168c <__abi_tag+0x13c8>
+    bdfd:	vmovdqa64 -0x9d87(%rip),%zmm3        # 2080 <_IO_stdin_used+0x9e8>
+    be07:	vmovdqa64 -0x9d51(%rip),%zmm4        # 20c0 <_IO_stdin_used+0xa28>
+    be11:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+    be20:	mov    (%rdx,%r8,8),%r9
+    be24:	mov    %r9,%r10
+    be27:	vpbroadcastd %r9d,%zmm5
+    be2d:	shr    $0x20,%r9
+    be31:	vpbroadcastd %r9d,%zmm6
+    be37:	vpsrlvd %zmm0,%zmm6,%zmm7
+    be3d:	vpxord %zmm7,%zmm6,%zmm6
+    be43:	vpternlogd $0xec,%zmm2,%zmm1,%zmm6
+    be4a:	shr    $0x28,%r10
+    be4e:	mov    0x18(%rdi),%r9d
+    be52:	imul   %r10,%r9
+    be56:	shr    $0x12,%r9
+    be5a:	and    $0xffffffffffffffc0,%r9
+    be5e:	vpermd (%rax,%r9,1),%zmm6,%zmm6
+    be65:	vprorvd %zmm3,%zmm5,%zmm5
+    be6b:	vpermd %zmm4,%zmm5,%zmm7
+    be71:	vpsrld $0x4,%zmm5,%zmm5
+    be78:	vprolvd %zmm5,%zmm7,%zmm5
+    be7e:	vpandd %zmm6,%zmm5,%zmm6
+    be84:	vpcmpneqd %zmm5,%zmm6,%k0
+    be8b:	kmovw  %k0,%r9d
+    be8f:	xor    %r10d,%r10d
+    be92:	test   $0xf,%r9b
+    be96:	sete   %r10b
+    be9a:	mov    %r10d,(%rcx,%r8,4)
+    be9e:	inc    %r8
+    bea1:	cmp    %r8,%rsi
+    bea4:	jne    be20 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x50>
+    beaa:	vzeroupper
+    bead:	ret
