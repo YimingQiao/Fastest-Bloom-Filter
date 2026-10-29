@@ -410,8 +410,25 @@ checks. Actual assembly covers 152 typed bodies and 32 callees; all 38 timing
 windows retain their public query work, hashes and output stores. The old K12
 scalar API itself receives some compiler vectorization. Page headers are included
 but no Page type is instantiated in this panel. The preserved first compile
-failure was fixed with narrow namespace bindings. The formal 616-row comparison
-has not run; this proof adds no performance ranking.
+failure was fixed with narrow namespace bindings. This proof adds no performance
+ranking; the completed measurement follows.
+
+The [616-row C++ singleton external comparison](../experiments/2026-10-29-k12-singleton-external-analysis/INTERPRETATION.md)
+finishes all 48 processes with two fresh seeds and opposite launch rounds. Its
+128 separate cal26 records qualify actual allocations under 16/24/32-bpk and
+1%/0.1%/0.01% ceilings. The SIMD candidate has 20 wins, 204 losses and 64
+unavailable comparisons against fixed external leaders; per-cell external
+envelopes give the same counts. Production-native leaders have 156 wins and
+68 losses, with 64 unavailable comparisons. Combining all measured native
+choices gives 193 wins and 63 losses, with 32 unavailable comparisons; this
+does not describe one filter or independent trials. Every same-byte batch1/3
+comparison improves against old K12, while batch31 retains 35 losses and
+batch4096 retains 23. External measurements cover single-key queries only.
+All 2,304 alternatives, 2,016 primary pairs, 576 envelopes, 864 same-byte pairs,
+2,032 vectors, 16,256 samples and 1,440 round sensitivities were independently
+recomputed. The first offline analysis rejected RocksDB's public bitmap field;
+the preserved schema repair changes no ranking, quality or ratio calculation
+and reuses the complete raw run. No candidate is promoted.
 
 The [Rust singleton SIMD proof](../experiments/2026-10-29-rust-k12-singleton-vector-plan/caller/proof-final/REPORT.md)
 passes four build profiles, 16 focused test executions, 96 public caller rows,
@@ -422,7 +439,7 @@ call and target-feature jump. Both actual boundaries are documented, including
 their frames and hashing costs. The first attempt stopped in dependency collection
 before runtime; recovery reused its three native executables and preserved that
 failure. All 12 executable hashes and cross-profile semantics were independently
-checked. This is correctness evidence only; formal Rust timing remains pending.
+checked. This is correctness evidence only; the subsequent timing is below.
 
 The [runtime-sized Rust caller](../experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/proof-final/REPORT.md)
 then passes 20 small rows, eight precise CLI rejections and four output faults

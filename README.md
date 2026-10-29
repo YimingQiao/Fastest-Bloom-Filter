@@ -59,7 +59,12 @@ A [C++ single-key SIMD experiment](experiments/2026-10-29-k12-singleton-vector-a
 improves visible single-key throughput including hashing **1.91–2.27×** against
 old K12. All 144 batch1/3 contrasts improve across two seeds and opposite launch
 rounds, but large batch31 hash+query regresses **1.8–3.0%**, and batch4096 is mixed.
-It remains experimental pending comparison with leading native/external controls.
+The completed [616-row external comparison](experiments/2026-10-29-k12-singleton-external-analysis/INTERPRETATION.md)
+retains **20 wins, 204 losses and 64 unavailable comparisons** for the candidate
+against eligible external single-key leaders. The same counts hold against the
+fastest eligible rival in each seed/round. The combined native leaders retain
+**193 wins and 63 losses**, with 32 unavailable comparisons; these nested views
+are descriptive counts, not independent win rates. The candidate stays experimental.
 The [Rust SIMD comparison](experiments/2026-10-29-rust-k12-singleton-internal-analysis/INTERPRETATION.md)
 also improves all 224 batch1/3 contrasts against its safe SingleLine control.
 Visible single-key throughput including hashing improves **2.14–2.24×** in native

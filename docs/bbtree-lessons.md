@@ -164,6 +164,14 @@ In the [expanded external caller](../experiments/2026-10-29-k12-singleton-extern
 even old K12's source-level scalar oracle contains compiler-generated 128-bit
 vector operations. API names alone do not describe the instructions being timed.
 
+The [completed external comparison](../experiments/2026-10-29-k12-singleton-external-analysis/INTERPRETATION.md)
+also tests whether that internal speedup closes the useful gap. It does not:
+the SIMD candidate wins 20 eligible external single-key comparisons and loses
+204, while 64 are unavailable under the fixed memory/quality gates. The native
+composite still loses 63 external comparisons. Reducing one kernel's instruction
+cost is useful, but the next design must target the strongest qualifying rival
+and preserve the bulk regressions, not just beat its own predecessor.
+
 The [Rust SIMD caller proof](../experiments/2026-10-29-rust-k12-singleton-vector-plan/caller/assembly-review/REVIEW.md)
 shows why this must be checked separately for each language and build profile.
 Its native build hoists the feature check and inlines the vector path. The
