@@ -91,8 +91,8 @@ frozen prepared-u64/byte8 contract; they do not measure direct raw Poppy APIs.
 A separate [fastbloom-rs raw-byte caller](experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
 passes normal/ASan checks for all 24 public probe counts and 21 retained controls.
 Its hashes stay inside the clock, and required build scratch is included in
-allocation+build. Formal timing is pending; correctness checks alone do not
-support a speed claim.
+allocation+build. Its fixed 786-row comparison is running; results will be
+reported after the complete raw archive is validated.
 
 See the [baseline survey](docs/external-survey-2026-10-28.md),
 [benchmark contract](#what-the-numbers-mean), and [bbtree lessons](docs/bbtree-lessons.md).

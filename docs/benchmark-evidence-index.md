@@ -424,6 +424,14 @@ before runtime; recovery reused its three native executables and preserved that
 failure. All 12 executable hashes and cross-profile semantics were independently
 checked. This is correctness evidence only; formal Rust timing remains pending.
 
+The [runtime-sized Rust caller](../experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/proof-final/REPORT.md)
+then passes 20 small rows, eight precise CLI rejections and four output faults
+against those original semantic fixtures. Its rebuilt native and portable
+binaries each outline the work wrapper once per whole query phase. Actual
+assembly verifies the new timing boundaries and the native-inline versus
+portable per-key distinction. The fixed 192-row comparison keeps the profiles
+separate; these additional correctness checks supply no timing result.
+
 The [public raw8 caller proof](../experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
 adds fastbloom-rs0.5.10, distinct from fastbloom0.17, through its original public
 raw-byte API. Four normal/ASan executables pass 12 focused test invocations,
