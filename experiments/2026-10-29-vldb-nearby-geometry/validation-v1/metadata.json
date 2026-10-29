@@ -1,0 +1,4136 @@
+{
+  "complete": true,
+  "source_commit": "9ece4af4db5089417aac119fe5166266b2716821",
+  "lease": {
+    "cpu": 2,
+    "lease": "socket0",
+    "lock_path": "/tmp/fastest-bf-socket0.lock",
+    "inherited_lock_descriptors": [
+      3
+    ]
+  },
+  "commands": [
+    {
+      "label": "compiler",
+      "command": [
+        "g++",
+        "--version"
+      ],
+      "complete": true,
+      "stdout": "compiler.stdout",
+      "stdout_sha256": "8854612eaf6fea7cbba6da95264f0cc26bf09d0a9b8bbc09e20e16cde2ef31eb",
+      "stderr": "compiler.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.0013777967542409897
+    },
+    {
+      "label": "native-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-vldb-nearby-geometry",
+        "-B",
+        "build/vldb-nearby-geometry-v1/native",
+        "-DCMAKE_CXX_COMPILER=g++",
+        "-DVLDB_BACKEND=native",
+        "-DVLDB_ARCHIVE=/home/yiming/projects/fastest-bf-lab/build/vldb-public-preflight-v2-gcc/native/libvldb_pinned.a",
+        "-DVLDB_ARCHIVE_SHA256=1f64962e369c5d9289d41fd5919911ad36ff4e3cae7eada934f047918378a872"
+      ],
+      "complete": true,
+      "stdout": "native-configure.stdout",
+      "stdout_sha256": "f07147822e6f3256b0b1dcd3db45ee985d58a6992a601709afce4be82dc2c8f3",
+      "stderr": "native-configure.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.29492123052477837
+    },
+    {
+      "label": "native-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/vldb-nearby-geometry-v1/native",
+        "-j1"
+      ],
+      "complete": true,
+      "stdout": "native-build.stdout",
+      "stdout_sha256": "f30c00a4e6d07b3189ff29e4bf5f9822175ff12768f31691429353d9560aeb47",
+      "stderr": "native-build.stderr",
+      "stderr_sha256": "4d36e17ddd364e3b1ef5887966cbcdba54556cdc1951c84b9581a34985065bcd",
+      "returncode": 0,
+      "diagnostic_process_seconds": 276.4234927520156
+    },
+    {
+      "label": "native-macros",
+      "command": [
+        "/usr/bin/g++",
+        "-I/home/yiming/projects/fastest-bf-lab/include",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/src",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/thirdparty",
+        "-I/home/yiming/.local/boost-1.83/include",
+        "-O3",
+        "-march=native",
+        "-Wno-ignored-attributes",
+        "-include",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/compat.hpp",
+        "-std=gnu++17",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "/dev/null"
+      ],
+      "complete": true,
+      "stdout": "native-macros.stdout",
+      "stdout_sha256": "bbde7ce1e87c9ba3eb36d3bfc7b0ac1a24518e6e425c5a57680cdabfae3204d5",
+      "stderr": "native-macros.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.0471480768173933
+    },
+    {
+      "label": "native-case0",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case0.stdout",
+      "stdout_sha256": "079f0ddd9f09d3d5db3986e0110c19bea838008af8e43bd3ac05610bc57ee644",
+      "stderr": "native-case0.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.1139591671526432
+    },
+    {
+      "label": "native-case1",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case1.stdout",
+      "stdout_sha256": "8c004006485478d45a3f08c23a2c0948ac5c2e91c7d664fa444519dce54f58a0",
+      "stderr": "native-case1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11504585482180119
+    },
+    {
+      "label": "native-case2",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u1",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case2.stdout",
+      "stdout_sha256": "6fe1605f47a99cea4f49e03d5970cd63266375628c1302a715642246e9825b5a",
+      "stderr": "native-case2.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.2197265625
+    },
+    {
+      "label": "native-case3",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u1",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case3.stdout",
+      "stdout_sha256": "9d6db221e925a9081f949e4160f978924254a556f347b91099cfc2cb54a29d5b",
+      "stderr": "native-case3.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.31659774854779243
+    },
+    {
+      "label": "native-case4",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u2",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case4.stdout",
+      "stdout_sha256": "6c5a46b85762aefa4c42072dbff630409772b482598f96d2a9765d97e6b19336",
+      "stderr": "native-case4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11692730709910393
+    },
+    {
+      "label": "native-case5",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u2",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case5.stdout",
+      "stdout_sha256": "aa6b7899fa9d26a4ec488c02f00c1869ba76c99fe27961c12e252605b6a0fa6b",
+      "stderr": "native-case5.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11662795394659042
+    },
+    {
+      "label": "native-case6",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u2",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case6.stdout",
+      "stdout_sha256": "24000093593af78973baa0ecfcc6d531dd96c68f6d609c4ceebf3ee9bcf5eaf7",
+      "stderr": "native-case6.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.21921116672456264
+    },
+    {
+      "label": "native-case7",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u2",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case7.stdout",
+      "stdout_sha256": "e337c2ba0927d7f51b74449ebc05f1bbbcc7bc9b1d304c501f9621a72fd3dc78",
+      "stderr": "native-case7.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.319655179977417
+    },
+    {
+      "label": "native-case8",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u4",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case8.stdout",
+      "stdout_sha256": "3358c2b7aa79b2fe1f440475e3321fe17ad6d32bfd08288be07cc2ff3c86a63d",
+      "stderr": "native-case8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11773576773703098
+    },
+    {
+      "label": "native-case9",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u4",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case9.stdout",
+      "stdout_sha256": "4abb30edd19a346db54a507e38d83a9d8a88434db8eaabd875852300a39cc377",
+      "stderr": "native-case9.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11666215397417545
+    },
+    {
+      "label": "native-case10",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u4",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case10.stdout",
+      "stdout_sha256": "8783ac7921f84ea8d7b4c64d2cd7930a85bedce2aa0b89b4d3b5037dcbb3aed2",
+      "stderr": "native-case10.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.21937906742095947
+    },
+    {
+      "label": "native-case11",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u4",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case11.stdout",
+      "stdout_sha256": "204b8ec4c37aa9ce0d6e3bacb310d36dda28834137cc7976acb84ab2a1cddff2",
+      "stderr": "native-case11.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.3198579978197813
+    },
+    {
+      "label": "native-case12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case12.stdout",
+      "stdout_sha256": "5b99524afbb80addc3f82a0c395147c7435ebac41277cce4fdff81bfe6641b6a",
+      "stderr": "native-case12.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11751566641032696
+    },
+    {
+      "label": "native-case13",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case13.stdout",
+      "stdout_sha256": "c510963e3fd0718b84cd61fa33427f64f1ec3f962fad90b2fb76fa85dfad7486",
+      "stderr": "native-case13.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11638224124908447
+    },
+    {
+      "label": "native-case14",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u1",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case14.stdout",
+      "stdout_sha256": "cde6a45835256e743fcfda07176935ca31fadce2820797616d958d73df6f5fee",
+      "stderr": "native-case14.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.22179332375526428
+    },
+    {
+      "label": "native-case15",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u1",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case15.stdout",
+      "stdout_sha256": "055af6f6679c0332be53fe85ef16228e19347151e1bf4a685194b04c12870197",
+      "stderr": "native-case15.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.3181512728333473
+    },
+    {
+      "label": "native-case16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u2",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case16.stdout",
+      "stdout_sha256": "194927cf2719a19724b3e23a1292d4f4f6216df9d69b054002e88532f747d7b2",
+      "stderr": "native-case16.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11472043767571449
+    },
+    {
+      "label": "native-case17",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u2",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case17.stdout",
+      "stdout_sha256": "a9324488d348afc0e4557884409d608c4e9a25adeb06c83580f1d393c4e36422",
+      "stderr": "native-case17.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11560543440282345
+    },
+    {
+      "label": "native-case18",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u2",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case18.stdout",
+      "stdout_sha256": "514287845fa38f94bf42f67f150a6c78b30d2a32de121ca78186159e52360ab4",
+      "stderr": "native-case18.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.22044264525175095
+    },
+    {
+      "label": "native-case19",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u2",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case19.stdout",
+      "stdout_sha256": "9a2e876633d3da7109197489741d081ff91128e2410d2a0c0d19c5843cf86fea",
+      "stderr": "native-case19.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.3153385389596224
+    },
+    {
+      "label": "native-case20",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u4",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case20.stdout",
+      "stdout_sha256": "3f517ea8ec28125d942bcb1915235f024c78e10588626d23db0b67319bad0fb6",
+      "stderr": "native-case20.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.1155446358025074
+    },
+    {
+      "label": "native-case21",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u4",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case21.stdout",
+      "stdout_sha256": "6a3fd48eef69a358ef4845cf7b8ce44aaa48e246bb86f3107fbc689a1150a91f",
+      "stderr": "native-case21.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.12234594859182835
+    },
+    {
+      "label": "native-case22",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u4",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case22.stdout",
+      "stdout_sha256": "323b40014876ce12a41eed39d3e5c9e0ff07e1ae07ce51e91eecaef31ee5ab9d",
+      "stderr": "native-case22.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.21863826736807823
+    },
+    {
+      "label": "native-case23",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u4",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case23.stdout",
+      "stdout_sha256": "ce1a4414abeb3920f8746e8c6bc617c72eb056d485dfe38a91ea10969701029a",
+      "stderr": "native-case23.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.31889545544981956
+    },
+    {
+      "label": "native-case24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case24.stdout",
+      "stdout_sha256": "57ddc133c7de4826613be71383e4b382252ef33a16cdcf4b932d55acb17b0963",
+      "stderr": "native-case24.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.10594072006642818
+    },
+    {
+      "label": "native-case25",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case25.stdout",
+      "stdout_sha256": "54f926963210c6a2d43aed727241fb100b181db4c82da729d61afa8bdfb6f7cd",
+      "stderr": "native-case25.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.10553056187927723
+    },
+    {
+      "label": "native-case26",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "register64-u0",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case26.stdout",
+      "stdout_sha256": "84b34f8f3b9c5888ca62353eadaf15b87ba6bec47497b798601ff59937c12f55",
+      "stderr": "native-case26.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.21155130863189697
+    },
+    {
+      "label": "native-case27",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "register64-u0",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-case27.stdout",
+      "stdout_sha256": "9604a3e7a6c92c8a0bd63c6a781abdd7291f4d8f93a91c834f6642e1e7fea8b8",
+      "stderr": "native-case27.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.30782230757176876
+    },
+    {
+      "label": "native-case28",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "native-case28.stdout",
+      "stdout_sha256": "0644a66249ef7634aa5144e752af24b847e28bd6fd81e6e8ced80a27f79d1c75",
+      "stderr": "native-case28.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11568567156791687
+    },
+    {
+      "label": "native-case29",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "native-case29.stdout",
+      "stdout_sha256": "293876a1341c14c93901bac6f6828ee202f469e3deabb323917d742efbd62785",
+      "stderr": "native-case29.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11696414835751057
+    },
+    {
+      "label": "native-case30",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "native-case30.stdout",
+      "stdout_sha256": "8780c48d150c998749453a1a5d326ae351bb79f4ef4dae8027762b27d0a47f1c",
+      "stderr": "native-case30.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.10566245950758457
+    },
+    {
+      "label": "native-invalid0",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "missing",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-invalid0.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "native-invalid0.stderr",
+      "stderr_sha256": "2f2c373dfe1b207a0d12d3d1c1983cd1995de56187b66d494b39ac733ede6781",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.0015484578907489777
+    },
+    {
+      "label": "native-invalid1",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "16",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-invalid1.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "native-invalid1.stderr",
+      "stderr_sha256": "22dc97226ba012a4a33b34ac6be0bb3c7bb830652b92e51c13276f4420672eb0",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.0014018658548593521
+    },
+    {
+      "label": "native-invalid2",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "missing"
+      ],
+      "complete": true,
+      "stdout": "native-invalid2.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "native-invalid2.stderr",
+      "stderr_sha256": "041fc75ecadf52cf25289a017fd62cacf5ef422dac165eaa8a38aad17e0a910c",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.0014033466577529907
+    },
+    {
+      "label": "avx2-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-vldb-nearby-geometry",
+        "-B",
+        "build/vldb-nearby-geometry-v1/avx2",
+        "-DCMAKE_CXX_COMPILER=g++",
+        "-DVLDB_BACKEND=avx2",
+        "-DVLDB_ARCHIVE=/home/yiming/projects/fastest-bf-lab/build/vldb-public-preflight-v6-gcc/avx2/libvldb_pinned.a",
+        "-DVLDB_ARCHIVE_SHA256=d9690a396d774cbf2164adf5dde712686cc5b811875aeacf5a8229b5f93f7e59"
+      ],
+      "complete": true,
+      "stdout": "avx2-configure.stdout",
+      "stdout_sha256": "283839065de221ef7f90f31bd8360b427ddae3839f2e6737a839be9adaf1b7a4",
+      "stderr": "avx2-configure.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.297789977863431
+    },
+    {
+      "label": "avx2-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/vldb-nearby-geometry-v1/avx2",
+        "-j1"
+      ],
+      "complete": true,
+      "stdout": "avx2-build.stdout",
+      "stdout_sha256": "f30c00a4e6d07b3189ff29e4bf5f9822175ff12768f31691429353d9560aeb47",
+      "stderr": "avx2-build.stderr",
+      "stderr_sha256": "4d36e17ddd364e3b1ef5887966cbcdba54556cdc1951c84b9581a34985065bcd",
+      "returncode": 0,
+      "diagnostic_process_seconds": 284.8229877911508
+    },
+    {
+      "label": "avx2-macros",
+      "command": [
+        "/usr/bin/g++",
+        "-I/home/yiming/projects/fastest-bf-lab/include",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/src",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/thirdparty",
+        "-I/home/yiming/.local/boost-1.83/include",
+        "-O3",
+        "-march=x86-64-v3",
+        "-Wno-ignored-attributes",
+        "-include",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/compat.hpp",
+        "-std=gnu++17",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "/dev/null"
+      ],
+      "complete": true,
+      "stdout": "avx2-macros.stdout",
+      "stdout_sha256": "2dc24d94c25a26775614a28fa0afd56bd82475928eb54713df33fc5c0eb7b218",
+      "stderr": "avx2-macros.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.044903967529535294
+    },
+    {
+      "label": "avx2-case0",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case0.stdout",
+      "stdout_sha256": "079f0ddd9f09d3d5db3986e0110c19bea838008af8e43bd3ac05610bc57ee644",
+      "stderr": "avx2-case0.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.1156748365610838
+    },
+    {
+      "label": "avx2-case1",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case1.stdout",
+      "stdout_sha256": "8c004006485478d45a3f08c23a2c0948ac5c2e91c7d664fa444519dce54f58a0",
+      "stderr": "avx2-case1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11569520086050034
+    },
+    {
+      "label": "avx2-case2",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u1",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case2.stdout",
+      "stdout_sha256": "6fe1605f47a99cea4f49e03d5970cd63266375628c1302a715642246e9825b5a",
+      "stderr": "avx2-case2.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.21906706504523754
+    },
+    {
+      "label": "avx2-case3",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u1",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case3.stdout",
+      "stdout_sha256": "9d6db221e925a9081f949e4160f978924254a556f347b91099cfc2cb54a29d5b",
+      "stderr": "avx2-case3.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.3164230454713106
+    },
+    {
+      "label": "avx2-case4",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u2",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case4.stdout",
+      "stdout_sha256": "6c5a46b85762aefa4c42072dbff630409772b482598f96d2a9765d97e6b19336",
+      "stderr": "avx2-case4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11472010053694248
+    },
+    {
+      "label": "avx2-case5",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u2",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case5.stdout",
+      "stdout_sha256": "aa6b7899fa9d26a4ec488c02f00c1869ba76c99fe27961c12e252605b6a0fa6b",
+      "stderr": "avx2-case5.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.1213467475026846
+    },
+    {
+      "label": "avx2-case6",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u2",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case6.stdout",
+      "stdout_sha256": "24000093593af78973baa0ecfcc6d531dd96c68f6d609c4ceebf3ee9bcf5eaf7",
+      "stderr": "avx2-case6.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.2192210666835308
+    },
+    {
+      "label": "avx2-case7",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u2",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case7.stdout",
+      "stdout_sha256": "e337c2ba0927d7f51b74449ebc05f1bbbcc7bc9b1d304c501f9621a72fd3dc78",
+      "stderr": "avx2-case7.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.316787401214242
+    },
+    {
+      "label": "avx2-case8",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u4",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case8.stdout",
+      "stdout_sha256": "3358c2b7aa79b2fe1f440475e3321fe17ad6d32bfd08288be07cc2ff3c86a63d",
+      "stderr": "avx2-case8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.12329703010618687
+    },
+    {
+      "label": "avx2-case9",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u4",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case9.stdout",
+      "stdout_sha256": "4abb30edd19a346db54a507e38d83a9d8a88434db8eaabd875852300a39cc377",
+      "stderr": "avx2-case9.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.12977826967835426
+    },
+    {
+      "label": "avx2-case10",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u4",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case10.stdout",
+      "stdout_sha256": "8783ac7921f84ea8d7b4c64d2cd7930a85bedce2aa0b89b4d3b5037dcbb3aed2",
+      "stderr": "avx2-case10.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.2259933315217495
+    },
+    {
+      "label": "avx2-case11",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u4",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case11.stdout",
+      "stdout_sha256": "204b8ec4c37aa9ce0d6e3bacb310d36dda28834137cc7976acb84ab2a1cddff2",
+      "stderr": "avx2-case11.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.32684848085045815
+    },
+    {
+      "label": "avx2-case12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case12.stdout",
+      "stdout_sha256": "5b99524afbb80addc3f82a0c395147c7435ebac41277cce4fdff81bfe6641b6a",
+      "stderr": "avx2-case12.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11999472416937351
+    },
+    {
+      "label": "avx2-case13",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case13.stdout",
+      "stdout_sha256": "c510963e3fd0718b84cd61fa33427f64f1ec3f962fad90b2fb76fa85dfad7486",
+      "stderr": "avx2-case13.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11589318886399269
+    },
+    {
+      "label": "avx2-case14",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u1",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case14.stdout",
+      "stdout_sha256": "cde6a45835256e743fcfda07176935ca31fadce2820797616d958d73df6f5fee",
+      "stderr": "avx2-case14.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.21966447681188583
+    },
+    {
+      "label": "avx2-case15",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u1",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case15.stdout",
+      "stdout_sha256": "055af6f6679c0332be53fe85ef16228e19347151e1bf4a685194b04c12870197",
+      "stderr": "avx2-case15.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.31760918349027634
+    },
+    {
+      "label": "avx2-case16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u2",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case16.stdout",
+      "stdout_sha256": "194927cf2719a19724b3e23a1292d4f4f6216df9d69b054002e88532f747d7b2",
+      "stderr": "avx2-case16.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.12651320546865463
+    },
+    {
+      "label": "avx2-case17",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u2",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case17.stdout",
+      "stdout_sha256": "a9324488d348afc0e4557884409d608c4e9a25adeb06c83580f1d393c4e36422",
+      "stderr": "avx2-case17.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.1259267646819353
+    },
+    {
+      "label": "avx2-case18",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u2",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case18.stdout",
+      "stdout_sha256": "514287845fa38f94bf42f67f150a6c78b30d2a32de121ca78186159e52360ab4",
+      "stderr": "avx2-case18.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.2315963488072157
+    },
+    {
+      "label": "avx2-case19",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u2",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case19.stdout",
+      "stdout_sha256": "9a2e876633d3da7109197489741d081ff91128e2410d2a0c0d19c5843cf86fea",
+      "stderr": "avx2-case19.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.3298609983175993
+    },
+    {
+      "label": "avx2-case20",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u4",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case20.stdout",
+      "stdout_sha256": "3f517ea8ec28125d942bcb1915235f024c78e10588626d23db0b67319bad0fb6",
+      "stderr": "avx2-case20.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.12605474516749382
+    },
+    {
+      "label": "avx2-case21",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u4",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case21.stdout",
+      "stdout_sha256": "6a3fd48eef69a358ef4845cf7b8ce44aaa48e246bb86f3107fbc689a1150a91f",
+      "stderr": "avx2-case21.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.12633487209677696
+    },
+    {
+      "label": "avx2-case22",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u4",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case22.stdout",
+      "stdout_sha256": "323b40014876ce12a41eed39d3e5c9e0ff07e1ae07ce51e91eecaef31ee5ab9d",
+      "stderr": "avx2-case22.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.2289237603545189
+    },
+    {
+      "label": "avx2-case23",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u4",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case23.stdout",
+      "stdout_sha256": "ce1a4414abeb3920f8746e8c6bc617c72eb056d485dfe38a91ea10969701029a",
+      "stderr": "avx2-case23.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.32905385829508305
+    },
+    {
+      "label": "avx2-case24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case24.stdout",
+      "stdout_sha256": "57ddc133c7de4826613be71383e4b382252ef33a16cdcf4b932d55acb17b0963",
+      "stderr": "avx2-case24.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.1049598678946495
+    },
+    {
+      "label": "avx2-case25",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case25.stdout",
+      "stdout_sha256": "54f926963210c6a2d43aed727241fb100b181db4c82da729d61afa8bdfb6f7cd",
+      "stderr": "avx2-case25.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.1109050028026104
+    },
+    {
+      "label": "avx2-case26",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "register64-u0",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case26.stdout",
+      "stdout_sha256": "84b34f8f3b9c5888ca62353eadaf15b87ba6bec47497b798601ff59937c12f55",
+      "stderr": "avx2-case26.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.2122794408351183
+    },
+    {
+      "label": "avx2-case27",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "register64-u0",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-case27.stdout",
+      "stdout_sha256": "9604a3e7a6c92c8a0bd63c6a781abdd7291f4d8f93a91c834f6642e1e7fea8b8",
+      "stderr": "avx2-case27.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.30623975954949856
+    },
+    {
+      "label": "avx2-case28",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "avx2-case28.stdout",
+      "stdout_sha256": "0644a66249ef7634aa5144e752af24b847e28bd6fd81e6e8ced80a27f79d1c75",
+      "stderr": "avx2-case28.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11670597642660141
+    },
+    {
+      "label": "avx2-case29",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "avx2-case29.stdout",
+      "stdout_sha256": "293876a1341c14c93901bac6f6828ee202f469e3deabb323917d742efbd62785",
+      "stderr": "avx2-case29.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.11641565710306168
+    },
+    {
+      "label": "avx2-case30",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "avx2-case30.stdout",
+      "stdout_sha256": "8780c48d150c998749453a1a5d326ae351bb79f4ef4dae8027762b27d0a47f1c",
+      "stderr": "avx2-case30.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.10451875068247318
+    },
+    {
+      "label": "avx2-invalid0",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "missing",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-invalid0.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "avx2-invalid0.stderr",
+      "stderr_sha256": "2f2c373dfe1b207a0d12d3d1c1983cd1995de56187b66d494b39ac733ede6781",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.0014243144541978836
+    },
+    {
+      "label": "avx2-invalid1",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "16",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "avx2-invalid1.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "avx2-invalid1.stderr",
+      "stderr_sha256": "22dc97226ba012a4a33b34ac6be0bb3c7bb830652b92e51c13276f4420672eb0",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.0014258082956075668
+    },
+    {
+      "label": "avx2-invalid2",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "missing"
+      ],
+      "complete": true,
+      "stdout": "avx2-invalid2.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "avx2-invalid2.stderr",
+      "stderr_sha256": "041fc75ecadf52cf25289a017fd62cacf5ef422dac165eaa8a38aad17e0a910c",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.0014223400503396988
+    },
+    {
+      "label": "native-asan-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-vldb-nearby-geometry",
+        "-B",
+        "build/vldb-nearby-geometry-v1/native-asan",
+        "-DCMAKE_CXX_COMPILER=g++",
+        "-DVLDB_BACKEND=native-asan",
+        "-DVLDB_ARCHIVE=/home/yiming/projects/fastest-bf-lab/build/vldb-public-preflight-v5-gcc/native-asan/libvldb_pinned.a",
+        "-DVLDB_ARCHIVE_SHA256=e8180d27f43afa1308a9451be1c12b2aeaadafcd84e690ef332e3f50b0c38e34"
+      ],
+      "complete": true,
+      "stdout": "native-asan-configure.stdout",
+      "stdout_sha256": "59b3715c8e158be6753d1927626f0e6ccca936c068e5a71ba9259a9466f07ae6",
+      "stderr": "native-asan-configure.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.5981859676539898
+    },
+    {
+      "label": "native-asan-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/vldb-nearby-geometry-v1/native-asan",
+        "-j1"
+      ],
+      "complete": true,
+      "stdout": "native-asan-build.stdout",
+      "stdout_sha256": "f30c00a4e6d07b3189ff29e4bf5f9822175ff12768f31691429353d9560aeb47",
+      "stderr": "native-asan-build.stderr",
+      "stderr_sha256": "4d36e17ddd364e3b1ef5887966cbcdba54556cdc1951c84b9581a34985065bcd",
+      "returncode": 0,
+      "diagnostic_process_seconds": 508.90390290133655
+    },
+    {
+      "label": "native-asan-macros",
+      "command": [
+        "/usr/bin/g++",
+        "-I/home/yiming/projects/fastest-bf-lab/include",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/src",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/thirdparty",
+        "-I/home/yiming/.local/boost-1.83/include",
+        "-O1",
+        "-march=native",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-fno-omit-frame-pointer",
+        "-Wno-ignored-attributes",
+        "-include",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/compat.hpp",
+        "-std=gnu++17",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "/dev/null"
+      ],
+      "complete": true,
+      "stdout": "native-asan-macros.stdout",
+      "stdout_sha256": "3b684ac9da99ee7a5552802d2c17413716fd020bbaf1cd39cb436d6adc995661",
+      "stderr": "native-asan-macros.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.04725138284265995
+    },
+    {
+      "label": "native-asan-case0",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case0.stdout",
+      "stdout_sha256": "079f0ddd9f09d3d5db3986e0110c19bea838008af8e43bd3ac05610bc57ee644",
+      "stderr": "native-asan-case0.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.45684453658759594
+    },
+    {
+      "label": "native-asan-case1",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case1.stdout",
+      "stdout_sha256": "8c004006485478d45a3f08c23a2c0948ac5c2e91c7d664fa444519dce54f58a0",
+      "stderr": "native-asan-case1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.4515709672123194
+    },
+    {
+      "label": "native-asan-case2",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u1",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case2.stdout",
+      "stdout_sha256": "6fe1605f47a99cea4f49e03d5970cd63266375628c1302a715642246e9825b5a",
+      "stderr": "native-asan-case2.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.5944411251693964
+    },
+    {
+      "label": "native-asan-case3",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u1",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case3.stdout",
+      "stdout_sha256": "9d6db221e925a9081f949e4160f978924254a556f347b91099cfc2cb54a29d5b",
+      "stderr": "native-asan-case3.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.7185125444084406
+    },
+    {
+      "label": "native-asan-case4",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u2",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case4.stdout",
+      "stdout_sha256": "6c5a46b85762aefa4c42072dbff630409772b482598f96d2a9765d97e6b19336",
+      "stderr": "native-asan-case4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.44061490148305893
+    },
+    {
+      "label": "native-asan-case5",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u2",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case5.stdout",
+      "stdout_sha256": "aa6b7899fa9d26a4ec488c02f00c1869ba76c99fe27961c12e252605b6a0fa6b",
+      "stderr": "native-asan-case5.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.4318974744528532
+    },
+    {
+      "label": "native-asan-case6",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u2",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case6.stdout",
+      "stdout_sha256": "24000093593af78973baa0ecfcc6d531dd96c68f6d609c4ceebf3ee9bcf5eaf7",
+      "stderr": "native-asan-case6.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.5716647394001484
+    },
+    {
+      "label": "native-asan-case7",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u2",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case7.stdout",
+      "stdout_sha256": "e337c2ba0927d7f51b74449ebc05f1bbbcc7bc9b1d304c501f9621a72fd3dc78",
+      "stderr": "native-asan-case7.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.6988242827355862
+    },
+    {
+      "label": "native-asan-case8",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u4",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case8.stdout",
+      "stdout_sha256": "3358c2b7aa79b2fe1f440475e3321fe17ad6d32bfd08288be07cc2ff3c86a63d",
+      "stderr": "native-asan-case8.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.4278378561139107
+    },
+    {
+      "label": "native-asan-case9",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u4",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case9.stdout",
+      "stdout_sha256": "4abb30edd19a346db54a507e38d83a9d8a88434db8eaabd875852300a39cc377",
+      "stderr": "native-asan-case9.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.4286207128316164
+    },
+    {
+      "label": "native-asan-case10",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u4",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case10.stdout",
+      "stdout_sha256": "8783ac7921f84ea8d7b4c64d2cd7930a85bedce2aa0b89b4d3b5037dcbb3aed2",
+      "stderr": "native-asan-case10.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.5654837246984243
+    },
+    {
+      "label": "native-asan-case11",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u4",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case11.stdout",
+      "stdout_sha256": "204b8ec4c37aa9ce0d6e3bacb310d36dda28834137cc7976acb84ab2a1cddff2",
+      "stderr": "native-asan-case11.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.6923556365072727
+    },
+    {
+      "label": "native-asan-case12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case12.stdout",
+      "stdout_sha256": "5b99524afbb80addc3f82a0c395147c7435ebac41277cce4fdff81bfe6641b6a",
+      "stderr": "native-asan-case12.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.463298074901104
+    },
+    {
+      "label": "native-asan-case13",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case13.stdout",
+      "stdout_sha256": "c510963e3fd0718b84cd61fa33427f64f1ec3f962fad90b2fb76fa85dfad7486",
+      "stderr": "native-asan-case13.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.46321489103138447
+    },
+    {
+      "label": "native-asan-case14",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u1",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case14.stdout",
+      "stdout_sha256": "cde6a45835256e743fcfda07176935ca31fadce2820797616d958d73df6f5fee",
+      "stderr": "native-asan-case14.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.5997379217296839
+    },
+    {
+      "label": "native-asan-case15",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u1",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case15.stdout",
+      "stdout_sha256": "055af6f6679c0332be53fe85ef16228e19347151e1bf4a685194b04c12870197",
+      "stderr": "native-asan-case15.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.7299698870629072
+    },
+    {
+      "label": "native-asan-case16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u2",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case16.stdout",
+      "stdout_sha256": "194927cf2719a19724b3e23a1292d4f4f6216df9d69b054002e88532f747d7b2",
+      "stderr": "native-asan-case16.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.45897629112005234
+    },
+    {
+      "label": "native-asan-case17",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u2",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case17.stdout",
+      "stdout_sha256": "a9324488d348afc0e4557884409d608c4e9a25adeb06c83580f1d393c4e36422",
+      "stderr": "native-asan-case17.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.45374447852373123
+    },
+    {
+      "label": "native-asan-case18",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u2",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case18.stdout",
+      "stdout_sha256": "514287845fa38f94bf42f67f150a6c78b30d2a32de121ca78186159e52360ab4",
+      "stderr": "native-asan-case18.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.5888994727283716
+    },
+    {
+      "label": "native-asan-case19",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u2",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case19.stdout",
+      "stdout_sha256": "9a2e876633d3da7109197489741d081ff91128e2410d2a0c0d19c5843cf86fea",
+      "stderr": "native-asan-case19.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.712499599903822
+    },
+    {
+      "label": "native-asan-case20",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u4",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case20.stdout",
+      "stdout_sha256": "3f517ea8ec28125d942bcb1915235f024c78e10588626d23db0b67319bad0fb6",
+      "stderr": "native-asan-case20.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.44532360322773457
+    },
+    {
+      "label": "native-asan-case21",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u4",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case21.stdout",
+      "stdout_sha256": "6a3fd48eef69a358ef4845cf7b8ce44aaa48e246bb86f3107fbc689a1150a91f",
+      "stderr": "native-asan-case21.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.4476796369999647
+    },
+    {
+      "label": "native-asan-case22",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u4",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case22.stdout",
+      "stdout_sha256": "323b40014876ce12a41eed39d3e5c9e0ff07e1ae07ce51e91eecaef31ee5ab9d",
+      "stderr": "native-asan-case22.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.5808202754706144
+    },
+    {
+      "label": "native-asan-case23",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u4",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case23.stdout",
+      "stdout_sha256": "ce1a4414abeb3920f8746e8c6bc617c72eb056d485dfe38a91ea10969701029a",
+      "stderr": "native-asan-case23.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.7062607929110527
+    },
+    {
+      "label": "native-asan-case24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case24.stdout",
+      "stdout_sha256": "57ddc133c7de4826613be71383e4b382252ef33a16cdcf4b932d55acb17b0963",
+      "stderr": "native-asan-case24.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.3763186130672693
+    },
+    {
+      "label": "native-asan-case25",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case25.stdout",
+      "stdout_sha256": "54f926963210c6a2d43aed727241fb100b181db4c82da729d61afa8bdfb6f7cd",
+      "stderr": "native-asan-case25.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.37463674880564213
+    },
+    {
+      "label": "native-asan-case26",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "register64-u0",
+        "25",
+        "12",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case26.stdout",
+      "stdout_sha256": "84b34f8f3b9c5888ca62353eadaf15b87ba6bec47497b798601ff59937c12f55",
+      "stderr": "native-asan-case26.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.5103371683508158
+    },
+    {
+      "label": "native-asan-case27",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "register64-u0",
+        "25",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case27.stdout",
+      "stdout_sha256": "9604a3e7a6c92c8a0bd63c6a781abdd7291f4d8f93a91c834f6642e1e7fea8b8",
+      "stderr": "native-asan-case27.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.6274868175387383
+    },
+    {
+      "label": "native-asan-case28",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case28.stdout",
+      "stdout_sha256": "0644a66249ef7634aa5144e752af24b847e28bd6fd81e6e8ced80a27f79d1c75",
+      "stderr": "native-asan-case28.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.4535169433802366
+    },
+    {
+      "label": "native-asan-case29",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector64-u1",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case29.stdout",
+      "stdout_sha256": "293876a1341c14c93901bac6f6828ee202f469e3deabb323917d742efbd62785",
+      "stderr": "native-asan-case29.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.4652475770562887
+    },
+    {
+      "label": "native-asan-case30",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "register64-u0",
+        "16",
+        "24",
+        "original"
+      ],
+      "complete": true,
+      "stdout": "native-asan-case30.stdout",
+      "stdout_sha256": "8780c48d150c998749453a1a5d326ae351bb79f4ef4dae8027762b27d0a47f1c",
+      "stderr": "native-asan-case30.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "diagnostic_process_seconds": 0.37140650674700737
+    },
+    {
+      "label": "native-asan-invalid0",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "missing",
+        "16",
+        "24",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-invalid0.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "native-asan-invalid0.stderr",
+      "stderr_sha256": "2f2c373dfe1b207a0d12d3d1c1983cd1995de56187b66d494b39ac733ede6781",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.15762199088931084
+    },
+    {
+      "label": "native-asan-invalid1",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "16",
+        "nearby_odd"
+      ],
+      "complete": true,
+      "stdout": "native-asan-invalid1.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "native-asan-invalid1.stderr",
+      "stderr_sha256": "22dc97226ba012a4a33b34ac6be0bb3c7bb830652b92e51c13276f4420672eb0",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.15722553990781307
+    },
+    {
+      "label": "native-asan-invalid2",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+        "sector32-u1",
+        "16",
+        "24",
+        "missing"
+      ],
+      "complete": true,
+      "stdout": "native-asan-invalid2.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "native-asan-invalid2.stderr",
+      "stderr_sha256": "041fc75ecadf52cf25289a017fd62cacf5ef422dac165eaa8a38aad17e0a910c",
+      "returncode": 2,
+      "diagnostic_process_seconds": 0.1574498638510704
+    }
+  ],
+  "backend_rows": {
+    "native": [
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786368,
+        "logical_bytes": 98296,
+        "backing_bytes": 98304,
+        "block_count": 12287,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 18320562152111085076,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98296,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572800,
+        "logical_bytes": 196600,
+        "backing_bytes": 196608,
+        "block_count": 24575,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3722145903919336826,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196600,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653120,
+        "logical_bytes": 50331640,
+        "backing_bytes": 50331648,
+        "block_count": 6291455,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5748477090717948295,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331640,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306176,
+        "logical_bytes": 100663272,
+        "backing_bytes": 100663296,
+        "block_count": 12582909,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15399350868570742049,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663272,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 24576,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15658126736118143216,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      }
+    ],
+    "avx2": [
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786368,
+        "logical_bytes": 98296,
+        "backing_bytes": 98304,
+        "block_count": 12287,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 18320562152111085076,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98296,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572800,
+        "logical_bytes": 196600,
+        "backing_bytes": 196608,
+        "block_count": 24575,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3722145903919336826,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196600,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653120,
+        "logical_bytes": 50331640,
+        "backing_bytes": 50331648,
+        "block_count": 6291455,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5748477090717948295,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331640,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306176,
+        "logical_bytes": 100663272,
+        "backing_bytes": 100663296,
+        "block_count": 12582909,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15399350868570742049,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663272,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 24576,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15658126736118143216,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      }
+    ],
+    "native-asan": [
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786176,
+        "logical_bytes": 98272,
+        "backing_bytes": 98304,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1275162313316815631,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98272,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1571584,
+        "logical_bytes": 196448,
+        "backing_bytes": 196480,
+        "block_count": 6139,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3544766128147387706,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196448,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402651904,
+        "logical_bytes": 50331488,
+        "backing_bytes": 50331520,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3322059199238534330,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331488,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306112,
+        "logical_bytes": 100663264,
+        "backing_bytes": 100663296,
+        "block_count": 3145727,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 14357882444326613986,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663264,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 782848,
+        "logical_bytes": 97856,
+        "backing_bytes": 97856,
+        "block_count": 1529,
+        "address": "magic",
+        "digest": 9444336503451111157,
+        "bitmap_digest": 9568337838945639502,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 97856,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572352,
+        "logical_bytes": 196544,
+        "backing_bytes": 196544,
+        "block_count": 3071,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17015897736571375715,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196544,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402652672,
+        "logical_bytes": 50331584,
+        "backing_bytes": 50331584,
+        "block_count": 786431,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 16343476308940474119,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331584,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805303808,
+        "logical_bytes": 100662976,
+        "backing_bytes": 100662976,
+        "block_count": 1572859,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8293674412047357346,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100662976,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 98304,
+        "constructor_bits": 786368,
+        "logical_bytes": 98296,
+        "backing_bytes": 98304,
+        "block_count": 12287,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 18320562152111085076,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98296,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572800,
+        "logical_bytes": 196600,
+        "backing_bytes": 196608,
+        "block_count": 24575,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3722145903919336826,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196600,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653120,
+        "logical_bytes": 50331640,
+        "backing_bytes": 50331648,
+        "block_count": 6291455,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5748477090717948295,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331640,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "nearby_odd",
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306176,
+        "logical_bytes": 100663272,
+        "backing_bytes": 100663296,
+        "block_count": 12582909,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15399350868570742049,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663272,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "status": "supported",
+        "policy": "original",
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 24576,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15658126736118143216,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      }
+    ]
+  },
+  "binaries": {
+    "native": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native/vldb_nearby_check",
+      "sha256": "ac6dd8574d6e2d590a861287101c1aad44d0dbec0682756b8f49aa07e606e18a"
+    },
+    "avx2": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/avx2/vldb_nearby_check",
+      "sha256": "b97b6d0aec6ee966afc5d0bf3afe3f8f20a8fa4f450cbfc5cc8413db18ac5989"
+    },
+    "native-asan": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/vldb-nearby-geometry-v1/native-asan/vldb_nearby_check",
+      "sha256": "2d9e585400d7afb1a55de145c42a93bf1880f417a96bb5a858479ce35dff50c7"
+    }
+  },
+  "tuner_file_before": {
+    "path": "/home/yiming/.dtl-filter.dat",
+    "exists": false
+  },
+  "scope": "93 finite actual-geometry public API correctness cases; no calibration or throughput",
+  "tuner_file_after": {
+    "path": "/home/yiming/.dtl-filter.dat",
+    "exists": false
+  },
+  "all_sources_unchanged": true,
+  "actual_geometry_cases": 93,
+  "malformed_cli_cases": 9,
+  "upstream_rebuilds": 0,
+  "quality_samples": 0,
+  "throughput_samples": 0
+}
