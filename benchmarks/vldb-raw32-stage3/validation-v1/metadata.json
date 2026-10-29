@@ -1,0 +1,60 @@
+{
+  "scope": "Stage3 worker correctness/accounting; no throughput or FPR gate",
+  "source_commit": "bcf5c7f0a5ccea961eb0bcbfec6a195b9956518c",
+  "preparation_sha256": "d53178e2969a8158f91e3a76129e5e03bd0afca877d735a14b94738820ef738f",
+  "lease": {
+    "cpu": 2,
+    "lease": "socket0",
+    "lock_path": "/tmp/fastest-bf-socket0.lock",
+    "inherited_lock_descriptors": [
+      3
+    ],
+    "inherited_write_verified": true
+  },
+  "tuner_file_before": {
+    "path": "/home/yiming/.dtl-filter.dat",
+    "exists": false
+  },
+  "commands": [
+    {
+      "label": "compiler",
+      "command": [
+        "g++",
+        "--version"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.0013377219438552856
+    },
+    {
+      "label": "native-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-raw32-stage3",
+        "-B",
+        "build/vldb-raw32-stage3-v1/native",
+        "-DCMAKE_CXX_COMPILER=g++",
+        "-DVLDB_BACKEND=native",
+        "-DVLDB_ARCHIVE=/home/yiming/projects/fastest-bf-lab/build/vldb-public-preflight-v2-gcc/native/libvldb_pinned.a",
+        "-DVLDB_ARCHIVE_SHA256=1f64962e369c5d9289d41fd5919911ad36ff4e3cae7eada934f047918378a872"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.29740406945347786
+    },
+    {
+      "label": "native-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/vldb-raw32-stage3-v1/native",
+        "-j1"
+      ],
+      "returncode": 2,
+      "diagnostic_elapsed_seconds": 279.70270203240216
+    }
+  ],
+  "binaries": {},
+  "rows": {},
+  "accounting_rows": [],
+  "complete": false
+}
