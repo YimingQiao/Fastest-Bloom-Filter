@@ -402,6 +402,17 @@ line. All 480 vectors, 120 same-input round sensitivities and 60 seed/round rang
 were independently recomputed from complete raw records. The prototype remains
 isolated, with no new external, accuracy, build, multithread or global claim.
 
+The [Rust singleton SIMD proof](../experiments/2026-10-29-rust-k12-singleton-vector-plan/caller/proof-final/REPORT.md)
+passes four build profiles, 16 focused test executions, 96 public caller rows,
+24 invalid-input cases and eight injected output faults. Full bitmap and output
+checks preserve the safe SingleLine control's mapping. Native visible loops
+inline SIMD after a hoisted feature check; portable loops retain a per-key public
+call and target-feature jump. Both actual boundaries are documented, including
+their frames and hashing costs. The first attempt stopped in dependency collection
+before runtime; recovery reused its three native executables and preserved that
+failure. All 12 executable hashes and cross-profile semantics were independently
+checked. This is correctness evidence only; formal Rust timing remains pending.
+
 The [public raw8 caller proof](../experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
 adds fastbloom-rs0.5.10, distinct from fastbloom0.17, through its original public
 raw-byte API. Four normal/ASan executables pass 12 focused test invocations,

@@ -60,6 +60,9 @@ improves visible single-key throughput including hashing **1.91–2.27×** again
 old K12. All 144 batch1/3 contrasts improve across two seeds and opposite launch
 rounds, but large batch31 hash+query regresses **1.8–3.0%**, and batch4096 is mixed.
 It remains experimental pending comparison with leading native/external controls.
+The [Rust SIMD candidate](experiments/2026-10-29-rust-k12-singleton-vector-plan/caller/proof-final/REPORT.md)
+passes native, portable, AVX512-disabled and ASan correctness checks; its performance
+comparison is pending. Portable builds retain a per-key call that native builds inline.
 
 <details>
 <summary>See gains and regressions across every query contract</summary>

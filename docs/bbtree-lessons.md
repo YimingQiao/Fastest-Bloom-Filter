@@ -161,6 +161,14 @@ while large batch31 hash+query loses 1.8–3.0% despite unchanged bulk source pa
 The useful lesson is to inspect the generated public caller and measure both
 tiny and bulk operations; the evidence cannot isolate SIMD as the sole cause.
 
+The [Rust SIMD caller proof](../experiments/2026-10-29-rust-k12-singleton-vector-plan/caller/assembly-review/REVIEW.md)
+shows why this must be checked separately for each language and build profile.
+Its native build hoists the feature check and inlines the vector path. The
+portable build retains a public call and a target-feature jump for each key,
+while the old safe scalar control already inlines. Both pass correctness checks,
+but those different call boundaries require separate measurements before any
+speed claim. The same source-level SIMD idea does not establish the same gain.
+
 The [raw-byte baseline caller](../experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
 also makes temporary memory part of the complete-operation cost. A prehash API
 needs workspace to process raw keys in batches; that workspace's allocation
