@@ -111,6 +111,20 @@ def tables(rows, geometry):
 
 def audit_raw(commit):
     need(re.fullmatch("[0-9a-f]{40}", commit), "Full immutable raw commit required")
+    for path, source in (
+        (PARENT / "contract.py", "81e9eb412c9b816984dc4d91b1f135daa10943ea"),
+        (
+            PARENT.with_name("2026-10-29-poppy-public-geometry") / "selection.json",
+            "c6b8d9ad6e0e3179ed1304601451bb25cad23b13",
+        ),
+    ):
+        need(
+            path.read_bytes()
+            == subprocess.check_output(
+                ["git", "show", source + ":" + str(path.relative_to(ROOT))], cwd=ROOT
+            ),
+            "Changed imported analysis helper or geometry",
+        )
     raw = PARENT / "results-v1"
     archive = json.loads((raw / "RAW_ARCHIVE.json").read_text())
     for name, item in {**archive["files"], "RAW_ARCHIVE.json": None}.items():
