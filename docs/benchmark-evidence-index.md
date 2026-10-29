@@ -256,6 +256,25 @@ physical-line ownership. Its source is now available through the native headers;
 the generic power-of-two wrapper is intentionally inaccessible for this layout.
 This is correctness and packaging evidence, with no parallel-speed claim.
 
+The [balanced C++ whole-line insertion screen](../experiments/2026-10-29-k12-line-or-analysis/DECISION.md)
+replaces four scalar word ORs per key with one sequential vector line update.
+Before measurement, an explicit post-shuffle reversal balances relative filter
+order across the two seeds without changing inputs. All32 construction pairs
+remain:23 faster and9 slower, including11/16 complete-build wins. Complete
+96MiB construction latency falls13.7–23.1%, but small whole-input construction
+loses all eight metric/seed comparisons. Native/minimal-AVX512F/sanitizer
+checks and actual caller assembly pass; the unconditional variant stays isolated.
+No external build, parallel-speed or hardware-counter causality claim follows.
+
+The [Rust K12 two-hint screen](../experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
+then changes only two inline annotations. Actual visible loops eliminate the
+per-key helper call, but retain repeated bounds checks and larger stack frames.
+Across192 new/old comparisons there are103 wins and89 losses; versus Range
+there are19 wins and173 losses. Small visible gains coexist with repeatable
+short/bulk regressions, so the change is not promoted. All576 named pairs,
+query trials and historical unpooled quality context remain. The eight query
+samples per vector and all paired ratios were independently checked against raw.
+
 The [actual-native96-pair policy comparison](../experiments/2026-10-29-native-build-policy-port-analysis/DECISION.md)
 measures the public before/after C++ and Rust implementations with policy
 selection inside the clocks. All48 active-gate contracts improve2.33–5.74×;

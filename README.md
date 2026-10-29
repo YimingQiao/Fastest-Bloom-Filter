@@ -47,6 +47,12 @@ Rust confirmation retains **324 wins and 396 losses** across 720 named pairs.
 Range wins every singleton, visible-single and construction comparison.
 The Rust K12 port remains isolated; C++ K12 is an optional native type.
 
+A [C++ insertion experiment](experiments/2026-10-29-k12-line-or-analysis/DECISION.md)
+reduces complete 96 MiB K12 construction latency by **14–23%** against the old
+kernel, but small whole-input builds regress **4–10%**. It remains experimental.
+The [Rust two-hint inline experiment](experiments/2026-10-29-rust-k12-singleton-inline-analysis/REPORT.md)
+also retains batch regressions despite eliminating per-key helper calls.
+
 The [four-arm small-build experiment](experiments/2026-10-29-native-build-policy-controls-analysis/DECISION.md)
 observes **2.28–4.76×** gains where serial fallback applies. Unchanged-code
 controls leave 31/36 two-seed classifications unresolved under the preset ±3%
