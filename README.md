@@ -26,6 +26,7 @@ checks68 external configurations at12–32 actual bits/key. No layout wins every
 | [Single-key confirmation](docs/byte-confirmation-2026-10-29.md) | C++ Split64 leads the tested0.1% band by **1.10–1.20×** including hashing. | FastFilter wins the strict0.01% and large-filter1% bands; Rust retains Bloomsday losses. |
 | [Eight-core external confirmation](docs/external-parallel-confirmation-2026-10-29.md) | C++ native scenario leaders are **1.06–1.59×** faster including hashing and fresh thread startup/join. | Fixed23-configuration shortlist,65K/32M keys,50% hits,batch4096; individual losses remain. |
 | [Eight-core exact-capacity screen](experiments/2026-10-29-split64-range-parallel-analysis/report-final/REPORT.md) | At 32M keys and the 24-bpk/0.01% ceiling, experimental Range improves throughput **2.7–5.4%** over the fastest eligible external configuration. | One seed and fixed phase order; equal-allocation and wider-scenario losses remain. |
+| [Native C++/Rust API scaling](experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md) | At 32M keys, 8-core allocation+build gains **2.18–2.61×**, and whole-array queries gain **6.83–7.81×**, against each row's own serial control. | All ten 65K-key build configurations regress; one seed, Split64/Range only, 4M prehashed queries. |
 | [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
 **Recent experiments:** Rust Split64Range fills the24-bpk/0.01% capacity gap,
@@ -80,8 +81,9 @@ It accepts arbitrary complete cache-line budgets; full bitmaps match across
 languages and backend/sanitizer checks pass. The
 [Rust screen](experiments/2026-10-29-split64-range-rust-analysis/report-final/REPORT.md)
 shows a useful24-bpk capacity option with equal-allocation speed losses.
-The shared-executor eight-core comparison is reported above; native parallel
-construction and whole-array API scaling remain to be measured before integration.
+Both shared-executor and native API scaling are reported above. Large builds
+benefit from parallelism, while small builds expose substantial overhead.
+Range remains experimental pending the stronger public-probe baseline comparison.
 
 ## Historical comparison and FastPattern scaling
 

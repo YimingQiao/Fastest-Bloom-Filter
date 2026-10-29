@@ -159,6 +159,16 @@ external configurations and 54 of 56 against production natives. This is one
 seed with a fixed phase order; the useful capacity niche is not a general
 replacement claim. Serial-build losses and same-row scaling remain separate.
 
+The [60-row native C++/Rust API screen](../experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md)
+measures T1/4/8 with full public construction and whole-array query calls.
+At 32M inserted keys, T8 allocation+build gains 2.18–2.61× and queries gain
+6.83–7.81× against each configuration's own serial control. All ten 65K-key
+T8 build configurations lose: allocation+build ratios are 0.133–0.273×.
+Query arrays still contain 4M keys at both table sizes. The report retains
+all 444 comparisons, including 245 losses across overlapping views, and
+20 language-specific calibration records without pooling repeated thread counts.
+This is a single-seed scaling result, with no cross-language speed ranking.
+
 A [FourSector range-addressing pilot](../experiments/2026-10-29-four-sector-range24/accuracy/RESULTS.md)
 passes all six backend/sanitizer correctness profiles but misses the proposed
 24-bpk/0.01% quality gate at both sizes. The two upper endpoints are 0.01059%

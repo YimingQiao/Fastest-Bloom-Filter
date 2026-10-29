@@ -70,6 +70,14 @@ keeps the fast gather kernels but fails the same24-bpk quality gate. Fitting
 the desired memory budget and preserving a fast kernel are both insufficient
 without testing the resulting probe distribution.
 
+The [native API scaling screen](../experiments/2026-10-29-split64-range-native-scaling-analysis/report-final/REPORT.md)
+also exposes a practical limit of exclusive ownership. At 32M keys, full
+allocation+parallel construction gains 2.18–2.61×, but every tested 65K-key
+eight-core build loses. Partitioning and thread startup are included, so the
+next experiment will examine worker selection. An incremental insertion's
+batch length and the existing bitmap's size must both be considered: a short
+batch can still touch a large table. The query worker policy is a separate decision.
+
 Baseline configuration needs the same care. The [complete Fastbloom probe
 calibration](../experiments/2026-10-29-rust-fastbloom-fixed-probes-analysis/report/REPORT.md)
 finds that K7 at 24 bpk passes the 0.01% gate at both tested sizes, while its
