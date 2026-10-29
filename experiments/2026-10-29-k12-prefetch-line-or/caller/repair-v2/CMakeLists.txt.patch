@@ -1,0 +1,11 @@
+--- frozen-v1/CMakeLists.txt
++++ repair-v2/CMakeLists.txt
+@@ -12,7 +12,7 @@
+   message(FATAL_ERROR "Unknown ISA profile")
+ endif()
+ add_executable(compare_benchmark compare_benchmark.cpp)
+-add_executable(check check.cpp)
++add_executable(check ../check.cpp)
+ foreach(target compare_benchmark check)
+   target_compile_options(${target} PRIVATE -fno-strict-aliasing)
+   if(BF_ISA STREQUAL "native")

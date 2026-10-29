@@ -1,0 +1,9 @@
+# V2 include-routing-only repair
+
+V1 source b7bec22fe6b88fe0b0382c6fb53a939dcf97f211 stopped before creating any project executable: its directly copied caller still included `../candidate.hpp`, although the new proposal calls that header `conditional.hpp`. The full five-command failed attempt is preserved in ../validation-v1/ and is required by the repair guard. No kernel case, caller input or formal seed executed.
+
+This additive caller changes only three includes to the new nested location: control, conditional and existing geometry. Every byte starting at `using namespace bloom_filters` is identical to V1, including all timers, public calls, workloads, Latin selection and output fields. The native headers and original focused checker remain unchanged. CMake refers directly to that unchanged checker; all compiler/ISA/sanitizer flags remain exact. The driver changes imports, new output/build paths and expected dependency paths only. `derive.py` and the three patch files make those changes reviewable.
+
+The proof remains normal/minimal-F/ASan,18 focused boundary cases per profile,54 old-seed caller rows and9 CLI rejections. No1642-case rerun, fresh formal input, quality stream, additional variant or performance claim. All local quoted includes are recursively checked by an offline test so this particular missing route is caught before compilation. The corrected caller still needs actual binary/clock/compiled branch assembly review after it passes.
+
+The original V1 paths stay untouched. V2 uses build/k12-prefetch-line-or-v2-cpu2-* and this directory's validation-v1/ (the first attempt of this separate repair). Execute only after source review/commit and an explicitly available socket0 lease; external195 currently owns it. No compute is authorized merely by writing this repair.
