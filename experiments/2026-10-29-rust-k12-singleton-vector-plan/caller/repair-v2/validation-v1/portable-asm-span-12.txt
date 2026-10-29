@@ -1,0 +1,251 @@
+   1b6f0:	push   %rbp
+   1b6f1:	push   %r15
+   1b6f3:	push   %r14
+   1b6f5:	push   %r13
+   1b6f7:	push   %r12
+   1b6f9:	push   %rbx
+   1b6fa:	sub    $0x48,%rsp
+   1b6fe:	mov    %rdx,0x8(%rsp)
+   1b703:	mov    %r8,0x10(%rsp)
+   1b708:	cmp    %r8,%rdx
+   1b70b:	jne    1ba07 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x317>
+   1b711:	mov    %rcx,%rax
+   1b714:	cmpb   $0x0,0x1c(%rdi)
+   1b718:	je     1b741 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x51>
+   1b71a:	lea    -0x1(%rdx),%rcx
+   1b71e:	cmp    $0x2,%rcx
+   1b722:	ja     1b8a7 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b7>
+   1b728:	mov    %rax,%rcx
+   1b72b:	mov    %rdx,%r8
+   1b72e:	add    $0x48,%rsp
+   1b732:	pop    %rbx
+   1b733:	pop    %r12
+   1b735:	pop    %r13
+   1b737:	pop    %r14
+   1b739:	pop    %r15
+   1b73b:	pop    %rbp
+   1b73c:	jmp    1b2f0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_tiny_avx512>
+   1b741:	cmp    $0x8,%rdx
+   1b745:	jb     1b77a <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x8a>
+   1b747:	cmpb   $0x0,0x1d(%rdi)
+   1b74b:	je     1b77a <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x8a>
+   1b74d:	mov    (%rdi),%rcx
+   1b750:	shl    $0x6,%rcx
+   1b754:	cmp    $0x200000,%rcx
+   1b75b:	jbe    1b9b9 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x2c9>
+   1b761:	mov    %rax,%rcx
+   1b764:	mov    %rdx,%r8
+   1b767:	add    $0x48,%rsp
+   1b76b:	pop    %rbx
+   1b76c:	pop    %r12
+   1b76e:	pop    %r13
+   1b770:	pop    %r14
+   1b772:	pop    %r15
+   1b774:	pop    %rbp
+   1b775:	jmp    1ab40 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_avx2::<true>>
+   1b77a:	test   %rdx,%rdx
+   1b77d:	je     1b9aa <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x2ba>
+   1b783:	mov    0x18(%rdi),%r10d
+   1b787:	mov    0x8(%rdi),%r11
+   1b78b:	mov    0x10(%rdi),%r8
+   1b78f:	xor    %r14d,%r14d
+   1b792:	lea    -0x13759(%rip),%rbx        # 8040 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x80>
+   1b799:	nopl   0x0(%rax)
+   1b7a0:	mov    (%rsi,%r14,8),%r9
+   1b7a4:	mov    %r9,%rdi
+   1b7a7:	shr    $0x28,%rdi
+   1b7ab:	imul   %r10,%rdi
+   1b7af:	shr    $0x18,%rdi
+   1b7b3:	and    $0xfffffff,%edi
+   1b7b9:	cmp    %rdi,%r8
+   1b7bc:	jbe    1ba4b <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x35b>
+   1b7c2:	shl    $0x6,%rdi
+   1b7c6:	add    %r11,%rdi
+   1b7c9:	mov    %r9,%r15
+   1b7cc:	mov    %r9d,%ecx
+   1b7cf:	and    $0xf,%ecx
+   1b7d2:	mov    (%rbx,%rcx,4),%r12d
+   1b7d6:	mov    %r9d,%ecx
+   1b7d9:	shr    $0x4,%ecx
+   1b7dc:	rol    %cl,%r12d
+   1b7df:	shr    $0x20,%r15
+   1b7e3:	and    $0x3,%r15d
+   1b7e7:	mov    (%rdi,%r15,4),%ebp
+   1b7eb:	and    %r12d,%ebp
+   1b7ee:	xor    %r12d,%ebp
+   1b7f1:	lea    0x4(%r15),%ecx
+   1b7f5:	mov    %r9,%r12
+   1b7f8:	shr    $0x22,%r12
+   1b7fc:	and    $0x3,%r12d
+   1b800:	xor    %ecx,%r12d
+   1b803:	mov    %r9d,%ecx
+   1b806:	shr    $0x6,%ecx
+   1b809:	and    $0x3c,%ecx
+   1b80c:	mov    (%rcx,%rbx,1),%r13d
+   1b810:	mov    %r9d,%ecx
+   1b813:	shr    $0xc,%ecx
+   1b816:	rol    %cl,%r13d
+   1b819:	mov    (%rdi,%r12,4),%r12d
+   1b81d:	and    %r13d,%r12d
+   1b820:	xor    %r13d,%r12d
+   1b823:	or     %ebp,%r12d
+   1b826:	lea    0x8(%r15),%ecx
+   1b82a:	mov    %r9,%r13
+   1b82d:	shr    $0x24,%r13
+   1b831:	and    $0x3,%r13d
+   1b835:	xor    %ecx,%r13d
+   1b838:	mov    (%rdi,%r13,4),%ebp
+   1b83c:	mov    %r9d,%ecx
+   1b83f:	shr    $0xe,%ecx
+   1b842:	and    $0x3c,%ecx
+   1b845:	mov    (%rcx,%rbx,1),%r13d
+   1b849:	mov    %r9d,%ecx
+   1b84c:	shr    $0x14,%ecx
+   1b84f:	rol    %cl,%r13d
+   1b852:	not    %ebp
+   1b854:	and    %r13d,%ebp
+   1b857:	or     %r12d,%ebp
+   1b85a:	or     $0xc,%r15d
+   1b85e:	mov    %r9,%rcx
+   1b861:	shr    $0x26,%rcx
+   1b865:	and    $0x3,%ecx
+   1b868:	xor    %r15d,%ecx
+   1b86b:	mov    (%rdi,%rcx,4),%edi
+   1b86e:	rol    $0x8,%r9d
+   1b872:	mov    %r9d,%ecx
+   1b875:	and    $0xf,%ecx
+   1b878:	mov    (%rbx,%rcx,4),%r15d
+   1b87c:	shr    $0x4,%r9d
+   1b880:	mov    %r9d,%ecx
+   1b883:	rol    %cl,%r15d
+   1b886:	not    %edi
+   1b888:	and    %r15d,%edi
+   1b88b:	xor    %ecx,%ecx
+   1b88d:	or     %ebp,%edi
+   1b88f:	sete   %cl
+   1b892:	mov    %ecx,(%rax,%r14,4)
+   1b896:	inc    %r14
+   1b899:	cmp    %r14,%rdx
+   1b89c:	jne    1b7a0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0xb0>
+   1b8a2:	jmp    1b9aa <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x2ba>
+   1b8a7:	cmp    $0x3,%rdx
+   1b8ab:	jbe    1b9aa <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x2ba>
+   1b8b1:	mov    (%rdi),%rcx
+   1b8b4:	shl    $0x6,%rcx
+   1b8b8:	cmp    $0x40,%rdx
+   1b8bc:	jae    1b9d2 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x2e2>
+   1b8c2:	cmp    $0x200001,%rcx
+   1b8c9:	setb   %r8b
+   1b8cd:	cmp    $0x9,%rdx
+   1b8d1:	setae  %r9b
+   1b8d5:	test   %r8b,%r9b
+   1b8d8:	jne    1b9f1 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x301>
+   1b8de:	cmp    $0x200000,%rcx
+   1b8e5:	jbe    1b994 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x2a4>
+   1b8eb:	mov    0x18(%rdi),%ecx
+   1b8ee:	mov    0x8(%rdi),%r8
+   1b8f2:	lea    -0x8(,%rdx,8),%r11
+   1b8fa:	movabs $0x3ffffffc0,%r9
+   1b904:	mov    %rsi,%r10
+   1b907:	test   $0x8,%r11b
+   1b90b:	jne    1b936 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x246>
+   1b90d:	lea    0x8(%rsi),%r10
+   1b911:	mov    (%rsi),%rbx
+   1b914:	mov    %rbx,%r14
+   1b917:	shr    $0x20,%r14
+   1b91b:	shr    $0x28,%rbx
+   1b91f:	imul   %rcx,%rbx
+   1b923:	and    $0x3,%r14d
+   1b927:	shr    $0x12,%rbx
+   1b92b:	and    %r9,%rbx
+   1b92e:	add    %r8,%rbx
+   1b931:	prefetcht0 (%rbx,%r14,4)
+   1b936:	test   %r11,%r11
+   1b939:	je     1b994 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x2a4>
+   1b93b:	lea    (%rsi,%rdx,8),%r11
+   1b93f:	nop
+   1b940:	mov    (%r10),%rbx
+   1b943:	mov    %rbx,%r14
+   1b946:	shr    $0x20,%r14
+   1b94a:	shr    $0x28,%rbx
+   1b94e:	imul   %rcx,%rbx
+   1b952:	and    $0x3,%r14d
+   1b956:	shr    $0x12,%rbx
+   1b95a:	and    %r9,%rbx
+   1b95d:	add    %r8,%rbx
+   1b960:	prefetcht0 (%rbx,%r14,4)
+   1b965:	mov    0x8(%r10),%rbx
+   1b969:	mov    %rbx,%r14
+   1b96c:	shr    $0x20,%r14
+   1b970:	shr    $0x28,%rbx
+   1b974:	imul   %rcx,%rbx
+   1b978:	and    $0x3,%r14d
+   1b97c:	shr    $0x12,%rbx
+   1b980:	and    %r9,%rbx
+   1b983:	add    %r8,%rbx
+   1b986:	prefetcht0 (%rbx,%r14,4)
+   1b98b:	add    $0x10,%r10
+   1b98f:	cmp    %r11,%r10
+   1b992:	jne    1b940 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x250>
+   1b994:	mov    %rax,%rcx
+   1b997:	add    $0x48,%rsp
+   1b99b:	pop    %rbx
+   1b99c:	pop    %r12
+   1b99e:	pop    %r13
+   1b9a0:	pop    %r14
+   1b9a2:	pop    %r15
+   1b9a4:	pop    %rbp
+   1b9a5:	jmp    1b400 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_short_avx512>
+   1b9aa:	add    $0x48,%rsp
+   1b9ae:	pop    %rbx
+   1b9af:	pop    %r12
+   1b9b1:	pop    %r13
+   1b9b3:	pop    %r14
+   1b9b5:	pop    %r15
+   1b9b7:	pop    %rbp
+   1b9b8:	ret
+   1b9b9:	mov    %rax,%rcx
+   1b9bc:	mov    %rdx,%r8
+   1b9bf:	add    $0x48,%rsp
+   1b9c3:	pop    %rbx
+   1b9c4:	pop    %r12
+   1b9c6:	pop    %r13
+   1b9c8:	pop    %r14
+   1b9ca:	pop    %r15
+   1b9cc:	pop    %rbp
+   1b9cd:	jmp    1a6d0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_avx2::<false>>
+   1b9d2:	cmp    $0x200000,%rcx
+   1b9d9:	jbe    1b9f1 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x301>
+   1b9db:	mov    %rax,%rcx
+   1b9de:	add    $0x48,%rsp
+   1b9e2:	pop    %rbx
+   1b9e3:	pop    %r12
+   1b9e5:	pop    %r13
+   1b9e7:	pop    %r14
+   1b9e9:	pop    %r15
+   1b9eb:	pop    %rbp
+   1b9ec:	jmp    199c0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_avx512::<true>>
+   1b9f1:	mov    %rax,%rcx
+   1b9f4:	add    $0x48,%rsp
+   1b9f8:	pop    %rbx
+   1b9f9:	pop    %r12
+   1b9fb:	pop    %r13
+   1b9fd:	pop    %r14
+   1b9ff:	pop    %r15
+   1ba01:	pop    %rbp
+   1ba02:	jmp    195c0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_avx512::<false>>
+   1ba07:	lea    0x4fa22(%rip),%rax        # 6b430 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x130>
+   1ba0e:	mov    %rax,0x18(%rsp)
+   1ba13:	movq   $0x1,0x20(%rsp)
+   1ba1c:	movq   $0x8,0x28(%rsp)
+   1ba25:	xorps  %xmm0,%xmm0
+   1ba28:	movups %xmm0,0x30(%rsp)
+   1ba2d:	lea    0x4fa54(%rip),%r8        # 6b488 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x188>
+   1ba34:	lea    0x8(%rsp),%rsi
+   1ba39:	lea    0x10(%rsp),%rdx
+   1ba3e:	lea    0x18(%rsp),%rcx
+   1ba43:	xor    %edi,%edi
+   1ba45:	call   *0x52a9d(%rip)        # 6e4e8 <_DYNAMIC+0x2d0>
+   1ba4b:	lea    0x4f9ee(%rip),%rdx        # 6b440 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x140>
+   1ba52:	mov    %r8,%rsi
+   1ba55:	call   *0x529dd(%rip)        # 6e438 <_DYNAMIC+0x220>
