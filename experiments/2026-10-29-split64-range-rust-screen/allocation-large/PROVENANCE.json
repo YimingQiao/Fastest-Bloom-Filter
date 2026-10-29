@@ -1,0 +1,76 @@
+{
+  "status": "Source-only additional large-grid allocation audit",
+  "compiled_harness_source_commit": "381238bba3cceae72d80bb2be59710021940d1c4",
+  "initial_commit": "d93d45c6cf09e8da687981fa77bb01b5fecbda70",
+  "prefix": {
+    "path": "../preflight/audit-current/src/prefix.rs",
+    "sha256": "b7e68b74d0b7a1222d9e34bf4e73fbe94e73b4274fc92eef21edc0c86ef3993b"
+  },
+  "allocator_source": {
+    "path": "../benchmark/src/tests.rs",
+    "sha256": "fe718b6e50b52ab37ac27fde464df3a2c783bde99453efc8bf7efb6f834af272",
+    "derivation": "Exact complete allocation module; no implementation changes"
+  },
+  "grid": {
+    "key_powers": [
+      16,
+      25
+    ],
+    "budget_bpk": [
+      16,
+      24,
+      32
+    ],
+    "filters": {
+      "SbbfSafePinned": {
+        "owner": "external",
+        "public_api": "contains_hash",
+        "capacity_policy": "exact_blocks",
+        "mapping_family": "SbbfSafePinned"
+      },
+      "Fastbloom017": {
+        "owner": "external",
+        "public_api": "contains_hash",
+        "capacity_policy": "exact_blocks",
+        "mapping_family": "Fastbloom017"
+      },
+      "FastPatternBF": {
+        "owner": "production_native",
+        "public_api": "contains_hash",
+        "capacity_policy": "largest_fitting_native_pow2",
+        "mapping_family": "FastPatternBF"
+      },
+      "BloomsdayPinned": {
+        "owner": "external",
+        "public_api": "may_match_hash",
+        "capacity_policy": "exact_blocks",
+        "mapping_family": "BloomsdayPinned"
+      },
+      "ByteSplitBloomFilter": {
+        "owner": "production_native",
+        "public_api": "contains_hash",
+        "capacity_policy": "largest_fitting_native_pow2",
+        "mapping_family": "ByteSplitBloomFilter"
+      },
+      "FourSectorBloomFilter": {
+        "owner": "production_native",
+        "public_api": "contains_hash",
+        "capacity_policy": "largest_fitting_native_pow2",
+        "mapping_family": "FourSectorBloomFilter"
+      },
+      "Split64BloomFilter": {
+        "owner": "production_native",
+        "public_api": "contains_hash",
+        "capacity_policy": "largest_fitting_native_pow2",
+        "mapping_family": "Split64BloomFilter"
+      },
+      "Split64RangeBloomFilter": {
+        "owner": "native_experimental",
+        "public_api": "contains_hash",
+        "capacity_policy": "exact_blocks",
+        "mapping_family": "Split64RangeBloomFilter"
+      }
+    },
+    "expected_rows": 48
+  }
+}
