@@ -1,0 +1,216 @@
+{
+  "nonnull_types": [
+    "K12Control",
+    "K12SingletonVector",
+    "RocksDBFastLocalBloom64K8",
+    "RocksDBFastLocalBloom64K8Batch32",
+    "Split64Range"
+  ],
+  "raw_commit": "8fa1dee7f7cb8387e577592eb2b5305988c569bb",
+  "raw_records_path": "experiments/2026-10-29-k12-singleton-external-plan/screening/results-v1/records.json",
+  "raw_records_sha256": "29dba5ef92fb0033929aaebe37808cf502b82c7c2790412cb9608f0e3707280b",
+  "scope": "Schema-only inventory; no latency values, rankings or performance calculations inspected.",
+  "source_references": [
+    {
+      "bytes": 6913,
+      "commit": "ae6ab194e323801add38c3ed68d943f6849d8bbf",
+      "lines": [
+        {
+          "line": 56,
+          "text": "\tconst char *Data() const {"
+        },
+        {
+          "line": 57,
+          "text": "\t\treturn data_.data();"
+        },
+        {
+          "line": 121,
+          "text": "using RocksDBFastLocalBloom64K8 = rocksdb_external::FastLocalBloom64<8, false>;"
+        },
+        {
+          "line": 124,
+          "text": "using RocksDBFastLocalBloom64K8Batch32 = rocksdb_external::FastLocalBloom64<8, true>;"
+        }
+      ],
+      "path": "experiments/2026-10-29-k12-singleton-external-plan/caller/rocks-adapters.hpp",
+      "sha256": "300ce12927834ccc811f839fa878a8043983da16242facfc503bc7053d9c8215"
+    },
+    {
+      "bytes": 12070,
+      "commit": "ae6ab194e323801add38c3ed68d943f6849d8bbf",
+      "lines": [
+        {
+          "line": 36,
+          "text": "template<class BF, class=void> struct HasData : std::false_type {};"
+        },
+        {
+          "line": 37,
+          "text": "template<class BF> struct HasData<BF,std::void_t<decltype(std::declval<const BF&>().Data())>> : std::true_type {};"
+        },
+        {
+          "line": 54,
+          "text": "template<class BF> void BitmapField(const BF& filter) {"
+        },
+        {
+          "line": 55,
+          "text": "    if constexpr(HasData<BF>::value)"
+        },
+        {
+          "line": 56,
+          "text": "        std::cout << Digest(static_cast<const uint8_t*>(static_cast<const void*>(filter.Data())),filter.SizeInBytes());"
+        },
+        {
+          "line": 57,
+          "text": "    else std::cout << \"null\";"
+        }
+      ],
+      "path": "experiments/2026-10-29-k12-singleton-external-plan/caller/main.in.cpp",
+      "sha256": "447006090fbfe502a71c4ed4fae1af0177cf17bd73e6f73c16cd2c3b051258c6"
+    },
+    {
+      "bytes": 23006,
+      "commit": "0acf6e4307fb1ca19a431b5e7fd4eff9634df4de",
+      "lines": [
+        {
+          "line": 109,
+          "text": "    for key in ('bitmap_digest', 'calibration_digest'):"
+        },
+        {
+          "line": 110,
+          "text": "        need(row[key] is None or (type(row[key]) is int and 0 <= row[key] < 1 << 64), 'invalid optional digest')"
+        },
+        {
+          "line": 111,
+          "text": "    need((row['calibration_digest'] is None) == (not case['calibration_power']), 'wrong calibration availability')"
+        },
+        {
+          "line": 112,
+          "text": "    need((row['bitmap_digest'] is not None) == (point['owner'] in ('candidate', 'old_k12', 'native_range')),"
+        },
+        {
+          "line": 113,
+          "text": "         'wrong public bitmap availability')"
+        }
+      ],
+      "path": "experiments/2026-10-29-k12-singleton-external-analysis/summarize.py",
+      "sha256": "74794b08d619ed52110adcb5eb9a66179dd803a99bd12f5ac274bd1a8396a43f"
+    },
+    {
+      "bytes": 11792,
+      "commit": "291b253e06e788d59770c1cf4bfe9fca97d01026",
+      "lines": [
+        {
+          "line": 225,
+          "text": "    analysis, metadata, records, links, provenance = load(args.loader_commit, args.anchor_commit)"
+        },
+        {
+          "line": 226,
+          "text": "    result = analysis.calculate(records, analysis.sources())"
+        },
+        {
+          "line": 227,
+          "text": "    validate_quality_agreement(result, links)"
+        }
+      ],
+      "path": "experiments/2026-10-29-k12-singleton-external-analysis/loader/run.py",
+      "sha256": "2fed8c9c896e36a1a219a713d4ae5885b6b3d58ebc7042d080c29b3572227dc1"
+    }
+  ],
+  "types": {
+    "Boost192Multi32K4": {
+      "digest_nonnull": 0,
+      "digest_null": 4,
+      "rows": 4
+    },
+    "Boost192Multi32K8": {
+      "digest_nonnull": 0,
+      "digest_null": 16,
+      "rows": 16
+    },
+    "Boost192Multi64K8": {
+      "digest_nonnull": 0,
+      "digest_null": 12,
+      "rows": 12
+    },
+    "ByteSplitBloomFilter": {
+      "digest_nonnull": 0,
+      "digest_null": 16,
+      "rows": 16
+    },
+    "FastFilterFixed16": {
+      "digest_nonnull": 0,
+      "digest_null": 16,
+      "rows": 16
+    },
+    "FastFilterFixed16SingleV1": {
+      "digest_nonnull": 0,
+      "digest_null": 12,
+      "rows": 12
+    },
+    "FastFilterFixed32": {
+      "digest_nonnull": 0,
+      "digest_null": 8,
+      "rows": 8
+    },
+    "FastFilterFixed32Bulk": {
+      "digest_nonnull": 0,
+      "digest_null": 12,
+      "rows": 12
+    },
+    "FastFilterFixed64": {
+      "digest_nonnull": 0,
+      "digest_null": 12,
+      "rows": 12
+    },
+    "FastFilterSimdBlock": {
+      "digest_nonnull": 0,
+      "digest_null": 8,
+      "rows": 8
+    },
+    "FastFilterSimdBlockSingleV1": {
+      "digest_nonnull": 0,
+      "digest_null": 8,
+      "rows": 8
+    },
+    "FastPatternBF": {
+      "digest_nonnull": 0,
+      "digest_null": 16,
+      "rows": 16
+    },
+    "FourSectorBloomFilter": {
+      "digest_nonnull": 0,
+      "digest_null": 16,
+      "rows": 16
+    },
+    "K12Control": {
+      "digest_nonnull": 144,
+      "digest_null": 0,
+      "rows": 144
+    },
+    "K12SingletonVector": {
+      "digest_nonnull": 144,
+      "digest_null": 0,
+      "rows": 144
+    },
+    "RocksDBFastLocalBloom64K8": {
+      "digest_nonnull": 4,
+      "digest_null": 0,
+      "rows": 4
+    },
+    "RocksDBFastLocalBloom64K8Batch32": {
+      "digest_nonnull": 8,
+      "digest_null": 0,
+      "rows": 8
+    },
+    "Split64BloomFilter": {
+      "digest_nonnull": 0,
+      "digest_null": 16,
+      "rows": 16
+    },
+    "Split64Range": {
+      "digest_nonnull": 144,
+      "digest_null": 0,
+      "rows": 144
+    }
+  }
+}
