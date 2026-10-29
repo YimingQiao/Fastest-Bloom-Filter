@@ -1,0 +1,112 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002a270 <_Z20inline_single_kernelILb1EN13bloom_filters39Independent32RangePrefetch64BloomFilterEmEvRKT0_mPKmPj>:
+   2a270:	test   %rsi,%rsi
+   2a273:	je     2a41d <_Z20inline_single_kernelILb1EN13bloom_filters39Independent32RangePrefetch64BloomFilterEmEvRKT0_mPKmPj+0x1ad>
+   2a279:	push   %rbx
+   2a27a:	movabs $0xd6e8feb86659fd93,%r8
+   2a284:	cmp    $0x1,%rsi
+   2a288:	jne    2a291 <_Z20inline_single_kernelILb1EN13bloom_filters39Independent32RangePrefetch64BloomFilterEmEvRKT0_mPKmPj+0x21>
+   2a28a:	xor    %eax,%eax
+   2a28c:	jmp    2a39f <_Z20inline_single_kernelILb1EN13bloom_filters39Independent32RangePrefetch64BloomFilterEmEvRKT0_mPKmPj+0x12f>
+   2a291:	mov    %rsi,%r9
+   2a294:	and    $0xfffffffffffffffe,%r9
+   2a298:	xor    %eax,%eax
+   2a29a:	vpbroadcastq -0x2864b(%rip),%xmm0        # 1c58 <_IO_stdin_used+0x570>
+   2a2a3:	vpbroadcastd -0x28bd0(%rip),%ymm1        # 16dc <__abi_tag+0x1418>
+   2a2ac:	nopl   0x0(%rax)
+   2a2b0:	mov    (%rdx,%rax,8),%r10
+   2a2b4:	mov    %r10,%r11
+   2a2b7:	shr    $0x20,%r11
+   2a2bb:	xor    %r10,%r11
+   2a2be:	imul   %r8,%r11
+   2a2c2:	mov    %r11,%r10
+   2a2c5:	shr    $0x20,%r10
+   2a2c9:	xor    %r11,%r10
+   2a2cc:	imul   %r8,%r10
+   2a2d0:	mov    %r10,%r11
+   2a2d3:	shr    $0x20,%r11
+   2a2d7:	xor    %r10,%r11
+   2a2da:	shr    $0x28,%r10
+   2a2de:	mov    0x18(%rdi),%ebx
+   2a2e1:	imul   %r10,%rbx
+   2a2e5:	mov    (%rdi),%r10
+   2a2e8:	shr    $0x13,%rbx
+   2a2ec:	and    $0xffffffffffffffe0,%rbx
+   2a2f0:	vmovdqa (%r10,%rbx,1),%ymm2
+   2a2f6:	vpbroadcastq %r11,%xmm3
+   2a2fc:	vpmultishiftqb %xmm3,%xmm0,%xmm3
+   2a302:	vpmovzxbd %xmm3,%ymm3
+   2a307:	vprolvd %ymm3,%ymm1,%ymm3
+   2a30d:	xor    %r10d,%r10d
+   2a310:	vptest %ymm3,%ymm2
+   2a315:	setb   %r10b
+   2a319:	mov    %r10d,(%rcx,%rax,4)
+   2a31d:	mov    0x8(%rdx,%rax,8),%r10
+   2a322:	mov    %r10,%r11
+   2a325:	shr    $0x20,%r11
+   2a329:	xor    %r10,%r11
+   2a32c:	imul   %r8,%r11
+   2a330:	mov    %r11,%r10
+   2a333:	shr    $0x20,%r10
+   2a337:	xor    %r11,%r10
+   2a33a:	imul   %r8,%r10
+   2a33e:	mov    %r10,%r11
+   2a341:	shr    $0x20,%r11
+   2a345:	xor    %r10,%r11
+   2a348:	shr    $0x28,%r10
+   2a34c:	mov    0x18(%rdi),%ebx
+   2a34f:	imul   %r10,%rbx
+   2a353:	mov    (%rdi),%r10
+   2a356:	shr    $0x13,%rbx
+   2a35a:	and    $0xffffffffffffffe0,%rbx
+   2a35e:	vmovdqa (%r10,%rbx,1),%ymm2
+   2a364:	vpbroadcastq %r11,%xmm3
+   2a36a:	vpmultishiftqb %xmm3,%xmm0,%xmm3
+   2a370:	vpmovzxbd %xmm3,%ymm3
+   2a375:	vprolvd %ymm3,%ymm1,%ymm3
+   2a37b:	xor    %r10d,%r10d
+   2a37e:	vptest %ymm3,%ymm2
+   2a383:	setb   %r10b
+   2a387:	mov    %r10d,0x4(%rcx,%rax,4)
+   2a38c:	add    $0x2,%rax
+   2a390:	cmp    %rax,%r9
+   2a393:	jne    2a2b0 <_Z20inline_single_kernelILb1EN13bloom_filters39Independent32RangePrefetch64BloomFilterEmEvRKT0_mPKmPj+0x40>
+   2a399:	test   $0x1,%sil
+   2a39d:	je     2a41c <_Z20inline_single_kernelILb1EN13bloom_filters39Independent32RangePrefetch64BloomFilterEmEvRKT0_mPKmPj+0x1ac>
+   2a39f:	mov    (%rdx,%rax,8),%rdx
+   2a3a3:	mov    %rdx,%rsi
+   2a3a6:	shr    $0x20,%rsi
+   2a3aa:	xor    %rdx,%rsi
+   2a3ad:	imul   %r8,%rsi
+   2a3b1:	mov    %rsi,%rdx
+   2a3b4:	shr    $0x20,%rdx
+   2a3b8:	xor    %rsi,%rdx
+   2a3bb:	imul   %r8,%rdx
+   2a3bf:	mov    %rdx,%rsi
+   2a3c2:	shr    $0x20,%rsi
+   2a3c6:	xor    %rdx,%rsi
+   2a3c9:	shr    $0x28,%rdx
+   2a3cd:	mov    0x18(%rdi),%r8d
+   2a3d1:	imul   %rdx,%r8
+   2a3d5:	mov    (%rdi),%rdx
+   2a3d8:	shr    $0x13,%r8
+   2a3dc:	and    $0xffffffffffffffe0,%r8
+   2a3e0:	vmovdqa (%rdx,%r8,1),%ymm0
+   2a3e6:	vpbroadcastq %rsi,%xmm1
+   2a3ec:	vpbroadcastq -0x2879d(%rip),%xmm2        # 1c58 <_IO_stdin_used+0x570>
+   2a3f5:	vpmultishiftqb %xmm1,%xmm2,%xmm1
+   2a3fb:	vpmovzxbd %xmm1,%ymm1
+   2a400:	vpbroadcastd -0x28d2d(%rip),%ymm2        # 16dc <__abi_tag+0x1418>
+   2a409:	vprolvd %ymm1,%ymm2,%ymm1
+   2a40f:	xor    %edx,%edx
+   2a411:	vptest %ymm1,%ymm0
+   2a416:	setb   %dl
+   2a419:	mov    %edx,(%rcx,%rax,4)
+   2a41c:	pop    %rbx
+   2a41d:	vzeroupper
+   2a420:	ret

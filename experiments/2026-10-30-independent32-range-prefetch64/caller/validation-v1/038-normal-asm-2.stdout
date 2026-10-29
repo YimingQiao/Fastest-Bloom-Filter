@@ -1,0 +1,119 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002e440 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj>:
+   2e440:	test   %esi,%esi
+   2e442:	je     2e620 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x1e0>
+   2e448:	cmp    $0x1,%esi
+   2e44b:	jne    2e48c <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x4c>
+   2e44d:	mov    (%rdx),%rax
+   2e450:	vpbroadcastd %eax,%xmm0
+   2e456:	shr    $0x20,%rax
+   2e45a:	and    0x18(%rdi),%eax
+   2e45d:	mov    (%rdi),%rdx
+   2e460:	shl    $0x4,%rax
+   2e464:	vmovdqa (%rdx,%rax,1),%xmm1
+   2e469:	vpmulhw -0x2c731(%rip),%xmm0,%xmm0        # 1d40 <_IO_stdin_used+0x658>
+   2e471:	vpbroadcastq -0x2c81a(%rip),%xmm2        # 1c60 <_IO_stdin_used+0x578>
+   2e47a:	vpshufb %xmm0,%xmm2,%xmm0
+   2e47f:	xor    %eax,%eax
+   2e481:	vptest %xmm0,%xmm1
+   2e486:	setb   %al
+   2e489:	mov    %eax,(%rcx)
+   2e48b:	ret
+   2e48c:	mov    %esi,%r8d
+   2e48f:	dec    %r8
+   2e492:	mov    %esi,%eax
+   2e494:	and    $0x3,%eax
+   2e497:	cmp    $0x3,%r8
+   2e49b:	jae    2e4a5 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x65>
+   2e49d:	xor    %r8d,%r8d
+   2e4a0:	jmp    2e5b8 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x178>
+   2e4a5:	and    $0xfffffffc,%esi
+   2e4a8:	xor    %r8d,%r8d
+   2e4ab:	vmovdqa -0x2c773(%rip),%xmm0        # 1d40 <_IO_stdin_used+0x658>
+   2e4b3:	vpbroadcastq -0x2c85c(%rip),%xmm1        # 1c60 <_IO_stdin_used+0x578>
+   2e4bc:	nopl   0x0(%rax)
+   2e4c0:	mov    (%rdx,%r8,8),%r9
+   2e4c4:	vpbroadcastd %r9d,%xmm2
+   2e4ca:	shr    $0x20,%r9
+   2e4ce:	and    0x18(%rdi),%r9d
+   2e4d2:	mov    (%rdi),%r10
+   2e4d5:	shl    $0x4,%r9
+   2e4d9:	vmovdqa (%r10,%r9,1),%xmm3
+   2e4df:	vpmulhw %xmm0,%xmm2,%xmm2
+   2e4e3:	vpshufb %xmm2,%xmm1,%xmm2
+   2e4e8:	xor    %r9d,%r9d
+   2e4eb:	vptest %xmm2,%xmm3
+   2e4f0:	setb   %r9b
+   2e4f4:	mov    %r9d,(%rcx,%r8,4)
+   2e4f8:	mov    0x8(%rdx,%r8,8),%r9
+   2e4fd:	vpbroadcastd %r9d,%xmm2
+   2e503:	shr    $0x20,%r9
+   2e507:	and    0x18(%rdi),%r9d
+   2e50b:	mov    (%rdi),%r10
+   2e50e:	shl    $0x4,%r9
+   2e512:	vmovdqa (%r10,%r9,1),%xmm3
+   2e518:	vpmulhw %xmm0,%xmm2,%xmm2
+   2e51c:	vpshufb %xmm2,%xmm1,%xmm2
+   2e521:	xor    %r9d,%r9d
+   2e524:	vptest %xmm2,%xmm3
+   2e529:	setb   %r9b
+   2e52d:	mov    %r9d,0x4(%rcx,%r8,4)
+   2e532:	mov    0x10(%rdx,%r8,8),%r9
+   2e537:	vpbroadcastd %r9d,%xmm2
+   2e53d:	shr    $0x20,%r9
+   2e541:	and    0x18(%rdi),%r9d
+   2e545:	mov    (%rdi),%r10
+   2e548:	shl    $0x4,%r9
+   2e54c:	vmovdqa (%r10,%r9,1),%xmm3
+   2e552:	vpmulhw %xmm0,%xmm2,%xmm2
+   2e556:	vpshufb %xmm2,%xmm1,%xmm2
+   2e55b:	xor    %r9d,%r9d
+   2e55e:	vptest %xmm2,%xmm3
+   2e563:	setb   %r9b
+   2e567:	mov    %r9d,0x8(%rcx,%r8,4)
+   2e56c:	mov    0x18(%rdx,%r8,8),%r9
+   2e571:	vpbroadcastd %r9d,%xmm2
+   2e577:	shr    $0x20,%r9
+   2e57b:	and    0x18(%rdi),%r9d
+   2e57f:	mov    (%rdi),%r10
+   2e582:	shl    $0x4,%r9
+   2e586:	vmovdqa (%r10,%r9,1),%xmm3
+   2e58c:	vpmulhw %xmm0,%xmm2,%xmm2
+   2e590:	vpshufb %xmm2,%xmm1,%xmm2
+   2e595:	xor    %r9d,%r9d
+   2e598:	vptest %xmm2,%xmm3
+   2e59d:	setb   %r9b
+   2e5a1:	mov    %r9d,0xc(%rcx,%r8,4)
+   2e5a6:	add    $0x4,%r8
+   2e5aa:	cmp    %r8,%rsi
+   2e5ad:	jne    2e4c0 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x80>
+   2e5b3:	test   %rax,%rax
+   2e5b6:	je     2e620 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x1e0>
+   2e5b8:	lea    (%rcx,%r8,4),%rcx
+   2e5bc:	lea    (%rdx,%r8,8),%rdx
+   2e5c0:	xor    %esi,%esi
+   2e5c2:	vmovdqa -0x2c88a(%rip),%xmm0        # 1d40 <_IO_stdin_used+0x658>
+   2e5ca:	vpbroadcastq -0x2c973(%rip),%xmm1        # 1c60 <_IO_stdin_used+0x578>
+   2e5d3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   2e5e0:	mov    (%rdx,%rsi,8),%r8
+   2e5e4:	vpbroadcastd %r8d,%xmm2
+   2e5ea:	shr    $0x20,%r8
+   2e5ee:	and    0x18(%rdi),%r8d
+   2e5f2:	mov    (%rdi),%r9
+   2e5f5:	shl    $0x4,%r8
+   2e5f9:	vmovdqa (%r9,%r8,1),%xmm3
+   2e5ff:	vpmulhw %xmm0,%xmm2,%xmm2
+   2e603:	vpshufb %xmm2,%xmm1,%xmm2
+   2e608:	xor    %r8d,%r8d
+   2e60b:	vptest %xmm2,%xmm3
+   2e610:	setb   %r8b
+   2e614:	mov    %r8d,(%rcx,%rsi,4)
+   2e618:	inc    %rsi
+   2e61b:	cmp    %rsi,%rax
+   2e61e:	jne    2e5e0 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x1a0>
+   2e620:	ret
