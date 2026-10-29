@@ -1,0 +1,13 @@
+# Analysis rules fixed before fresh measurements
+
+Keep all78 rows, full six-trial vectors, every per-seed speed outcome and both query contracts separately. Compare rival/candidate ratios at the same size, seed and batch. The two batches are31 and4096; the modes are prehashed lookup and common-hash-plus-lookup. Query-only build columns are unavailable, not zero-cost construction.
+
+Primary scope is actual at-most24 bits/key, false-positive ceiling0.01%, both n=2^16 and2^25, both batches. The five fixed APIs are K12@24, optional Split64Range@24, external Fixed64@24, RocksK8Batch32@24 and BoostMulti64K8@24. Compare K12 against each named rival as well as the fastest eligible external and retained project. Actual Boost backing bytes may be slightly below24 bits/key; report them.
+
+For the main all-seed comparison, each API/size/allocation must pass all three separate two-sided95% Wilson upper endpoints at0.01%; all APIs use the same prescribed calibration26. Retain per-seed qualification and unconditional speed outcomes as separate views. A failed gate is an interval/precision outcome, not proof the true FPR exceeds the target. No calibration extension, sample pooling, rival omission, parameter substitution or post-outcome seed selection is permitted.
+
+Secondary scope is n=2^25 with actual at-most32 bits/key, reusing the same K12@24 observations and primary rivals plus the fixed BoostMulti32K8@28, FastPattern@32 and FourSector@32 controls. Include smaller allocations. These extra geometries were measured in different processes, so no claim that all allocations share one process. Keep primary and secondary counts separate; the same observation reused under two caps is not a new independent measurement.
+
+Retain production, optional Range, experimental K12 and external ownership labels. Summaries must include every loss, tie, ineligible API, absent comparator and per-seed result. Report the prespecified first/middle/last K12 order strata. This balances three K12 positions among the primary five at both sizes, not all five absolute positions or all rival pair orders. Each stratum is one selected seed, so seed and order effects cannot be separated causally. No claim of significance or universal leadership is established by these three seeds.
+
+The selected rivals are the fixed union of training leaders, with full training alternatives preserved in the prior296 archive. Fresh confirmation does not establish that unmeasured configurations could never win. Historical quality evidence is context only; the new three-seed gates and fresh timings determine these finite comparisons.
