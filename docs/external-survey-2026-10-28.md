@@ -145,5 +145,10 @@ immutable source blobs were checked against a local pinned checkout. The
 validates all 86 selected configurations against actual public metadata and live
 allocation accounting, including the cache. The finite geometry-only search
 retains all 25,318 candidate capacities, 62 distinct public-K representatives
-and 24 ordinary controls, including over-budget controls. No insertion, accuracy
-or speed workload has run yet; Poppy is not part of a measured ranking.
+and 24 ordinary controls, including over-budget controls. The subsequent
+[public semantic proof](../experiments/2026-10-29-poppy-public-semantics/SEMANTIC_REPORT.md)
+passes all 86 configurations under normal Rust and ASan, with full byte/iterator
+serialization equality, mixed-query parity and insertion-error checks. All17
+same-parameter None/Space aliases pass full comparisons in both profiles.
+Independent accuracy calibration and timing remain pending; Poppy is not yet
+part of a measured ranking.

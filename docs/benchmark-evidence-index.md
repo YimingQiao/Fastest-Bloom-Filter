@@ -250,3 +250,12 @@ metadata and requested live heap bytes. Both bucket and cache allocations are
 charged; the public serializer's separate 8 KiB temporary buffer is recorded.
 All configurations and over-budget controls remain. This is geometry/accounting
 evidence only: no keys were inserted and no accuracy or throughput claim follows.
+
+The subsequent [Poppy public semantic proof](../experiments/2026-10-29-poppy-public-semantics/SEMANTIC_REPORT.md)
+passes 172 normal/ASan constructor rows, all complete byte/iterator serialization
+comparisons and 1,409,196 mixed-query comparisons. Duplicate insertion and
+uninitialized-iterator errors leave the complete serialization unchanged;
+34 None/Space alias comparisons differ only in the public policy flag.
+Zero/full-capacity and invalid-FPP cases also pass. The public byte-slice path
+retains the common first hash while preserving mandatory internal hash work.
+No accuracy or timing samples were collected in this stage.
