@@ -498,3 +498,14 @@ and 96 unavailable views. Each construction gets both natural byte8 and typed-u6
 follow-ups, for 28 unmeasured entries. All 20,304 alternatives remain visible.
 This historical shortlist supplies neither a natural-input quality gate nor a
 speed result; it cannot establish the best geometry for those new input paths.
+
+The isolated C++ [Independent32Range candidate](../experiments/2026-10-30-independent32-range/VALIDATION.md)
+passes native AVX-512, AVX2, scalar-source and ASan/UBSan correctness checks.
+Its [fixed 16-construction accuracy pilot](../experiments/2026-10-30-independent32-range/accuracy/RESULTS.md)
+qualifies 12 actual bpk under the 1% ceiling at both 65K and 32M keys: pointwise
+95% Wilson upper bounds are 0.5352863% and 0.5567636%. Prespecified 20-bpk/0.1%
+and 28-bpk/0.01% targets also pass. All failures remain, including 16 bpk at
+0.1% and 24 bpk at 0.01%. Each row checks every inserted key and 2^26 disjoint
+negatives on seen seed 42; shared inputs are not independent evidence.
+This establishes the accuracy gate for a separate external speed comparison.
+No speed, Rust-port or parallel-construction result is implied.
