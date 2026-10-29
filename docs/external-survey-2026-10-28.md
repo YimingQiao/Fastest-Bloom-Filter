@@ -135,3 +135,10 @@ of these families and links their original papers.
    or conservative count bounds visible when the number of observed errors is small.
 6. Define a performance claim by hardware, API, batch, hit ratio, size/FPR budget,
    and tested baseline set. No finite survey proves an unrestricted global winner.
+
+The [Poppy public-constructor plan](../experiments/2026-10-29-poppy-public-constructor-plan/README.md)
+fixes real-n sizing, full optional-cache accounting, ordinary requested-FPR
+controls and every public-derived probe count at each largest-fitting geometry.
+It preserves the upstream8-byte input and mandatory internal hash work. Seven
+immutable source blobs were checked against a local pinned checkout. This is
+source preparation only; Poppy is not yet part of a measured ranking.

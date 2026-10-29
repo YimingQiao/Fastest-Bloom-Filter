@@ -215,3 +215,13 @@ batch threshold has14–21% higher allocation+build latency atT8 on both seeds.
 All160 paired contracts,320 shared-serial comparisons and480 trial vectors are
 retained. An actual native port must resolve these repeated losses before a
 default change; no query or external-leadership claim follows from this result.
+
+The [296-row K12 bulk screen](../experiments/2026-10-29-four-sector-range12-analysis/INTERPRETATION.md)
+keeps all284 retained control rows and12 new candidate rows at batches31/4096.
+K12 passes the strict24-bpk gate at both sizes and wins all eight corresponding
+query views against both external and optional-Range leaders. Across the wider
+72 views it has26 wins/30 losses/16 ineligible against externals and12/44/16
+against retained project layouts. All5,328 allocation alternatives and98
+unpooled quality identities remain. Its weakest hash+query margins are2.84%
+and3.47%, requiring fresh confirmation;16bpk fails0.1% and32bpk is not a general
+replacement. The native Rust K12 port and parallel K12 construction are unmeasured.

@@ -54,8 +54,11 @@ once a uniform larger accuracy sample qualifies all six constructions.
 A new [FourSector range probe pilot](experiments/2026-10-29-four-sector-range-probe-pilot/RESULTS.md)
 retains the failed 8-bit mapping and tests existing 9/10/12-bit masks. Only
 12 bits meet the 24-bpk/0.01% gate at both sizes. Its vector port passes
-[all three backends and sanitizers](experiments/2026-10-29-four-sector-range12-vector/VALIDATION.md),
-but has no performance result yet.
+[all three backends and sanitizers](experiments/2026-10-29-four-sector-range12-vector/VALIDATION.md).
+The completed [296-row bulk screen](experiments/2026-10-29-four-sector-range12-analysis/INTERPRETATION.md)
+wins all eight strict24-bpk views against both external and retained native
+leaders, with only **2.8–3.5%** margins in the weakest hash+query cases.
+It loses most wider comparisons and remains experimental pending fresh seeds.
 
 See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
 [baseline survey](docs/external-survey-2026-10-28.md),
