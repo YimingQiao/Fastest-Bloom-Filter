@@ -12,121 +12,35 @@ The project name is an ambition, not a claim that one implementation wins every 
 
 ## Modern external comparison
 
-The shared C++ executable compares **56 configurations**: four native layouts,
-pinned FastFilter SIMD/classical variants, PageBloomFilter, Boost.Bloom 1.92,
-RocksDB FastLocalBloom core variants and explicit single-call controls.
-A separate [988-row exact-capacity screen](experiments/2026-10-29-exact-budget-range/screen/OBSERVATIONS.md)
-expands this to **68 external configurations, four production natives and two
-range-capacity experiments**, using actual backing-byte ceilings from 12 to 32 bits/key.
-A separate native Rust suite includes
-pinned Bloomsday, fastbloom and [SBBF](benchmarks/rust-sbbf-external/README.md).
-Its [168-row SBBF screen](experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
-retains the small-filter singleton losses against Bloomsday.
-The [Rust public-call screen](experiments/2026-10-29-rust-visible-single/screen/RESULTS.md)
-lets the compiler see each public lookup; Bloomsday still wins several settings.
-The [132-row Independent32 Rust screen](experiments/2026-10-29-independent32-rust-analysis/FINDINGS.md)
-finds a promising strict-FPR singleton candidate: at 32 actual bits/key, its
-public hash+query API leads Bloomsday by 6–22% at the two measured sizes.
-The generic batch-one path still loses, and existing native layouts win several
-large-batch settings. This is one-seed prototype evidence pending confirmation.
-A subsequent [192-row singleton-branch experiment](experiments/2026-10-29-independent32-rust-singleton-analysis/FINDINGS.md)
-was rejected after short batches regressed; the candidate remains isolated.
-Its [208-row scalar-inline follow-up](experiments/2026-10-29-independent32-rust-scalar-inline-analysis/FINDINGS.md)
-improves generic batch-one prehashed throughput by 10–20%, but small-table
-batch-two queries regress by 16.6%. It also remains isolated.
-A [six-seed ByteSplit confirmation](experiments/2026-10-29-rust-byte-leaf-analysis/report/DECISION.md)
-supports exposing its public singleton body to the Rust compiler. The Rust library
-now includes the [minimal Byte-only inline hint](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md).
-Its isolated two-seed comparison improves public hash+query throughput by **16–38%**
-at batch 1 across the four size/allocation settings, while some 32M-key, 16-bpk
-short-batch cases are **2–3% slower**. This is a measured API tradeoff; full outputs,
-allocation and FPR stay identical. The integration passes the existing 29 library
-tests, Clippy and an actual public-caller assembly check. Earlier external
-comparisons and all generic-mode losses remain linked separately.
-The separate [BlowChoc screen](experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
-compares eight upstream configurations using whole-array calls, with prehashed,
-fused-hash and staged-hash timings reported separately.
-See the [survey](docs/external-survey-2026-10-28.md)
-and [shared-harness instructions](benchmarks/all-external/README.md).
+Comparisons constrain **actual bitmap bytes and measured false-positive rate**,
+with hashing, public API shape, construction and thread startup reported explicitly.
+Pinned baselines include FastFilter, Boost.Bloom1.92, RocksDB FastLocalBloom,
+PageBloomFilter, fastbloom, Bloomsday, SBBF and BlowChoc. The
+[988-row C++ screen](experiments/2026-10-29-exact-budget-range/screen/OBSERVATIONS.md)
+checks68 external configurations at12–32 actual bits/key. No layout wins every workload.
 
-Ranking constrains **measured filter payload allocation and observed FPR**, distinguishing
-prehashed kernels from raw-key end-to-end work. Build batches are independently
-configurable, temporary build allocations are reported, and timed construction
-holds only one bitmap at a time. Screening uses explicit error ceilings and a
-pointwise 95% Wilson bound; final candidates need held-out confirmation.
-The completed large-batch confirmation has **234 C++ rows and 90 Rust rows**,
-using three new insertion seeds and 50 million independent calibration negatives
-per configuration. In the C++ shortlist, our eligible query leaders are
-**1.10–1.73× faster** than the fastest eligible external configuration across the
-reported memory/FPR ceilings. This covers 65K–32M keys, 50% hits, batch 4096,
-and allocations up to 128 MiB on one Xeon Platinum 8474C core. This confirmation
-uses 16/32-bpk allocation targets. The newer
-[finer-capacity confirmation](experiments/2026-10-29-exact-budget-confirmation/screen/RESULTS.md)
-tests fixed leaders from the 988-row screen with three fresh seeds. At 32M keys
-and a 0.01% FPR ceiling, production FastPattern loses to a 24-bpk Boost filter
-on two seeds. The isolated 24-bpk Split64 range prototype has **4.3–6.7% lower
-hash+query latency** on all three, with its worst FPR upper bound close to the
-ceiling. FourSector at 16 bpk fails the small-table 0.1% quality gate on one seed;
-its timing advantage does not count as a qualifying win. These results preserve
-fixed candidates and failures, and remain separate from the earlier confirmation.
-A [62-row cyclic-mask experiment](experiments/2026-10-29-cyclic-split64-analysis/FINDINGS.md)
-also stays experimental: fewer mask instructions raised the required space,
-and it lost 15 of 16 eligible views against the retained external leaders.
-A [70-row multiply-code experiment](experiments/2026-10-29-multiply-code-split64-performance-analysis/report/RESULTS.md)
-improves small-table Split64Range throughput by about 8–10%, but loses to the
-best current-seed project controls. A
-[higher-resolution accuracy check](experiments/2026-10-29-four-sector-quality-resolution/RESULTS.md)
-qualifies both previously inconclusive FourSector16 constructions on new
-disjoint negatives, with upper FPR bounds of **0.09906% and 0.09816%**.
-The [144-row fresh-seed comparison](experiments/2026-10-29-multiply-code-small-confirmation-analysis/report-final/REPORT.md)
-finds a tradeoff: at 65K keys and 16 bpk, Multiply improves large-batch throughput
-by about **6–9%** over the eligible native Split64 control, but singleton latency
-is **12–19% worse**. FourSector remains faster in bulk cases that pass their
-individual quality gates; one new seed fails its upper-bound gate. The new mask
-remains experimental, with all quality failures and speed losses retained.
+| Evidence | What it supports | Remaining loss or limit |
+|---|---|---|
+| [C++ held-out large batches](docs/modern-confirmation-2026-10-28.md) | Eligible native leaders are **1.10–1.73×** faster than the fastest eligible external configuration across the tested ceilings. | 65K–32M keys,50% hits,batch4096,16/32-bpk targets; singleton and finer-capacity rankings differ. |
+| [Finer-capacity confirmation](experiments/2026-10-29-exact-budget-confirmation/screen/RESULTS.md) | Experimental Split64Range24 has **4.3–6.7% lower** hash+query latency than Boost24 at32M keys and0.01% FPR. | Production FastPattern loses two of three seeds; Range remains experimental. |
+| [Single-key confirmation](docs/byte-confirmation-2026-10-29.md) | C++ Split64 leads the tested0.1% band by **1.10–1.20×** including hashing. | FastFilter wins the strict0.01% and large-filter1% bands; Rust retains Bloomsday losses. |
+| [Eight-core external confirmation](docs/external-parallel-confirmation-2026-10-29.md) | C++ native scenario leaders are **1.06–1.59×** faster including hashing and fresh thread startup/join. | Fixed23-configuration shortlist,65K/32M keys,50% hits,batch4096; individual losses remain. |
+| [Rust ByteSplit integration](experiments/2026-10-29-rust-byte-inline-integration/EVIDENCE.md) | A public inline hint improves fused singleton throughput **16–38%** in the isolated comparison. | Some large-table short batches are **2–3% slower**. |
 
-![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
+**Recent experiments:** Rust Split64Range fills the24-bpk/0.01% capacity gap,
+but loses47/48 equal-allocation query comparisons and all48 build comparisons
+to production Split64. Its fastbloom comparison currently uses the default
+accuracy-optimal probe count; public lower-probe configurations are pending.
+Multiply's promising bulk gain over Split64 also fails to beat the faster
+FourSector once a uniform larger accuracy sample qualifies all six constructions.
+Both candidates remain isolated.
 
-| At 16M keys | Memory ceiling | Our query leader | Hash+query | Best eligible external |
-| --- | --- | --- | --- | --- |
-| FPR ≤ 1% | 16 bits/key | FastPattern | 3.709 ns/key | FastFilter SIMD: 4.096 ns/key |
-| FPR ≤ 0.1% | 16 bits/key | Split64 | 3.789 ns/key | Boost Multi64K8: 4.433 ns/key |
-| FPR ≤ 0.01% | 32 bits/key | FastPattern | 4.110 ns/key | FastFilter Fixed32: 4.855 ns/key |
-
-Eligibility uses a pointwise 95% FPR upper bound; exact allocations remain visible.
-This is a query result within the stated contract. FourSector still has construction
-and short-batch losses. In the separate [47-configuration single-key screen](docs/single-screen-2026-10-28.md),
-FastFilter wins the shown 1% and 0.01% bands; Split64 wins 0.1% at 16 bits/key.
-That screen is exploratory and single-key optimization continues. The wider
-mask dictionary in the report remains experimental. See the
-[complete confirmation, including Rust and build timings](docs/modern-confirmation-2026-10-28.md),
-[screening results](docs/modern-screen-2026-10-28.md), and
-[frozen protocol](docs/confirmation-protocol-2026-10-28.md).
-
-A newer [240-row RocksDB-inclusive screen](docs/rocksdb-screen-2026-10-29.md)
-retains large-batch leads while exposing remaining single-key and short-batch
-losses. The completed [native single-key confirmation](docs/byte-confirmation-2026-10-29.md)
-adds **276 C++ / 96 Rust rows** with three held-out seeds and stronger FastFilter
-single-call controls. C++ ByteSplit's small-filter prehashed query is **7–8% faster**,
-but its hash+query advantage shrinks to **0.5–0.9%**. Split64 leads the C++ 0.1% FPR
-band by **1.10–1.20×** in hash+query; FastFilter still wins the strict 0.01% band
-and the large-filter 1% band in that metric. Rust also retains small-filter losses
-against Bloomsday. These results supersede the prototype's roughly 8% end-to-end
-gain as evidence for the native port; optimization continues from the losses.
-
-A separate [240-row public single-call screen](experiments/2026-10-29-inline-single-query/screen/RESULTS.md)
-lets the compiler optimize across successive calls and keeps the original batch-one
-measurements alongside it. Calling convention changes the ranking: the native
-strict-accuracy small-filter loss remains. This is a one-seed screen, pending confirmation.
-
-The new [eight-core external confirmation](docs/external-parallel-confirmation-2026-10-29.md)
-compares the same 23 shortlisted configurations on identical physical cores and a
-shared immutable bitmap. Across three fresh seeds, our per-scenario leaders are
-**1.06–1.59× faster including hashing, fresh thread startup and joining** at batch
-4096, 50% hits and 65K/32M keys, at the two measured 16/32-bpk allocation targets.
-Memory caps and measured FPR ceilings still apply;
-individual ByteSplit/Split64 losses remain in the report. This is a C++ external
-comparison; Rust's separately reported scaling uses its own serial baseline.
+See the [evidence index, including failed experiments](docs/benchmark-evidence-index.md),
+[baseline survey](docs/external-survey-2026-10-28.md),
+[benchmark contract](#what-the-numbers-mean), and
+[bbtree lessons](docs/bbtree-lessons.md). Quality gates use pointwise95% Wilson
+upper bounds, not hard guarantees. Reports retain all timings, allocations,
+calibration failures and compiler/API boundaries needed to interpret a lead.
 
 ## Native layouts
 
@@ -156,8 +70,10 @@ All layouts accept prehashed 64-bit keys and support incremental insertion.
 An isolated [Split64 range-capacity prototype](experiments/2026-10-29-split64-range-native/VALIDATION.md)
 now has native C++/Rust implementations with exclusive parallel construction.
 It accepts arbitrary complete cache-line budgets; full bitmaps match across
-languages and backend/sanitizer checks pass. Its Rust and parallel performance
-remain to be measured before production integration.
+languages and backend/sanitizer checks pass. The
+[Rust screen](experiments/2026-10-29-split64-range-rust-analysis/report-final/REPORT.md)
+shows a useful24-bpk capacity option with equal-allocation speed losses.
+Parallel performance remains to be measured before production integration.
 
 ## Historical comparison and FastPattern scaling
 

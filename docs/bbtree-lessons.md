@@ -49,6 +49,19 @@ endpoints narrowly failed0.1%. The stronger rival remains visible in the
 [fresh-seed comparison](../experiments/2026-10-29-multiply-code-small-confirmation/README.md).
 The mask remains experimental; fewer instructions alone do not establish a win.
 
+The next [uniform precision audit](../experiments/2026-10-29-eight-api-quality-resolution/RESULTS.md)
+applies the same117-million fresh negatives to all eight APIs and all six
+constructions. FourSector passes every new gate. Under that separate new gate,
+Multiply loses all36 comparisons against the fastest rival in the original
+timings. Keeping a fast rival in view can change the engineering decision;
+an inconclusive accuracy interval should not become a permanent exclusion.
+
+The [native Rust range screen](../experiments/2026-10-29-split64-range-rust-analysis/report-final/REPORT.md)
+shows why address arithmetic needs the same scrutiny. Arbitrary cache-line
+budgets make24 bpk usable, but range addressing loses47/48 equal-allocation
+query comparisons to the power-of-two Split64 layout. The useful result is
+finer capacity control, with an explicitly measured cost in that workload.
+
 Compiler boundaries also matter. Exposing Rust ByteSplit's public singleton
 body removed a hot per-key call and improved fused throughput16–38% in the
 isolated comparison, with2–3% losses in some short batches. The
