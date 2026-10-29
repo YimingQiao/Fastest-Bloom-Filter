@@ -1,0 +1,363 @@
+{
+  "status": "Source-only native public-API scaling preparation; no compile or timing authority",
+  "design_plan_commit": "333759a",
+  "languages": [
+    "cpp",
+    "rust"
+  ],
+  "key_powers": [
+    16,
+    25
+  ],
+  "actual_budgets_bpk": [
+    16,
+    24,
+    32
+  ],
+  "threads": [
+    1,
+    4,
+    8
+  ],
+  "socket_cpus": [
+    3,
+    5,
+    7,
+    9,
+    11,
+    13,
+    15,
+    17
+  ],
+  "driver_cpu": 3,
+  "socket": 1,
+  "numa_node": 1,
+  "query_power": 22,
+  "hit_percent": 50,
+  "seed": 42,
+  "calibration_power": 24,
+  "repeats": 4,
+  "metric_names": [
+    "serial_insert",
+    "parallel_insert",
+    "serial_allocate_insert",
+    "parallel_allocate_insert",
+    "serial_lookup",
+    "parallel_lookup"
+  ],
+  "phase_policy": {
+    "build": "One complete Williams4 cycle, rotated by seed%4: [0,1,3,2],[1,2,0,3],[2,3,1,0],[3,0,2,1]",
+    "query": "Serial/parallel alternating AB/BA, rotated by seed%2; two occurrences of each order",
+    "sequence": "All build trials precede one canonical query bitmap; serial and parallel query warmups outside clocks"
+  },
+  "native_apis_only": true,
+  "private_partition_changes": false,
+  "raw_hash_timing": false,
+  "geometry_policy": "Split retains real_n and uses public legacy_bpk=actual_bpk/2 at16/32; Range uses public byte budget real_n*actual_bpk/8 at16/24/32; no duplicate Split24 alias",
+  "placement": "Whole node1 socket lock and explicit NUMA binding. Serial controls CPU3. Public parallel calls inherit firstT allowed physical CPUs; no individual worker pinning claim. Affinity expansion/restoration is outside every timer.",
+  "first_touch": "Insert-only bitmaps constructed onCPU3 before expanding allowed affinity. Separate allocate+build trials start after expansion, so constructor may execute anywhere in the same-node allowed set. No durations are combined from separate intervals.",
+  "cpp_scheduler": "Caller executes worker0; W-1 additional workers per pass; full native launches/joins included",
+  "rust_scheduler": "For W>1, W scoped workers plus coordinating caller; extra caller shares the sameT physical-core budget. For W=1 direct serial fallback.",
+  "scratch": "Public estimated explicit temporary build heap; language-specific metadata counted. No claim to measure allocator usable-size, runtime thread handles, OS stacks or RSS.",
+  "query_contract": "One whole-array public native query call; proportional key partition, not the external shared4096-batch executor. Fresh-thread end-to-end only, no gated subtraction.",
+  "validation": "Oracle bitmap destroyed before any timed builds; every trial checks all inserted keys and entire mixed output. Query bitmap allocated after build trials; every query trial checks all dense outputs/guards. Independent streamed calibration after timings.",
+  "quality": "Ten family/geometry/size/seed records per language reused acrossT; no sample pooling acrossT or languages. Exact semantic parity required; confidence retained separately, no cross-language timing ranking.",
+  "cases": [
+    {
+      "key_power": 16,
+      "budget_bpk": 16,
+      "threads": 1,
+      "cpus": [
+        3
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 16,
+      "budget_bpk": 16,
+      "threads": 4,
+      "cpus": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 16,
+      "budget_bpk": 16,
+      "threads": 8,
+      "cpus": [
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 16,
+      "budget_bpk": 24,
+      "threads": 1,
+      "cpus": [
+        3
+      ],
+      "filters": [
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 16,
+      "budget_bpk": 24,
+      "threads": 4,
+      "cpus": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "filters": [
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 16,
+      "budget_bpk": 24,
+      "threads": 8,
+      "cpus": [
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17
+      ],
+      "filters": [
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 16,
+      "budget_bpk": 32,
+      "threads": 1,
+      "cpus": [
+        3
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 16,
+      "budget_bpk": 32,
+      "threads": 4,
+      "cpus": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 16,
+      "budget_bpk": 32,
+      "threads": 8,
+      "cpus": [
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 16,
+      "threads": 1,
+      "cpus": [
+        3
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 16,
+      "threads": 4,
+      "cpus": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 16,
+      "threads": 8,
+      "cpus": [
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 24,
+      "threads": 1,
+      "cpus": [
+        3
+      ],
+      "filters": [
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 24,
+      "threads": 4,
+      "cpus": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "filters": [
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 24,
+      "threads": 8,
+      "cpus": [
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17
+      ],
+      "filters": [
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 32,
+      "threads": 1,
+      "cpus": [
+        3
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 32,
+      "threads": 4,
+      "cpus": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    },
+    {
+      "key_power": 25,
+      "budget_bpk": 32,
+      "threads": 8,
+      "cpus": [
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17
+      ],
+      "filters": [
+        "Split64",
+        "Split64Range"
+      ]
+    }
+  ],
+  "expected_cases_per_language": 18,
+  "expected_rows_per_language": 30,
+  "expected_total_rows": 60,
+  "source_preflight": "Preserved native correctness anchors are reused. Focused new harness normal/ASan tiny cross-language output+accounting checks and CLI/order/affinity guards only; no repeat of unchanged full native library suites.",
+  "performance_authorized": false,
+  "preflight_fixture": {
+    "key_power": 16,
+    "query_power": 14,
+    "calibration_power": 12,
+    "threads": [
+      1,
+      3
+    ],
+    "caps": [
+      16,
+      24,
+      32
+    ],
+    "modes": [
+      "normal",
+      "asan"
+    ],
+    "rows": 40,
+    "malformed_cli_cases": 10,
+    "real_multiworker_required": true
+  }
+}

@@ -1,0 +1,19 @@
+[package]
+name = "native-range-scaling"
+version = "0.1.0"
+edition = "2021"
+license = "MIT AND Apache-2.0"
+
+[dependencies]
+fastest-bloom-filter = { path = "native" }
+
+[features]
+disable-avx512 = ["fastest-bloom-filter/disable-avx512"]
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[[bin]]
+name = "benchmark"
+path = "src/main.rs"
