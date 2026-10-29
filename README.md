@@ -78,9 +78,12 @@ best current-seed project controls. A
 [higher-resolution accuracy check](experiments/2026-10-29-four-sector-quality-resolution/RESULTS.md)
 qualifies both previously inconclusive FourSector16 constructions on new
 disjoint negatives, with upper FPR bounds of **0.09906% and 0.09816%**.
-The [fixed fresh-seed comparison](experiments/2026-10-29-multiply-code-small-confirmation/README.md)
-retains FourSector alongside the other rivals across singleton, short and
-large batches. The new mask remains experimental; large-table losses remain visible.
+The [144-row fresh-seed comparison](experiments/2026-10-29-multiply-code-small-confirmation-analysis/report-final/REPORT.md)
+finds a tradeoff: at 65K keys and 16 bpk, Multiply improves large-batch throughput
+by about **6–9%** over the eligible native Split64 control, but singleton latency
+is **12–19% worse**. FourSector remains faster in bulk cases that pass their
+individual quality gates; one new seed fails its upper-bound gate. The new mask
+remains experimental, with all quality failures and speed losses retained.
 
 ![Modern external large-batch confirmation](docs/figures/modern-confirmation.svg)
 
