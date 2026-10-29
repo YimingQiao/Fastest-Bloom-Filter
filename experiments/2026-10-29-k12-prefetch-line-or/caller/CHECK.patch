@@ -1,0 +1,50 @@
+--- old1642/check.cpp
++++ focused18/check.cpp
+@@ -1,5 +1,5 @@
+ #include "../control.hpp"
+-#include "../candidate.hpp"
++#include "../conditional.hpp"
+ #include <array>
+ #include <iostream>
+ #include <stdexcept>
+@@ -8,7 +8,7 @@
+ #error "This focused proof must execute the changed AVX512F insertion path"
+ #endif
+ 
+-using bloom_filters::K12LineOrCandidate;
++using bloom_filters::K12PrefetchLineOrCandidate;
+ using bloom_filters::K12ScalarOrControl;
+ using bloom_filters::RangeBytes;
+ 
+@@ -150,7 +150,7 @@
+     OracleInsert(expected, n, input);
+     for (bool incremental : {false, true}) {
+         Variant<K12ScalarOrControl>(bytes, input, keys, expected, incremental);
+-        Variant<K12LineOrCandidate>(bytes, input, keys, expected, incremental);
++        Variant<K12PrefetchLineOrCandidate>(bytes, input, keys, expected, incremental);
+     }
+     {
+         K12ScalarOrControl scalar(RangeBytes{bytes});
+@@ -166,16 +166,15 @@
+ 
+ int main() {
+     try {
+-        for (size_t bytes : {size_t{128}, size_t{192}})
+-            for (size_t n = 0; n <= 67; ++n)
+-                for (unsigned offset = 0; offset < 4; ++offset)
+-                    for (unsigned pattern = 0; pattern < 3; ++pattern)
+-                        Case(bytes, n, offset, pattern);
+-        for (size_t bytes : {size_t{262144}, size_t{262208}, size_t{2097152}, size_t{2097216}, size_t{100663296}}) {
++        for (size_t bytes : {size_t{2097088}, size_t{2097152}, size_t{2097216}}) {
++            Case(bytes, 0, 0, 0);
++            Case(bytes, 4, 1, 2);
++            Case(bytes, 7, 2, 1);
++            Case(bytes, 68, 3, 0);
+             Case(bytes, 257, 1, 0);
+             Case(bytes, 4097, 1, 1);
+         }
+-        Need(cases == 1642, "case count changed");
++        Need(cases == 18, "focused boundary case count changed");
+         std::cout << "{\"cases\":" << cases << ",\"digest\":" << digest << ",\"complete\":true}\n";
+     } catch (const std::exception& error) {
+         std::cerr << error.what() << '\n';
