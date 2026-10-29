@@ -1,0 +1,308 @@
+{
+  "source_commit": "e8b89cd3c7c090287d1d4222db981ec7f8fb86ab",
+  "complete": true,
+  "cpu": 2,
+  "started": 1793250809.2550397,
+  "commands": [
+    {
+      "label": "clang-version",
+      "command": [
+        "clang++",
+        "--version"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "clang-version.stdout",
+      "stdout_sha256": "a6552fa81dddd84c51cfe609282aee41acd279a764d24f83c1811dece3f88719",
+      "stderr": "clang-version.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "rust-version",
+      "command": [
+        "rustc",
+        "-Vv"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "rust-version.stdout",
+      "stdout_sha256": "8f97c91e920ce0d02680e3d01eb87afa0c77290dcd5d19eb901ae194d4700d90",
+      "stderr": "rust-version.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "native-configure",
+      "command": [
+        "cmake",
+        "-S",
+        ".",
+        "-B",
+        "build/range-integration-native",
+        "-DCMAKE_CXX_COMPILER=clang++",
+        "-DBUILD_TESTING=ON",
+        "-DBF_NATIVE=ON"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "native-configure.stdout",
+      "stdout_sha256": "7179932e002ca861474bce711251daacfba5b46eb8abfa77bd5fd200fd6466e1",
+      "stderr": "native-configure.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "native-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/range-integration-native",
+        "--target",
+        "test_split64_range",
+        "test_split64_range_portable",
+        "-j",
+        "1"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "native-build.stdout",
+      "stdout_sha256": "e25bba4fd67e8184158f0ddc7d16354cf478241fd046064aa1160cf1df06323d",
+      "stderr": "native-build.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "native-test",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "build/range-integration-native",
+        "--output-on-failure",
+        "-R",
+        "^split64_range(_portable)?$"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "native-test.stdout",
+      "stdout_sha256": "a60e6ea131bd3ca147d00a8905dece1224c554335a1488229af3043907b5f83a",
+      "stderr": "native-test.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "avx2-configure",
+      "command": [
+        "cmake",
+        "-S",
+        ".",
+        "-B",
+        "build/range-integration-avx2",
+        "-DCMAKE_CXX_COMPILER=clang++",
+        "-DBUILD_TESTING=ON",
+        "-DBF_NATIVE=OFF",
+        "-DUSE_AVX2=ON",
+        "-DUSE_AVX512=OFF"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "avx2-configure.stdout",
+      "stdout_sha256": "d7a5814c5f5aac60be6a498daf530eadb58f8291ed2a84ed5d9aeff8206ed748",
+      "stderr": "avx2-configure.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "avx2-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/range-integration-avx2",
+        "--target",
+        "test_split64_range",
+        "test_split64_range_portable",
+        "-j",
+        "1"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "avx2-build.stdout",
+      "stdout_sha256": "e25bba4fd67e8184158f0ddc7d16354cf478241fd046064aa1160cf1df06323d",
+      "stderr": "avx2-build.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "avx2-test",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "build/range-integration-avx2",
+        "--output-on-failure",
+        "-R",
+        "^split64_range(_portable)?$"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "avx2-test.stdout",
+      "stdout_sha256": "d818a1678ca2f1268a4520f7b4038a8eb787152038dbe3599cc1e29444895507",
+      "stderr": "avx2-test.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "asan-configure",
+      "command": [
+        "cmake",
+        "-S",
+        ".",
+        "-B",
+        "build/range-integration-asan",
+        "-DCMAKE_CXX_COMPILER=clang++",
+        "-DBUILD_TESTING=ON",
+        "-DBF_NATIVE=ON",
+        "-DBF_SANITIZERS=ON"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "asan-configure.stdout",
+      "stdout_sha256": "c911f992aa3c271a0828435fbbc6016d50827a49aff51fd79ad57848bda7c778",
+      "stderr": "asan-configure.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "asan-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/range-integration-asan",
+        "--target",
+        "test_split64_range",
+        "test_split64_range_portable",
+        "-j",
+        "1"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "asan-build.stdout",
+      "stdout_sha256": "e25bba4fd67e8184158f0ddc7d16354cf478241fd046064aa1160cf1df06323d",
+      "stderr": "asan-build.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "asan-test",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "build/range-integration-asan",
+        "--output-on-failure",
+        "-R",
+        "^split64_range(_portable)?$"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {},
+      "stdout": "asan-test.stdout",
+      "stdout_sha256": "ac526a0ac2876289863bd9e70a48261fe47212cb25bef36f0191100fbbb6802e",
+      "stderr": "asan-test.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    },
+    {
+      "label": "rust-native",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "rust/Cargo.toml",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/home/yiming/projects/fastest-bf-native-integration/build/range-rust-native",
+        "RUSTFLAGS": "-C target-cpu=native"
+      },
+      "stdout": "rust-native.stdout",
+      "stdout_sha256": "63c5f388fb2a8489310e3caf99d69ac252c4659d2bd284c3285d3e97b6e45a29",
+      "stderr": "rust-native.stderr",
+      "stderr_sha256": "1835ca9dd1165c68777e2e059583af4610cb992548cabb27fdafd147bc3c318a",
+      "returncode": 0
+    },
+    {
+      "label": "rust-avx2",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "rust/Cargo.toml",
+        "--features",
+        "disable-avx512",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/home/yiming/projects/fastest-bf-native-integration/build/range-rust-avx2",
+        "RUSTFLAGS": "-C target-cpu=x86-64-v3"
+      },
+      "stdout": "rust-avx2.stdout",
+      "stdout_sha256": "5260b6a7308350b20af291a96db1fa47a76288d6686988b82d4ecd727f7273e8",
+      "stderr": "rust-avx2.stderr",
+      "stderr_sha256": "4e3b9d7b02ef7083d69fe29bc35500a16d49dc258e5a54a631aecf2d5cd81e27",
+      "returncode": 0
+    },
+    {
+      "label": "rust-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "rust/Cargo.toml",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/home/yiming/projects/fastest-bf-native-integration/build/range-rust-native",
+        "RUSTFLAGS": "-C target-cpu=native"
+      },
+      "stdout": "rust-clippy.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "rust-clippy.stderr",
+      "stderr_sha256": "3d6a80bb41d10386bc410c3f804cdf3c7504dc4fe8abf327d89e16729bd5c790",
+      "returncode": 0
+    },
+    {
+      "label": "rust-asan",
+      "command": [
+        "cargo",
+        "+nightly",
+        "test",
+        "--manifest-path",
+        "rust/Cargo.toml",
+        "--lib",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "split64_range::tests",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/home/yiming/projects/fastest-bf-native-integration",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/home/yiming/projects/fastest-bf-native-integration/build/range-rust-asan",
+        "RUSTFLAGS": "-Zsanitizer=address -C target-cpu=native",
+        "ASAN_OPTIONS": "detect_leaks=1"
+      },
+      "stdout": "rust-asan.stdout",
+      "stdout_sha256": "3098f5a768b7295a209439b57f70dd9717aa884ff52aa29ebd807d3d58fd3232",
+      "stderr": "rust-asan.stderr",
+      "stderr_sha256": "3a31d3292f41310ec5fbf0c9d495da451d4bc13afb8f000d4d3f85c0d0126369",
+      "returncode": 0
+    }
+  ],
+  "finished": 1793250880.1672633
+}
