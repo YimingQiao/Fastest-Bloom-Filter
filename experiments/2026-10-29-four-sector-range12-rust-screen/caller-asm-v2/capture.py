@@ -10,7 +10,9 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def save(p,value):p.write_text(json.dumps(value,indent=2)+'\n')
 def main():
     p=argparse.ArgumentParser();p.add_argument('--source-commit',required=True);args=p.parse_args();need(__debug__ and re.fullmatch('[0-9a-f]{40}',args.source_commit),'Immutable source commit required')
-    prep=json.loads((HERE/'PREPARATION.json').read_text())
+    declaration=HERE/'PREPARATION.json'
+    need(declaration.read_bytes()==subprocess.check_output(['git','show',args.source_commit+':'+str(declaration.relative_to(ROOT))],cwd=ROOT),'Uncommitted capture manifest')
+    prep=json.loads(declaration.read_text())
     for name,digest in prep['inputs_sha256'].items():
         path=ROOT/name;need(sha(path)==digest,'Changed capture input');need(hashlib.sha256(subprocess.check_output(['git','show',args.source_commit+':'+name],cwd=ROOT)).hexdigest()==digest,'Uncommitted capture input')
     spec=importlib.util.spec_from_file_location('lease',STAGE/'caller/preflight/source_guard.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);lease=module.require_lease(3)
