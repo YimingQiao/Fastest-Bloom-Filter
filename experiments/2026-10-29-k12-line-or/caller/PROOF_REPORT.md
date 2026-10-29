@@ -1,0 +1,11 @@
+# Focused K12 line-OR proof
+
+The single candidate passed all three fixed profiles: native Clang23, minimal AVX512F excluding VL/DQ/BW/BITALG/VBMI, and native ASan+UBSan. Each completed all 1,642 full-bitmap/independent-oracle cases with digest `1788386356380234980`. The two bounded public-caller fixtures per profile produced twelve matching control/candidate rows; six invalid CLI cases rejected. All build/query trial vectors agree with their reported summaries. These are correctness fixtures, not speed evidence.
+
+The successful V2 run used CPU3/socket1 under one inherited exclusive flock, from `2026-10-29T09:05:41.995641+00:00` to `2026-10-29T09:05:56.371621+00:00`, with no explicit NUMA binding. Its 31-command ledger pins six executables and 403 actual compiler inputs. The normal comparison binary is SHA256 `540be049ea355652f2aebb67d49d2476e0b751267e9fe57c3b189c7e1db4d9fb`. The complete source and binary closures were checked again after execution, and the socket lease was released.
+
+The first attempt is retained unchanged. It compiled the normal comparison object but failed to link because the script resolved the `clang++` invocation to the `clang` name. No project executable or filter test ran. Repair commit `ff107228ca48e88619a59497b08a4d889335a214` fixes only that driver spelling, pins the failed attempt and uses fresh V2 paths. Source proposal `5cb840406f1b4c48763bd660246e51c03bfe56c2` and original caller source `dd13d1e829d4482d70093497b8d470bd09be22ac` remain exact; no C++ algorithm, input, compiler flag or test scope changed.
+
+Actual assembly was manually reviewed after the passed tests. Both public dispatch paths reach the intended candidate. Its four per-key memory OR/store sequences remain ordered, while the control emits sixteen scalar memory ORs. The candidate also retains additional mask-reduction, opmask-transfer and vector-insert instructions. Actual clock/call PCs and nonempty function excerpts are in `assembly-review/`. The assembly supports the intended mechanism, not a speed claim.
+
+The next stage is only the already fixed eight-workload/sixteen-row A/B screen at actual24 bpk. Its four construction contracts, all trials and every regression remain required. No threshold, dictionary, prefetch, query-path or alternative-candidate search is introduced.

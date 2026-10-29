@@ -1,0 +1,13 @@
+# Actual normal-binary insertion review
+
+The reviewed binary is SHA256 `540be049ea355652f2aebb67d49d2476e0b751267e9fe57c3b189c7e1db4d9fb`. All excerpts come from the already captured `validation-v2/native-assembly.stdout`; no new disassembly, compilation or filter execution was used for this review. The extractor asserts nonempty instructions and the concrete memory-operation order, rather than accepting an objdump exit status alone.
+
+The two real public `insert<Filter,uint64_t>` helpers remain distinct. Control at `0xcdd0` and candidate at `0x14260` both return for zero input, compare the allocated byte count against `0x200001`, and tail-jump to their prefetch/no-prefetch insertion body. The dispatch is the same source behavior, including the inclusive 2 MiB boundary.
+
+Control bodies `0xdec0`/`0xe210` emit sixteen scalar memory `or` instructions per four-key group. Candidate bodies `0x14fd0`/`0x15370` emit four `vpexpandd` operations, each followed by a memory-source `vporq` and an aligned `vmovdqa64` store. Every store precedes the next key's memory OR, preserving the required same-line read/modify/write sequence. In the no-prefetch candidate the store PCs are `0x154db`, `0x15541`, `0x155ae`, `0x15617`; in the prefetch candidate they are `0x15147`, `0x151ad`, `0x1521a`, `0x15283`.
+
+The candidate also emits per-key shift/OR reductions, a general-register/opmask transfer and `vinserti128`/`vinserti64x4` preparation around expansion. Those instructions did not disappear. Both source stack arrays were eliminated in these vector bodies. Register scheduling and some equivalent ternary-logic forms differ, so the evidence supports four line stores versus sixteen word ORs, not an otherwise instruction-identical speed attribution. Native code uses the host ISA; the separate successful minimal-F build establishes that the source change does not require VL/DQ/BW/BITALG/VBMI.
+
+The public helper calls occur between actual clocks in both build contracts. Control pure allocation/ready/call/end are `0x9b49`/`0x9b68`/`0x9bad`/`0x9bc7`; common-hash build uses `0x9df9`/`0x9e17`/`0xa02e`/`0xa220`. Candidate pure uses `0x10fd9`/`0x10ff8`/`0x1103d`/`0x11057`; common-hash uses `0x11289`/`0x112a7`/`0x114be`/`0x116b0`. The complete windows are archived. Query paths remain source-identical but occupy different type instantiations/addresses; this experiment makes no query-speed claim.
+
+Manual gate: passed for the fixed single candidate and both insertion dispatch paths. Correctness is separately supported by all three checker profiles and complete bitmap/oracle comparisons. There is no performance conclusion yet.
