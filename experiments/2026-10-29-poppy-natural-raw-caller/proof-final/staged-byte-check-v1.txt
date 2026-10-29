@@ -1,0 +1,6 @@
+The first proof archive commit attempt stopped before git commit because the exact staged-byte guard detected Git's automatic CRLF-to-LF conversion of assembly-review/clock-map.csv. The tool reported:
+
+warning: in the working copy of 'experiments/2026-10-29-poppy-natural-raw-caller/assembly-review/clock-map.csv', CRLF will be replaced by LF the next time Git touches it
+AssertionError at the staged Git blob == working file byte check.
+
+Only this operation's staged paths were restored to an empty shared index under the Git lock; every working file and completed compiler/runtime result remained unchanged. An additive assembly-review/.gitattributes now marks CSV as -text. The CSV's original bytes and its existing extraction hash are preserved. The archive adds this note and the attribute file before a new exact staged-byte check. This was a Git packaging guard failure, not a new compiler/BF or numerical-analysis attempt.
