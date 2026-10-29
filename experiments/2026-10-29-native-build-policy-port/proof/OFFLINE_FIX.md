@@ -1,0 +1,1 @@
+The first source-only synthetic run had one failing assertion: the test counted the two top-level ledger object keys instead of its `cases` array. The fixed96 ledger and all native/caller sources stayed unchanged. The test now selects the existing `cases` field. Original failing stdout/stderr are retained. No compiler or Bloom execution occurred.
