@@ -1,0 +1,123 @@
+{
+  "status": "Prespecified source-only confirmation; no compile or performance execution authorized",
+  "candidate_count": 1,
+  "initial_wrapper_commit": "07746e17f82e3fa48adf3bbd1f6fed00daf71514",
+  "native_source_commit": "5fd487fe3381ce05be2ba823a6137107f4108854",
+  "focused_correctness_source_commit": "3251b2cdc38d6ba2e2d0c79664516c1424caa2e6",
+  "focused_correctness_result_commit": "88baaf2ccd5c61de863ab3a618b7c4f141c03c86",
+  "training_evidence_commit": "93f1e29881c08730541d50978d39a313b8afe54a",
+  "training_seed": 42,
+  "fresh_input_seeds": [
+    74381,
+    164321
+  ],
+  "policy": {
+    "batch_max_inclusive": 65536,
+    "actual_bytes_max_inclusive": 262144,
+    "inside_build_request": 1,
+    "outside_build_request": "unchanged original requested T",
+    "query_request": "unchanged original requested T"
+  },
+  "languages": [
+    "cpp",
+    "rust"
+  ],
+  "families": [
+    "Split64",
+    "Split64Range"
+  ],
+  "requested_T": [
+    4,
+    8
+  ],
+  "counts": {
+    "paired_cases": 96,
+    "variant_rows": 192,
+    "serial_reference_records": 96,
+    "populated_paired_cases": 32,
+    "empty_paired_cases": 64,
+    "paired_contracts": 160,
+    "variant_metric_records": 320,
+    "serial_metric_records": 160,
+    "timed_filter_lifetimes": 1920,
+    "untimed_oracle_filter_lifetimes": 96
+  },
+  "repeats": 4,
+  "schedule": [
+    [
+      "serial",
+      "control",
+      "candidate"
+    ],
+    [
+      "candidate",
+      "control",
+      "serial"
+    ],
+    [
+      "serial",
+      "candidate",
+      "control"
+    ],
+    [
+      "control",
+      "candidate",
+      "serial"
+    ]
+  ],
+  "empty_contract_order": [
+    [
+      "insert",
+      "allocate_insert"
+    ],
+    [
+      "allocate_insert",
+      "insert"
+    ],
+    [
+      "allocate_insert",
+      "insert"
+    ],
+    [
+      "insert",
+      "allocate_insert"
+    ]
+  ],
+  "population_contract": "insert only; allocate_insert is unavailable and has no trial vector",
+  "serial_schedule_limitation": "Serial occupies first/last only; control/candidate have identical positions and ABBA pair order",
+  "case_order": "Seed1 forward finite geometry/T/language order; seed2 exact reverse; no post-data reordering",
+  "input": {
+    "generator": "SplitMix64(index): z=0x243f6a8885a308d3+(index+1)*0x9e3779b97f4a7c15; standard two wrapping mixers; prehashed before clocks",
+    "raw_seed_base": "seed << 42",
+    "history_offset": 0,
+    "new_offset": 1099511627776,
+    "negative_offset": 2199023255552,
+    "hotspot": "Only new hashes have high32 cleared; history remains uniform",
+    "history_block_size": 4096,
+    "query_count": 32771,
+    "query_mapping": "i%3==0 new[i%n], i%3==1 history[i%history_n] else new[(i*17)%n] if no history, remaining generated negatives",
+    "raw_domains_disjoint": true
+  },
+  "clock_contract": {
+    "insert": "Fresh filter allocation/prefill outside clock; original-T public wrapper insertion inside clock",
+    "allocate_insert": "Empty cases only; affinity expansion before clock; constructor plus original-T public wrapper insertion inside clock",
+    "included": "policy selection, all native partition/scratch allocation, count/scatter/insert passes, thread creation and joins",
+    "excluded": "input generation, CPU-affinity changes, validation, prepopulation, destruction",
+    "prefill": "Separate diagnostic setup duration; never subtracted from a primary timer",
+    "unit": "nanoseconds per newly inserted hash; absolute durations retained"
+  },
+  "lifetime": "Exactly one live native bitmap, including oracle; retain only oracle dense answers before timed allocations",
+  "validation": "All old/new inserted hashes present and every guarded mixed output equal through serial and unchanged-T public parallel queries after every timed instance",
+  "accounting": "Original requested T, effective request, actual W, estimated public build scratch, spawned workers/caller model, actual bytes; no cross-language scheduling equivalence claim",
+  "placement": {
+    "status": "Exact socket/CPU list selected in later execution freeze; no compute lease now",
+    "serial": "primary CPU only",
+    "parallel": "first T distinct physical cores of granted NUMA node; scheduler migration/colocation allowed",
+    "insert_first_touch": "constructor and history on primary CPU before expansion",
+    "allocate_first_touch": "allowed set expanded before constructor timer",
+    "candidate_W1": "Retains original T allowed-core budget; no separate precomputed dispatch"
+  },
+  "quality": "No new FPR qualification or negative-sample pooling; semantic equivalence checks only",
+  "analysis": "Same-language paired candidate/control and own shared serial reference; retain all per-seed/per-scenario losses; no production or global speed claim from this plan",
+  "preflight": "Reuse existing48-case native normal/ASan proof; focused new harness/timing-boundary/CLI/guard checks only"
+}
