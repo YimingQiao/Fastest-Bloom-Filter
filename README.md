@@ -14,6 +14,10 @@ The project name is an ambition, not a claim that one implementation wins every 
 
 ## Modern external comparison
 
+See the [per-scenario Top 3 tables](docs/benchmark-top3-2026-10-30/REPORT.md)
+for 544 descriptive views from seven complete suites, with latency, relative
+throughput, actual capacity and explicit separation of measurement contexts.
+
 Comparisons constrain **actual bitmap bytes and measured false-positive rate**.
 Reports distinguish hashing, public API shape, construction and thread startup.
 Pinned baselines include FastFilter, Boost.Bloom1.92, RocksDB FastLocalBloom,
