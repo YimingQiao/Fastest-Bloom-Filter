@@ -58,8 +58,10 @@ has not changed default worker selection; its unchanged-code controls leave
 Recent singleton SIMD experiments improve their own controls, but retain bulk
 regressions. The C++ candidate also loses 204 eligible external comparisons;
 the Rust experiment has no external leadership result. Independent32Range
-retains small-table and bulk-query losses. The expanded raw-input baseline
-comparison is still running.
+retains small-table and bulk-query losses. The completed raw-input comparison
+still retains native query and build losses to Bloomsday. A fixed64 prefetch experiment improves its large
+bulk control but still misses its external/production target and regresses on
+small tables.
 
 <details>
 <summary>Experimental gains, losses and baseline validation</summary>
@@ -90,6 +92,16 @@ losses. At 32M keys, visible-single queries win all eight comparisons against
 the selected Boost control, but batch4096 loses all 16 comparisons against
 both rival groups. The preset large-table target is not met: **15 wins and
 17 losses**. The layout stays experimental; all 4,608 samples are retained.
+
+The subsequent [fixed64 prefetch comparison](experiments/2026-10-30-independent32-range-prefetch64-analysis/INTERPRETATION.md)
+reduces large batch4096 latency **8.7–12.6%** against that same layout without
+prefetching. Its primary target still fails: **16 wins and 8 losses** across
+the original control, eligible external and production rivals. Including
+hashing, large batches beat both rival groups by only **0.2–1.8%** latency;
+prehashed queries lose **2.9–6.0%** to Boost and **15.6–18.6%** to the native
+leader. All 64 small-table rival comparisons lose. Across all contracts the
+candidate retains **35 wins and 93 losses**, with all 4,096 samples preserved.
+It remains experimental, without a new Rust, build or multithread result.
 
 <details>
 <summary>See gains and regressions across every query contract</summary>
@@ -130,8 +142,11 @@ frozen prepared-u64/byte8 contract; they do not measure direct raw Poppy APIs.
 A separate [fastbloom-rs raw-byte caller](experiments/2026-10-29-fastbloom-rs-raw8-caller/proof-final/REPORT.md)
 passes normal/ASan checks for all 24 public probe counts and 21 retained controls.
 Its hashes stay inside the clock, and required build scratch is included in
-allocation+build. Its fixed 786-row comparison is running; results will be
-reported after the complete raw archive is validated.
+allocation+build. Its [completed 786-row comparison](experiments/2026-10-29-fastbloom-rs-raw8-analysis/INTERPRETATION.md)
+retains all K1–24 configurations. The new family wins none of the 96 comparable
+query or 96 build views against retained external leaders. The combined native
+envelope retains **16 query and 9 build losses**, all to Bloomsday. This is one
+seen seed and one training round; the repeated views are not independent trials.
 The [natural Poppy caller](experiments/2026-10-29-poppy-natural-raw-caller/proof-final/REPORT.md)
 also passes normal/ASan checks for 14 constructions through both byte8 and
 typed-u64 public APIs. Their natural hashing is included; full-load quality

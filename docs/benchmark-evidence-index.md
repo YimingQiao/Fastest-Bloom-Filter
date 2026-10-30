@@ -547,3 +547,36 @@ because a valid proof sealer was absent from its older source-only inventory;
 the preserved proof-verified allowance changes no calculation or raw data.
 This result does not promote the candidate or establish Rust, build or
 multithread performance.
+
+The subsequent [fixed64 prefetch caller](../experiments/2026-10-30-independent32-range-prefetch64/caller/REPORT.md)
+passes native, AVX2 and ASan/UBSan checks. Actual assembly retains the queue's
+stack setup before the generic batch-size branch, including short calls.
+The [complete 192-row comparison](../experiments/2026-10-30-independent32-range-prefetch64-analysis/INTERPRETATION.md)
+uses two seen seeds, two reversed rounds and cal26 counts measured again for
+every API. All 16 points pass both-seed 1% FPR and actual 16-bpk memory gates.
+All eight large batch4096 comparisons beat the exact non-prefetch control,
+reducing latency 8.7–12.6%. Against external and production rivals, each group
+retains four wins and four losses: staged hash+query wins by 0.2–1.8%, while
+prehashed queries lose 2.9–6.0% to Boost and 15.6–18.6% to the native leader.
+The primary 24-comparison target fails with 16 wins/8 losses. All 64 small-table
+rival pairs lose; all-contract per-cell and descriptive fixed-rival tables
+each retain 35 wins/93 losses. The 64 unconditional control pairs retain
+19 wins/45 losses. No layout is promoted.
+
+The first formal run and first frozen offline analysis both completed. An
+independent arithmetic audit recomputed all 32 unpooled quality records,
+26 known mapping groups, 512 vectors/4,096 samples, 512 alternatives,
+128 cell and 128 fixed-rival pairs, 64 controls, 256 round comparisons and
+24 primary decisions. Known mappings share no pooled denominator. This is
+a query-only experiment; no build, Rust, multithread, fresh-seed confirmation
+or isolated prefetch-causality claim follows.
+
+The [complete 786-row raw-byte comparison](../experiments/2026-10-29-fastbloom-rs-raw8-analysis/INTERPRETATION.md)
+retains all fastbloom-rs K1–24 settings and registered controls. The new family
+loses all 96 comparable query and 96 comparable build views against retained
+external leaders, with 12 unavailable views in each class. The combined native
+envelope retains 16 query and 9 build losses, all to Bloomsday. All 262 cal24
+records, 524 reuse rows, 216 views and 28,296 alternatives remain archived.
+These are repeated views of one seen seed and one training round; the native
+envelope combines layouts. Natural Poppy and the newer Rust SIMD candidate
+remain outside this measured panel.

@@ -193,6 +193,23 @@ API receives no unused buffer. The verified caller releases build scratch
 before queries and keeps every implementation's required hashing inside its
 raw operation. This prevents a faster inner loop from hiding prepaid work.
 
+The [fixed64 prefetch caller](../experiments/2026-10-30-independent32-range-prefetch64/caller/assembly-review/REVIEW.md)
+makes the memory-overlap hypothesis explicit: a 256-byte queue holds bucket
+indices for 64 future queries, while each probe mask is computed when its
+bucket is consumed. The actual native and AVX2 code moves the queue's stack
+setup before the batch-size branch, so even short generic calls pay that cost.
+Boost's measured public adapter returns from its singleton path before its
+larger bulk frame. This is a concrete reason to retain small-batch controls
+when adding a bulk pipeline. Correct output and visible prefetch instructions
+alone establish neither a speedup nor how many misses the processor overlaps.
+The [completed comparison](../experiments/2026-10-30-independent32-range-prefetch64-analysis/INTERPRETATION.md)
+reduces large batch4096 latency 8.7–12.6% against its exact non-prefetch control,
+yet prehashed queries still lose to both eligible rival groups. Hash+query wins
+are only 0.2–1.8%, and small-table bulk calls regress against the control.
+The preset target fails. Queue traffic, address arithmetic, stack work and
+changed generated code remain costs to investigate together; the measurement
+does not isolate a prefetch-only effect.
+
 The [complete Poppy comparison](../experiments/2026-10-29-poppy-public-speed-analysis/INTERPRETATION.md)
 also keeps the strongest existing rivals visible. Adding 47 public mappings
 produces no Poppy win over retained external leaders in this prepared-input
