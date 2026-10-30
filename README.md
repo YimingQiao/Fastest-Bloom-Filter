@@ -1,167 +1,160 @@
-# Fastest-Bloom-Filter
+# Fastest Bloom Filter
 
-Fastest-Bloom-Filter is a high-performance C++ library that implements various Bloom filter designs, each optimized for specific use cases. The library provides a unified interface for all Bloom filter implementations, enabling seamless integration and easy benchmarking.
+### High-throughput membership queries. Native C++ and Rust.
 
-## Features
+Bloom filters for processing keys in batches: compact cache-line layouts, SIMD queries, and parallel construction. Start with **FourSectorRange12** for a 24-bit/key budget and a measured false-positive target of **0.01%**. Choose a layout using the memory and error limits of your workload.
 
-- **Multiple Implementations**: Includes a variety of Bloom filter designs optimized for different performance and memory trade-offs.
-- **Unified Interface**: All implementations share a common interface for ease of use and interchangeability.
-- **High Performance**: Designed for speed and low memory usage.
-- **Configurable Parameters**: Supports tuning of false positive rates and memory usage.
+[Query performance](#query-performance) · [Get started](#get-started) · [Design and API](docs/api.md) · [Reproduce](docs/reproduce.md)
 
-## Shared Interface
+<img src="docs/assets/batch4096.svg" alt="A batch of 4096 hashed keys enters a SIMD Bloom filter. Each key probes four words within one 64-byte cache line and produces a membership result." width="900">
 
-All Bloom filters in this repository implement the following interface:
+## Query performance
 
-- **Constructor**: Initializes the Bloom filter with the number of keys and bits per key.
-  ```cpp
-  BloomFilterType(size_t num_keys, uint32_t num_bits_per_key);
-  ```
+**4096 keys per batch. Nanoseconds per key. Lower is faster.**
 
-- **Insert**: Inserts a batch of hashed keys into the Bloom filter.
-  ```cpp
-  void Insert(uint32_t num, uint64_t *key);
-  ```
+Measured on an Intel Xeon Platinum 8474C with AVX-512 enabled: 65,536 or 33,554,432 inserted keys, 50% query hits, and 4,194,304 queries per timed pass. These tables use an **actual allocation ceiling of 24 bits/key** and a **0.01% FPR quality gate**. Native filter sizes are 192 KiB and 96 MiB respectively.
 
-- **Lookup**: Checks the membership of a batch of hashed keys and outputs the results.
-  ```cpp
-  uint32_t Lookup(uint32_t num, uint64_t *key, uint32_t *out);
-  ```
+### C++ · one core
 
-This shared interface allows you to easily switch between different Bloom filter implementations without modifying your application logic.
+Prehashed queries and common-hash-plus-query are separately timed contracts. Each value is the geometric mean of three construction-seed medians, with six timing trials per seed. The table shows the three fastest qualifying APIs at each size in the fixed five-API confirmation panel.
 
-## Build Instructions
+<!-- BEGIN CPP_RESULTS -->
+| Inserted keys | Method | Prehashed ns/key | Hash + query ns/key |
+| ---: | :--- | ---: | ---: |
+| 65,536 | FourSectorRange12 | 1.1949 | 1.7066 |
+| 65,536 | Split64Range | 1.6933 | 2.2606 |
+| 65,536 | FastFilterFixed64 | 2.1806 | 2.7308 |
+| 33,554,432 | FourSectorRange12 | 5.6188 | 5.2459 |
+| 33,554,432 | Split64Range | 6.0818 | 5.4755 |
+| 33,554,432 | Boost192Multi64K8 | 6.5089 | 5.8004 |
+<!-- END CPP_RESULTS -->
 
-To build the project, follow these steps:
+### Rust · one core
 
-1. Clone the repository:
+Raw-key queries include each API's required hashing. Eight timing trials, one previously seen construction seed. These measurements use a separate Rust harness; they are not a C++ versus Rust language comparison.
 
-   ```bash
-   git clone https://github.com/YimingQiao/Fastest-Bloom-Filter.git
-   cd Fastest-Bloom-Filter
-   ```
+<!-- BEGIN RUST_RESULTS -->
+| Inserted keys | Method | Raw query ns/key |
+| ---: | :--- | ---: |
+| 65,536 | FourSectorRange12 | 1.6447 |
+| 65,536 | Split64Range | 2.1370 |
+| 65,536 | Fastbloom017K7 | 11.7867 |
+| 33,554,432 | Split64Range | 5.4348 |
+| 33,554,432 | FourSectorRange12 | 5.4837 |
+| 33,554,432 | Fastbloom017K7 | 33.3091 |
+<!-- END RUST_RESULTS -->
 
-2. Create a build directory and navigate into it:
+### C++ · eight physical cores
 
-   ```bash
-   mkdir build
-   cd build
-   ```
+A common executor splits the query stream across eight cores and calls each API in batches of 4096. **Thread creation and join are included.** Values are elapsed wall time divided by the total keys, not individual request latency. Three construction-seed medians, six timing trials per seed. This is a shared-executor comparison, separate from timings of the native parallel wrappers.
 
-3. Configure the project using CMake. To enable or disable AVX-512 optimizations, modify the `USE_AVX512` option directly in the `CMakeLists.txt` file:
+<!-- BEGIN MT_RESULTS -->
+| Inserted keys | Method | Prehashed ns/key | Hash + query ns/key |
+| ---: | :--- | ---: | ---: |
+| 65,536 | FourSectorRange12 | 0.2048 | 0.2780 |
+| 65,536 | Split64Range | 0.2690 | 0.3392 |
+| 65,536 | FastFilterFixed64 | 0.3299 | 0.4025 |
+| 33,554,432 | FourSectorRange12 | 0.7953 | 0.7529 |
+| 33,554,432 | Split64Range | 0.8531 | 0.7792 |
+| 33,554,432 | Boost192Multi64K8 | 0.8969 | 0.8228 |
+<!-- END MT_RESULTS -->
 
-   ```cmake
-   # In CMakeLists.txt
-   option(USE_AVX512 "Enable AVX-512 optimizations" ON) # Set to OFF to disable
-   ```
+FourSectorRange12 leads this C++ strict-budget panel. In the Rust large-table result, Split64Range is slightly faster. At looser error targets, FastPattern, FourSector, and Split64 can be better choices. The [complete performance report](docs/performance.md) includes the top three for every published condition, actual allocations, and all 1,170 qualifying configuration rows.
 
-   After modifying the file, run:
+These are measurements of selected implementations on this machine. Quality gates use finite-sample, pointwise Wilson upper bounds; they are not guarantees for every dataset. Small timing differences are descriptive. Results do not establish universal leadership or an end-to-end SQL speedup.
 
-   ```bash
-   cmake ..
-   ```
+## Get started
 
-4. Build the project:
+### C++
 
-   ```bash
-   cmake --build .
-   ```
-
-## Usage
-
-After building the project, you can use any of the Bloom filter implementations in your C++ code. Below is an example using the `CacheSectorizedBF32Bit` implementation:
+Use the headers in `include/` with C++17. Hash keys uniformly to 64 bits before insertion and lookup. This example uses a literal 24-bit/key budget for 65,536 keys.
 
 ```cpp
-#include "cache_sectorized_BF_32bit.h"
-
-#include <cstdint>
-#include <iostream>
+#include "four_sector_range12_bloom.h"
+#include <array>
+#include <cassert>
+#include <vector>
 
 int main() {
-  using bloom_filters::CacheSectorizedBF32Bit;
+    constexpr size_t n = 65536;
+    bloom_filters::FourSectorRange12BloomFilter filter(
+        bloom_filters::RangeBytes{n * 3});
+    std::vector<uint64_t> hashes(n);
+    for (size_t i = 0; i < n; ++i)
+        hashes[i] = bloom_filters::MurmurHash64(i);
+    filter.Insert(n, hashes.data());
 
-  // Initialize the Bloom filter with 1000 keys and 10 bits per key.
-  CacheSectorizedBF32Bit bloom_filter(/*num_keys=*/1000, /*num_bits_per_key=*/10);
-
-  // Example keys.
-  uint64_t keys[] = {0x123456789ABCDEF0, 0x0FEDCBA987654321};
-  uint32_t results[2] = {0};
-
-  // Insert keys into the Bloom filter.
-  bloom_filter.Insert(/*num=*/2, /*key=*/keys);
-
-  // Lookup keys in the Bloom filter.
-  bloom_filter.Lookup(/*num=*/2, /*key=*/keys, /*out=*/results);
-
-  // Check results.
-  for (int i = 0; i < 2; ++i) {
-    if (results[i]) {
-      std::cout << "Key " << i << " is in the set.\n";
-    } else {
-      std::cout << "Key " << i << " is not in the set.\n";
-    }
-  }
-
-  return 0;
+    std::array<uint32_t, 4096> answers{};
+    filter.Lookup(answers.size(), hashes.data(), answers.data());
+    for (auto answer : answers) assert(answer == 1);
 }
 ```
 
-## Benchmarking
-
-The repository includes a benchmarking tool (`main_benchmark.cpp`) to evaluate the performance of different Bloom filter implementations. You can run the benchmark manually with the following command:
-
-```bash
-./Fastest-Bloom-Filter <num_keys> <num_bits_per_key> <num_lookup_times>
+```sh
+c++ -std=c++17 -O3 -march=native -Iinclude example.cpp -o example
 ```
 
-For example:
+`-march=native` targets the build machine. Compile for the deployment ISA when distributing binaries. Standalone headers include scalar paths; the benchmark suite defaults to AVX2.
 
-```bash
-./Fastest-Bloom-Filter 15 16 26
+### Rust
+
+Add this repository's `rust/` directory as a local dependency. Rust 1.89 or newer is required; the library has no external crate dependencies.
+
+```toml
+[dependencies]
+fastest-bloom-filter = { path = "../Fastest-Bloom-Filter/rust" }
 ```
 
-This command benchmarks the Bloom filters with 2<sup>15</sup> keys, 16 bits per key, and 2<sup>26</sup> lookup operations.
+```rust
+use fastest_bloom_filter::{hash64, FourSectorRange12BloomFilter};
 
-### Automated Benchmarking Script
+fn main() {
+    let hashes: Vec<u64> = (0..65_536_u64).map(hash64).collect();
+    let mut filter = FourSectorRange12BloomFilter::with_byte_budget(hashes.len() * 3)
+        .expect("valid byte budget");
+    filter.insert_hashes(&hashes);
 
-To simplify running benchmarks with multiple parameter combinations, the repository provides an automated script: `scripts/run_benchmarks.py`. This script runs the benchmarks with predefined parameter ranges and saves the results to a specified directory.
+    let mut answers = vec![0_u32; 4096];
+    filter.lookup_hashes(&hashes[..4096], &mut answers);
+    assert!(answers.iter().all(|&answer| answer == 1));
+}
+```
 
-#### Usage
+Rust selects AVX-512, AVX2, or scalar queries at runtime. The `disable-avx512` feature retains AVX2 and scalar dispatch.
 
-1. Ensure the benchmark executable is built and available (e.g., `./build/main_benchmark`).
-2. Run the script:
+## Parallel construction and queries
 
-   ```bash
-   python3 scripts/run_benchmarks.py --executable ./build/main_benchmark --output-dir benchmark_results
-   ```
+C++ provides `ParallelFourSectorRange12BloomFilter` in `parallel_four_sector_range12_bloom.h`, with `InsertParallel(count, hashes, workers)` and `LookupParallel(count, hashes, answers, workers)`.
 
-   - `--executable`: Path to the benchmark executable (default: `./build/main_benchmark`).
-   - `--output-dir`: Directory to save the benchmark results (default: `benchmark_results`).
+Rust exposes `insert_hashes_parallel(&hashes, workers)` and `lookup_hashes_parallel(&hashes, &mut answers, workers)` directly on the filter. Both languages assign complete physical cache lines to construction workers, then allow concurrent immutable queries. Construction requires exclusive access. [Memory accounting and concurrency contracts →](docs/api.md)
 
-#### Example Output
+## Design
 
-The script will generate result files in the specified output directory, named according to the parameters used (e.g., `keys_12_bits_32_lookups_24.txt`).
+FourSectorRange12 probes four 32-bit words in one 64-byte cache line, setting three bits per word. A small pattern dictionary generates masks; batch kernels process independent keys with SIMD. Range reduction supports byte budgets that are not powers of two. Keeping the probes local and exposing independent work across a batch are central to this design.
 
-#### Customizing Parameters
+| Layout | A useful starting point |
+| :--- | :--- |
+| **FourSectorRange12** | Strict 0.01% target at 24 actual bits/key; bulk queries |
+| **Split64Range** | Exact byte budgets; competitive large-table Rust queries |
+| **FastPattern** | Throughput at a looser 1% target |
+| **FourSector** | A 0.1% target with a compact cache-line layout |
+| **Split64** | Large-table queries at a 0.1% target |
+| **ByteSplit** | A byte-oriented SIMD alternative with FastFilter-derived masks |
 
-You can modify the parameter ranges in the script by editing the following variables:
+These are starting points from the published workload, not guaranteed FPR settings. Check actual bytes and calibrate the error rate on your data. Each layout is available natively in C++ and Rust; legacy C++ baselines remain available for comparison.
 
-- `num_keys_powers`: Powers of 2 for the number of keys (e.g., `[12, 14, 16, 18]`).
-- `bits_per_key`: Number of bits per key (e.g., `[32]`).
-- `lookup_powers`: Powers of 2 for the number of lookups (e.g., `[24]`).
+## Build and check
 
-## Contributing
+```sh
+cmake -S . -B build/native -DCMAKE_BUILD_TYPE=Release -DBF_NATIVE=ON
+cmake --build build/native -j
+ctest --test-dir build/native --output-on-failure
+cargo test --locked --manifest-path rust/Cargo.toml
+cargo test --locked --manifest-path rust/Cargo.toml --features disable-avx512
+```
 
-Contributions are welcome! If you would like to contribute, please fork the repository, create a feature branch, and submit a pull request. Ensure your code adheres to the project's coding standards and includes appropriate tests.
+See [reproduction instructions](docs/reproduce.md) for batch4096 runs, frozen external comparisons, and regenerating the published tables. [Release validation](docs/release-validation.md) records the checks for this source package.
 
-## License
+## License and attribution
 
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
-## Reference
-
-This project is inspired by the techniques described in the following paper:
-
-**Harald Lang, Thomas Neumann, Alfons Kemper, and Peter Boncz**. *Performance-optimal filtering: Bloom overtakes Cuckoo at high throughput*. Proceedings of the VLDB Endowment, Vol. 12, No. 5, 2019, pp. 502–515. [Link to paper](https://doi.org/10.14778/3303753.3303757)
-
-
+Project code is [MIT licensed](LICENSE). ByteSplit includes adaptations of FastFilter code under [Apache-2.0](third_party/FastFilter/LICENSE); retain its [notice](third_party/FastFilter/NOTICE). The Rust package includes both licenses and its own [attribution](rust/NOTICE). External baselines in the research archive retain their upstream licenses.

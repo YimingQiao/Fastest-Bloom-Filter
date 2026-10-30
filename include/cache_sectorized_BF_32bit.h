@@ -27,6 +27,9 @@ public:
 	}
 
 public:
+    size_t SizeInBytes() const { return blocks_.size() * sizeof(blocks_[0]); }
+
+public:
 	inline uint32_t Lookup(uint32_t num, uint64_t *key, uint32_t *out) {
 		return CacheSectorizedLookup(num, key, blocks_.data(), out);
 	}

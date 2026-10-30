@@ -7,7 +7,9 @@
 #include "cache_sectorized_BF_32bit.h"
 #include "new_cache_sectorized_BF_32bit.h"
 #include "impala_blocked_BF_64bit.h"
+#ifdef __AVX512F__
 #include "impala_blocked_BF_64bit_avx512.h"
+#endif
 
 #include <cstdint>
 #include <iostream>

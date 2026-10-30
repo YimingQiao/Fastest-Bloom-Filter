@@ -26,6 +26,9 @@ public:
 	}
 
 public:
+    size_t SizeInBytes() const { return blocks.size() * sizeof(blocks[0]); }
+
+public:
 	inline void Insert(uint32_t num, uint32_t *key) {
 		InsertInternal(num, key, blocks.data());
 	}

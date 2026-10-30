@@ -1,0 +1,21 @@
+name: Source and publication checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  cpp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build/check -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build/check -j 2
+      - run: ctest --test-dir build/check --output-on-failure
+      - run: python3 scripts/render_batch4096.py --check
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup toolchain install 1.89.0 --profile minimal --component clippy
+      - run: cargo +1.89.0 test --locked --manifest-path rust/Cargo.toml
+      - run: cargo +1.89.0 test --locked --manifest-path rust/Cargo.toml --features disable-avx512
+      - run: cargo +1.89.0 clippy --locked --manifest-path rust/Cargo.toml --all-targets -- -D warnings

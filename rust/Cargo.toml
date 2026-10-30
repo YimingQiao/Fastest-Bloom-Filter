@@ -1,0 +1,19 @@
+[package]
+name = "fastest-bloom-filter"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+license = "MIT AND Apache-2.0"
+description = "Native Rust SIMD Bloom filters with parallel construction and queries"
+repository = "https://github.com/YimingQiao/Fastest-Bloom-Filter"
+
+[features]
+# Keep runtime AVX2 detection, but omit AVX-512 dispatch for comparison/deployment.
+disable-avx512 = []
+
+[lib]
+name = "fastest_bloom_filter"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
