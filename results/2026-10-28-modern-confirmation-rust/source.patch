@@ -1,0 +1,59 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7f900c5..5c4ece8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -46,6 +46,13 @@ if(BUILD_TESTING)
+     add_executable(test_fast_pattern_portable tests/test_fast_pattern_portable.cpp)
+     target_include_directories(test_fast_pattern_portable PRIVATE include)
+     add_test(NAME portable_fast_pattern COMMAND test_fast_pattern_portable)
++    add_executable(test_layouts tests/test_layouts.cpp)
++    target_link_libraries(test_layouts PRIVATE bf_options)
++    add_test(NAME native_layouts COMMAND test_layouts)
++    add_executable(test_layouts_portable tests/test_layouts.cpp)
++    target_include_directories(test_layouts_portable PRIVATE include)
++    target_link_libraries(test_layouts_portable PRIVATE Threads::Threads)
++    add_test(NAME portable_layouts COMMAND test_layouts_portable)
+     add_executable(test_parallel tests/test_parallel.cpp)
+     target_link_libraries(test_parallel PRIVATE bf_options)
+     add_test(NAME parallel_filters COMMAND test_parallel)
+diff --git a/rust/src/lib.rs b/rust/src/lib.rs
+index 09c42f9..94c1a64 100644
+--- a/rust/src/lib.rs
++++ b/rust/src/lib.rs
+@@ -5,7 +5,12 @@ use std::fmt;
+ 
+ mod parallel;
+ mod patterns;
++mod four_sector;
++mod layout_parallel;
++mod split64;
++pub use four_sector::FourSectorBloomFilter;
+ pub use parallel::AtomicFastPatternBloomFilter;
++pub use split64::Split64BloomFilter;
+ 
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub enum SizeError {
+diff --git a/src/compare_benchmark.cpp b/src/compare_benchmark.cpp
+index ea5d8e4..2f4e9ab 100644
+--- a/src/compare_benchmark.cpp
++++ b/src/compare_benchmark.cpp
+@@ -11,6 +11,10 @@
+ #include <string>
+ #include <vector>
+ #include "fast_pattern_BF.h"
++#ifndef BF_EXTERNAL_ONLY
++#include "four_sector_bloom.h"
++#include "split64_bloom.h"
++#endif
+ #ifdef BF_EXPERIMENTS
+ #include "direct_split_BF.h"
+ #include "pattern_sectorized_BF.h"
+@@ -304,6 +308,8 @@ int main(int argc, char **argv) {
+ 	    [&] { run<T, H>(#T, ins, query, bpk, hit, batch, repeats, seed, key_base, insert_batch, calibration_power); })
+ 
+ #ifndef BF_EXTERNAL_ONLY
++		ADD(FourSectorBloomFilter, uint64_t);
++		ADD(Split64BloomFilter, uint64_t);
+ 		ADD(RegisterBlockedBF32Bit, uint32_t);
+ 		ADD(RegisterBlockedBF32BitMasks, uint32_t);
+ 		ADD(RegisterBlockedBF64Bit, uint64_t);

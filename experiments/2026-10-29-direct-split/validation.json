@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-28T16:40:09.363592+00:00",
+  "compiler": "Debian clang version 23.0.0 (++20260614104823+cc613052fd6a-1~exp1~20260614224957.2204)\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/lib/llvm-23/bin\n",
+  "cpu": 3,
+  "tests": [
+    "taskset -c 3 ctest --test-dir build/direct-split --output-on-failure: 2/2 pass",
+    "taskset -c 3 ctest --test-dir build/direct-split-sanitized --output-on-failure: 2/2 pass"
+  ],
+  "source_sha256": {
+    "experiments/2026-10-29-direct-split/direct_split.hpp": "508bd864866c7686c17f7ced8fce0d3b8f6458c7afe275c21344b5bf3781c7d0",
+    "experiments/2026-10-29-direct-split/check.cpp": "28715f573499c5b1cb75f79fe907a3245b425e0e4a6cdc43a7a3c4c5d84c7411",
+    "experiments/2026-10-29-direct-split/split64_frozen.h": "495bd6d182298bfbd769b302d72a2d70e4c2fd1e074f16c87594e43e9d3b32f5"
+  },
+  "test_fixture_note": "Initial native check crashed in compiler-generated gather while populating mixed queries at n=1 (GDB check.cpp line84), not in a filter method. Scalar and ASan checks passed. Rewrote fixture generation as separate absent-fill and present-overwrite loops; all native/scalar checks and ASan/UBSan now pass. Candidate algorithms unchanged.",
+  "single_shortcut_controls": {
+    "utc": "2026-10-28T16:46:58.169255+00:00",
+    "tests": [
+      "native/scalar CTest 2/2 pass with both shortcut wrappers",
+      "native/scalar ASan+UBSan CTest 2/2 pass with both shortcut wrappers",
+      "check_controls.py: 24 mixed-hit/batch scenarios, four original/control pairs matched"
+    ],
+    "source_sha256": {
+      "experiments/2026-10-29-direct-split/direct_split.hpp": "16335440fb9c71ea076b317f96caf26da374a615c3677d0348f9746ce1bfbf58",
+      "experiments/2026-10-29-direct-split/check.cpp": "051d19b0cac9c65d8296c77df543662dcae58187cebfc0dec7ae91aec42c289d",
+      "experiments/2026-10-29-direct-split/adapters.hpp": "df297ac238dd99aa3a3109140ca8896e93470de5734c8854429186880cff107e",
+      "experiments/2026-10-29-direct-split/check_controls.py": "19ea57e7f087c0e81e897a4346cf9d5f4db446a6cdd4c2d3071c578cec6b3763"
+    }
+  }
+}

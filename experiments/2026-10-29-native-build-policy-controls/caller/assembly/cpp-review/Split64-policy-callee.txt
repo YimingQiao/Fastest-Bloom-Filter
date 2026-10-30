@@ -1,0 +1,33 @@
+000000000002b230 <native_after::ParallelLayoutBloomFilter<native_after::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)>:
+   2b230:	55                   	push   %rbp
+   2b231:	41 57                	push   %r15
+   2b233:	41 56                	push   %r14
+   2b235:	41 55                	push   %r13
+   2b237:	41 54                	push   %r12
+   2b239:	53                   	push   %rbx
+   2b23a:	48 81 ec b8 00 00 00 	sub    $0xb8,%rsp
+   2b241:	89 f5                	mov    %esi,%ebp
+   2b243:	48 89 fb             	mov    %rdi,%rbx
+   2b246:	89 74 24 0c          	mov    %esi,0xc(%rsp)
+   2b24a:	48 89 94 24 98 00 00 	mov    %rdx,0x98(%rsp)
+   2b251:	00 
+   2b252:	81 fe 00 40 00 00    	cmp    $0x4000,%esi
+   2b258:	73 12                	jae    2b26c <native_after::ParallelLayoutBloomFilter<native_after::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x3c>
+   2b25a:	89 e8                	mov    %ebp,%eax
+   2b25c:	83 fd 21             	cmp    $0x21,%ebp
+   2b25f:	0f 83 80 00 00 00    	jae    2b2e5 <native_after::ParallelLayoutBloomFilter<native_after::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0xb5>
+   2b265:	31 c9                	xor    %ecx,%ecx
+   2b267:	e9 ae 03 00 00       	jmp    2b61a <native_after::ParallelLayoutBloomFilter<native_after::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x3ea>
+   2b26c:	48 8b 43 08          	mov    0x8(%rbx),%rax
+   2b270:	48 2b 03             	sub    (%rbx),%rax
+   2b273:	49 89 c6             	mov    %rax,%r14
+   2b276:	49 c1 fe 06          	sar    $0x6,%r14
+   2b27a:	48 3d 01 00 04 00    	cmp    $0x40001,%rax
+   2b280:	b8 01 00 00 00       	mov    $0x1,%eax
+   2b285:	48 0f 43 c1          	cmovae %rcx,%rax
+   2b289:	81 fd 01 00 01 00    	cmp    $0x10001,%ebp
+   2b28f:	48 0f 43 c1          	cmovae %rcx,%rax
+   2b293:	48 85 c0             	test   %rax,%rax
+   2b296:	75 11                	jne    2b2a9 <native_after::ParallelLayoutBloomFilter<native_after::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x79>
+   2b298:	49 89 d7             	mov    %rdx,%r15
+   2b29b:	e8 30 9c 00 00       	call   34ed0 <std::thread::hardware_concurrency()@plt>

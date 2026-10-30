@@ -1,0 +1,70 @@
+--- frozen-wrapper/cpp/main.cpp
++++ actual-native/cpp/main.cpp
+@@ -1,5 +1,5 @@
+-#include "../../cpp/bindings.hpp"
+-#include "../../../2026-10-29-split64-range-native-scaling/cpp/placement.hpp"
++#include "bindings.hpp"
++#include "placement.hpp"
+ #include <algorithm>
+ #include <array>
+ #include <chrono>
+@@ -40,12 +40,9 @@
+     const auto& g = geometry.at(id);
+     return {id,g[0],g[1],request,g[2],seed,seed<<42,g[3]!=0,std::move(cpus)};
+ }
+-template<bool Range, bool Enabled> using Filter = native_build_policy::Filter<
+-    std::conditional_t<Range,bloom_filters::ParallelSplit64RangeBloomFilter,
+-                             bloom_filters::ParallelSplit64BloomFilter>,Enabled>;
+-template<bool Range, bool Enabled> Filter<Range,Enabled> Make(const Case& c) {
+-    if constexpr (Range) return Filter<Range,Enabled>(bloom_filters::RangeBytes{c.bytes});
+-    else return Filter<Range,Enabled>(c.bytes/2,8);
++template<bool Range, bool After> using Filter = typename NativeBinding<Range,After>::Type;
++template<bool Range, bool After> Filter<Range,After> Make(const Case& c) {
++    return NativeBinding<Range,After>::Make(c.bytes);
+ }
+ struct Data { std::vector<uint64_t> batch, query; };
+ Data Workload(const Case& c) {
+@@ -104,22 +101,22 @@
+     }
+ }
+ struct Stats { size_t effective=0,workers=0,scratch=0; };
+-template<bool Enabled,class F> Stats Observe(const F& f,const Case& c,bool serial) {
++template<bool After,class F> Stats Observe(const F& f,const Case& c,bool serial) {
+     Need(f.SizeInBytes()==c.bytes,"actual allocation changed");
+-    const size_t e=Enabled && c.n<=65536 && c.bytes<=262144 ? 1 : c.requested;
++    const size_t e=After && c.n<=65536 && c.bytes<=262144 ? 1 : c.requested;
+     const size_t w=e; // Every fixed case exceeds the native fallback/count bounds.
+     const size_t scratch=w==1 ? 0 : c.n*8+w*((w+7)/8)*64+(w+1)*8;
+-    Need(f.EffectiveBuildRequest(c.n,c.requested)==e && f.BuildWorkers(c.n,c.requested)==w &&
++    Need(f.BuildWorkers(c.n,c.requested)==w &&
+          f.BuildScratchBytes(c.n,c.requested)==scratch,"effective worker/scratch accounting changed");
+     return serial ? Stats{1,1,0} : Stats{e,w,scratch};
+ }
+ struct Samples { Stats stats; std::array<std::vector<double>,2> ns,setup_ns; };
+-template<bool Range,bool Enabled> void Trial(const Case& c,const Data& d,const std::vector<uint32_t>& expected,
++template<bool Range,bool After> void Trial(const Case& c,const Data& d,const std::vector<uint32_t>& expected,
+     std::vector<uint32_t>& out,bool serial,bool allocate,Samples& samples) {
+     Affinity({c.cpus.front()});
+     if(!allocate) {
+-        auto filter=Make<Range,Enabled>(c);
+-        samples.stats=Observe<Enabled>(filter,c,serial);
++        auto filter=Make<Range,After>(c);
++        samples.stats=Observe<After>(filter,c,serial);
+         const auto setup_begin=Clock::now(); Prefill(filter,c); const auto setup_end=Clock::now();
+         if(!serial) Affinity(c.cpus);
+         const auto begin=Clock::now();
+@@ -133,12 +130,12 @@
+         Need(c.history==0,"populated allocation+build is unavailable");
+         if(!serial) Affinity(c.cpus);
+         const auto begin=Clock::now();
+-        auto filter=Make<Range,Enabled>(c);
++        auto filter=Make<Range,After>(c);
+         if(serial) filter.Insert(static_cast<uint32_t>(c.n),d.batch.data());
+         else filter.InsertParallel(static_cast<uint32_t>(c.n),d.batch.data(),c.requested);
+         const auto end=Clock::now();
+         Affinity({c.cpus.front()}); samples.ns[1].push_back(Ns(begin,end)); samples.setup_ns[1].push_back(0);
+-        samples.stats=Observe<Enabled>(filter,c,serial); Validate(filter,c,d,expected,out);
++        samples.stats=Observe<After>(filter,c,serial); Validate(filter,c,d,expected,out);
+     } // Destruction precedes the next arm; it is outside every clock.
+ }
+ void Array(const std::vector<double>& values) {

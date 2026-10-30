@@ -1,0 +1,76 @@
+
+/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000026b70 <_Z20inline_single_kernelILb0EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj>:
+   26b70:	test   %rsi,%rsi
+   26b73:	je     26caa <_Z20inline_single_kernelILb0EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x13a>
+   26b79:	cmp    $0x1,%rsi
+   26b7d:	jne    26b86 <_Z20inline_single_kernelILb0EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x16>
+   26b7f:	xor    %eax,%eax
+   26b81:	jmp    26c55 <_Z20inline_single_kernelILb0EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0xe5>
+   26b86:	mov    %rsi,%r8
+   26b89:	and    $0xfffffffffffffffe,%r8
+   26b8d:	xor    %eax,%eax
+   26b8f:	vpbroadcastq -0x251c0(%rip),%xmm0        # 19d8 <_IO_stdin_used+0x2f8>
+   26b98:	vpbroadcastd -0x254cd(%rip),%ymm1        # 16d4 <__abi_tag+0x1410>
+   26ba1:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   26bb0:	mov    (%rdx,%rax,8),%r9
+   26bb4:	vpbroadcastq %r9,%xmm2
+   26bba:	shr    $0x28,%r9
+   26bbe:	mov    0x18(%rdi),%r10d
+   26bc2:	imul   %r9,%r10
+   26bc6:	mov    (%rdi),%r9
+   26bc9:	shr    $0x13,%r10
+   26bcd:	and    $0xffffffffffffffe0,%r10
+   26bd1:	vmovdqa (%r9,%r10,1),%ymm3
+   26bd7:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   26bdd:	vpmovzxbd %xmm2,%ymm2
+   26be2:	vprolvd %ymm2,%ymm1,%ymm2
+   26be8:	xor    %r9d,%r9d
+   26beb:	vptest %ymm2,%ymm3
+   26bf0:	setb   %r9b
+   26bf4:	mov    %r9d,(%rcx,%rax,4)
+   26bf8:	mov    0x8(%rdx,%rax,8),%r9
+   26bfd:	vpbroadcastq %r9,%xmm2
+   26c03:	shr    $0x28,%r9
+   26c07:	mov    0x18(%rdi),%r10d
+   26c0b:	imul   %r9,%r10
+   26c0f:	mov    (%rdi),%r9
+   26c12:	shr    $0x13,%r10
+   26c16:	and    $0xffffffffffffffe0,%r10
+   26c1a:	vmovdqa (%r9,%r10,1),%ymm3
+   26c20:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   26c26:	vpmovzxbd %xmm2,%ymm2
+   26c2b:	vprolvd %ymm2,%ymm1,%ymm2
+   26c31:	xor    %r9d,%r9d
+   26c34:	vptest %ymm2,%ymm3
+   26c39:	setb   %r9b
+   26c3d:	mov    %r9d,0x4(%rcx,%rax,4)
+   26c42:	add    $0x2,%rax
+   26c46:	cmp    %rax,%r8
+   26c49:	jne    26bb0 <_Z20inline_single_kernelILb0EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x40>
+   26c4f:	test   $0x1,%sil
+   26c53:	je     26caa <_Z20inline_single_kernelILb0EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x13a>
+   26c55:	mov    (%rdx,%rax,8),%rdx
+   26c59:	vpbroadcastq %rdx,%xmm0
+   26c5f:	shr    $0x28,%rdx
+   26c63:	mov    0x18(%rdi),%esi
+   26c66:	imul   %rdx,%rsi
+   26c6a:	mov    (%rdi),%rdx
+   26c6d:	shr    $0x13,%rsi
+   26c71:	and    $0xffffffffffffffe0,%rsi
+   26c75:	vmovdqa (%rdx,%rsi,1),%ymm1
+   26c7a:	vpbroadcastq -0x252ab(%rip),%xmm2        # 19d8 <_IO_stdin_used+0x2f8>
+   26c83:	vpmultishiftqb %xmm0,%xmm2,%xmm0
+   26c89:	vpmovzxbd %xmm0,%ymm0
+   26c8e:	vpbroadcastd -0x255c3(%rip),%ymm2        # 16d4 <__abi_tag+0x1410>
+   26c97:	vprolvd %ymm0,%ymm2,%ymm0
+   26c9d:	xor    %edx,%edx
+   26c9f:	vptest %ymm0,%ymm1
+   26ca4:	setb   %dl
+   26ca7:	mov    %edx,(%rcx,%rax,4)
+   26caa:	vzeroupper
+   26cad:	ret

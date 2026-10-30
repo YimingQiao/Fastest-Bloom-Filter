@@ -1,0 +1,80 @@
+    Checking fastest-bloom-filter v0.1.0 (/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-native/rust)
+error: operator precedence might not be obvious
+   --> src/range_parallel.rs:124:14
+    |
+124 |             (high * self.workers >> 32) as usize
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `(high * self.workers) >> 32`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#precedence
+    = note: `-D clippy::precedence` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::precedence)]`
+
+error: operator precedence might not be obvious
+   --> src/range_parallel.rs:126:16
+    |
+126 |             (((high * self.lines >> 32) * self.workers) / self.lines) as usize
+    |                ^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `(high * self.lines) >> 32`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#precedence
+
+error: operator precedence might not be obvious
+  --> src/split64_range.rs:81:10
+   |
+81 |         ((h >> 32) * self.block_count as u64 >> 32) as usize
+   |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `((h >> 32) * self.block_count as u64) >> 32`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#precedence
+
+error: operator precedence might not be obvious
+  --> src/split64_range.rs:85:22
+   |
+85 |         let index = ((h >> 32) * count as u64 >> 32) as usize - begin;
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `((h >> 32) * count as u64) >> 32`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#precedence
+
+error: operator precedence might not be obvious
+   --> src/split64_range.rs:270:22
+    |
+270 |         let index = ((h >> 32) * count as u64 >> 32) as usize - begin;
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `((h >> 32) * count as u64) >> 32`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#precedence
+
+error: operator precedence might not be obvious
+   --> src/split64_range.rs:283:27
+    |
+283 |             let future = ((hashes[i + PREFETCH] >> 32) * count as u64 >> 32) as usize - begin;
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `((hashes[i + PREFETCH] >> 32) * count as u64) >> 32`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#precedence
+
+error: operator precedence might not be obvious
+   --> src/split64_range.rs:296:22
+    |
+296 |         let index = ((h >> 32) * count as u64 >> 32) as usize - begin;
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `((h >> 32) * count as u64) >> 32`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#precedence
+
+error: operator precedence might not be obvious
+   --> src/split64_range.rs:311:27
+    |
+311 |             let future = ((hashes[i + PREFETCH] >> 32) * count as u64 >> 32) as usize - begin;
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider parenthesizing your expression: `((hashes[i + PREFETCH] >> 32) * count as u64) >> 32`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#precedence
+
+error: manual implementation of `.is_multiple_of()`
+   --> src/range_parallel.rs:117:24
+    |
+117 |             divisible: lines % workers == 0,
+    |                        ^^^^^^^^^^^^^^^^^^^^ help: replace with: `lines.is_multiple_of(workers)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#manual_is_multiple_of
+    = note: `-D clippy::manual-is-multiple-of` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::manual_is_multiple_of)]`
+
+error: could not compile `fastest-bloom-filter` (lib) due to 9 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `fastest-bloom-filter` (lib test) due to 9 previous errors

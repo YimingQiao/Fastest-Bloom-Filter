@@ -1,0 +1,26 @@
+[package]
+name = "fastest-bloom-filter-independent32-singleton-harness"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "compare_benchmark"
+path = "src/main.rs"
+
+[features]
+disable-avx512 = ["fastest-bloom-filter/disable-avx512", "leaf_inline_native/disable-avx512", "independent32_native/disable-avx512", "independent32_singleton/disable-avx512"]
+
+[dependencies]
+independent32_singleton = { package = "independent32-singleton-experiment", path = "../native" }
+independent32_native = { package = "independent32-native-experiment", path = "../../2026-10-29-independent32-native-rust/native" }
+leaf_inline_native = { package = "fastest-bloom-filter-leaf-inline", path = "../leaf-native" }
+fastest-bloom-filter = { path = "../original-native" }
+bloomsday = { git = "https://github.com/sidd-27/Bloomsday.git", rev = "11f16a91a1c8a20344cd263e908f957dac7cf5d0" }
+fastbloom = { version = "=0.17.0", default-features = false, features = ["std"] }
+sbbf-rs = "=0.2.8"
+sbbf-rs-safe = "=0.3.2"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

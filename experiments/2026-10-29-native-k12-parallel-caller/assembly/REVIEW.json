@@ -1,0 +1,207 @@
+{
+  "status": "manual caller/timer boundary review passed",
+  "capture": {
+    "compiler_or_BF_runs": 0,
+    "disassembler": {
+      "path": "/usr/bin/objdump",
+      "sha256": "19717049e8ecd98cfbb17fd9eb25e9fd896ecec2fc4af6b931f3dd0bc4e903de"
+    },
+    "commands": [
+      {
+        "argv": [
+          "/usr/bin/objdump",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "version.stdout",
+        "stderr": "version.stderr"
+      },
+      {
+        "argv": [
+          "/usr/bin/objdump",
+          "-Cd",
+          "--no-show-raw-insn",
+          "/home/yiming/projects/fastest-bf-lab/build/native-k12-parallel-caller-v1/native/public_api"
+        ],
+        "returncode": 0,
+        "stdout": "public.stdout",
+        "stderr": "public.stderr"
+      },
+      {
+        "argv": [
+          "/usr/bin/objdump",
+          "-Cd",
+          "--no-show-raw-insn",
+          "/home/yiming/projects/fastest-bf-lab/build/native-k12-parallel-caller-v1/native/query"
+        ],
+        "returncode": 0,
+        "stdout": "query.stdout",
+        "stderr": "query.stderr"
+      }
+    ],
+    "binaries": {
+      "native-query": {
+        "path": "/home/yiming/projects/fastest-bf-lab/build/native-k12-parallel-caller-v1/native/query",
+        "sha256": "51c190beb2cdf6ae42fcaa6e040c0e3c3ad13a60d61396b4decea7c0bb5e761f"
+      },
+      "native-public_api": {
+        "path": "/home/yiming/projects/fastest-bf-lab/build/native-k12-parallel-caller-v1/native/public_api",
+        "sha256": "993e152c3919bc12c47dd82cdcc85e7233cf8c26b5e8d5c4ad635e10deb17e38"
+      }
+    }
+  },
+  "disassembly_sha256": {
+    "public": "49b399e6dea513e63cc0d9fddfece6b8dcb9a2e5287d1dd7aaf5485ea1853fa2",
+    "query": "913548844564424f4391c328be92a32c9981ff12935f08badb6669ddda2d57fa"
+  },
+  "excerpts": {
+    "split-build": {
+      "source": "public.stdout",
+      "begin": "0xba40",
+      "end_exclusive": "0xbaa0",
+      "ordered_calls": [
+        "ba50:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "ba69:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "ba83:\tcall   14ad0 <bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)>",
+        "ba92:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "range-build": {
+      "source": "public.stdout",
+      "begin": "0xe710",
+      "end_exclusive": "0xe7b0",
+      "ordered_calls": [
+        "e730:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "e777:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "e796:\tcall   1a210 <bloom_filters::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>",
+        "e7a3:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "k12-build": {
+      "source": "public.stdout",
+      "begin": "0x11290",
+      "end_exclusive": "0x11330",
+      "ordered_calls": [
+        "112b0:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "112f7:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "11316:\tcall   1dc10 <bloom_filters::ParallelFourSectorRange12BloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>",
+        "11323:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "split-query": {
+      "source": "public.stdout",
+      "begin": "0xbed0",
+      "end_exclusive": "0xbf80",
+      "ordered_calls": [
+        "beef:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "bf60:\tcall   17ed0 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>",
+        "bf65:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "split-query-reverse": {
+      "source": "public.stdout",
+      "begin": "0xc0a0",
+      "end_exclusive": "0xc150",
+      "ordered_calls": [
+        "c0bf:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "c138:\tcall   17ed0 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>",
+        "c13d:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "range-query": {
+      "source": "public.stdout",
+      "begin": "0xebe0",
+      "end_exclusive": "0xec90",
+      "ordered_calls": [
+        "ec05:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "ec79:\tcall   1d060 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelSplit64RangeBloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelSplit64RangeBloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>",
+        "ec7e:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "range-query-reverse": {
+      "source": "public.stdout",
+      "begin": "0xedb0",
+      "end_exclusive": "0xee70",
+      "ordered_calls": [
+        "edd9:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "ee55:\tcall   1d060 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelSplit64RangeBloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelSplit64RangeBloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>",
+        "ee5a:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "k12-query": {
+      "source": "public.stdout",
+      "begin": "0x11770",
+      "end_exclusive": "0x11830",
+      "ordered_calls": [
+        "11795:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "11809:\tcall   21500 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelFourSectorRange12BloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelFourSectorRange12BloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>",
+        "11813:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "k12-query-reverse": {
+      "source": "public.stdout",
+      "begin": "0x11950",
+      "end_exclusive": "0x11a10",
+      "ordered_calls": [
+        "11979:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>",
+        "119f5:\tcall   21500 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelFourSectorRange12BloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelFourSectorRange12BloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>",
+        "119fe:\tcall   21fd0 <std::chrono::_V2::steady_clock::now()@plt>"
+      ]
+    },
+    "range-lookup-wrapper": {
+      "source": "query.stdout",
+      "address": "0x464c8",
+      "symbol": "00000000000464c8 <void lookup_kernel<bloom_filters::Split64RangeBloomFilter, unsigned long>(bloom_filters::Split64RangeBloomFilter const&, unsigned long, unsigned long const*, unsigned int*)>:",
+      "instruction_count": 4
+    },
+    "k12-lookup-wrapper": {
+      "source": "query.stdout",
+      "address": "0x4dc10",
+      "symbol": "000000000004dc10 <void lookup_kernel<bloom_filters::FourSectorRange12BloomFilter, unsigned long>(bloom_filters::FourSectorRange12BloomFilter const&, unsigned long, unsigned long const*, unsigned int*)>:",
+      "instruction_count": 12
+    },
+    "range-worker": {
+      "source": "query.stdout",
+      "address": "0x48850",
+      "symbol": "0000000000048850 <run<bloom_filters::Split64RangeBloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#1}::operator()(unsigned long) const>:",
+      "instruction_count": 322
+    },
+    "k12-worker": {
+      "source": "query.stdout",
+      "address": "0x51260",
+      "symbol": "0000000000051260 <run<bloom_filters::FourSectorRange12BloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#1}::operator()(unsigned long) const>:",
+      "instruction_count": 322
+    },
+    "range-executor": {
+      "source": "query.stdout",
+      "address": "0x48010",
+      "symbol": "0000000000048010 <external_parallel::Timing external_parallel::Execute<run<bloom_filters::Split64RangeBloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#1}, run<bloom_filters::Split64RangeBloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#2}, external_parallel::NoopHook>(unsigned long, run<bloom_filters::Split64RangeBloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#1}, run<bloom_filters::Split64RangeBloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#2}, external_parallel::NoopHook)>:",
+      "instruction_count": 444
+    },
+    "k12-executor": {
+      "source": "query.stdout",
+      "address": "0x50a20",
+      "symbol": "0000000000050a20 <external_parallel::Timing external_parallel::Execute<run<bloom_filters::FourSectorRange12BloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#1}, run<bloom_filters::FourSectorRange12BloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#2}, external_parallel::NoopHook>(unsigned long, run<bloom_filters::FourSectorRange12BloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#1}, run<bloom_filters::FourSectorRange12BloomFilter, unsigned long>(char const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned int, unsigned int, unsigned long, unsigned int, unsigned long, unsigned long, unsigned long, unsigned int, external_parallel::Config const&)::{lambda(bool)#1}::operator()(bool) const::{lambda(unsigned long)#2}, external_parallel::NoopHook)>:",
+      "instruction_count": 444
+    },
+    "split-public-query-body": {
+      "source": "public.stdout",
+      "address": "0x17ed0",
+      "symbol": "0000000000017ed0 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>:",
+      "instruction_count": 552
+    },
+    "range-public-query-body": {
+      "source": "public.stdout",
+      "address": "0x1d060",
+      "symbol": "000000000001d060 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelSplit64RangeBloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelSplit64RangeBloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>:",
+      "instruction_count": 169
+    },
+    "k12-public-query-body": {
+      "source": "public.stdout",
+      "address": "0x21500",
+      "symbol": "0000000000021500 <void bloom_filters::parallel_detail::For<bloom_filters::ParallelFourSectorRange12BloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}>(unsigned long, bloom_filters::ParallelFourSectorRange12BloomFilter::LookupParallel(unsigned int, unsigned long const*, unsigned int*, unsigned long) const::{lambda(unsigned long)#1}&&)>:",
+      "instruction_count": 169
+    }
+  },
+  "new_compiler_or_BF_runs": 0
+}

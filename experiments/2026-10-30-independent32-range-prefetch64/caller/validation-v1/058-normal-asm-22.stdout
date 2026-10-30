@@ -1,0 +1,112 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002aa80 <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj>:
+   2aa80:	test   %rsi,%rsi
+   2aa83:	je     2ac2d <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x1ad>
+   2aa89:	push   %rbx
+   2aa8a:	movabs $0xd6e8feb86659fd93,%r8
+   2aa94:	cmp    $0x1,%rsi
+   2aa98:	jne    2aaa1 <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x21>
+   2aa9a:	xor    %eax,%eax
+   2aa9c:	jmp    2abaf <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x12f>
+   2aaa1:	mov    %rsi,%r9
+   2aaa4:	and    $0xfffffffffffffffe,%r9
+   2aaa8:	xor    %eax,%eax
+   2aaaa:	vpbroadcastq -0x28e5b(%rip),%xmm0        # 1c58 <_IO_stdin_used+0x570>
+   2aab3:	vpbroadcastd -0x293e0(%rip),%ymm1        # 16dc <__abi_tag+0x1418>
+   2aabc:	nopl   0x0(%rax)
+   2aac0:	mov    (%rdx,%rax,8),%r10
+   2aac4:	mov    %r10,%r11
+   2aac7:	shr    $0x20,%r11
+   2aacb:	xor    %r10,%r11
+   2aace:	imul   %r8,%r11
+   2aad2:	mov    %r11,%r10
+   2aad5:	shr    $0x20,%r10
+   2aad9:	xor    %r11,%r10
+   2aadc:	imul   %r8,%r10
+   2aae0:	mov    %r10,%r11
+   2aae3:	shr    $0x20,%r11
+   2aae7:	xor    %r10,%r11
+   2aaea:	shr    $0x28,%r10
+   2aaee:	mov    0x18(%rdi),%ebx
+   2aaf1:	imul   %r10,%rbx
+   2aaf5:	mov    (%rdi),%r10
+   2aaf8:	shr    $0x13,%rbx
+   2aafc:	and    $0xffffffffffffffe0,%rbx
+   2ab00:	vmovdqa (%r10,%rbx,1),%ymm2
+   2ab06:	vpbroadcastq %r11,%xmm3
+   2ab0c:	vpmultishiftqb %xmm3,%xmm0,%xmm3
+   2ab12:	vpmovzxbd %xmm3,%ymm3
+   2ab17:	vprolvd %ymm3,%ymm1,%ymm3
+   2ab1d:	xor    %r10d,%r10d
+   2ab20:	vptest %ymm3,%ymm2
+   2ab25:	setb   %r10b
+   2ab29:	mov    %r10d,(%rcx,%rax,4)
+   2ab2d:	mov    0x8(%rdx,%rax,8),%r10
+   2ab32:	mov    %r10,%r11
+   2ab35:	shr    $0x20,%r11
+   2ab39:	xor    %r10,%r11
+   2ab3c:	imul   %r8,%r11
+   2ab40:	mov    %r11,%r10
+   2ab43:	shr    $0x20,%r10
+   2ab47:	xor    %r11,%r10
+   2ab4a:	imul   %r8,%r10
+   2ab4e:	mov    %r10,%r11
+   2ab51:	shr    $0x20,%r11
+   2ab55:	xor    %r10,%r11
+   2ab58:	shr    $0x28,%r10
+   2ab5c:	mov    0x18(%rdi),%ebx
+   2ab5f:	imul   %r10,%rbx
+   2ab63:	mov    (%rdi),%r10
+   2ab66:	shr    $0x13,%rbx
+   2ab6a:	and    $0xffffffffffffffe0,%rbx
+   2ab6e:	vmovdqa (%r10,%rbx,1),%ymm2
+   2ab74:	vpbroadcastq %r11,%xmm3
+   2ab7a:	vpmultishiftqb %xmm3,%xmm0,%xmm3
+   2ab80:	vpmovzxbd %xmm3,%ymm3
+   2ab85:	vprolvd %ymm3,%ymm1,%ymm3
+   2ab8b:	xor    %r10d,%r10d
+   2ab8e:	vptest %ymm3,%ymm2
+   2ab93:	setb   %r10b
+   2ab97:	mov    %r10d,0x4(%rcx,%rax,4)
+   2ab9c:	add    $0x2,%rax
+   2aba0:	cmp    %rax,%r9
+   2aba3:	jne    2aac0 <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x40>
+   2aba9:	test   $0x1,%sil
+   2abad:	je     2ac2c <_Z20inline_single_kernelILb1EN13bloom_filters29Independent32RangeBloomFilterEmEvRKT0_mPKmPj+0x1ac>
+   2abaf:	mov    (%rdx,%rax,8),%rdx
+   2abb3:	mov    %rdx,%rsi
+   2abb6:	shr    $0x20,%rsi
+   2abba:	xor    %rdx,%rsi
+   2abbd:	imul   %r8,%rsi
+   2abc1:	mov    %rsi,%rdx
+   2abc4:	shr    $0x20,%rdx
+   2abc8:	xor    %rsi,%rdx
+   2abcb:	imul   %r8,%rdx
+   2abcf:	mov    %rdx,%rsi
+   2abd2:	shr    $0x20,%rsi
+   2abd6:	xor    %rdx,%rsi
+   2abd9:	shr    $0x28,%rdx
+   2abdd:	mov    0x18(%rdi),%r8d
+   2abe1:	imul   %rdx,%r8
+   2abe5:	mov    (%rdi),%rdx
+   2abe8:	shr    $0x13,%r8
+   2abec:	and    $0xffffffffffffffe0,%r8
+   2abf0:	vmovdqa (%rdx,%r8,1),%ymm0
+   2abf6:	vpbroadcastq %rsi,%xmm1
+   2abfc:	vpbroadcastq -0x28fad(%rip),%xmm2        # 1c58 <_IO_stdin_used+0x570>
+   2ac05:	vpmultishiftqb %xmm1,%xmm2,%xmm1
+   2ac0b:	vpmovzxbd %xmm1,%ymm1
+   2ac10:	vpbroadcastd -0x2953d(%rip),%ymm2        # 16dc <__abi_tag+0x1418>
+   2ac19:	vprolvd %ymm1,%ymm2,%ymm1
+   2ac1f:	xor    %edx,%edx
+   2ac21:	vptest %ymm1,%ymm0
+   2ac26:	setb   %dl
+   2ac29:	mov    %edx,(%rcx,%rax,4)
+   2ac2c:	pop    %rbx
+   2ac2d:	vzeroupper
+   2ac30:	ret

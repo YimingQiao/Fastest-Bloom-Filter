@@ -1,0 +1,20 @@
+--- frozen/geometry.hpp
++++ geometry.hpp
+@@ -126,9 +126,14 @@
+         return g;
+     }
+ };
+-template<> struct Traits<ByteSplitRangeExperiment> : RangeTraits<ByteSplitRangeExperiment, 16, -1> {};
+-template<> struct Traits<Split64RangeExperiment> : RangeTraits<Split64RangeExperiment, 64, 8> {};
+-template<> struct Traits<Split64RangeNative> : RangeTraits<Split64RangeNative, 64, 8> {};
++template<> struct Traits<Split64RangeBloomFilter> : RangeTraits<Split64RangeBloomFilter,64,8> {
++    static Geometry Plan(size_t n,uint32_t bpk) { auto g=RangeTraits<Split64RangeBloomFilter,64,8>::Plan(n,bpk);g.origin="optional_native_range";return g; }
++    static Split64RangeBloomFilter Make(size_t n,uint32_t bpk) { return Split64RangeBloomFilter(bloom_filters::RangeBytes{Plan(n,bpk).budget_bytes}); }
++};
++template<> struct Traits<FourSectorRange12BloomFilter> : RangeTraits<FourSectorRange12BloomFilter,64,12> {
++    static Geometry Plan(size_t n,uint32_t bpk) { auto g=RangeTraits<FourSectorRange12BloomFilter,64,12>::Plan(n,bpk);g.origin="optional_native_k12";g.kind="native_k12_top24_lines";return g; }
++    static FourSectorRange12BloomFilter Make(size_t n,uint32_t bpk) { return FourSectorRange12BloomFilter(bloom_filters::RangeBytes{Plan(n,bpk).budget_bytes}); }
++};
+ inline const char *GeometryHeader() {
+     return "budget_bytes,logical_bytes,geometry_kind,unit_bytes,unit_count,effective_probes,probe_policy,constructor_argument,page_level,native_constructor_bpk,implementation_origin";
+ }

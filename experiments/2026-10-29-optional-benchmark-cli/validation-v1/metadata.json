@@ -1,0 +1,193 @@
+{
+  "complete": true,
+  "source_commit": "8f7bac25383f86b5510c1b50716a9756dc7e4750",
+  "compile_affinity": [
+    3
+  ],
+  "execution_cpus": [
+    3,
+    5,
+    7
+  ],
+  "commands": [
+    {
+      "label": "topology",
+      "command": [
+        "lscpu",
+        "-p=CPU,CORE,SOCKET,NODE"
+      ],
+      "environment": {},
+      "complete": true,
+      "returncode": 0
+    },
+    {
+      "label": "configure",
+      "command": [
+        "cmake",
+        "-S",
+        ".",
+        "-B",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBF_NATIVE=ON",
+        "-DCMAKE_CXX_COMPILER=/usr/bin/clang++"
+      ],
+      "environment": {},
+      "complete": true,
+      "returncode": 0
+    },
+    {
+      "label": "cpp-build",
+      "command": [
+        "cmake",
+        "--build",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp",
+        "--target",
+        "compare_benchmark",
+        "parallel_benchmark",
+        "benchmark_query_validation_test",
+        "-j1"
+      ],
+      "environment": {},
+      "complete": true,
+      "returncode": 0
+    },
+    {
+      "label": "rust-build",
+      "command": [
+        "cargo",
+        "build",
+        "--manifest-path",
+        "rust/Cargo.toml",
+        "--release",
+        "--bin",
+        "compare_benchmark",
+        "--bin",
+        "parallel_benchmark"
+      ],
+      "environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-optional-cli-v1-cpu3/rust",
+        "CARGO_BUILD_JOBS": "1",
+        "RUSTFLAGS": "-C target-cpu=native"
+      },
+      "complete": true,
+      "returncode": 0
+    },
+    {
+      "label": "rust-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "rust/Cargo.toml",
+        "--release",
+        "--bin",
+        "compare_benchmark",
+        "--bin",
+        "parallel_benchmark",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-optional-cli-v1-cpu3/rust",
+        "CARGO_BUILD_JOBS": "1",
+        "RUSTFLAGS": "-C target-cpu=native"
+      },
+      "complete": true,
+      "returncode": 0
+    },
+    {
+      "label": "four-cli-contract",
+      "command": [
+        "taskset",
+        "-c",
+        "3,5,7",
+        "python3",
+        "tests/test_optional_benchmark_selection.py",
+        "--compare",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp/compare_benchmark",
+        "--compare",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/rust/release/compare_benchmark",
+        "--parallel",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp/parallel_benchmark",
+        "--parallel",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/rust/release/parallel_benchmark"
+      ],
+      "environment": {},
+      "complete": true,
+      "returncode": 0
+    },
+    {
+      "label": "legacy-compare-contract",
+      "command": [
+        "taskset",
+        "-c",
+        "3,5,7",
+        "python3",
+        "tests/test_benchmark_selection.py",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp/compare_benchmark",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp/benchmark_query_validation_test"
+      ],
+      "environment": {},
+      "complete": true,
+      "returncode": 0
+    },
+    {
+      "label": "legacy-parallel-contract",
+      "command": [
+        "taskset",
+        "-c",
+        "3,5,7",
+        "python3",
+        "tests/test_parallel_selection.py",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp/parallel_benchmark",
+        "/tmp/fastest-bf-optional-cli-v1-cpu3/rust/release/parallel_benchmark"
+      ],
+      "environment": {},
+      "complete": true,
+      "returncode": 0
+    },
+    {
+      "label": "comparison-runner-contract",
+      "command": [
+        "python3",
+        "tests/test_comparison_runner.py"
+      ],
+      "environment": {},
+      "complete": true,
+      "returncode": 0
+    }
+  ],
+  "throughput_claims": false,
+  "binaries": {
+    "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp/compare_benchmark": "a30d7076b25bec7fb7b16324f2ce4876e4dcb15cc30cfb5d02ff4e0495137080",
+    "/tmp/fastest-bf-optional-cli-v1-cpu3/cpp/parallel_benchmark": "b9117d67784e001496cd6e56670eb12d76d0720a5cb55b64cbe8e99e0e268187",
+    "/tmp/fastest-bf-optional-cli-v1-cpu3/rust/release/compare_benchmark": "0a001ab6c2360abb88b2abbf2cc4029c43636880b8117319da322e09af459b97",
+    "/tmp/fastest-bf-optional-cli-v1-cpu3/rust/release/parallel_benchmark": "e2f01f59b190f9308873be0e7f0bc1b542c3acce2131509f1b4c60d382871066"
+  },
+  "source_audit": {
+    "src/compare_benchmark.cpp": {
+      "bytes": 7802,
+      "sha256": "8fc4660e7d2b0b263367edaf29a4ce7fe2c8a98cd612c6c238d515d4f0700dc3",
+      "unchanged": true,
+      "workload_bytes_unchanged": true
+    },
+    "src/parallel_benchmark.cpp": {
+      "bytes": 2661,
+      "sha256": "f77ee1f9453e545d00d12cdafd00a68c403ca5369fae28d20613154b902c54fe",
+      "unchanged": true,
+      "workload_bytes_unchanged": true
+    },
+    "rust/src/bin/compare_benchmark.rs": {
+      "bytes": 6547,
+      "sha256": "89454867c6e4b0411bcf643c1e8cf4b750aac42cbae064e4455edc51da6ba447",
+      "unchanged": true,
+      "workload_bytes_unchanged": true
+    },
+    "rust/src/bin/parallel_benchmark.rs": {
+      "unchanged_after_removing_only_name_and_preclock_accounting_registration": true,
+      "workload_bytes_unchanged": true
+    }
+  }
+}

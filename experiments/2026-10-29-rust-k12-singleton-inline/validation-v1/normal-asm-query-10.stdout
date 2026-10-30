@@ -1,0 +1,141 @@
+
+/tmp/fastest-bf-rust-k12-inline-v1-cpu3/normal/release/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000a8d90 <<four_sector_range12_isolated::four_sector_range12::FourSectorRange12BloomFilter>::contains_scalar>:
+   a8d90:	push   %rbp
+   a8d91:	push   %r15
+   a8d93:	push   %r14
+   a8d95:	push   %r12
+   a8d97:	push   %rbx
+   a8d98:	mov    %rdi,%rax
+   a8d9b:	mov    0x18(%rdi),%ecx
+   a8d9e:	mov    %rsi,%rdx
+   a8da1:	shr    $0x28,%rdx
+   a8da5:	imul   %rcx,%rdx
+   a8da9:	shr    $0x14,%rdx
+   a8dad:	mov    0x10(%rdi),%rcx
+   a8db1:	mov    %edx,%edi
+   a8db3:	shr    $0x4,%edi
+   a8db6:	cmp    %rcx,%rdi
+   a8db9:	jae    a8f24 <<four_sector_range12_isolated::four_sector_range12::FourSectorRange12BloomFilter>::contains_scalar+0x194>
+   a8dbf:	mov    %rsi,%r11
+   a8dc2:	shr    $0x20,%r11
+   a8dc6:	and    $0xfffffff0,%edx
+   a8dc9:	mov    %r11d,%r9d
+   a8dcc:	and    $0x3,%r9d
+   a8dd0:	lea    (%rdx,%r9,1),%r8d
+   a8dd4:	mov    %r8d,%ebx
+   a8dd7:	shr    $0x4,%ebx
+   a8dda:	cmp    %rcx,%rbx
+   a8ddd:	jae    a8efb <<four_sector_range12_isolated::four_sector_range12::FourSectorRange12BloomFilter>::contains_scalar+0x16b>
+   a8de3:	lea    0x8(%rdx,%r9,1),%r10d
+   a8de8:	mov    %rsi,%r12
+   a8deb:	shr    $0x24,%r12
+   a8def:	and    $0x3,%r12d
+   a8df3:	xor    %r10d,%r12d
+   a8df6:	mov    %r12d,%r15d
+   a8df9:	shr    $0x4,%r15d
+   a8dfd:	cmp    %rcx,%r15
+   a8e00:	jae    a8f0e <<four_sector_range12_isolated::four_sector_range12::FourSectorRange12BloomFilter>::contains_scalar+0x17e>
+   a8e06:	lea    0xc(%rdx,%r9,1),%edx
+   a8e0b:	mov    %rsi,%r9
+   a8e0e:	shr    $0x26,%r9
+   a8e12:	and    $0x3,%r9d
+   a8e16:	xor    %edx,%r9d
+   a8e19:	mov    %r9d,%r10d
+   a8e1c:	shr    $0x4,%r10d
+   a8e20:	cmp    %rcx,%r10
+   a8e23:	jae    a8f21 <<four_sector_range12_isolated::four_sector_range12::FourSectorRange12BloomFilter>::contains_scalar+0x191>
+   a8e29:	mov    %esi,%edx
+   a8e2b:	shr    $0x6,%edx
+   a8e2e:	and    $0x3c,%edx
+   a8e31:	lea    -0x9be38(%rip),%rcx        # d000 <anon.663c38bb301f18615f4d3110a8e62152.0.llvm.1231715614483663210+0xeb0>
+   a8e38:	mov    (%rdx,%rcx,1),%r14d
+   a8e3c:	mov    %esi,%edx
+   a8e3e:	shr    $0xe,%edx
+   a8e41:	and    $0x3c,%edx
+   a8e44:	mov    (%rdx,%rcx,1),%ebp
+   a8e47:	mov    %r8d,%edx
+   a8e4a:	or     $0x4,%edx
+   a8e4d:	shr    $0x2,%r11d
+   a8e51:	and    $0x3,%r11d
+   a8e55:	xor    %edx,%r11d
+   a8e58:	rorx   $0x18,%esi,%edx
+   a8e5e:	mov    0x8(%rax),%rax
+   a8e62:	mov    %r12d,%r12d
+   a8e65:	shl    $0x6,%r15
+   a8e69:	add    %rax,%r15
+   a8e6c:	and    $0xb,%r12d
+   a8e70:	mov    (%r15,%r12,4),%r12d
+   a8e74:	mov    %edx,%r15d
+   a8e77:	and    $0xf,%r15d
+   a8e7b:	mov    (%rcx,%r15,4),%r15d
+   a8e7f:	shl    $0x6,%rbx
+   a8e83:	add    %rax,%rbx
+   a8e86:	and    $0x7,%r11d
+   a8e8a:	mov    (%rbx,%r11,4),%r11d
+   a8e8e:	mov    %esi,%ebx
+   a8e90:	and    $0xf,%ebx
+   a8e93:	mov    (%rcx,%rbx,4),%ebx
+   a8e96:	shl    $0x6,%rdi
+   a8e9a:	add    %rax,%rdi
+   a8e9d:	and    $0x3,%r8d
+   a8ea1:	mov    %esi,%ecx
+   a8ea3:	shr    $0x4,%ecx
+   a8ea6:	rol    %cl,%ebx
+   a8ea8:	mov    (%rdi,%r8,4),%ecx
+   a8eac:	andn   %ebx,%ecx,%edi
+   a8eb1:	mov    %esi,%ecx
+   a8eb3:	shr    $0xc,%ecx
+   a8eb6:	rol    %cl,%r14d
+   a8eb9:	andn   %r14d,%r11d,%r8d
+   a8ebe:	shr    $0x14,%esi
+   a8ec1:	mov    %esi,%ecx
+   a8ec3:	rol    %cl,%ebp
+   a8ec5:	andn   %ebp,%r12d,%esi
+   a8eca:	or     %edi,%esi
+   a8ecc:	or     %r8d,%esi
+   a8ecf:	shl    $0x6,%r10
+   a8ed3:	add    %rax,%r10
+   a8ed6:	mov    %r9d,%eax
+   a8ed9:	and    $0xf,%eax
+   a8edc:	mov    (%r10,%rax,4),%eax
+   a8ee0:	shr    $0x4,%edx
+   a8ee3:	mov    %edx,%ecx
+   a8ee5:	rol    %cl,%r15d
+   a8ee8:	andn   %r15d,%eax,%eax
+   a8eed:	or     %esi,%eax
+   a8eef:	sete   %al
+   a8ef2:	pop    %rbx
+   a8ef3:	pop    %r12
+   a8ef5:	pop    %r14
+   a8ef7:	pop    %r15
+   a8ef9:	pop    %rbp
+   a8efa:	ret
+   a8efb:	mov    %rbx,%rdi
+   a8efe:	lea    0x41c53(%rip),%rdx        # eab58 <anon.663c38bb301f18615f4d3110a8e62152.2.llvm.1231715614483663210+0x468>
+   a8f05:	mov    %rcx,%rsi
+   a8f08:	call   *0x43ec2(%rip)        # ecdd0 <_DYNAMIC+0x230>
+   a8f0e:	mov    %r15,%rdi
+   a8f11:	lea    0x41c40(%rip),%rdx        # eab58 <anon.663c38bb301f18615f4d3110a8e62152.2.llvm.1231715614483663210+0x468>
+   a8f18:	mov    %rcx,%rsi
+   a8f1b:	call   *0x43eaf(%rip)        # ecdd0 <_DYNAMIC+0x230>
+   a8f21:	mov    %r10,%rdi
+   a8f24:	lea    0x41c2d(%rip),%rdx        # eab58 <anon.663c38bb301f18615f4d3110a8e62152.2.llvm.1231715614483663210+0x468>
+   a8f2b:	mov    %rcx,%rsi
+   a8f2e:	call   *0x43e9c(%rip)        # ecdd0 <_DYNAMIC+0x230>
+   a8f34:	int3
+   a8f35:	int3
+   a8f36:	int3
+   a8f37:	int3
+   a8f38:	int3
+   a8f39:	int3
+   a8f3a:	int3
+   a8f3b:	int3
+   a8f3c:	int3
+   a8f3d:	int3
+   a8f3e:	int3
+   a8f3f:	int3

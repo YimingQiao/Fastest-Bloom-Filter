@@ -1,0 +1,261 @@
+
+/tmp/fastest-bf-independent32-rust/codegen/release/independent32-codegen:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000019da0 <independent32_public_prehashed>:
+   19da0:	push   %rbp
+   19da1:	push   %r15
+   19da3:	push   %r14
+   19da5:	push   %r13
+   19da7:	push   %r12
+   19da9:	push   %rbx
+   19daa:	sub    $0x48,%rsp
+   19dae:	mov    %rdx,0x8(%rsp)
+   19db3:	mov    %r8,0x10(%rsp)
+   19db8:	cmp    %r8,%rdx
+   19dbb:	jne    1a1ad <independent32_public_prehashed+0x40d>
+   19dc1:	mov    %rdx,%r15
+   19dc4:	test   %rdx,%rdx
+   19dc7:	je     1a19b <independent32_public_prehashed+0x3fb>
+   19dcd:	mov    %rcx,%r14
+   19dd0:	mov    %rsi,%rbx
+   19dd3:	mov    %rdi,%r12
+   19dd6:	mov    0x8(%rdi),%rax
+   19dda:	mov    0x18(%rdi),%ecx
+   19ddd:	cmpb   $0x1,0x1d(%rdi)
+   19de1:	jne    19df6 <independent32_public_prehashed+0x56>
+   19de3:	mov    %r15d,%edx
+   19de6:	and    $0x3,%edx
+   19de9:	cmp    $0x4,%r15
+   19ded:	jae    19e19 <independent32_public_prehashed+0x79>
+   19def:	xor    %edi,%edi
+   19df1:	jmp    19f37 <independent32_public_prehashed+0x197>
+   19df6:	cmpb   $0x0,0x1c(%r12)
+   19dfc:	je     19fa9 <independent32_public_prehashed+0x209>
+   19e02:	mov    %r15d,%edx
+   19e05:	and    $0x3,%edx
+   19e08:	cmp    $0x4,%r15
+   19e0c:	jae    19fd4 <independent32_public_prehashed+0x234>
+   19e12:	xor    %edi,%edi
+   19e14:	jmp    1a113 <independent32_public_prehashed+0x373>
+   19e19:	and    $0xfffffffffffffffc,%r15
+   19e1d:	xor    %esi,%esi
+   19e1f:	vpbroadcastq -0x14210(%rip),%xmm0        # 5c18 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x78>
+   19e28:	vpbroadcastd -0x14415(%rip),%ymm1        # 5a1c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xe4>
+   19e31:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   19e40:	mov    (%rbx,%rsi,8),%rdi
+   19e44:	vpbroadcastq %rdi,%xmm2
+   19e4a:	shr    $0x29,%rdi
+   19e4e:	and    %ecx,%edi
+   19e50:	shl    $0x5,%edi
+   19e53:	vmovdqa (%rax,%rdi,1),%ymm3
+   19e58:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   19e5e:	vpmovzxbd %xmm2,%ymm2
+   19e63:	vprolvd %ymm2,%ymm1,%ymm2
+   19e69:	xor    %edi,%edi
+   19e6b:	vptest %ymm2,%ymm3
+   19e70:	setb   %dil
+   19e74:	mov    %edi,(%r14,%rsi,4)
+   19e78:	mov    0x8(%rbx,%rsi,8),%rdi
+   19e7d:	vpbroadcastq %rdi,%xmm2
+   19e83:	shr    $0x29,%rdi
+   19e87:	and    %ecx,%edi
+   19e89:	shl    $0x5,%edi
+   19e8c:	vmovdqa (%rax,%rdi,1),%ymm3
+   19e91:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   19e97:	vpmovzxbd %xmm2,%ymm2
+   19e9c:	vprolvd %ymm2,%ymm1,%ymm2
+   19ea2:	xor    %edi,%edi
+   19ea4:	vptest %ymm2,%ymm3
+   19ea9:	setb   %dil
+   19ead:	mov    %edi,0x4(%r14,%rsi,4)
+   19eb2:	mov    0x10(%rbx,%rsi,8),%rdi
+   19eb7:	vpbroadcastq %rdi,%xmm2
+   19ebd:	shr    $0x29,%rdi
+   19ec1:	and    %ecx,%edi
+   19ec3:	shl    $0x5,%edi
+   19ec6:	vmovdqa (%rax,%rdi,1),%ymm3
+   19ecb:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   19ed1:	vpmovzxbd %xmm2,%ymm2
+   19ed6:	vprolvd %ymm2,%ymm1,%ymm2
+   19edc:	xor    %edi,%edi
+   19ede:	vptest %ymm2,%ymm3
+   19ee3:	setb   %dil
+   19ee7:	mov    %edi,0x8(%r14,%rsi,4)
+   19eec:	mov    0x18(%rbx,%rsi,8),%rdi
+   19ef1:	vpbroadcastq %rdi,%xmm2
+   19ef7:	shr    $0x29,%rdi
+   19efb:	and    %ecx,%edi
+   19efd:	shl    $0x5,%edi
+   19f00:	vmovdqa (%rax,%rdi,1),%ymm3
+   19f05:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   19f0b:	vpmovzxbd %xmm2,%ymm2
+   19f10:	vprolvd %ymm2,%ymm1,%ymm2
+   19f16:	xor    %r8d,%r8d
+   19f19:	vptest %ymm2,%ymm3
+   19f1e:	lea    0x4(%rsi),%rdi
+   19f22:	setb   %r8b
+   19f26:	mov    %r8d,0xc(%r14,%rsi,4)
+   19f2b:	mov    %rdi,%rsi
+   19f2e:	cmp    %rdi,%r15
+   19f31:	jne    19e40 <independent32_public_prehashed+0xa0>
+   19f37:	test   %rdx,%rdx
+   19f3a:	je     1a19b <independent32_public_prehashed+0x3fb>
+   19f40:	lea    (%r14,%rdi,4),%rsi
+   19f44:	lea    (%rbx,%rdi,8),%rdi
+   19f48:	xor    %r8d,%r8d
+   19f4b:	vpbroadcastq -0x1433c(%rip),%xmm0        # 5c18 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x78>
+   19f54:	vpbroadcastd -0x14541(%rip),%ymm1        # 5a1c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xe4>
+   19f5d:	nopl   (%rax)
+   19f60:	mov    (%rdi,%r8,8),%r9
+   19f64:	vpbroadcastq %r9,%xmm2
+   19f6a:	shr    $0x29,%r9
+   19f6e:	and    %ecx,%r9d
+   19f71:	shl    $0x5,%r9d
+   19f75:	vmovdqa (%rax,%r9,1),%ymm3
+   19f7b:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   19f81:	vpmovzxbd %xmm2,%ymm2
+   19f86:	vprolvd %ymm2,%ymm1,%ymm2
+   19f8c:	xor    %r9d,%r9d
+   19f8f:	vptest %ymm2,%ymm3
+   19f94:	setb   %r9b
+   19f98:	mov    %r9d,(%rsi,%r8,4)
+   19f9c:	inc    %r8
+   19f9f:	cmp    %r8,%rdx
+   19fa2:	jne    19f60 <independent32_public_prehashed+0x1c0>
+   19fa4:	jmp    1a19b <independent32_public_prehashed+0x3fb>
+   19fa9:	xor    %r13d,%r13d
+   19fac:	nopl   0x0(%rax)
+   19fb0:	lea    0x1(%r13),%rbp
+   19fb4:	mov    (%rbx,%r13,8),%rsi
+   19fb8:	mov    %r12,%rdi
+   19fbb:	call   198e0 <<independent32_native_experiment::independent32::Independent32BloomFilter>::contains_scalar>
+   19fc0:	movzbl %al,%eax
+   19fc3:	mov    %eax,(%r14,%r13,4)
+   19fc7:	mov    %rbp,%r13
+   19fca:	cmp    %rbp,%r15
+   19fcd:	jne    19fb0 <independent32_public_prehashed+0x210>
+   19fcf:	jmp    1a19b <independent32_public_prehashed+0x3fb>
+   19fd4:	and    $0xfffffffffffffffc,%r15
+   19fd8:	xor    %esi,%esi
+   19fda:	vmovdqa -0x14422(%rip),%ymm0        # 5bc0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x20>
+   19fe2:	vpbroadcastq -0x14323(%rip),%ymm1        # 5cc8 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x60>
+   19feb:	vpbroadcastd -0x145dc(%rip),%ymm2        # 5a18 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xe0>
+   19ff4:	vpbroadcastd -0x145e1(%rip),%ymm3        # 5a1c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xe4>
+   19ffd:	nopl   (%rax)
+   1a000:	mov    (%rbx,%rsi,8),%rdi
+   1a004:	vpbroadcastq %rdi,%ymm4
+   1a00a:	shr    $0x29,%rdi
+   1a00e:	and    %ecx,%edi
+   1a010:	shl    $0x5,%edi
+   1a013:	vmovdqa (%rax,%rdi,1),%ymm5
+   1a018:	vpsrlvq %ymm0,%ymm4,%ymm4
+   1a01d:	vpshufd $0xa0,%ymm4,%ymm4
+   1a022:	vpsrlvd %ymm1,%ymm4,%ymm4
+   1a027:	vpand  %ymm2,%ymm4,%ymm4
+   1a02b:	vpsllvd %ymm4,%ymm3,%ymm4
+   1a030:	xor    %edi,%edi
+   1a032:	vptest %ymm4,%ymm5
+   1a037:	setb   %dil
+   1a03b:	mov    %edi,(%r14,%rsi,4)
+   1a03f:	mov    0x8(%rbx,%rsi,8),%rdi
+   1a044:	vpbroadcastq %rdi,%ymm4
+   1a04a:	shr    $0x29,%rdi
+   1a04e:	and    %ecx,%edi
+   1a050:	shl    $0x5,%edi
+   1a053:	vmovdqa (%rax,%rdi,1),%ymm5
+   1a058:	vpsrlvq %ymm0,%ymm4,%ymm4
+   1a05d:	vpshufd $0xa0,%ymm4,%ymm4
+   1a062:	vpsrlvd %ymm1,%ymm4,%ymm4
+   1a067:	vpand  %ymm2,%ymm4,%ymm4
+   1a06b:	vpsllvd %ymm4,%ymm3,%ymm4
+   1a070:	xor    %edi,%edi
+   1a072:	vptest %ymm4,%ymm5
+   1a077:	setb   %dil
+   1a07b:	mov    %edi,0x4(%r14,%rsi,4)
+   1a080:	mov    0x10(%rbx,%rsi,8),%rdi
+   1a085:	vpbroadcastq %rdi,%ymm4
+   1a08b:	shr    $0x29,%rdi
+   1a08f:	and    %ecx,%edi
+   1a091:	shl    $0x5,%edi
+   1a094:	vmovdqa (%rax,%rdi,1),%ymm5
+   1a099:	vpsrlvq %ymm0,%ymm4,%ymm4
+   1a09e:	vpshufd $0xa0,%ymm4,%ymm4
+   1a0a3:	vpsrlvd %ymm1,%ymm4,%ymm4
+   1a0a8:	vpand  %ymm2,%ymm4,%ymm4
+   1a0ac:	vpsllvd %ymm4,%ymm3,%ymm4
+   1a0b1:	xor    %edi,%edi
+   1a0b3:	vptest %ymm4,%ymm5
+   1a0b8:	setb   %dil
+   1a0bc:	mov    %edi,0x8(%r14,%rsi,4)
+   1a0c1:	mov    0x18(%rbx,%rsi,8),%rdi
+   1a0c6:	vpbroadcastq %rdi,%ymm4
+   1a0cc:	shr    $0x29,%rdi
+   1a0d0:	and    %ecx,%edi
+   1a0d2:	shl    $0x5,%edi
+   1a0d5:	vmovdqa (%rax,%rdi,1),%ymm5
+   1a0da:	vpsrlvq %ymm0,%ymm4,%ymm4
+   1a0df:	vpshufd $0xa0,%ymm4,%ymm4
+   1a0e4:	vpsrlvd %ymm1,%ymm4,%ymm4
+   1a0e9:	vpand  %ymm2,%ymm4,%ymm4
+   1a0ed:	vpsllvd %ymm4,%ymm3,%ymm4
+   1a0f2:	xor    %r8d,%r8d
+   1a0f5:	vptest %ymm4,%ymm5
+   1a0fa:	lea    0x4(%rsi),%rdi
+   1a0fe:	setb   %r8b
+   1a102:	mov    %r8d,0xc(%r14,%rsi,4)
+   1a107:	mov    %rdi,%rsi
+   1a10a:	cmp    %rdi,%r15
+   1a10d:	jne    1a000 <independent32_public_prehashed+0x260>
+   1a113:	test   %rdx,%rdx
+   1a116:	je     1a19b <independent32_public_prehashed+0x3fb>
+   1a11c:	lea    (%r14,%rdi,4),%rsi
+   1a120:	lea    (%rbx,%rdi,8),%rdi
+   1a124:	xor    %r8d,%r8d
+   1a127:	vmovdqa -0x1456f(%rip),%ymm0        # 5bc0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x20>
+   1a12f:	vpbroadcastq -0x14470(%rip),%ymm1        # 5cc8 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x60>
+   1a138:	vpbroadcastd -0x14729(%rip),%ymm2        # 5a18 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xe0>
+   1a141:	vpbroadcastd -0x1472e(%rip),%ymm3        # 5a1c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xe4>
+   1a14a:	nopw   0x0(%rax,%rax,1)
+   1a150:	mov    (%rdi,%r8,8),%r9
+   1a154:	vpbroadcastq %r9,%ymm4
+   1a15a:	shr    $0x29,%r9
+   1a15e:	and    %ecx,%r9d
+   1a161:	shl    $0x5,%r9d
+   1a165:	vmovdqa (%rax,%r9,1),%ymm5
+   1a16b:	vpsrlvq %ymm0,%ymm4,%ymm4
+   1a170:	vpshufd $0xa0,%ymm4,%ymm4
+   1a175:	vpsrlvd %ymm1,%ymm4,%ymm4
+   1a17a:	vpand  %ymm2,%ymm4,%ymm4
+   1a17e:	vpsllvd %ymm4,%ymm3,%ymm4
+   1a183:	xor    %r9d,%r9d
+   1a186:	vptest %ymm4,%ymm5
+   1a18b:	setb   %r9b
+   1a18f:	mov    %r9d,(%rsi,%r8,4)
+   1a193:	inc    %r8
+   1a196:	cmp    %r8,%rdx
+   1a199:	jne    1a150 <independent32_public_prehashed+0x3b0>
+   1a19b:	add    $0x48,%rsp
+   1a19f:	pop    %rbx
+   1a1a0:	pop    %r12
+   1a1a2:	pop    %r13
+   1a1a4:	pop    %r14
+   1a1a6:	pop    %r15
+   1a1a8:	pop    %rbp
+   1a1a9:	vzeroupper
+   1a1ac:	ret
+   1a1ad:	movq   $0x0,0x18(%rsp)
+   1a1b6:	lea    0x3a8a3(%rip),%r8        # 54a60 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.1797.llvm.15448142832521594973+0xa8>
+   1a1bd:	lea    0x8(%rsp),%rsi
+   1a1c2:	lea    0x10(%rsp),%rdx
+   1a1c7:	lea    0x18(%rsp),%rcx
+   1a1cc:	xor    %edi,%edi
+   1a1ce:	call   *0x3c7ac(%rip)        # 56980 <_DYNAMIC+0x408>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

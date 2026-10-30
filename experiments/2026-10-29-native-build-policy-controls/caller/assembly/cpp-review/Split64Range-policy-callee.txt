@@ -1,0 +1,35 @@
+0000000000020e70 <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>:
+   20e70:	55                   	push   %rbp
+   20e71:	41 57                	push   %r15
+   20e73:	41 56                	push   %r14
+   20e75:	41 55                	push   %r13
+   20e77:	41 54                	push   %r12
+   20e79:	53                   	push   %rbx
+   20e7a:	48 81 ec b8 00 00 00 	sub    $0xb8,%rsp
+   20e81:	89 f5                	mov    %esi,%ebp
+   20e83:	48 89 fb             	mov    %rdi,%rbx
+   20e86:	89 74 24 14          	mov    %esi,0x14(%rsp)
+   20e8a:	48 89 94 24 98 00 00 	mov    %rdx,0x98(%rsp)
+   20e91:	00 
+   20e92:	81 fe 00 40 00 00    	cmp    $0x4000,%esi
+   20e98:	73 12                	jae    20eac <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x3c>
+   20e9a:	89 e8                	mov    %ebp,%eax
+   20e9c:	83 fd 21             	cmp    $0x21,%ebp
+   20e9f:	0f 83 88 00 00 00    	jae    20f2d <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0xbd>
+   20ea5:	31 c9                	xor    %ecx,%ecx
+   20ea7:	e9 1d 02 00 00       	jmp    210c9 <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x259>
+   20eac:	48 8b 03             	mov    (%rbx),%rax
+   20eaf:	4c 8b 73 08          	mov    0x8(%rbx),%r14
+   20eb3:	49 29 c6             	sub    %rax,%r14
+   20eb6:	49 c1 fe 06          	sar    $0x6,%r14
+   20eba:	48 8b 73 10          	mov    0x10(%rbx),%rsi
+   20ebe:	48 29 c6             	sub    %rax,%rsi
+   20ec1:	48 81 fe 01 00 04 00 	cmp    $0x40001,%rsi
+   20ec8:	b8 01 00 00 00       	mov    $0x1,%eax
+   20ecd:	48 0f 43 c1          	cmovae %rcx,%rax
+   20ed1:	81 fd 01 00 01 00    	cmp    $0x10001,%ebp
+   20ed7:	48 0f 43 c1          	cmovae %rcx,%rax
+   20edb:	48 85 c0             	test   %rax,%rax
+   20ede:	75 11                	jne    20ef1 <native_after::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)+0x81>
+   20ee0:	49 89 d7             	mov    %rdx,%r15
+   20ee3:	e8 e8 3f 01 00       	call   34ed0 <std::thread::hardware_concurrency()@plt>

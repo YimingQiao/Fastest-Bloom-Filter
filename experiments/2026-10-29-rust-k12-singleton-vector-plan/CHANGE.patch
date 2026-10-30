@@ -1,0 +1,86 @@
+--- control.rs
++++ candidate.rs
+@@ -71,6 +71,11 @@
+     /// False means absent, true means possibly present.
+     #[inline]
+     pub fn contains_hash(&self, hash: u64) -> bool {
++        #[cfg(target_arch = "x86_64")]
++        if self.avx512 {
++            // SAFETY: the constructor checked the runtime AVX512F backend.
++            return unsafe { self.contains_single_avx512(hash) };
++        }
+         self.contains_scalar(hash)
+     }
+     /// Runtime batch backend; `disable-avx512` retains AVX2/scalar dispatch.
+@@ -196,6 +201,12 @@
+     /// Writes one 0/1 per input; panics before writing if slice lengths differ.
+     pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
+         assert_eq!(hashes.len(), out.len(), "one output is required per input");
++        #[cfg(target_arch = "x86_64")]
++        if self.avx512 && (1..4).contains(&hashes.len()) {
++            // SAFETY: runtime feature check, equal lengths and one to three keys.
++            unsafe { self.lookup_tiny_avx512(hashes, out) };
++            return;
++        }
+         #[cfg(target_arch = "x86_64")]
+         if self.avx512 && hashes.len() >= 4 {
+             // SAFETY: checked CPU features, equal output length and masked tails.
+@@ -238,6 +249,58 @@
+     }
+ }
+ 
++
++// One target boundary per tiny batch; singleton callers retain the actual
++// runtime dispatch/inline consequences rather than imposing a new inline hint.
++#[cfg(target_arch = "x86_64")]
++impl FourSectorRange12BloomFilter {
++    #[inline]
++    #[target_feature(enable = "avx512f")]
++    unsafe fn contains_single_avx512(&self, hash: u64) -> bool {
++        use std::arch::x86_64::*;
++        let hi = (hash >> 32) as u32;
++        let lo = hash as u32;
++        // A checked borrow establishes exactly one valid, initialized64-byte line.
++        let line = &self.lines[Self::base(hi, self.line_count) as usize >> 4].0;
++        let hi4 = _mm512_set1_epi32(hi as i32);
++        let shifts = _mm512_setr_epi32(
++            32, 2, 4, 6, 32, 2, 4, 6, 32, 2, 4, 6, 32, 2, 4, 6,
++        );
++        let quarters = _mm512_setr_epi32(
++            0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12,
++        );
++        // SIMD shift32 yields zero; no scalar Rust shift by its type width.
++        let local = _mm512_xor_si512(
++            quarters,
++            _mm512_and_si512(
++                _mm512_xor_si512(hi4, _mm512_srlv_epi32(hi4, shifts)),
++                _mm512_set1_epi32(3),
++            ),
++        );
++        let selected = _mm512_permutexvar_epi32(
++            local, _mm512_load_si512(line.as_ptr().cast()),
++        );
++        let rotations = _mm512_setr_epi32(
++            0, 8, 16, 24, 0, 8, 16, 24, 0, 8, 16, 24, 0, 8, 16, 24,
++        );
++        let code = _mm512_rorv_epi32(_mm512_set1_epi32(lo as i32), rotations);
++        // VPERMD consumes low4 index bits; ROLV32 consumes low5 count bits.
++        let pattern = _mm512_permutexvar_epi32(
++            code, _mm512_loadu_si512(PATTERNS.as_ptr().cast()),
++        );
++        let masks = _mm512_rolv_epi32(pattern, _mm512_srli_epi32::<4>(code));
++        (_mm512_cmpeq_epi32_mask(_mm512_and_si512(selected, masks), masks) & 15) == 15
++    }
++
++    #[inline]
++    #[target_feature(enable = "avx512f")]
++    unsafe fn lookup_tiny_avx512(&self, hashes: &[u64], out: &mut [u32]) {
++        for (&hash, answer) in hashes.iter().zip(out) {
++            *answer = self.contains_single_avx512(hash) as u32;
++        }
++    }
++}
++
+ #[cfg(target_arch = "x86_64")]
+ impl FourSectorRange12BloomFilter {
+     #[inline]

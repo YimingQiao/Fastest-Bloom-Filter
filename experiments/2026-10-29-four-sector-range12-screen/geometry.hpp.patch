@@ -1,0 +1,16 @@
+--- experiments/2026-10-29-split64-range-parallel-screen/geometry.hpp
++++ experiments/2026-10-29-four-sector-range12-screen/geometry.hpp
+@@ -129,6 +129,13 @@
+ template<> struct Traits<ByteSplitRangeExperiment> : RangeTraits<ByteSplitRangeExperiment, 16, -1> {};
+ template<> struct Traits<Split64RangeExperiment> : RangeTraits<Split64RangeExperiment, 64, 8> {};
+ template<> struct Traits<Split64RangeNative> : RangeTraits<Split64RangeNative, 64, 8> {};
++template<> struct Traits<FourSectorRange12Experiment> : RangeTraits<FourSectorRange12Experiment, 64, 12> {
++    static Geometry Plan(size_t n, uint32_t bpk) {
++        auto result = RangeTraits<FourSectorRange12Experiment, 64, 12>::Plan(n, bpk);
++        result.kind = "project_four_range24_mapping";
++        return result;
++    }
++};
+ inline const char *GeometryHeader() {
+     return "budget_bytes,logical_bytes,geometry_kind,unit_bytes,unit_count,effective_probes,probe_policy,constructor_argument,page_level,native_constructor_bpk,implementation_origin";
+ }

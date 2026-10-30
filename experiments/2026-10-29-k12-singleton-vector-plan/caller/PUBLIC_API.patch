@@ -1,0 +1,16 @@
+--- frozen-visible-helper
++++ actual-K12-public-helper
+@@ -1,12 +1,6 @@
+ template <class BF, class Hash>
+ __attribute__((always_inline)) inline uint32_t visible_single(const BF &bf, Hash hash) {
+-    if constexpr (InlineHasScalarContains<BF, Hash>::value) {
+-        return static_cast<uint32_t>(bf.ScalarContains(hash));
+-    } else {
+-        uint32_t answer;
+-        bf.Lookup(1, &hash, &answer);
+-        return answer;
+-    }
++    return static_cast<uint32_t>(bf.ContainsHash(hash));
+ }
+ template <bool Raw, class BF, class Hash>
+ __attribute__((noinline)) void inline_single_kernel(const BF &bf, size_t count,

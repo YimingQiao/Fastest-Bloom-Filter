@@ -1,0 +1,48 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004f410 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj>:
+   4f410:	test   %rsi,%rsi
+   4f413:	je     4f4b4 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj+0xa4>
+   4f419:	mov    %rcx,%rax
+   4f41c:	movabs $0xd6e8feb86659fd93,%r8
+   4f426:	xor    %r9d,%r9d
+   4f429:	vmovdqa -0x4acb1(%rip),%ymm0        # 4780 <_IO_stdin_used+0x2888>
+   4f431:	vpbroadcastd -0x4d552(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   4f43a:	nopw   0x0(%rax,%rax,1)
+   4f440:	mov    (%rdx,%r9,8),%rcx
+   4f444:	mov    %rcx,%r10
+   4f447:	shr    $0x20,%r10
+   4f44b:	xor    %rcx,%r10
+   4f44e:	imul   %r8,%r10
+   4f452:	mov    %r10,%rcx
+   4f455:	shr    $0x20,%rcx
+   4f459:	xor    %r10,%rcx
+   4f45c:	imul   %r8,%rcx
+   4f460:	mov    %rcx,%r10
+   4f463:	shr    $0x20,%r10
+   4f467:	xor    %rcx,%r10
+   4f46a:	mov    0x4(%rdi),%r11d
+   4f46e:	and    %r10d,%r11d
+   4f471:	movzbl (%rdi),%ecx
+   4f474:	shr    %cl,%r10
+   4f477:	vmovd  %r10d,%xmm2
+   4f47c:	vpbroadcastd %xmm2,%ymm2
+   4f481:	vpmulld %ymm0,%ymm2,%ymm2
+   4f486:	vpsrld $0x1b,%ymm2,%ymm2
+   4f48b:	vpsllvd %ymm2,%ymm1,%ymm2
+   4f490:	mov    0x8(%rdi),%rcx
+   4f494:	shl    $0x5,%r11
+   4f498:	vmovdqa (%rcx,%r11,1),%ymm3
+   4f49e:	xor    %ecx,%ecx
+   4f4a0:	vptest %ymm2,%ymm3
+   4f4a5:	setb   %cl
+   4f4a8:	mov    %ecx,(%rax,%r9,4)
+   4f4ac:	inc    %r9
+   4f4af:	cmp    %r9,%rsi
+   4f4b2:	jne    4f440 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj+0x30>
+   4f4b4:	vzeroupper
+   4f4b7:	ret

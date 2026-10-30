@@ -1,0 +1,170 @@
+--- snapshot/parallel_benchmark.cpp
++++ benchmark.cpp
+@@ -1,4 +1,6 @@
+-#include "parallel_layout_bloom.h"
++#include "partitioned_build.hpp"
++#include <array>
++#include <functional>
+ #include <algorithm>
+ #include <chrono>
+ #include <iostream>
+@@ -45,11 +47,22 @@
+ struct IsSerial : std::false_type {};
+ template <class BF>
+ struct IsSerial<SerialLayout<BF>> : std::true_type {};
++template <class BF, class = void> struct HasPhases : std::false_type {};
++template <class BF> struct HasPhases<BF, std::void_t<decltype(std::declval<BF>().LastPhases())>> : std::true_type {};
++template <class Filter> std::vector<uint32_t> Reference(const std::vector<uint64_t> &keys, const std::vector<uint64_t> &query, uint32_t bpk) {
++    Filter bf(keys.size(), bpk);
++    bf.Insert(keys.size(), keys.data());
++    std::vector<uint32_t> result(query.size());
++    bf.Lookup(query.size(), query.data(), result.data());
++    return result;
++}
+ template <class BF>
+ void Run(const char *name, const std::vector<uint64_t> &keys, const std::vector<uint64_t> &query,
+-         const std::vector<uint8_t> &truth, uint32_t bpk, size_t threads, size_t reps, uint64_t seed, size_t hit) {
++         const std::vector<uint8_t> &truth, const std::vector<uint32_t> &expected, uint32_t bpk, size_t threads, size_t reps, uint64_t seed, size_t hit) {
+ 	std::vector<uint32_t> out(query.size()), check(4096);
+ 	std::vector<double> build, lookup;
++	std::array<std::vector<double>, 7> phase;
++	size_t partitions = 1, target_bytes = 0;
+ 	uint64_t checksum = 0, fp = 0, absent = 0;
+ 	size_t bytes = 0, scratch = 0, bw = 1, qw = 1;
+ 	for (size_t r = 0; r < reps; ++r) {
+@@ -64,10 +77,17 @@
+ 			if constexpr (std::is_same<BF, AtomicFastPatternBF>::value)
+ 				bw = parallel_detail::Workers(keys.size(), threads);
+ 		}
++		partitions = bw;
++		if constexpr (HasPhases<BF>::value) { partitions = bf.BuildPartitions(keys.size(), threads); target_bytes = BF::PartitionTargetBytes(); }
+ 		auto a = Clock::now();
+ 		bf.InsertParallel(keys.size(), keys.data(), threads);
+ 		auto b = Clock::now();
+ 		build.push_back(std::chrono::duration<double, std::nano>(b - a).count() / keys.size());
++        if constexpr (HasPhases<BF>::value) {
++            const auto &v = bf.LastPhases();
++            const double values[] = {v.allocate, v.count, v.prefix, v.scatter, v.insert, v.release, v.total};
++            for (size_t j = 0; j < 7; ++j) phase[j].push_back(values[j] / keys.size());
++        }
+ 		for (size_t i = 0; i < keys.size(); i += check.size()) {
+ 			size_t n = std::min(check.size(), keys.size() - i);
+ 			bf.Lookup(n, keys.data() + i, check.data());
+@@ -84,7 +104,7 @@
+ 		fp = 0;
+ 		absent = 0;
+ 		for (size_t i = 0; i < query.size(); ++i) {
+-			if (out[i] > 1 || (truth[i] && !out[i]))
++			if (out[i] > 1 || (truth[i] && !out[i]) || out[i] != expected[i])
+ 				throw std::runtime_error("invalid parallel answer");
+ 			if (!truth[i]) {
+ 				++absent;
+@@ -103,7 +123,16 @@
+ 		std::cout << "nan";
+ 	std::cout << ',' << checksum << ',' << *std::min_element(build.begin(), build.end()) << ','
+ 	          << *std::max_element(build.begin(), build.end()) << ',' << *std::min_element(lookup.begin(), lookup.end())
+-	          << ',' << *std::max_element(lookup.begin(), lookup.end()) << '\n';
++	          << ',' << *std::max_element(lookup.begin(), lookup.end()) << ',' << partitions << ',' << target_bytes;
++    for (const auto &values : phase) {
++        std::cout << ',';
++        if (values.empty()) std::cout << "nan"; else std::cout << median(values);
++    }
++    for (const auto &values : phase) {
++        std::cout << ',';
++        for (size_t i = 0; i < values.size(); ++i) { if (i) std::cout << '|'; std::cout << values[i]; }
++    }
++    std::cout << '\n';
+ }
+ int main(int argc, char **argv) {
+ 	try {
+@@ -159,45 +188,54 @@
+ 		}
+ 		std::cout << "language,filter,keys,queries,requested_bpk,filter_bytes,threads,build_workers,query_workers,"
+ 		             "build_scratch_bytes,repeats,seed,hit_percent,insert_ns,lookup_ns,absent_queries,false_positives,"
+-		             "fpr,result_checksum,insert_min_ns,insert_max_ns,lookup_min_ns,lookup_max_ns\n";
++		             "fpr,result_checksum,insert_min_ns,insert_max_ns,lookup_min_ns,lookup_max_ns,partitions,target_bytes,"
++                     "phase_allocate_ns,phase_count_ns,phase_prefix_ns,phase_scatter_ns,phase_insert_ns,phase_release_ns,phase_total_ns,"
++                     "phase_allocate_trials,phase_count_trials,phase_prefix_trials,phase_scatter_trials,phase_insert_trials,phase_release_trials,phase_total_trials\n";
+ 		auto selected = [&](const char *family) {
+ 			return families.count(family) != 0;
+ 		};
+-		std::vector<unsigned> order;
+-		if (selected("FastPattern"))
+-			order.insert(order.end(), {0, 1, 2});
+-		if (selected("FourSector"))
+-			order.insert(order.end(), {3, 4});
+-		if (selected("Split64"))
+-			order.insert(order.end(), {5, 6});
+-		if (selected("ByteSplit"))
+-			order.insert(order.end(), {7, 8});
+-		if (order.empty())
+-			throw std::invalid_argument("no matching filter families");
+-		for (size_t i = order.size(); i > 1; --i)
+-			std::swap(order[i - 1], order[rng.next() % i]);
+-		for (auto mode : order) {
+-			if (mode == 0)
+-				Run<Serial>("FastPatternSerial", keys, query, truth, bpk, threads, reps, seed, hit);
+-			if (mode == 1)
+-				Run<ParallelFastPatternBF>("FastPatternPartitioned", keys, query, truth, bpk, threads, reps, seed, hit);
+-			if (mode == 2)
+-				Run<AtomicFastPatternBF>("FastPatternAtomic", keys, query, truth, bpk, threads, reps, seed, hit);
+-			if (mode == 3)
+-				Run<FourSerial>("FourSectorSerial", keys, query, truth, bpk, threads, reps, seed, hit);
+-			if (mode == 4)
+-				Run<ParallelFourSectorBloomFilter>("FourSectorPartitioned", keys, query, truth, bpk, threads, reps,
+-				                                   seed, hit);
+-			if (mode == 5)
+-				Run<SplitSerial>("Split64Serial", keys, query, truth, bpk, threads, reps, seed, hit);
+-			if (mode == 6)
+-				Run<ParallelSplit64BloomFilter>("Split64Partitioned", keys, query, truth, bpk, threads, reps, seed,
+-				                                hit);
+-			if (mode == 7)
+-				Run<ByteSerial>("ByteSplitSerial", keys, query, truth, bpk, threads, reps, seed, hit);
+-			if (mode == 8)
+-				Run<ParallelByteSplitBloomFilter>("ByteSplitPartitioned", keys, query, truth, bpk, threads, reps, seed, hit);
+-		}
++
++        if (selection != "all") {
++            size_t begin = 0;
++            std::vector<std::string> seen;
++            while (begin <= selection.size()) {
++                const size_t end = selection.find(',', begin);
++                const auto token = selection.substr(begin, end == std::string::npos ? end : end - begin);
++                if ((token != "FastPattern" && token != "FourSector" && token != "Split64") || std::find(seen.begin(), seen.end(), token) != seen.end())
++                    throw std::invalid_argument("unknown, duplicate or empty filter family");
++                seen.push_back(token);
++                if (end == std::string::npos) break;
++                begin = end + 1;
++            }
++        }
++        std::vector<uint32_t> fast_expected, four_expected, split_expected;
++        if (selected("FastPattern")) fast_expected = Reference<FastPatternBF>(keys, query, bpk);
++        if (selected("FourSector")) four_expected = Reference<FourSectorBloomFilter>(keys, query, bpk);
++        if (selected("Split64")) split_expected = Reference<Split64BloomFilter>(keys, query, bpk);
++        // Canonical validation bitmaps are destroyed before any measured build.
++        std::vector<std::function<void()>> jobs;
++#define JOB(TYPE, NAME, EXPECTED) jobs.emplace_back([&] { Run<TYPE>(NAME, keys, query, truth, EXPECTED, bpk, threads, reps, seed, hit); })
++#define FAMILY(FILTER, ADDRESS, SERIAL, ORIGINAL, PREFIX, EXPECTED) \
++        if (selected(PREFIX)) { \
++            using W = partition_experiment::CachePartitionedBuild<FILTER, ADDRESS, 0>; \
++            using K256 = partition_experiment::CachePartitionedBuild<FILTER, ADDRESS, 256u << 10>; \
++            using K512 = partition_experiment::CachePartitionedBuild<FILTER, ADDRESS, 512u << 10>; \
++            using K1024 = partition_experiment::CachePartitionedBuild<FILTER, ADDRESS, 1024u << 10>; \
++            JOB(SERIAL, PREFIX "Serial", EXPECTED); \
++            JOB(ORIGINAL, PREFIX "OriginalW", EXPECTED); \
++            JOB(W, PREFIX "InstrumentedW", EXPECTED); \
++            JOB(K256, PREFIX "Cache256KiB", EXPECTED); \
++            JOB(K512, PREFIX "Cache512KiB", EXPECTED); \
++            JOB(K1024, PREFIX "Cache1024KiB", EXPECTED); \
++        }
++        FAMILY(FastPatternBF, partition_experiment::WordAddress, Serial, ParallelFastPatternBF, "FastPattern", fast_expected);
++        FAMILY(FourSectorBloomFilter, partition_experiment::WordAddress, FourSerial, ParallelFourSectorBloomFilter, "FourSector", four_expected);
++        FAMILY(Split64BloomFilter, partition_experiment::SplitAddress, SplitSerial, ParallelSplit64BloomFilter, "Split64", split_expected);
++#undef FAMILY
++#undef JOB
++        for (size_t i = jobs.size(); i > 1; --i) std::swap(jobs[i - 1], jobs[rng.next() % i]);
++        for (auto &job : jobs) job();
++
+ 	} catch (const std::exception &e) {
+ 		std::cerr << e.what() << '\n';
+ 		return 1;

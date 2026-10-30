@@ -1,0 +1,23 @@
+# Fixed conditional K12 construction confirmation
+
+This stage runs the already checked binary `99af7d855138f462a6c71229b514967f8505b07844c639845af5945a85808bb7` from proof commit `a2c52e9b34bcaaa68d11356d62a00bd73884dde9`. It does not rebuild or change the kernel, public caller, timings or existing strict `bytes > 2 MiB` dispatch. The proof preserves the failed include-path attempt and passes native, minimal AVX512F, and ASan/UBSan checks. Actual assembly confirms original word OR on the false branch and the prior four sequential line RMWs on the true branch, inside the timed public call.
+
+The original proposal `df346951a1a66509b32074029965cef6bf9a7a2e` supplies the exact ledger: n16/20/22/25, actual24 bpk (192 KiB/3 MiB/12 MiB/96 MiB), chunks4/whole input, and seeds15485863/32452843/49979687. All24 processes run old K12, conditional K12 and internal native Split64Range in one process, yielding72 rows. Seven build repetitions retain all288 vectors/2016 metric samples from1008 fresh build objects, followed by72 canonical validation objects. Allocation-plus-insertion contains the insertion interval; these are dependent measurements. Whole construction takes priority. No previous latency is imported.
+
+The explicit Latin flag is0/1/2 by seed index, after the ordinary three-job shuffle. Every type occupies each absolute position once per size/chunk. Input generation occurs before that job shuffle, and the Latin assignment consumes no RNG. This does not balance all six predecessor directions. Pure-before-common-hash build phases remain fixed. Query q18/hit50/batch4096/repeats2 is a correctness control, with no query ranking. The inherited caller checks all inserted keys for the first pure/common build and canonical bitmap; every query repetition consumes and validates full dense output. Allocation, validation and destruction retain the unchanged proof's boundaries.
+
+Each canonical filter calibrates2^26 negatives after timing. The runner reconstructs `key_base` from the pinned SplitMix source and records half-open inserted, mixed-absent superset and calibration intervals, checking disjointness and u64 arithmetic. These are **source-derived metadata**, not emitted input digests: the frozen caller emits result checksums and counts, not raw-input checksums. Source/binary identity plus equal alias/chunk outputs and calibration are checked; the independent proof establishes full bitmaps and dense output correctness. No new input-hash instrumentation is claimed. Intervals are disjoint within each construction; streams may overlap between seeds. Fresh seeds mean unseen relative to this line-OR stage's earlier5011/6011 and correctness74381 only.
+
+There are36 API/size/seed quality records after chunk deduplication and24 mapping records after the proven K12 alias. Repeated chunks/aliases must match and reuse the original denominator; no pooling. `ANALYSIS_RULES.json` retains every288 named metric contrast and every loss. Ratios are numerator latency divided by denominator latency; above1 is slower. The strict quality gate is the pointwise95% Wilson upper endpoint <=0.0001. Range comparisons retain both mappings' bounds; claims across all three seeds require all three constructions of both mappings to pass. Unqualified comparisons remain visible as unconditional timing observations. Range is an internal native baseline, not strongest external construction evidence.
+
+All measurements run on CPU2/socket0 with each child explicitly bound to NUMA0. The parent stays on CPU2 and holds the exclusive socket0 flock for the whole matrix. This formal placement is distinct from the prior correctness-only no-explicit-memory-binding setting. The runner checks inherited WRITE-lock evidence, topology and environment, rejects existing output paths (including dangling symlinks), preserves failures and never prunes a failed case. It verifies the182-artifact proof plus prior proof closures, all14 retained binaries and412 consumed compiler inputs before/after the run. No compiler is invoked.
+
+After review and authorization of the committed source:
+
+```sh
+flock /tmp/fastest-bf-socket0.lock taskset -c 2 env BF_SOCKET_LEASE=socket0-cpu2 \
+  python3 experiments/2026-10-29-k12-prefetch-line-or/screening/run.py \
+  --source-commit FULL_REVIEWED_RUNNER_COMMIT --execute-frozen
+```
+
+Seal and commit the complete raw inventory before analysis. The source-only preparation does not authorize measurements. Preserve the earlier unconditional small-table regressions and unknown3/12MiB outcomes. No threshold search, extra variant, changed seed, post-result extension, production edit, external leadership, Rust or multithread claim follows from this bounded test.

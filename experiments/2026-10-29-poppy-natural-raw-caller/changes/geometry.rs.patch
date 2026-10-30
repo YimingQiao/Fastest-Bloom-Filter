@@ -1,0 +1,10 @@
+--- frozen/benchmark/src/geometry.rs
++++ bridge/benchmark/src/geometry.rs
+@@ -77,6 +77,7 @@
+ }
+ 
+ pub fn plan(name: &str, n: usize, bpk: u32) -> Result<Geometry> {
++    if let Some((point, _)) = crate::poppy_geometry::by_name(name) { return point.plan(n, bpk); }
+     let budget = bytes(n, bpk)?;
+     let mut g = Geometry {
+         budget_bytes: budget, allocated_bytes: budget, logical_bytes: budget,

@@ -1,0 +1,256 @@
+--- frozen/benchmark.cpp
++++ query.cpp
+@@ -13,35 +13,9 @@
+ #include <sstream>
+ #include <string>
+ #include <vector>
+-#include "fast_pattern_BF.h"
+-#ifndef BF_EXTERNAL_ONLY
+-#include "four_sector_bloom.h"
+-#include "split64_bloom.h"
+-#include "byte_split_bloom.h"
+-#endif
+-#ifdef BF_EXPERIMENTS
+-#include "direct_split_BF.h"
+-#include "pattern_sectorized_BF.h"
+-#include "pattern32_BF.h"
+-#include "pipelined_sectorized_BF.h"
+-#endif
+-#include "cache_sectorized_BF_32bit.h"
+-#include "new_cache_sectorized_BF_32bit.h"
+-#include "register_blocked_BF_32bit.h"
+-#include "register_blocked_BF_32bit_Masks.h"
+-#include "register_blocked_BF_64bit.h"
+-#include "register_blocked_BF_64bit_Masks.h"
+-#include "register_blocked_BF_2x32bit.h"
+-#include "impala_blocked_BF_64bit.h"
+-#ifdef __AVX512F__
+-#include "impala_blocked_BF_64bit_avx512.h"
+-#endif
+-
+-#ifdef BF_EXTERNAL_HEADER
+-#include BF_EXTERNAL_HEADER
+-#endif
+-
++#include "adapters.hpp"
+ #include "geometry.hpp"
++#include "phase_order.hpp"
+ using namespace bloom_filters;
+ template <class BF, class = void>
+ struct RawKeyApi : std::false_type {};
+@@ -59,6 +33,7 @@
+ 		return bf.BuildScratchBytes();
+ 	}
+ };
++template<class T> uint64_t Fingerprint(const T* data,size_t n) { uint64_t h=14695981039346656037ULL;for(size_t i=0;i<n;++i)h=(h^data[i])*1099511628211ULL;return h; }
+ using Clock = std::chrono::steady_clock;
+ static volatile uint64_t sink;
+ static double ns(Clock::time_point a, Clock::time_point b) {
+@@ -110,7 +85,7 @@
+          uint32_t bpk, unsigned hit, size_t batch, unsigned repeats, uint64_t seed, uint64_t key_base,
+          size_t insert_batch, unsigned calibration_power, const external_parallel::Config &parallel) {
+ 	const size_t n = raw_insert.size(), q = raw_query.size();
+-	std::vector<Hash, AlignedAllocator<Hash, 4096>> inserted(n), hashes(q), scratch(std::max(batch, insert_batch));
++	std::vector<Hash, AlignedAllocator<Hash, 4096>> inserted(n), hashes(q), scratch(batch);
+ 	std::vector<uint32_t, AlignedAllocator<uint32_t, 4096>> output_storage(std::max(q, batch) + 32);
+ 	uint32_t *output = output_storage.data() + 16;
+ 	if constexpr (RawKeyApi<BF>::value) {
+@@ -121,50 +96,11 @@
+ 		HashVector(n, raw_insert.data(), inserted.data());
+ 		HashVector(q, raw_query.data(), hashes.data());
+ 	}
+-	// Keep one bitmap alive in each phase. Validation and destruction are outside
+-	// timing; the first trial validates the complete pure and hash+insert builds.
+-	auto validate_build = [&](BF &filter, bool full) {
+-		const size_t count = full ? n : std::min(n, batch);
+-		for (size_t i = 0; i < count; i += batch) {
+-			const size_t len = std::min(batch, count - i);
+-			lookup_kernel(filter, len, inserted.data() + i, output);
+-			for (size_t j = 0; j < len; ++j)
+-				if (output[j] != 1)
+-					throw std::runtime_error("false negative in timed build");
+-			sink = std::accumulate(output, output + len, uint64_t {0});
+-		}
+-	};
+-	std::vector<double> insert_times, build_times, hash_insert_times, hash_build_times;
+-	for (unsigned trial = 0; trial < repeats; ++trial) {
+-		{
+-			auto a = Clock::now();
+-			BF fresh = make_filter<BF>(n, bpk);
+-			auto ready = Clock::now();
+-			for (size_t i = 0; i < n; i += insert_batch)
+-				insert(fresh, std::min(insert_batch, n - i), inserted.data() + i);
+-			auto b = Clock::now();
+-			insert_times.push_back(ns(ready, b) / n);
+-			build_times.push_back(ns(a, b) / n);
+-			validate_build(fresh, trial == 0);
+-		}
+-		if constexpr (RawKeyApi<BF>::value) {
+-			hash_insert_times.push_back(insert_times.back());
+-			hash_build_times.push_back(build_times.back());
+-		} else {
+-			auto a = Clock::now();
+-			BF hashed = make_filter<BF>(n, bpk);
+-			auto ready = Clock::now();
+-			for (size_t i = 0; i < n; i += insert_batch) {
+-				const size_t len = std::min(insert_batch, n - i);
+-				HashVector(len, raw_insert.data() + i, scratch.data());
+-				insert(hashed, len, scratch.data());
+-			}
+-			auto b = Clock::now();
+-			hash_insert_times.push_back(ns(ready, b) / n);
+-			hash_build_times.push_back(ns(a, b) / n);
+-			validate_build(hashed, trial == 0);
+-		}
+-	}
++    const uint64_t raw_insert_checksum=Fingerprint(raw_insert.data(),n),raw_query_checksum=Fingerprint(raw_query.data(),q);
++    const uint64_t inserted_hash_checksum=Fingerprint(inserted.data(),n),query_hash_checksum=Fingerprint(hashes.data(),q);
++    // Query-only: one complete setup bitmap, no construction timing samples.
++    const double missing = std::numeric_limits<double>::quiet_NaN();
++    const std::vector<double> insert_times{missing}, build_times{missing}, hash_insert_times{missing}, hash_build_times{missing};
+ 	const auto geometry = exact_budget::Traits<BF>::Plan(n, bpk);
+ 	BF bf = make_filter<BF>(n, bpk);
+ 	if (bf.SizeInBytes() != geometry.allocated_bytes || bf.SizeInBytes() > geometry.budget_bytes)
+@@ -233,6 +169,7 @@
+ 				throw std::runtime_error(std::string("invalid output in ") + phase);
+ 			checksum = (checksum ^ output[i]) * 1099511628211ULL;
+ 		}
++		sink = checksum;
+ 		if (checksum != result_checksum || !std::equal(expected.begin(),expected.end(),output))
+             throw std::runtime_error(std::string("full query output mismatch in ") + phase);
+         for(size_t i=0;i<16;++i)
+@@ -242,33 +179,25 @@
+ 	// Warm every selected core with the same global batch partition outside timing.
+     (void)parallel_query(false); validate_timed_output("parallel warm-up");
+     (void)parallel_query(true); validate_timed_output("hash parallel warm-up");
+-    for (unsigned r = 0; r < repeats; ++r) {
+-		auto start = Clock::now();
+-		for (size_t i = 0; i < q; i += batch)
+-			lookup_kernel(bf, std::min(batch, q - i), hashes.data() + i, output + i);
+-		auto end = Clock::now();
+-		lookup.push_back(ns(start, end) / q);
+-		sink = std::accumulate(output, output + q, uint64_t {0});
+-		validate_timed_output("timed serial prehashed lookup");
+-		start = Clock::now();
+-		for (size_t i = 0; i < q; i += batch) {
+-			size_t len = std::min(batch, q - i);
+-			if constexpr (RawKeyApi<BF>::value) {
+-				lookup_kernel(bf, len, raw_query.data() + i, output + i);
+-			} else {
+-				HashVector(len, raw_query.data() + i, scratch.data());
+-				lookup_kernel(bf, len, scratch.data(), output + i);
+-			}
+-		}
+-		end = Clock::now();
+-		total.push_back(ns(start, end) / q);
+-		sink = std::accumulate(output, output + q, uint64_t {0});
+-		validate_timed_output("timed serial hash+lookup");
+-        pure_parallel.add(parallel_query(false),q);
+-        validate_timed_output("parallel prehashed lookup");
+-        hash_parallel.add(parallel_query(true),q);
+-        validate_timed_output("parallel hash+lookup");
+-	}
++    const auto phase_order = k12_phase::Schedule(seed,repeats);
++    for (const auto &order : phase_order) for (unsigned phase : order) {
++        if (phase == 0) {
++            const auto start = Clock::now();
++            for (size_t i=0;i<q;i+=batch)
++                lookup_kernel(bf,std::min(batch,q-i),hashes.data()+i,output+i);
++            const auto end = Clock::now(); lookup.push_back(ns(start,end)/q);
++        } else if (phase == 1) {
++            const auto start = Clock::now();
++            for (size_t i=0;i<q;i+=batch) {
++                const size_t len=std::min(batch,q-i);
++                if constexpr (RawKeyApi<BF>::value) lookup_kernel(bf,len,raw_query.data()+i,output+i);
++                else { HashVector(len,raw_query.data()+i,scratch.data());lookup_kernel(bf,len,scratch.data(),output+i); }
++            }
++            const auto end=Clock::now();total.push_back(ns(start,end)/q);
++        } else if (phase == 2) pure_parallel.add(parallel_query(false),q);
++        else hash_parallel.add(parallel_query(true),q);
++        validate_timed_output("balanced timed query");
++    }
+ 	// Independent negative calibration after all timed phases. Stream probes to
+ 	// increase FPR resolution without changing the timed query working set.
+ 	uint64_t calibration_queries = calibration_power ? uint64_t {1} << calibration_power : 0;
+@@ -292,6 +221,7 @@
+ 			}
+ 		}
+ 	}
++    if(raw_insert_checksum!=Fingerprint(raw_insert.data(),n)||raw_query_checksum!=Fingerprint(raw_query.data(),q)||inserted_hash_checksum!=Fingerprint(inserted.data(),n)||query_hash_checksum!=Fingerprint(hashes.data(),q))throw std::runtime_error("input mutation");
+ 	std::cout << std::setprecision(17) << "cpp," << name << ',' << n << ',' << q << ',' << bpk << ',' << bf.SizeInBytes() << ','
+ 	          << 8.0 * bf.SizeInBytes() / n << ',' << sizeof(Hash) * 8 << ',' << hit << ',' << present << ',' << batch
+ 	          << ',' << repeats << ',' << seed << ','
+@@ -331,11 +261,11 @@
+     };
+     samples(pure_parallel,!RawKeyApi<BF>::value); samples(hash_parallel,true);
+     std::cout << ','; exact_budget::PrintGeometry(std::cout,geometry);
+-    std::cout << ",exact_byte_ceiling_v1,fixed_serial_pure_serial_hash_parallel_pure_parallel_hash,";
++    std::cout << ",exact_byte_ceiling_v1," << k12_phase::Encode(phase_order) << ',';
+     for(size_t i=0;i<lookup.size();++i) { if(i)std::cout<<'|'; if constexpr(RawKeyApi<BF>::value)std::cout<<"nan"; else std::cout<<lookup[i]; }
+     std::cout<<',';
+     for(size_t i=0;i<total.size();++i) { if(i)std::cout<<'|'; std::cout<<total[i]; }
+-    std::cout << '\n';
++    std::cout << ",query_only,0," << raw_insert_checksum << ',' << raw_query_checksum << ',' << inserted_hash_checksum << ',' << query_hash_checksum << '\n';
+ }
+ int main(int argc, char **argv) {
+ 	try {
+@@ -365,7 +295,7 @@
+         if(!workers || workers>1024) throw std::invalid_argument("unsupported worker count");
+ 		if (power > 26 || power < 5 || qp > 27 || qp < 12 || !bpk || bpk > 32 || hit > 100 || !batch ||
+ 		    batch > (1u << qp) || !insert_batch || insert_batch > (1u << 26) ||
+-		    (calibration_power && (calibration_power < 12 || calibration_power > 27)) || !repeats)
++		    (calibration_power && (calibration_power < 12 || calibration_power > 27)) || !repeats || repeats % 4)
+ 			throw std::invalid_argument("unsupported benchmark arguments");
+ 		size_t n = size_t {1} << power, q = size_t {1} << qp;
+         if(workers > external_parallel::BatchCount(q,batch))
+@@ -400,40 +330,7 @@
+ 	jobs.emplace_back(                                                                                                 \
+ 	    [&] { run<T, H>(#T, ins, query, bpk, hit, batch, repeats, seed, key_base, insert_batch, calibration_power, parallel); })
+ 
+-#ifndef BF_EXTERNAL_ONLY
+-		ADD(FourSectorBloomFilter, uint64_t);
+-		ADD(Split64BloomFilter, uint64_t);
+-			ADD(ByteSplitBloomFilter, uint64_t);
+-		ADD(RegisterBlockedBF32Bit, uint32_t);
+-		ADD(RegisterBlockedBF32BitMasks, uint32_t);
+-		ADD(RegisterBlockedBF64Bit, uint64_t);
+-		ADD(RegisterBlockedBF64BitMasks, uint64_t);
+-		ADD(RegisterBlockedBF2x32Bit, uint64_t);
+-		ADD(CacheSectorizedBF32Bit, uint64_t);
+-#ifdef BF_EXPERIMENTS
+-		ADD(PipelinedSectorizedBF, uint64_t);
+-#endif
+-#ifdef BF_EXPERIMENTS
+-		ADD(DirectSplitBF, uint64_t);
+-#endif
+-#ifdef BF_EXPERIMENTS
+-		ADD(PatternSectorizedBF, uint64_t);
+-#endif
+-#ifdef BF_EXPERIMENTS
+-		ADD(Pattern32BF, uint64_t);
+-#endif
+-#endif
+-		ADD(FastPatternBF, uint64_t);
+-#ifdef BF_REGISTER_EXTERNAL_FILTERS
+-		BF_REGISTER_EXTERNAL_FILTERS(ADD);
+-#endif
+-#ifndef BF_EXTERNAL_ONLY
+-		ADD(NewCacheSectorizedBF32Bit, uint64_t);
+-		ADD(ImpalaBlockedBF64Bit, uint64_t);
+-#ifdef __AVX512F__
+-		ADD(ImpalaBlockedBF64BitAVX512, uint64_t);
+-#endif
+-#endif
++        BF_REGISTER_QUERY_FILTERS(ADD);
+ #undef ADD
+ 		if (!unmatched.empty())
+ 			throw std::invalid_argument("unknown filter name: " + *unmatched.begin());
+@@ -463,7 +360,7 @@
+                 if (std::string(phase)!="parallel_hash_lookup" || std::string(field)!="join_trials") std::cout << ',';
+             }
+         }
+-        std::cout << ',' << exact_budget::GeometryHeader() << ",size_contract,query_phase_order,lookup_trials_ns,hash_lookup_trials_ns\n";
++        std::cout << ',' << exact_budget::GeometryHeader() << ",size_contract,query_phase_order,lookup_trials_ns,hash_lookup_trials_ns,measurement_mode,build_repeats,raw_insert_checksum,raw_query_checksum,inserted_hash_checksum,query_hash_checksum\n";
+ 		shuffle(jobs, rng);
+ 		for (auto &job : jobs)
+ 			job();

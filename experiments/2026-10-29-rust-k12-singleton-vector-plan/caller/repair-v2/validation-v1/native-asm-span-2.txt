@@ -1,0 +1,156 @@
+   2ec30:	push   %rbp
+   2ec31:	push   %r15
+   2ec33:	push   %r14
+   2ec35:	push   %r13
+   2ec37:	push   %r12
+   2ec39:	push   %rbx
+   2ec3a:	sub    $0x48,%rsp
+   2ec3e:	mov    %rdx,0x8(%rsp)
+   2ec43:	mov    %r8,0x10(%rsp)
+   2ec48:	cmp    %r8,%rdx
+   2ec4b:	jne    2ee63 <rust_k12_simd_caller::query::visible_pure::<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>+0x233>
+   2ec51:	mov    %rcx,%rax
+   2ec54:	mov    0x18(%rdi),%r9d
+   2ec58:	mov    0x8(%rdi),%r10
+   2ec5c:	mov    0x10(%rdi),%r8
+   2ec60:	cmpb   $0x0,0x1c(%rdi)
+   2ec64:	je     2ed41 <rust_k12_simd_caller::query::visible_pure::<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>+0x111>
+   2ec6a:	vmovdqa64 -0x24c34(%rip),%zmm0        # a040 <panic_unwind::imp::CANARY+0x2b8>
+   2ec74:	xor    %ecx,%ecx
+   2ec76:	vbroadcasti32x4 -0x27170(%rip),%zmm1        # 7b10 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x570>
+   2ec80:	vbroadcasti32x4 -0x2703a(%rip),%zmm2        # 7c50 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   2ec8a:	vpbroadcastd -0x27a9c(%rip),%zmm3        # 71f8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   2ec94:	vbroadcasti32x4 -0x2707e(%rip),%zmm4        # 7c20 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0xd0>
+   2ec9e:	xchg   %ax,%ax
+   2eca0:	mov    (%rsi,%rcx,8),%r11
+   2eca4:	mov    %r11,%rdi
+   2eca7:	shr    $0x28,%rdi
+   2ecab:	imul   %r9,%rdi
+   2ecaf:	shr    $0x18,%rdi
+   2ecb3:	and    $0xfffffff,%edi
+   2ecb9:	cmp    %r8,%rdi
+   2ecbc:	jae    2ee8a <rust_k12_simd_caller::query::visible_pure::<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>+0x25a>
+   2ecc2:	mov    %r11,%rbx
+   2ecc5:	shr    $0x20,%rbx
+   2ecc9:	shl    $0x6,%rdi
+   2eccd:	vpbroadcastd %ebx,%zmm5
+   2ecd3:	vpsrlvd %zmm1,%zmm5,%zmm6
+   2ecd9:	vpxord %zmm5,%zmm6,%zmm5
+   2ecdf:	vpternlogd $0xec,%zmm3,%zmm2,%zmm5
+   2ece6:	vpermd (%r10,%rdi,1),%zmm5,%zmm5
+   2eced:	vpbroadcastd %r11d,%zmm6
+   2ecf3:	vprorvd %zmm4,%zmm6,%zmm6
+   2ecf9:	vpxor  %xmm7,%xmm7,%xmm7
+   2ecfd:	vpermd %zmm0,%zmm6,%zmm7
+   2ed03:	vpsrld $0x4,%zmm6,%zmm6
+   2ed0a:	vprolvd %zmm6,%zmm7,%zmm6
+   2ed10:	vpandd %zmm5,%zmm6,%zmm5
+   2ed16:	vpcmpneqd %zmm6,%zmm5,%k0
+   2ed1d:	kmovd  %k0,%edi
+   2ed21:	xor    %r11d,%r11d
+   2ed24:	test   $0xf,%dil
+   2ed28:	sete   %r11b
+   2ed2c:	mov    %r11d,(%rax,%rcx,4)
+   2ed30:	inc    %rcx
+   2ed33:	cmp    %rcx,%rdx
+   2ed36:	jne    2eca0 <rust_k12_simd_caller::query::visible_pure::<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>+0x70>
+   2ed3c:	jmp    2ee51 <rust_k12_simd_caller::query::visible_pure::<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>+0x221>
+   2ed41:	xor    %ebx,%ebx
+   2ed43:	lea    -0x24d0a(%rip),%r11        # a040 <panic_unwind::imp::CANARY+0x2b8>
+   2ed4a:	nopw   0x0(%rax,%rax,1)
+   2ed50:	mov    (%rsi,%rbx,8),%r14
+   2ed54:	mov    %r14,%rdi
+   2ed57:	shr    $0x28,%rdi
+   2ed5b:	imul   %r9,%rdi
+   2ed5f:	shr    $0x18,%rdi
+   2ed63:	and    $0xfffffff,%edi
+   2ed69:	cmp    %rdi,%r8
+   2ed6c:	jbe    2ee9d <rust_k12_simd_caller::query::visible_pure::<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>+0x26d>
+   2ed72:	shl    $0x6,%rdi
+   2ed76:	add    %r10,%rdi
+   2ed79:	mov    %r14,%r15
+   2ed7c:	shr    $0x20,%r15
+   2ed80:	and    $0x3,%r15d
+   2ed84:	mov    %r14d,%ecx
+   2ed87:	and    $0xf,%ecx
+   2ed8a:	mov    (%r11,%rcx,4),%r12d
+   2ed8e:	mov    %r14d,%ecx
+   2ed91:	shr    $0x4,%ecx
+   2ed94:	rol    %cl,%r12d
+   2ed97:	mov    (%rdi,%r15,4),%ebp
+   2ed9b:	and    %r12d,%ebp
+   2ed9e:	xor    %r12d,%ebp
+   2eda1:	lea    0x4(%r15),%ecx
+   2eda5:	mov    %r14,%r12
+   2eda8:	shr    $0x22,%r12
+   2edac:	and    $0x3,%r12d
+   2edb0:	xor    %ecx,%r12d
+   2edb3:	mov    %r14d,%ecx
+   2edb6:	shr    $0x6,%ecx
+   2edb9:	and    $0x3c,%ecx
+   2edbc:	mov    (%rcx,%r11,1),%r13d
+   2edc0:	mov    %r14d,%ecx
+   2edc3:	shr    $0xc,%ecx
+   2edc6:	rol    %cl,%r13d
+   2edc9:	mov    (%rdi,%r12,4),%r12d
+   2edcd:	and    %r13d,%r12d
+   2edd0:	xor    %r13d,%r12d
+   2edd3:	or     %ebp,%r12d
+   2edd6:	lea    0x8(%r15),%ecx
+   2edda:	mov    %r14,%r13
+   2eddd:	shr    $0x24,%r13
+   2ede1:	and    $0x3,%r13d
+   2ede5:	xor    %ecx,%r13d
+   2ede8:	mov    (%rdi,%r13,4),%ebp
+   2edec:	mov    %r14d,%ecx
+   2edef:	shr    $0xe,%ecx
+   2edf2:	and    $0x3c,%ecx
+   2edf5:	mov    (%rcx,%r11,1),%r13d
+   2edf9:	mov    %r14d,%ecx
+   2edfc:	shr    $0x14,%ecx
+   2edff:	rol    %cl,%r13d
+   2ee02:	andn   %r13d,%ebp,%ebp
+   2ee07:	or     %r12d,%ebp
+   2ee0a:	or     $0xc,%r15d
+   2ee0e:	mov    %r14,%rcx
+   2ee11:	shr    $0x26,%rcx
+   2ee15:	and    $0x3,%ecx
+   2ee18:	xor    %r15d,%ecx
+   2ee1b:	mov    (%rdi,%rcx,4),%edi
+   2ee1e:	rorx   $0x18,%r14d,%ecx
+   2ee24:	mov    %ecx,%r14d
+   2ee27:	and    $0xf,%r14d
+   2ee2b:	mov    (%r11,%r14,4),%r14d
+   2ee2f:	shr    $0x4,%ecx
+   2ee32:	rol    %cl,%r14d
+   2ee35:	andn   %r14d,%edi,%ecx
+   2ee3a:	xor    %edi,%edi
+   2ee3c:	or     %ebp,%ecx
+   2ee3e:	sete   %dil
+   2ee42:	mov    %edi,(%rax,%rbx,4)
+   2ee45:	inc    %rbx
+   2ee48:	cmp    %rbx,%rdx
+   2ee4b:	jne    2ed50 <rust_k12_simd_caller::query::visible_pure::<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>+0x120>
+   2ee51:	add    $0x48,%rsp
+   2ee55:	pop    %rbx
+   2ee56:	pop    %r12
+   2ee58:	pop    %r13
+   2ee5a:	pop    %r14
+   2ee5c:	pop    %r15
+   2ee5e:	pop    %rbp
+   2ee5f:	vzeroupper
+   2ee62:	ret
+   2ee63:	movq   $0x0,0x18(%rsp)
+   2ee6c:	lea    0x3e5ad(%rip),%r8        # 6d420 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.1797.llvm.15448142832521594973+0x550>
+   2ee73:	lea    0x8(%rsp),%rsi
+   2ee78:	lea    0x10(%rsp),%rdx
+   2ee7d:	lea    0x18(%rsp),%rcx
+   2ee82:	xor    %edi,%edi
+   2ee84:	call   *0x40556(%rip)        # 6f3e0 <_DYNAMIC+0x2c0>
+   2ee8a:	lea    0x3e75f(%rip),%rdx        # 6d5f0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.1797.llvm.15448142832521594973+0x720>
+   2ee91:	mov    %r8,%rsi
+   2ee94:	vzeroupper
+   2ee97:	call   *0x404a3(%rip)        # 6f340 <_DYNAMIC+0x220>
+   2ee9d:	lea    0x3e71c(%rip),%rdx        # 6d5c0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.1797.llvm.15448142832521594973+0x6f0>
+   2eea4:	mov    %r8,%rsi
+   2eea7:	call   *0x40493(%rip)        # 6f340 <_DYNAMIC+0x220>

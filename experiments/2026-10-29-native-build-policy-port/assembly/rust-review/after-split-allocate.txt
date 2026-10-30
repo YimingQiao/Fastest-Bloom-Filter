@@ -1,0 +1,77 @@
+   447b2:	ff 15 40 cb 04 00    	call   *0x4cb40(%rip)        # 912f8 <_DYNAMIC+0x7e8>
+   447b8:	48 89 84 24 b8 00 00 	mov    %rax,0xb8(%rsp)
+   447bf:	00 
+   447c0:	89 94 24 c0 00 00 00 	mov    %edx,0xc0(%rsp)
+   447c7:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+   447cc:	48 3d ff ff ff 1f    	cmp    $0x1fffffff,%rax
+   447d2:	0f 87 10 1e 00 00    	ja     465e8 <policy_confirmation::main+0x4458>
+   447d8:	b8 20 00 00 00       	mov    $0x20,%eax
+   447dd:	48 8b 8c 24 80 01 00 	mov    0x180(%rsp),%rcx
+   447e4:	00 
+   447e5:	48 89 c3             	mov    %rax,%rbx
+   447e8:	48 01 c0             	add    %rax,%rax
+   447eb:	48 39 cb             	cmp    %rcx,%rbx
+   447ee:	76 f5                	jbe    447e5 <policy_confirmation::main+0x2655>
+   447f0:	48 b8 f0 ff ff ff ff 	movabs $0x3ffffffffffffff0,%rax
+   447f7:	ff ff 3f 
+   447fa:	48 39 c3             	cmp    %rax,%rbx
+   447fd:	0f 97 c0             	seta   %al
+   44800:	4c 8d 2c 9d 00 00 00 	lea    0x0(,%rbx,4),%r13
+   44807:	00 
+   44808:	48 b9 00 00 00 00 00 	movabs $0x8000000000000000,%rcx
+   4480f:	00 00 80 
+   44812:	48 83 c1 c0          	add    $0xffffffffffffffc0,%rcx
+   44816:	49 39 cd             	cmp    %rcx,%r13
+   44819:	0f 97 c1             	seta   %cl
+   4481c:	08 c1                	or     %al,%cl
+   4481e:	0f 85 b0 1d 00 00    	jne    465d4 <policy_confirmation::main+0x4444>
+   44824:	48 c7 84 24 a0 04 00 	movq   $0x0,0x4a0(%rsp)
+   4482b:	00 00 00 00 00 
+   44830:	41 bf 40 00 00 00    	mov    $0x40,%r15d
+   44836:	be 40 00 00 00       	mov    $0x40,%esi
+   4483b:	48 8d bc 24 a0 04 00 	lea    0x4a0(%rsp),%rdi
+   44842:	00 
+   44843:	4c 89 ea             	mov    %r13,%rdx
+   44846:	ff 15 24 c7 04 00    	call   *0x4c724(%rip)        # 90f70 <posix_memalign@GLIBC_2.2.5>
+   4484c:	85 c0                	test   %eax,%eax
+   4484e:	0f 85 83 1d 00 00    	jne    465d7 <policy_confirmation::main+0x4447>
+   44854:	4c 8b b4 24 a0 04 00 	mov    0x4a0(%rsp),%r14
+   4485b:	00 
+   4485c:	4d 85 f6             	test   %r14,%r14
+   4485f:	0f 84 72 1d 00 00    	je     465d7 <policy_confirmation::main+0x4447>
+   44865:	48 c1 eb 04          	shr    $0x4,%rbx
+   44869:	49 8d 55 c0          	lea    -0x40(%r13),%rdx
+   4486d:	4c 89 f7             	mov    %r14,%rdi
+   44870:	31 f6                	xor    %esi,%esi
+   44872:	ff 15 18 c7 04 00    	call   *0x4c718(%rip)        # 90f90 <memset@GLIBC_2.2.5>
+   44878:	c5 f9 ef c0          	vpxor  %xmm0,%xmm0,%xmm0
+   4487c:	c4 81 7d 7f 44 35 c0 	vmovdqa %ymm0,-0x40(%r13,%r14,1)
+   44883:	c4 81 7d 7f 44 35 e0 	vmovdqa %ymm0,-0x20(%r13,%r14,1)
+   4488a:	8d 43 ff             	lea    -0x1(%rbx),%eax
+   4488d:	48 89 1c 24          	mov    %rbx,(%rsp)
+   44891:	4c 89 74 24 08       	mov    %r14,0x8(%rsp)
+   44896:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+   4489b:	89 44 24 18          	mov    %eax,0x18(%rsp)
+   4489f:	66 c7 44 24 1c 01 01 	movw   $0x101,0x1c(%rsp)
+   448a6:	48 8b 84 24 28 01 00 	mov    0x128(%rsp),%rax
+   448ad:	00 
+   448ae:	48 89 84 24 a0 04 00 	mov    %rax,0x4a0(%rsp)
+   448b5:	00 
+   448b6:	48 8b 84 24 d0 00 00 	mov    0xd0(%rsp),%rax
+   448bd:	00 
+   448be:	48 89 84 24 a8 04 00 	mov    %rax,0x4a8(%rsp)
+   448c5:	00 
+   448c6:	48 8d 84 24 a0 04 00 	lea    0x4a0(%rsp),%rax
+   448cd:	00 
+   448ce:	48 8b b4 24 a0 04 00 	mov    0x4a0(%rsp),%rsi
+   448d5:	00 
+   448d6:	48 8b 94 24 a8 04 00 	mov    0x4a8(%rsp),%rdx
+   448dd:	00 
+   448de:	48 89 e7             	mov    %rsp,%rdi
+   448e1:	48 8b 8c 24 c8 00 00 	mov    0xc8(%rsp),%rcx
+   448e8:	00 
+   448e9:	c5 f8 77             	vzeroupper
+   448ec:	ff 15 96 c8 04 00    	call   *0x4c896(%rip)        # 91188 <_DYNAMIC+0x678>
+   448f2:	48 8d bc 24 b8 00 00 	lea    0xb8(%rsp),%rdi
+   448f9:	00 
+   448fa:	ff 15 00 ca 04 00    	call   *0x4ca00(%rip)        # 91300 <_DYNAMIC+0x7f0>

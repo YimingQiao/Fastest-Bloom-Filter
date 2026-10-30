@@ -1,0 +1,98 @@
+{
+  "status": "source-only; no compiler/filter/assembly/timing run authorized yet",
+  "scope": "Public caller-contract control only; Page allocation/masks/hash/Insert/Dense unchanged",
+  "parent_source_commit": "6baeaeb88c89b9a4eed71f0a0aa1263c613289bd",
+  "registry": [
+    "FastPatternBF",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter",
+    "ByteSplitBloomFilter",
+    "PageBloom4Default",
+    "PageBloom4Compact",
+    "PageBloom6Default",
+    "PageBloom6Compact",
+    "PageBloom8Default",
+    "PageBloom8Compact",
+    "PageBloom4DefaultPointerSingleV1",
+    "PageBloom4CompactPointerSingleV1",
+    "PageBloom6DefaultPointerSingleV1",
+    "PageBloom6CompactPointerSingleV1",
+    "PageBloom8DefaultPointerSingleV1",
+    "PageBloom8CompactPointerSingleV1"
+  ],
+  "canonical_alias": {
+    "PageBloom4DefaultPointerSingleV1": "PageBloom4Default",
+    "PageBloom4CompactPointerSingleV1": "PageBloom4Compact",
+    "PageBloom6DefaultPointerSingleV1": "PageBloom6Default",
+    "PageBloom6CompactPointerSingleV1": "PageBloom6Compact",
+    "PageBloom8DefaultPointerSingleV1": "PageBloom8Default",
+    "PageBloom8CompactPointerSingleV1": "PageBloom8Compact"
+  },
+  "worker": "modern_page_pointer_control",
+  "key_powers": [
+    16,
+    25
+  ],
+  "caps_bpk": [
+    12,
+    16,
+    24,
+    32
+  ],
+  "query_power": 22,
+  "hit_percent": 50,
+  "seed": 42,
+  "calibration_power": 24,
+  "repeats": 6,
+  "modes": [
+    "raw_single",
+    "raw_batch1",
+    "raw_batch4096"
+  ],
+  "rounds": [
+    {
+      "round": 0,
+      "alias_order": "forward_registry"
+    },
+    {
+      "round": 1,
+      "alias_order": "reverse_registry"
+    }
+  ],
+  "rows_per_round": 120,
+  "total_rows": 240,
+  "unpooled_quality_identities": 72,
+  "build_repeats": 0,
+  "baseline_source_comparison": "Exact canonical outputs/bytes/calibration against completed728 evidence; no old-context latency comparison",
+  "asm_gate": "Pointer public-single must pass the original input element address to test(ptr,4), with no by-value4-byte stack materialization. Underlying public test may remain out of line. Dense calls target the same frozen Base DenseCall specialization.",
+  "preflight_plan": {
+    "backends": [
+      "native",
+      "native-asan"
+    ],
+    "all_names": 16,
+    "fixtures": [
+      {
+        "key_power": 10,
+        "cap_bpk": 16,
+        "hit_percent": 0
+      },
+      {
+        "key_power": 10,
+        "cap_bpk": 24,
+        "hit_percent": 50
+      },
+      {
+        "key_power": 10,
+        "cap_bpk": 16,
+        "hit_percent": 100
+      }
+    ],
+    "query_power": 13,
+    "calibration_power": 12,
+    "repeats": 0,
+    "cases_per_backend": 48,
+    "shared_guards": "Frozen common.hpp all-insert/noFN; all3modes; full dense outputs; tails0..131 offsets0..3; long4095/4096/4097/4127; independent cal vs by-value Single; invalid CLI/output fault",
+    "timing_permitted": false
+  }
+}

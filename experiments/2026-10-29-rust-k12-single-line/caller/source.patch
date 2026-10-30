@@ -1,0 +1,100 @@
+--- before/benchmark/Cargo.lock
++++ after/benchmark/Cargo.lock
+@@ -36,16 +36,21 @@
+ version = "0.1.0"
+ 
+ [[package]]
+-name = "fastest-bloom-filter-rust-k12-public-caller"
++name = "fastest-bloom-filter-rust-k12-single-line-caller"
+ version = "0.1.0"
+ dependencies = [
+  "bloomsday",
+  "fastbloom",
+  "fastest-bloom-filter",
+  "four-sector-range12-isolated",
++ "four-sector-range12-single-line-isolated",
+  "sbbf-rs",
+  "sbbf-rs-safe",
+ ]
++
++[[package]]
++name = "four-sector-range12-single-line-isolated"
++version = "0.0.0"
+ 
+ [[package]]
+ name = "four-sector-range12-isolated"
+--- before/benchmark/Cargo.toml
++++ after/benchmark/Cargo.toml
+@@ -1,5 +1,5 @@
+ [package]
+-name = "fastest-bloom-filter-rust-k12-public-caller"
++name = "fastest-bloom-filter-rust-k12-single-line-caller"
+ version = "0.1.0"
+ edition = "2021"
+ publish = false
+@@ -9,9 +9,10 @@
+ path = "src/main.rs"
+ 
+ [features]
+-disable-avx512 = ["fastest-bloom-filter/disable-avx512", "four-sector-range12-isolated/disable-avx512"]
++disable-avx512 = ["fastest-bloom-filter/disable-avx512", "four-sector-range12-isolated/disable-avx512", "k12_single_line/disable-avx512"]
+ 
+ [dependencies]
++k12_single_line = { package = "four-sector-range12-single-line-isolated", path = "../../native" }
+ four-sector-range12-isolated = { path = "../../../2026-10-29-four-sector-range12-rust-port/native" }
+ fastest-bloom-filter = { path = "../../../2026-10-29-split64-range-rust-screen/native" }
+ bloomsday = { git = "https://github.com/sidd-27/Bloomsday.git", rev = "11f16a91a1c8a20344cd263e908f957dac7cf5d0" }
+--- before/benchmark/src/geometry.rs
++++ after/benchmark/src/geometry.rs
+@@ -110,6 +110,13 @@
+             g.effective_probes = 12;
+             g.origin = "K12_experiment";
+         }
++        "FourSectorRange12SingleLineV1" => {
++            g.logical_bytes = budget / 64 * 64;
++            g.allocated_bytes = g.logical_bytes;
++            g.kind = "top24_range_lines";
++            g.effective_probes = 12;
++            g.origin = "K12_single_line_experiment";
++        }
+         "Fastbloom017" => {
+             g.logical_bytes = budget / 8 * 8;
+             g.allocated_bytes = g.logical_bytes;
+--- before/benchmark/src/main.rs
++++ after/benchmark/src/main.rs
+@@ -1,3 +1,4 @@
++use k12_single_line::FourSectorRange12BloomFilter as FourSectorRange12SingleLineV1;
+ use four_sector_range12_isolated::FourSectorRange12BloomFilter;
+ use fastest_bloom_filter::{
+     hash64, BloomFilter, ByteSplitBloomFilter, FourSectorBloomFilter, Split64BloomFilter, Split64RangeBloomFilter,
+@@ -78,6 +79,7 @@
+ 
+ 
+ include!("k12_adapter.rs");
++include!("single_line_adapter.rs");
+ 
+ struct Fastbloom017(fastbloom::BloomFilter);
+ impl Filter for Fastbloom017 {
+@@ -554,6 +556,7 @@
+     "Fastbloom017K11",
+     "Fastbloom017K12",
+     "FourSectorRange12BloomFilter",
++    "FourSectorRange12SingleLineV1",
+ ];
+ 
+ fn main() {
+@@ -662,6 +665,7 @@
+             "BloomsdayPinned" => run::<BloomsdayPinned>(name, &inserted, &query, &c),
+             "SbbfSafePinned" => run::<SbbfSafePinned>(name, &inserted, &query, &c),
+             "FourSectorRange12BloomFilter" => run::<FourSectorRange12BloomFilter>(name, &inserted, &query, &c),
++            "FourSectorRange12SingleLineV1" => run::<FourSectorRange12SingleLineV1>(name, &inserted, &query, &c),
+             _ => unreachable!(),
+         }
+     }
+@@ -675,3 +679,6 @@
+ 
+ #[cfg(test)]
+ mod k12_tests;
++
++#[cfg(test)]
++mod single_line_tests;

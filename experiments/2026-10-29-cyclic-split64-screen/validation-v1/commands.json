@@ -1,0 +1,385 @@
+[
+  {
+    "name": "native-configure",
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cyclic-split64-screen",
+      "-B",
+      "/tmp/fastest-bf-cyclic-split64-screen/native",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_NATIVE=ON",
+      "-DBF_SANITIZERS=OFF",
+      "-DFETCHCONTENT_SOURCE_DIR_FASTFILTER=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/fastfilter-src",
+      "-DFETCHCONTENT_SOURCE_DIR_PAGEBLOOM=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/pagebloom-src"
+    ],
+    "returncode": 0,
+    "seconds": 0.53047014772892
+  },
+  {
+    "name": "native-build",
+    "command": [
+      "cmake",
+      "--build",
+      "/tmp/fastest-bf-cyclic-split64-screen/native",
+      "-j1"
+    ],
+    "returncode": 0,
+    "seconds": 43.03526923060417
+  },
+  {
+    "name": "native-tests",
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/tmp/fastest-bf-cyclic-split64-screen/native",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "seconds": 2.0118112228810787
+  },
+  {
+    "name": "avx2-configure",
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cyclic-split64-screen",
+      "-B",
+      "/tmp/fastest-bf-cyclic-split64-screen/avx2",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_NATIVE=OFF",
+      "-DBF_SANITIZERS=OFF",
+      "-DFETCHCONTENT_SOURCE_DIR_FASTFILTER=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/fastfilter-src",
+      "-DFETCHCONTENT_SOURCE_DIR_PAGEBLOOM=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/pagebloom-src"
+    ],
+    "returncode": 0,
+    "seconds": 0.5145692024379969
+  },
+  {
+    "name": "avx2-build",
+    "command": [
+      "cmake",
+      "--build",
+      "/tmp/fastest-bf-cyclic-split64-screen/avx2",
+      "-j1"
+    ],
+    "returncode": 0,
+    "seconds": 38.689497051760554
+  },
+  {
+    "name": "avx2-tests",
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/tmp/fastest-bf-cyclic-split64-screen/avx2",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "seconds": 2.150248108431697
+  },
+  {
+    "name": "asan-configure",
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cyclic-split64-screen",
+      "-B",
+      "/tmp/fastest-bf-cyclic-split64-screen/asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_NATIVE=ON",
+      "-DBF_SANITIZERS=ON",
+      "-DFETCHCONTENT_SOURCE_DIR_FASTFILTER=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/fastfilter-src",
+      "-DFETCHCONTENT_SOURCE_DIR_PAGEBLOOM=/home/yiming/projects/fastest-bf-lab/build/all-external-confirmation/_deps/pagebloom-src"
+    ],
+    "returncode": 0,
+    "seconds": 0.5142752639949322
+  },
+  {
+    "name": "asan-build",
+    "command": [
+      "cmake",
+      "--build",
+      "/tmp/fastest-bf-cyclic-split64-screen/asan",
+      "-j1"
+    ],
+    "returncode": 0,
+    "seconds": 73.61484529078007
+  },
+  {
+    "name": "asan-tests",
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/tmp/fastest-bf-cyclic-split64-screen/asan",
+      "--output-on-failure"
+    ],
+    "returncode": 0,
+    "seconds": 9.759584859013557
+  },
+  {
+    "name": "full-geometry-grid",
+    "command": [
+      "python3",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cyclic-split64-screen/make_plan.py",
+      "--binary",
+      "/tmp/fastest-bf-cyclic-split64-screen/native/plan",
+      "--output",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cyclic-split64-screen/validation-v1/planned-grid.json"
+    ],
+    "returncode": 0,
+    "seconds": 0.07586854510009289
+  },
+  {
+    "name": "fixed-selection",
+    "command": [
+      "python3",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cyclic-split64-screen/select_plan.py",
+      "--grid",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cyclic-split64-screen/validation-v1/planned-grid.json",
+      "--output",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cyclic-split64-screen/validation-v1/selection.json"
+    ],
+    "returncode": 0,
+    "seconds": 0.029507063329219818
+  },
+  {
+    "name": "reference-b14-batch1",
+    "command": [
+      "/home/yiming/projects/fastest-bf-lab/build/exact-budget-range-native/benchmark",
+      "10",
+      "14",
+      "50",
+      "12",
+      "1",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.02864891290664673
+  },
+  {
+    "name": "candidate-b14-batch1",
+    "command": [
+      "/tmp/fastest-bf-cyclic-split64-screen/native/benchmark",
+      "10",
+      "14",
+      "50",
+      "12",
+      "1",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.02898768149316311
+  },
+  {
+    "name": "reference-b14-batch31",
+    "command": [
+      "/home/yiming/projects/fastest-bf-lab/build/exact-budget-range-native/benchmark",
+      "10",
+      "14",
+      "50",
+      "12",
+      "31",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.021059459075331688
+  },
+  {
+    "name": "candidate-b14-batch31",
+    "command": [
+      "/tmp/fastest-bf-cyclic-split64-screen/native/benchmark",
+      "10",
+      "14",
+      "50",
+      "12",
+      "31",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.02061191201210022
+  },
+  {
+    "name": "reference-b14-batch4096",
+    "command": [
+      "/home/yiming/projects/fastest-bf-lab/build/exact-budget-range-native/benchmark",
+      "10",
+      "14",
+      "50",
+      "12",
+      "4096",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.020099563524127007
+  },
+  {
+    "name": "candidate-b14-batch4096",
+    "command": [
+      "/tmp/fastest-bf-cyclic-split64-screen/native/benchmark",
+      "10",
+      "14",
+      "50",
+      "12",
+      "4096",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.020357897505164146
+  },
+  {
+    "name": "reference-b28-batch1",
+    "command": [
+      "/home/yiming/projects/fastest-bf-lab/build/exact-budget-range-native/benchmark",
+      "10",
+      "28",
+      "50",
+      "12",
+      "1",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.02824452705681324
+  },
+  {
+    "name": "candidate-b28-batch1",
+    "command": [
+      "/tmp/fastest-bf-cyclic-split64-screen/native/benchmark",
+      "10",
+      "28",
+      "50",
+      "12",
+      "1",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.028431760147213936
+  },
+  {
+    "name": "reference-b28-batch31",
+    "command": [
+      "/home/yiming/projects/fastest-bf-lab/build/exact-budget-range-native/benchmark",
+      "10",
+      "28",
+      "50",
+      "12",
+      "31",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.02044154703617096
+  },
+  {
+    "name": "candidate-b28-batch31",
+    "command": [
+      "/tmp/fastest-bf-cyclic-split64-screen/native/benchmark",
+      "10",
+      "28",
+      "50",
+      "12",
+      "31",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.02030571922659874
+  },
+  {
+    "name": "reference-b28-batch4096",
+    "command": [
+      "/home/yiming/projects/fastest-bf-lab/build/exact-budget-range-native/benchmark",
+      "10",
+      "28",
+      "50",
+      "12",
+      "4096",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.019161460921168327
+  },
+  {
+    "name": "candidate-b28-batch4096",
+    "command": [
+      "/tmp/fastest-bf-cyclic-split64-screen/native/benchmark",
+      "10",
+      "28",
+      "50",
+      "12",
+      "4096",
+      "2",
+      "731",
+      "",
+      "1024",
+      "12",
+      "query-only",
+      "0"
+    ],
+    "returncode": 0,
+    "seconds": 0.01887410134077072
+  }
+]

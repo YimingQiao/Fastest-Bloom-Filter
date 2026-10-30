@@ -1,0 +1,61 @@
+
+/tmp/fastest-bf-k12-singleton-vector-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000000c930 <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj>:
+    c930:	test   %rsi,%rsi
+    c933:	je     ca31 <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x101>
+    c939:	push   %rbx
+    c93a:	movabs $0xd6e8feb86659fd93,%rax
+    c944:	mov    (%rdi),%r8
+    c947:	xor    %r9d,%r9d
+    c94a:	vbroadcasti32x4 -0x9dd4(%rip),%zmm0        # 2b80 <_IO_stdin_used+0x14e8>
+    c954:	vbroadcasti32x4 -0x9d9e(%rip),%zmm1        # 2bc0 <_IO_stdin_used+0x1528>
+    c95e:	vpbroadcastd -0xb2dc(%rip),%zmm2        # 168c <__abi_tag+0x13c8>
+    c968:	vbroadcasti32x4 -0x9dd2(%rip),%zmm3        # 2ba0 <_IO_stdin_used+0x1508>
+    c972:	vmovdqa64 -0xa73c(%rip),%zmm4        # 2240 <_IO_stdin_used+0xba8>
+    c97c:	nopl   0x0(%rax)
+    c980:	mov    (%rdx,%r9,8),%r10
+    c984:	mov    %r10,%r11
+    c987:	shr    $0x20,%r11
+    c98b:	xor    %r10,%r11
+    c98e:	imul   %rax,%r11
+    c992:	mov    %r11,%r10
+    c995:	shr    $0x20,%r10
+    c999:	xor    %r11,%r10
+    c99c:	imul   %rax,%r10
+    c9a0:	mov    %r10,%r11
+    c9a3:	shr    $0x20,%r11
+    c9a7:	vpbroadcastd %r11d,%zmm5
+    c9ad:	mov    %r10d,%ebx
+    c9b0:	xor    %r11d,%ebx
+    c9b3:	vpsrlvd %zmm0,%zmm5,%zmm6
+    c9b9:	vpxord %zmm6,%zmm5,%zmm5
+    c9bf:	vpternlogd $0xec,%zmm2,%zmm1,%zmm5
+    c9c6:	shr    $0x28,%r10
+    c9ca:	mov    0x18(%rdi),%r11d
+    c9ce:	imul   %r10,%r11
+    c9d2:	shr    $0x12,%r11
+    c9d6:	and    $0xffffffffffffffc0,%r11
+    c9da:	vpermd (%r8,%r11,1),%zmm5,%zmm5
+    c9e1:	vpbroadcastd %ebx,%zmm6
+    c9e7:	vprorvd %zmm3,%zmm6,%zmm6
+    c9ed:	vpxor  %xmm7,%xmm7,%xmm7
+    c9f1:	vpermd %zmm4,%zmm6,%zmm7
+    c9f7:	vpsrld $0x4,%zmm6,%zmm6
+    c9fe:	vprolvd %zmm6,%zmm7,%zmm6
+    ca04:	vpandd %zmm5,%zmm6,%zmm5
+    ca0a:	vpcmpneqd %zmm6,%zmm5,%k0
+    ca11:	kmovd  %k0,%r10d
+    ca15:	xor    %r11d,%r11d
+    ca18:	test   $0xf,%r10b
+    ca1c:	sete   %r11b
+    ca20:	mov    %r11d,(%rcx,%r9,4)
+    ca24:	inc    %r9
+    ca27:	cmp    %r9,%rsi
+    ca2a:	jne    c980 <_Z20inline_single_kernelILb1EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x50>
+    ca30:	pop    %rbx
+    ca31:	vzeroupper
+    ca34:	ret

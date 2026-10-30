@@ -1,0 +1,63 @@
+{
+  "candidate": "Word16Split256Experiment",
+  "salts_fixed_before_accuracy": [
+    "47b5",
+    "4497",
+    "8823",
+    "a2b7",
+    "7053",
+    "2df1",
+    "9efc",
+    "5c6b",
+    "3c6f",
+    "9e37",
+    "b529",
+    "85eb",
+    "1657",
+    "c2b3",
+    "d1b5",
+    "7f4b"
+  ],
+  "no_salt_tuning": true,
+  "key_powers": [
+    16,
+    20
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "actual_bpk": [
+    16,
+    32
+  ],
+  "initial_seeds": [
+    42
+  ],
+  "confirmation_seeds": [
+    4001,
+    9001
+  ],
+  "query_power": 12,
+  "repeats": 1,
+  "batch": 4096,
+  "hit_percent": 50,
+  "insert_batch": "all",
+  "calibration_power": 24,
+  "eligibility": "pointwise one-sided95 Wilson upper <=0.0001 at actual32bpk, at both tested key counts; no timing unless independently confirmed",
+  "filters": [
+    "FastPatternBF",
+    "Word16Split256Experiment",
+    "ByteSplitBloomFilter",
+    "Split64BloomFilter",
+    "FastFilterFixed16",
+    "FastFilterFixed16SingleV1",
+    "FastFilterSimdBlock",
+    "FastFilterSimdBlockSingleV1",
+    "FastFilterFixed32"
+  ],
+  "scope": "Accuracy first; no salt changes after observing data. Shared harness incidental timings retained but unclaimed. Both allocations remain in independent confirmation if initial32bpk qualifies.",
+  "mapping": "16 u16 sectors / 32-byte bucket; one bit per sector. Alternating low/high16 of low32 hash multiplied by frozen 16-bit salts, low16 product top4 bits select each position; high32 selects power-of-two bucket.",
+  "ISA": "AVX512BW+VL/AVX2 for variable u16 shifts, scalar fallback; no ISA claim outside compiled target",
+  "prediction": "Independent-sector Poisson model at 32bpk ~2.976e-5 FPR; heuristic only, actual multiply-shift probes are correlated. Require measurement."
+}

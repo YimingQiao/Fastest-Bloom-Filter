@@ -1,0 +1,10 @@
+# Reusable include-only target for a unified external comparison executable.
+get_filename_component(BF_BOOST_BASELINE_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
+set(BOOST_ROOT "${BF_BOOST_BASELINE_DIR}/.deps/boost_1_92_0" CACHE PATH "Pinned Boost headers")
+if(NOT EXISTS "${BOOST_ROOT}/boost/bloom.hpp")
+  message(FATAL_ERROR "Run python3 benchmarks/boost-external/fetch_boost.py first")
+endif()
+if(NOT TARGET bf_boost_baseline)
+  add_library(bf_boost_baseline INTERFACE)
+  target_include_directories(bf_boost_baseline INTERFACE "${BOOST_ROOT}" "${BF_BOOST_BASELINE_DIR}")
+endif()

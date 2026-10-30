@@ -1,0 +1,1 @@
+This interrupted exploratory run is excluded from performance claims. The command requested the nonexistent FastPatternBloomFilter instead of FastPatternBF; the prior harness silently skipped the unmatched name. Seven completed cases (112 rows) omit the intended native baseline. The runner now validates exact returned filter membership, and the corrected matrix is run separately.

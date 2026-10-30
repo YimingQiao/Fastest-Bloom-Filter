@@ -1,0 +1,67 @@
+test_audit (unittest.loader._FailedTest.test_audit) ... ERROR
+test_contract (unittest.loader._FailedTest.test_contract) ... ERROR
+
+======================================================================
+ERROR: test_audit (unittest.loader._FailedTest.test_audit)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_audit
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/unittest/loader.py", line 407, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/loader.py", line 350, in _get_module_from_name
+    __import__(name)
+  File "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-multiply-code-small-confirmation/driver/test_audit.py", line 14, in <module>
+    from test_contract import fixture
+  File "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-multiply-code-split64-screen/test_contract.py", line 46, in <module>
+    query=valid();assert len(query)==76
+          ^^^^^^^
+  File "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-multiply-code-split64-screen/test_contract.py", line 11, in valid
+    result=invoke(**kwargs);assert result.returncode==0,result.stderr
+           ^^^^^^^^^^^^^^^^
+  File "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-multiply-code-split64-screen/test_contract.py", line 9, in invoke
+    return subprocess.run([str(binary),'10',str(bpk),'50','12',str(batch),str(repeats),'731',selection,str(ib),'12',mode,str(builds)],text=True,capture_output=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 1024, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.11/subprocess.py", line 1901, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'discover'
+
+
+======================================================================
+ERROR: test_contract (unittest.loader._FailedTest.test_contract)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_contract
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/unittest/loader.py", line 407, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/unittest/loader.py", line 350, in _get_module_from_name
+    __import__(name)
+  File "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-multiply-code-split64-screen/test_contract.py", line 46, in <module>
+    query=valid();assert len(query)==76
+          ^^^^^^^
+  File "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-multiply-code-split64-screen/test_contract.py", line 11, in valid
+    result=invoke(**kwargs);assert result.returncode==0,result.stderr
+           ^^^^^^^^^^^^^^^^
+  File "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-multiply-code-split64-screen/test_contract.py", line 9, in invoke
+    return subprocess.run([str(binary),'10',str(bpk),'50','12',str(batch),str(repeats),'731',selection,str(ib),'12',mode,str(builds)],text=True,capture_output=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 1024, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.11/subprocess.py", line 1901, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'discover'
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+FAILED (errors=2)

@@ -1,0 +1,299 @@
+--- rust/Cargo.toml
++++ native/Cargo.toml
+@@ -10,6 +10,7 @@
+ [features]
+ # Keep runtime AVX2 detection, but omit AVX-512 dispatch for comparison/deployment.
+ disable-avx512 = []
++validation = []
+ 
+ [lib]
+ name = "fastest_bloom_filter"
+@@ -17,3 +18,7 @@
+ [profile.release]
+ lto = "thin"
+ codegen-units = 1
++
++[[example]]
++name = "parity"
++required-features = ["validation"]
+--- rust/src/lib.rs
++++ native/src/lib.rs
+@@ -609,3 +609,7 @@
+             .lookup_hashes(&[0], &mut []);
+     }
+ }
++
++mod range_parallel;
++mod split64_range;
++pub use split64_range::Split64RangeBloomFilter;
+--- experiments/2026-10-29-rust-visible-single/benchmark/Cargo.toml
++++ benchmark/Cargo.toml
+@@ -1,5 +1,5 @@
+ [package]
+-name = "fastest-bloom-filter-visible-single"
++name = "fastest-bloom-filter-range-exact-capacity"
+ version = "0.1.0"
+ edition = "2021"
+ publish = false
+@@ -12,7 +12,7 @@
+ disable-avx512 = ["fastest-bloom-filter/disable-avx512"]
+ 
+ [dependencies]
+-fastest-bloom-filter = { path = "../../../rust" }
++fastest-bloom-filter = { path = "../native" }
+ bloomsday = { git = "https://github.com/sidd-27/Bloomsday.git", rev = "11f16a91a1c8a20344cd263e908f957dac7cf5d0" }
+ fastbloom = { version = "=0.17.0", default-features = false, features = ["std"] }
+ sbbf-rs = "=0.2.8"
+--- experiments/2026-10-29-rust-visible-single/benchmark/Cargo.lock
++++ benchmark/Cargo.lock
+@@ -36,7 +36,7 @@
+ version = "0.1.0"
+ 
+ [[package]]
+-name = "fastest-bloom-filter-visible-single"
++name = "fastest-bloom-filter-range-exact-capacity"
+ version = "0.1.0"
+ dependencies = [
+  "bloomsday",
+--- experiments/2026-10-29-rust-visible-single/benchmark/src/main.rs
++++ benchmark/src/main.rs
+@@ -1,6 +1,7 @@
+ use fastest_bloom_filter::{
+-    hash64, BloomFilter, ByteSplitBloomFilter, FourSectorBloomFilter, Split64BloomFilter,
++    hash64, BloomFilter, ByteSplitBloomFilter, FourSectorBloomFilter, Split64BloomFilter, Split64RangeBloomFilter,
+ };
++mod geometry;
+ mod sbbf;
+ use sbbf::SbbfSafePinned;
+ use std::{
+@@ -21,7 +22,7 @@
+ }
+ impl<const P: bool> Filter for BloomFilter<P> {
+     fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
+-        Ok(BloomFilter::new(n, bpk)?)
++        Ok(BloomFilter::new(n, geometry::native_argument(n, bpk)?)?)
+     }
+     fn size_in_bytes(&self) -> usize {
+         BloomFilter::size_in_bytes(self)
+@@ -41,7 +42,7 @@
+     ($filter:ty) => {
+         impl Filter for $filter {
+             fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
+-                Ok(<$filter>::new(n, bpk)?)
++                Ok(<$filter>::new(n, geometry::native_argument(n, bpk)?)?)
+             }
+             fn size_in_bytes(&self) -> usize {
+                 <$filter>::size_in_bytes(self)
+@@ -62,6 +63,18 @@
+ native_filter!(ByteSplitBloomFilter);
+ native_filter!(FourSectorBloomFilter);
+ native_filter!(Split64BloomFilter);
++
++impl Filter for Split64RangeBloomFilter {
++    fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
++        Ok(Self::with_byte_budget(geometry::bytes(n, bpk)?)?)
++    }
++    fn size_in_bytes(&self) -> usize { Self::size_in_bytes(self) }
++    #[inline(always)]
++    fn contains_hash(&self, hash: u64) -> bool { Self::contains_hash(self, hash) }
++    fn insert_hashes(&mut self, hashes: &[u64]) { Self::insert_hashes(self, hashes) }
++    fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) { Self::lookup_hashes(self, hashes, out) }
++}
++
+ 
+ struct Fastbloom017(fastbloom::BloomFilter);
+ impl Filter for Fastbloom017 {
+@@ -70,13 +83,11 @@
+         self.0.contains_hash(hash)
+     }
+     fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
+-        let mut bytes = 128;
+-        while bytes <= ((n * bpk as usize).max(512) / 8) {
+-            bytes *= 2;
+-        }
+-        Ok(Self(
+-            fastbloom::BloomFilter::with_num_bits(bytes * 8).expected_items(n),
+-        ))
++        let g = geometry::plan("Fastbloom017", n, bpk)?;
++        let filter = fastbloom::BloomFilter::with_num_bits(g.logical_bytes * 8).expected_items(n);
++        assert_eq!(filter.num_bits() / 8, g.allocated_bytes);
++        assert_eq!(filter.num_hashes() as i32, g.effective_probes);
++        Ok(Self(filter))
+     }
+     fn size_in_bytes(&self) -> usize {
+         self.0.num_bits() / 8
+@@ -104,18 +115,9 @@
+         self.filter.may_match_hash(hash)
+     }
+     fn new(n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>> {
+-        let mut bytes = 128;
+-        while bytes <= ((n * bpk as usize).max(512) / 8) {
+-            bytes *= 2;
+-        }
+-        // The pinned upstream constructor computes ceil(-ln(fpr)/ln(2)^2)
+-        // bits/key, then ceil(n*bits_per_key/256) 32-byte blocks. Choose the
+-        // midpoint of the rounding interval, not a claimed target FPR.
+-        let bits_per_key = bytes * 8 / n;
+-        let sizing_fpr = (-(bits_per_key as f64 - 0.5) * std::f64::consts::LN_2.powi(2)).exp();
+-        let rounded_bpk = (-sizing_fpr.ln() / std::f64::consts::LN_2.powi(2)).ceil() as usize;
+-        assert_eq!(rounded_bpk, bits_per_key);
+-        assert_eq!((n * rounded_bpk).div_ceil(256) * 32, bytes);
++        let bytes = geometry::bytes(n, bpk)?;
++        // Sizing-only inverse. This is not a measured/claimed false-positive rate.
++        let sizing_fpr = geometry::bloomsday_fpr(n, bpk)?;
+         Ok(Self {
+             filter: bloomsday::BlockedBloomFilter::new_with_seed(n, sizing_fpr, 0),
+             bytes,
+@@ -459,6 +461,8 @@
+             calibration_fp += answer as usize;
+         }
+     }
++    let geometry = geometry::plan(name, c.n, c.bpk).unwrap();
++    assert_eq!(bf.size_in_bytes(), geometry.allocated_bytes, "actual allocation differs from constructor plan");
+     let hash_lookup_min = total.iter().copied().fold(f64::INFINITY, f64::min);
+     let hash_lookup_max = total.iter().copied().fold(0.0, f64::max);
+     let fpr = if absent == 0 {
+@@ -505,7 +509,7 @@
+         print!(",{}", trial_string(values));
+     }
+     println!(
+-        ",{}",
++        ",{},{}",
+         orders
+             .iter()
+             .map(|order| order
+@@ -514,7 +518,8 @@
+                 .collect::<Vec<_>>()
+                 .join("|"))
+             .collect::<Vec<_>>()
+-            .join(";")
++            .join(";"),
++        geometry.csv()
+     );
+ }
+ #[path = "support/filter_selection.rs"]
+@@ -530,6 +535,7 @@
+     "ByteSplitBloomFilter",
+     "FourSectorBloomFilter",
+     "Split64BloomFilter",
++    "Split64RangeBloomFilter",
+ ];
+ 
+ fn main() {
+@@ -557,9 +563,9 @@
+     assert!(
+         (5..=26).contains(&power)
+             && (12..=27).contains(&qp)
+-            && (1..=32).contains(&bpk)
++            && [16, 24, 32].contains(&bpk)
+             && hit <= 100
+-            && batch == 1
++            && batch > 0
+             && batch <= 1 << qp
+             && repeats > 0
+             && repeats.is_multiple_of(4)
+@@ -579,7 +585,9 @@
+     });
+     let n = 1usize << power;
+     let q = 1usize << qp;
+-    assert!(n * (bpk as usize) < (1usize << 31), "size overflow");
++    for name in &jobs {
++        geometry::plan(name, n, bpk as u32).expect("unsupported exact-capacity geometry");
++    }
+     let mut rng = SplitMix64(seed);
+     let key_base = rng.next() % ((1u64 << 32) - n as u64 - q as u64);
+     let mut inserted: Vec<_> = (key_base..key_base + n as u64).collect();
+@@ -611,7 +619,7 @@
+         "sbbf-rs 0.2.8 backend: {}",
+         sbbf_rs::FilterFn::new().which()
+     );
+-    println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,allocate_hash_insert_ns,insert_batch,hash_lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives,scalar_track,inline_lookup_ns,inline_hash_lookup_ns,inline_lookup_min_ns,inline_lookup_max_ns,inline_hash_lookup_min_ns,inline_hash_lookup_max_ns,lookup_trials,hash_lookup_trials,inline_lookup_trials,inline_hash_lookup_trials,query_phase_order");
++    println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,allocate_hash_insert_ns,insert_batch,hash_lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives,scalar_track,inline_lookup_ns,inline_hash_lookup_ns,inline_lookup_min_ns,inline_lookup_max_ns,inline_hash_lookup_min_ns,inline_hash_lookup_max_ns,lookup_trials,hash_lookup_trials,inline_lookup_trials,inline_hash_lookup_trials,query_phase_order,budget_bytes,logical_bytes,geometry_kind,unit_bytes,unit_count,effective_probes,probe_policy,constructor_argument,implementation_origin,size_contract");
+     shuffle(&mut jobs, &mut rng);
+     for name in jobs {
+         match name {
+@@ -619,6 +627,7 @@
+             "ByteSplitBloomFilter" => run::<ByteSplitBloomFilter>(name, &inserted, &query, &c),
+             "FourSectorBloomFilter" => run::<FourSectorBloomFilter>(name, &inserted, &query, &c),
+             "Split64BloomFilter" => run::<Split64BloomFilter>(name, &inserted, &query, &c),
++            "Split64RangeBloomFilter" => run::<Split64RangeBloomFilter>(name, &inserted, &query, &c),
+             "Fastbloom017" => run::<Fastbloom017>(name, &inserted, &query, &c),
+             "BloomsdayPinned" => run::<BloomsdayPinned>(name, &inserted, &query, &c),
+             "SbbfSafePinned" => run::<SbbfSafePinned>(name, &inserted, &query, &c),
+@@ -629,3 +638,6 @@
+ 
+ #[cfg(test)]
+ mod tests;
++
++#[cfg(test)]
++mod exact_tests;
+--- experiments/2026-10-29-rust-visible-single/benchmark/src/tests.rs
++++ benchmark/src/tests.rs
+@@ -82,7 +82,7 @@
+ }
+ 
+ fn public_api_parity<F: Filter>() {
+-    for (n, bpk) in [(64, 8), (65_536, 8), (1 << 20, 16)] {
++    for (n, bpk) in [(64, 16), (65_536, 24), (1 << 20, 32)] {
+         let mut filter = F::new(n, bpk).unwrap();
+         let raw_insert: Vec<_> = (0..n.min(4096) as u64).collect();
+         let inserted: Vec<_> = raw_insert.iter().map(|&raw| hash64(raw)).collect();
+@@ -140,7 +140,7 @@
+ }
+ 
+ #[test]
+-fn all_seven_public_apis_match_full_dense_outputs_and_guards() {
++fn all_eight_public_apis_match_full_dense_outputs_and_guards() {
+     public_api_parity::<BloomFilter<true>>();
+     public_api_parity::<ByteSplitBloomFilter>();
+     public_api_parity::<FourSectorBloomFilter>();
+@@ -148,6 +148,7 @@
+     public_api_parity::<Fastbloom017>();
+     public_api_parity::<BloomsdayPinned>();
+     public_api_parity::<SbbfSafePinned>();
++    public_api_parity::<Split64RangeBloomFilter>();
+ }
+ 
+ #[test]
+--- experiments/2026-10-29-rust-visible-single/benchmark/src/sbbf.rs
++++ benchmark/src/sbbf.rs
+@@ -7,18 +7,7 @@
+ }
+ 
+ fn byte_budget(n: usize, bpk: u32) -> Result<usize, Box<dyn std::error::Error>> {
+-    if bpk == 0 {
+-        return Err("bits per key must be positive".into());
+-    }
+-    let bits = n.checked_mul(bpk as usize).ok_or("size overflow")?.max(512);
+-    if bits >= 1usize << 31 {
+-        return Err("capacity exceeds the common native contract".into());
+-    }
+-    let mut bytes = 128usize;
+-    while bytes <= bits / 8 {
+-        bytes *= 2;
+-    }
+-    Ok(bytes)
++    Ok(super::geometry::bytes(n, bpk)? / 64 * 64)
+ }
+ 
+ impl SbbfSafePinned {
+@@ -171,14 +160,14 @@
+     }
+ 
+     #[test]
+-    fn common_budget_matches_native_and_rejects_overflow() {
+-        for (n, bpk) in [(0, 8), (1, 8), (32, 8), (65_536, 8), (65_537, 16)] {
++    fn exact_budget_and_padding_contract() {
++        for (n, bpk) in [(64, 16), (65_536, 16), (65_536, 24), (65_536, 32)] {
+             let filter = SbbfSafePinned::new(n, bpk).unwrap();
+-            let native = crate::ByteSplitBloomFilter::new(n, bpk).unwrap();
+-            assert_eq!(filter.size_in_bytes(), native.size_in_bytes());
++            assert_eq!(filter.size_in_bytes(), n * bpk as usize / 8);
+         }
+         assert!(SbbfSafePinned::new(usize::MAX, 32).is_err());
+-        assert!(SbbfSafePinned::new(1 << 27, 16).is_err());
++        assert!(SbbfSafePinned::new(1 << 27, 32).is_err());
+         assert!(SbbfSafePinned::new(1, 0).is_err());
++        assert!(SbbfSafePinned::new(0, 16).is_err());
+     }
+ }

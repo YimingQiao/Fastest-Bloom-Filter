@@ -1,0 +1,10 @@
+#pragma once
+#include "cpp-adapters.hpp"
+#include "boost-adapters.hpp"
+#include "rocks-adapters.hpp"
+#include "four_sector_bloom.h"
+#include "split64_bloom.h"
+#include "byte_split_bloom.h"
+using FourSectorBloomFilter=bloom_filters::FourSectorBloomFilter;
+using Split64BloomFilter=bloom_filters::Split64BloomFilter;
+using ByteSplitBloomFilter=bloom_filters::ByteSplitBloomFilter;

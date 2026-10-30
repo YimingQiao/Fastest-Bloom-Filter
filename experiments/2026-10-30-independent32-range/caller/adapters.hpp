@@ -1,0 +1,15 @@
+#pragma once
+#include "fast_pattern_BF.h"
+#include "four_sector_bloom.h"
+#include "byte_split_bloom.h"
+#include "split64_bloom.h"
+#include "candidate.hpp"
+#include "control.hpp"
+#include "cpp-adapters.hpp"
+#include "boost-adapters.hpp"
+using bloom_filters::FastPatternBF;
+using bloom_filters::FourSectorBloomFilter;
+using bloom_filters::ByteSplitBloomFilter;
+using bloom_filters::Split64BloomFilter;
+using bloom_filters::Independent32BloomFilter;
+using bloom_filters::Independent32RangeBloomFilter;

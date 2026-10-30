@@ -1,0 +1,1325 @@
+{
+  "complete": true,
+  "source_commit": "2c7b1668880ab5a1e3ea0c73f2034b89da0d8650",
+  "freeze_sha256": "b0c8ace792911aae9191419b6ac244ae1505a149aca495a93fadbbd21096b4d1",
+  "archive_sha256": "24a25795fab09166d9d4719d9088d6a88480fa72728b1e1044c8769f650144af",
+  "binary_sha256": "448ca811711c2ea29654208b18bc8d9f58ed876555f371aac147d787257a7a23",
+  "protocol_sha256": "1a229e2bdf9bdf9b7c9f9aca4601b4c4226ff4744b887a1444b6f7dfcb15cd40",
+  "lease": {
+    "cpu": 3,
+    "lease": "socket1",
+    "lock_path": "/tmp/fastest-bf-socket1.lock",
+    "inherited_lock_descriptors": [
+      3
+    ]
+  },
+  "affinity": [
+    3
+  ],
+  "numa_policy": "CPU3 affinity only; no explicit NUMA memory binding",
+  "host": {
+    "system": "Linux",
+    "node": "golf",
+    "release": "6.1.0-45-amd64",
+    "version": "#1 SMP PREEMPT_DYNAMIC Debian 6.1.170-1 (2026-04-30)",
+    "machine": "x86_64",
+    "processor": ""
+  },
+  "compiler_flags": "-C target-cpu=native -C symbol-mangling-version=v0",
+  "command_environment": {
+    "BF_SOCKET_LEASE": "socket1-cpu3",
+    "LD_PRELOAD": null,
+    "LD_LIBRARY_PATH": null,
+    "MALLOC_CONF": null,
+    "MALLOC_ARENA_MAX": null,
+    "RUSTFLAGS": null
+  },
+  "started_utc": "2026-10-29T00:33:00Z",
+  "commands": [
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 16,
+        "batch": 1,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "1",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 11.145129835233092,
+      "csv_sha256": "99d6b0c58e409173cfe880967743c17fd1afc58a3cdcd70abce17d55202a813a",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 16,
+        "batch": 31,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "31",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.065755860880017,
+      "csv_sha256": "3308f6cf2481d1707ec879e5280ce3abf1b7230aad3c0e6d37a72ab169bec899",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 16,
+        "batch": 4096,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 7.957450564950705,
+      "csv_sha256": "528de142211e78a5eaa57aaa02cff4d800519cb7ce843e076c24959c80ab9c17",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 24,
+        "batch": 1,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "BloomsdayPinned",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "24",
+        "50",
+        "22",
+        "1",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,BloomsdayPinned,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 6.770151745527983,
+      "csv_sha256": "f76ca150d3d611994f4dc6e442c33bd84bc1c1cb83cb1a261318503923911c26",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 4,
+      "filter_order": [
+        "BloomsdayPinned",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 24,
+        "batch": 31,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "BloomsdayPinned",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "24",
+        "50",
+        "22",
+        "31",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,BloomsdayPinned,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 5.566249750554562,
+      "csv_sha256": "65af5d61a55364f3434c935874aeffc2a52dc115c6179bfce2e7877ca4198fd1",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 4,
+      "filter_order": [
+        "BloomsdayPinned",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 24,
+        "batch": 4096,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "BloomsdayPinned",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "24",
+        "50",
+        "22",
+        "4096",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,BloomsdayPinned,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 5.570476436987519,
+      "csv_sha256": "4344a2fbbb50971cf4abde495d26037f7183cee350c1f71fdcf71f0b27147e6d",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 4,
+      "filter_order": [
+        "BloomsdayPinned",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 32,
+        "batch": 1,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "32",
+        "50",
+        "22",
+        "1",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 12.149593060836196,
+      "csv_sha256": "814d390f3500de5ed853ff4820035d2535812c2540cc9682bf4363f294121272",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 32,
+        "batch": 31,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "32",
+        "50",
+        "22",
+        "31",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 9.044044123962522,
+      "csv_sha256": "5908f88d8382c595cf5e113b00f6dad25c6909b9e661eb32c017867468a0b52b",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 16,
+        "budget_bpk": 32,
+        "batch": 4096,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "16",
+        "32",
+        "50",
+        "22",
+        "4096",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "65536",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          611675797,
+          611741333
+        ],
+        "timed_negative_envelope": [
+          611741333,
+          615935637
+        ],
+        "independent_calibration": [
+          615935637,
+          632712853
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.972084440290928,
+      "csv_sha256": "a33d58be88c82eb38ec3570e0b985eb770cebd4ee0cf5fec0221a2315e4c7287",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "ByteSplitBloomFilter",
+        "Fastbloom017",
+        "FastPatternBF",
+        "SbbfSafePinned",
+        "Split64BloomFilter",
+        "BloomsdayPinned",
+        "FourSectorBloomFilter"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 16,
+        "batch": 1,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "1",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 87.51487033441663,
+      "csv_sha256": "9bb6f933fe79f60c51b8ff20aa8286ebc9ff8e05f4bbf3b2b8974f0e33ceda3e",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 16,
+        "batch": 31,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "31",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 77.77576886676252,
+      "csv_sha256": "dea5ed7401baf58369c5d2af4f4df45a6239fe0af6b1c0526c837a45704733c8",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 16,
+        "batch": 4096,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 76.35287067107856,
+      "csv_sha256": "64adf6f55cd67508cba25d5fb49199ac4cb0ad7ec5cfa73be5921615c9ec57c8",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 24,
+        "batch": 1,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "BloomsdayPinned",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "24",
+        "50",
+        "22",
+        "1",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,BloomsdayPinned,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "BloomsdayPinned",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 97.97714881971478,
+      "csv_sha256": "ecad823fefcb4a6c5f841eed5ed1eae154ecc65be1a80c749c1fe2af60e2c285",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 4,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "BloomsdayPinned",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 24,
+        "batch": 31,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "BloomsdayPinned",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "24",
+        "50",
+        "22",
+        "31",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,BloomsdayPinned,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "BloomsdayPinned",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 96.26129186153412,
+      "csv_sha256": "0a007260a46397740f70721b1e759fb5fd45743fabd51912af9559071a1cb914",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 4,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "BloomsdayPinned",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 24,
+        "batch": 4096,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "BloomsdayPinned",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "24",
+        "50",
+        "22",
+        "4096",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,BloomsdayPinned,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "Split64RangeBloomFilter",
+        "BloomsdayPinned",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 102.754484212026,
+      "csv_sha256": "6dc65a7273167a080cf73c2cf28db219bb8d3d282e501c44911fce58c3f3803f",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 4,
+      "filter_order": [
+        "Split64RangeBloomFilter",
+        "BloomsdayPinned",
+        "SbbfSafePinned",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 32,
+        "batch": 1,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "32",
+        "50",
+        "22",
+        "1",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 199.76783637702465,
+      "csv_sha256": "d7d79cf29f3e13dcb31ea625c7a18e11d2bf6f8d2b329e9a6ef48b14047e1d1e",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 32,
+        "batch": 31,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "32",
+        "50",
+        "22",
+        "31",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 178.78379697166383,
+      "csv_sha256": "67a5204ce6858fa1e531f707d2d9af06f23a1da22d39862b6769824d4d2c1b83",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ]
+    },
+    {
+      "case": {
+        "key_power": 25,
+        "budget_bpk": 32,
+        "batch": 4096,
+        "seed": 42,
+        "filters": [
+          "SbbfSafePinned",
+          "Fastbloom017",
+          "FastPatternBF",
+          "BloomsdayPinned",
+          "ByteSplitBloomFilter",
+          "FourSectorBloomFilter",
+          "Split64BloomFilter",
+          "Split64RangeBloomFilter"
+        ]
+      },
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/fastest-bf-split64-range-rust/release/compare_benchmark",
+        "25",
+        "32",
+        "50",
+        "22",
+        "4096",
+        "8",
+        "42",
+        "SbbfSafePinned,Fastbloom017,FastPatternBF,BloomsdayPinned,ByteSplitBloomFilter,FourSectorBloomFilter,Split64BloomFilter,Split64RangeBloomFilter",
+        "33554432",
+        "24"
+      ],
+      "complete": true,
+      "expected_filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ],
+      "raw_input_intervals": {
+        "inserted": [
+          124481173,
+          158035605
+        ],
+        "timed_negative_envelope": [
+          158035605,
+          162229909
+        ],
+        "independent_calibration": [
+          162229909,
+          179007125
+        ],
+        "interval_convention": "half-open raw integer keys; common hash applied afterward"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 175.99060054682195,
+      "csv_sha256": "c12e3fd98294ab6b7c39d9c495b7383c62b1297fff058409213ba1b8e23d8aae",
+      "stderr_sha256": "862ded7a63c4e0a6333f771a817f853c2716e7191fcf9bad8b94ac49740e480f",
+      "rows": 8,
+      "filter_order": [
+        "BloomsdayPinned",
+        "ByteSplitBloomFilter",
+        "Split64RangeBloomFilter",
+        "SbbfSafePinned",
+        "FourSectorBloomFilter",
+        "Split64BloomFilter",
+        "FastPatternBF",
+        "Fastbloom017"
+      ]
+    }
+  ],
+  "rows": 120,
+  "cases": 18,
+  "family_geometry_size_seed_quality_records": 40,
+  "pooled": false,
+  "results_sha256": "d7afeff4ef9aa8f9a153ff8f5c16e9c2e5320d8d8c1e5ab0501226e1ef6ba8cd",
+  "final_sources_dependencies_binaries_equal": true,
+  "finished_utc": "2026-10-29T00:52:29Z"
+}

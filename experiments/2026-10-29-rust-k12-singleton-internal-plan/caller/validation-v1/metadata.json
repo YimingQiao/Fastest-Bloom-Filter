@@ -1,0 +1,1245 @@
+{
+  "affinity": [
+    3
+  ],
+  "assembly": {
+    "native": {
+      "manual_review_pending": true,
+      "path": "native-asm-capture.json",
+      "sha256": "95d24746a932ce7be2e80d9ba652e10795bcbbc96d30947f602fe651c928e403"
+    },
+    "portable": {
+      "manual_review_pending": true,
+      "path": "portable-asm-capture.json",
+      "sha256": "ec0506454e0453de5f639de06e7267dd0a8f3e0751ec54f7b2662375cea0e424"
+    }
+  },
+  "binaries": {
+    "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller": "8ea5ddd7f274b32042987a555b7ba0c53c3ec6520763807bfbd66a6e78e08084",
+    "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller": "897a530360665b3b35307fb5ab91a0e458209abdaba8b435711274de653dd9bc"
+  },
+  "calibration_queries": 0,
+  "caller_rows": 20,
+  "cases": [
+    {
+      "case": {
+        "batch": 1,
+        "reverse": false
+      },
+      "profile": "native",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 3,
+        "reverse": false
+      },
+      "profile": "native",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 31,
+        "reverse": false
+      },
+      "profile": "native",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 4096,
+        "reverse": false
+      },
+      "profile": "native",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 1,
+        "reverse": true
+      },
+      "profile": "native",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 1,
+        "reverse": false
+      },
+      "profile": "portable",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 3,
+        "reverse": false
+      },
+      "profile": "portable",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 31,
+        "reverse": false
+      },
+      "profile": "portable",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 4096,
+        "reverse": false
+      },
+      "profile": "portable",
+      "rows": 2
+    },
+    {
+      "case": {
+        "batch": 1,
+        "reverse": true
+      },
+      "profile": "portable",
+      "rows": 2
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller",
+        "-p",
+        "test_contract.py"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "offline-guards",
+      "returncode": 0,
+      "stderr": "offline-guards.stderr",
+      "stderr_sha256": "2d014bb427120fb1a5014d7499096989061fd0fdf40acb471c2e2667de60e71e",
+      "stdout": "offline-guards.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "rustup",
+        "which",
+        "cargo"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-cargo-path",
+      "returncode": 0,
+      "stderr": "native-cargo-path.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-cargo-path.stdout",
+      "stdout_sha256": "d43dc3b30656cc2cab81e4bb6cdab4ddc8a942b0824ba84269d7025d37a2e903"
+    },
+    {
+      "command": [
+        "rustup",
+        "which",
+        "rustc"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-rustc-path",
+      "returncode": 0,
+      "stderr": "native-rustc-path.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-rustc-path.stdout",
+      "stdout_sha256": "3615bcdc4450cf90411cced9ab48a46a4f9eede5e1c9f947a039ac26aa6749a0"
+    },
+    {
+      "command": [
+        "rustc",
+        "-Vv"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-rustc-version",
+      "returncode": 0,
+      "stderr": "native-rustc-version.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-rustc-version.stdout",
+      "stdout_sha256": "8f97c91e920ce0d02680e3d01eb87afa0c77290dcd5d19eb901ae194d4700d90"
+    },
+    {
+      "command": [
+        "cargo",
+        "metadata",
+        "--format-version=1",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/Cargo.toml"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-metadata",
+      "returncode": 0,
+      "stderr": "native-metadata.stderr",
+      "stderr_sha256": "ee72a7d15045ef3f3b47827c5c6237a44586af3f488333498625614468999854",
+      "stdout": "native-metadata.stdout",
+      "stdout_sha256": "6f78945f1ffa8a2055b82762d666c7342414e43e717b674618c7b36ead3cd18b"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/Cargo.toml",
+        "--message-format=json",
+        "--bin",
+        "rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-caller-build",
+      "returncode": 0,
+      "stderr": "native-caller-build.stderr",
+      "stderr_sha256": "74877c87e3f5b0bc5af386870020e5982893f2bad5ce0e8a4d679ccaf8ffb2a4",
+      "stdout": "native-caller-build.stdout",
+      "stdout_sha256": "994a11af988d43f4c178c83754efaf3339e5992f28fb2d94f8161895d20289d9"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "1",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-case-0",
+      "returncode": 0,
+      "stderr": "native-case-0.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-case-0.stdout",
+      "stdout_sha256": "a2c4c01b931bc05644a2d96bc8a12648fa6e6e686a4da7d30b168c8c410fa470"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "3",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-case-1",
+      "returncode": 0,
+      "stderr": "native-case-1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-case-1.stdout",
+      "stdout_sha256": "f32e3d3f045c17a911c9a1bd8d53fd871674108bd4619409e2f8b4c1cb7afeb1"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "31",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-case-2",
+      "returncode": 0,
+      "stderr": "native-case-2.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-case-2.stdout",
+      "stdout_sha256": "b57de25ef1cd88e65f9141b6c66ecf834669a029c8c2ec6917229fa613b0ffaf"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "4096",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-case-3",
+      "returncode": 0,
+      "stderr": "native-case-3.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-case-3.stdout",
+      "stdout_sha256": "0bb703064ec7e20a24142233a244815ad14861a4b416c9cb677404d4789c3b87"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "1",
+        "74381",
+        "--reverse"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-case-4",
+      "returncode": 0,
+      "stderr": "native-case-4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-case-4.stdout",
+      "stdout_sha256": "b433740a5a2a27f7425ae70f96c34a4089e8bdcaee9423ae4b1b65817a3dcd3b"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "0",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": "outside fixed check grid",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-invalid-0",
+      "returncode": 1,
+      "stderr": "native-invalid-0.stderr",
+      "stderr_sha256": "c4c6c513e218c35596ce7f7cb1d6c86cb41d353e854b478a56e6990cc0208731",
+      "stdout": "native-invalid-0.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--measure",
+        "16",
+        "50",
+        "1",
+        "74381",
+        "1"
+      ],
+      "complete": true,
+      "expected_rejection": "outside fixed formal grid",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-invalid-1",
+      "returncode": 1,
+      "stderr": "native-invalid-1.stderr",
+      "stderr_sha256": "31a87c75ba0e303a04f0da21546fa701171dba873e93d79cf22dce2b3c97874f",
+      "stdout": "native-invalid-1.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--measure",
+        "64",
+        "50",
+        "1",
+        "6812364731",
+        "1"
+      ],
+      "complete": true,
+      "expected_rejection": "outside fixed formal grid",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-invalid-2",
+      "returncode": 1,
+      "stderr": "native-invalid-2.stderr",
+      "stderr_sha256": "31a87c75ba0e303a04f0da21546fa701171dba873e93d79cf22dce2b3c97874f",
+      "stdout": "native-invalid-2.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--measure",
+        "16",
+        "0",
+        "3",
+        "6812364731",
+        "1"
+      ],
+      "complete": true,
+      "expected_rejection": "outside fixed formal grid",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-invalid-3",
+      "returncode": 1,
+      "stderr": "native-invalid-3.stderr",
+      "stderr_sha256": "31a87c75ba0e303a04f0da21546fa701171dba873e93d79cf22dce2b3c97874f",
+      "stdout": "native-invalid-3.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "1",
+        "74381",
+        "--fault",
+        "generic-skip"
+      ],
+      "complete": true,
+      "expected_rejection": "full output mismatch",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-fault-generic-skip",
+      "returncode": 1,
+      "stderr": "native-fault-generic-skip.stderr",
+      "stderr_sha256": "4ca3129f813179413cf479cc9a0be54e83abbc544be9b182181b82bdb66d9cfe",
+      "stdout": "native-fault-generic-skip.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "1",
+        "74381",
+        "--fault",
+        "visible-wrong"
+      ],
+      "complete": true,
+      "expected_rejection": "full output mismatch",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native",
+        "RUSTFLAGS": "-C target-cpu=native -C symbol-mangling-version=v0"
+      },
+      "label": "native-fault-visible-wrong",
+      "returncode": 1,
+      "stderr": "native-fault-visible-wrong.stderr",
+      "stderr_sha256": "4ca3129f813179413cf479cc9a0be54e83abbc544be9b182181b82bdb66d9cfe",
+      "stdout": "native-fault-visible-wrong.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "rustup",
+        "which",
+        "cargo"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-cargo-path",
+      "returncode": 0,
+      "stderr": "portable-cargo-path.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-cargo-path.stdout",
+      "stdout_sha256": "d43dc3b30656cc2cab81e4bb6cdab4ddc8a942b0824ba84269d7025d37a2e903"
+    },
+    {
+      "command": [
+        "rustup",
+        "which",
+        "rustc"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-rustc-path",
+      "returncode": 0,
+      "stderr": "portable-rustc-path.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-rustc-path.stdout",
+      "stdout_sha256": "3615bcdc4450cf90411cced9ab48a46a4f9eede5e1c9f947a039ac26aa6749a0"
+    },
+    {
+      "command": [
+        "rustc",
+        "-Vv"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-rustc-version",
+      "returncode": 0,
+      "stderr": "portable-rustc-version.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-rustc-version.stdout",
+      "stdout_sha256": "8f97c91e920ce0d02680e3d01eb87afa0c77290dcd5d19eb901ae194d4700d90"
+    },
+    {
+      "command": [
+        "cargo",
+        "metadata",
+        "--format-version=1",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/Cargo.toml"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-metadata",
+      "returncode": 0,
+      "stderr": "portable-metadata.stderr",
+      "stderr_sha256": "ee72a7d15045ef3f3b47827c5c6237a44586af3f488333498625614468999854",
+      "stdout": "portable-metadata.stdout",
+      "stdout_sha256": "8a18f9f31351ee656ac5c360dfde1ab0fa344cf81894e91650a7febb7d69094c"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/Cargo.toml",
+        "--message-format=json",
+        "--bin",
+        "rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-caller-build",
+      "returncode": 0,
+      "stderr": "portable-caller-build.stderr",
+      "stderr_sha256": "9657a5dde6090e91c640d2624f4426560e19886d9659ff4a7e7c74ecacc5cdd1",
+      "stdout": "portable-caller-build.stdout",
+      "stdout_sha256": "ed57728e2936efc8cd4d5e16a254d4593e9c14bd8b2d31e4079bb8e46d07a023"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "1",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-case-0",
+      "returncode": 0,
+      "stderr": "portable-case-0.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-case-0.stdout",
+      "stdout_sha256": "32b193b3465eaaef2b0e7327d62d0f61fa403f61fffac7b2c3036e2ce78d6cb7"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "3",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-case-1",
+      "returncode": 0,
+      "stderr": "portable-case-1.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-case-1.stdout",
+      "stdout_sha256": "4f2e4ee11411ab765b0d16c2e3947a36cef686c5c2b0f17a9b5c725d022ce8e8"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "31",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-case-2",
+      "returncode": 0,
+      "stderr": "portable-case-2.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-case-2.stdout",
+      "stdout_sha256": "58e3e92641e1edd1e3258d534beba15b274a66a4db32c1bfa51ddc740282e7a4"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "4096",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-case-3",
+      "returncode": 0,
+      "stderr": "portable-case-3.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-case-3.stdout",
+      "stdout_sha256": "c14d104062d7e11f581df9aee7330de4134774537f02a42f976667bedb5b192e"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "1",
+        "74381",
+        "--reverse"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-case-4",
+      "returncode": 0,
+      "stderr": "portable-case-4.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-case-4.stdout",
+      "stdout_sha256": "85572c95e2cc594b7ffeb81a7e40537112d321da140a87ba600603b58b953130"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "0",
+        "74381"
+      ],
+      "complete": true,
+      "expected_rejection": "outside fixed check grid",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-invalid-0",
+      "returncode": 1,
+      "stderr": "portable-invalid-0.stderr",
+      "stderr_sha256": "c4c6c513e218c35596ce7f7cb1d6c86cb41d353e854b478a56e6990cc0208731",
+      "stdout": "portable-invalid-0.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--measure",
+        "16",
+        "50",
+        "1",
+        "74381",
+        "1"
+      ],
+      "complete": true,
+      "expected_rejection": "outside fixed formal grid",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-invalid-1",
+      "returncode": 1,
+      "stderr": "portable-invalid-1.stderr",
+      "stderr_sha256": "31a87c75ba0e303a04f0da21546fa701171dba873e93d79cf22dce2b3c97874f",
+      "stdout": "portable-invalid-1.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--measure",
+        "64",
+        "50",
+        "1",
+        "6812364731",
+        "1"
+      ],
+      "complete": true,
+      "expected_rejection": "outside fixed formal grid",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-invalid-2",
+      "returncode": 1,
+      "stderr": "portable-invalid-2.stderr",
+      "stderr_sha256": "31a87c75ba0e303a04f0da21546fa701171dba873e93d79cf22dce2b3c97874f",
+      "stdout": "portable-invalid-2.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--measure",
+        "16",
+        "0",
+        "3",
+        "6812364731",
+        "1"
+      ],
+      "complete": true,
+      "expected_rejection": "outside fixed formal grid",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-invalid-3",
+      "returncode": 1,
+      "stderr": "portable-invalid-3.stderr",
+      "stderr_sha256": "31a87c75ba0e303a04f0da21546fa701171dba873e93d79cf22dce2b3c97874f",
+      "stdout": "portable-invalid-3.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "1",
+        "74381",
+        "--fault",
+        "generic-skip"
+      ],
+      "complete": true,
+      "expected_rejection": "full output mismatch",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-fault-generic-skip",
+      "returncode": 1,
+      "stderr": "portable-fault-generic-skip.stderr",
+      "stderr_sha256": "4ca3129f813179413cf479cc9a0be54e83abbc544be9b182181b82bdb66d9cfe",
+      "stdout": "portable-fault-generic-skip.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "3",
+        "/usr/bin/numactl",
+        "--physcpubind=3",
+        "--membind=1",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller",
+        "--check",
+        "50",
+        "1",
+        "74381",
+        "--fault",
+        "visible-wrong"
+      ],
+      "complete": true,
+      "expected_rejection": "full output mismatch",
+      "explicit_environment": {
+        "CARGO_TARGET_DIR": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable",
+        "RUSTFLAGS": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"
+      },
+      "label": "portable-fault-visible-wrong",
+      "returncode": 1,
+      "stderr": "portable-fault-visible-wrong.stderr",
+      "stderr_sha256": "4ca3129f813179413cf479cc9a0be54e83abbc544be9b182181b82bdb66d9cfe",
+      "stdout": "portable-fault-visible-wrong.stdout",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/readelf",
+        "--wide",
+        "--symbols",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "native-asm-elf",
+      "returncode": 0,
+      "stderr": "native-asm-elf.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-asm-elf.stdout",
+      "stdout_sha256": "bd5dd284448fd069a440780b384e88970cbdf432d60846594f7b12a3748f8057"
+    },
+    {
+      "command": [
+        "/usr/bin/nm",
+        "--defined-only",
+        "--print-size",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "native-asm-nm",
+      "returncode": 0,
+      "stderr": "native-asm-nm.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-asm-nm.stdout",
+      "stdout_sha256": "01b69b68846aba7af2e16c29298a3660ffdac5bb0d45e96ac1fdbeb961d6f8fc"
+    },
+    {
+      "command": [
+        "/usr/bin/nm",
+        "--defined-only",
+        "--print-size",
+        "--demangle",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "native-asm-demangled",
+      "returncode": 0,
+      "stderr": "native-asm-demangled.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-asm-demangled.stdout",
+      "stdout_sha256": "7f27d24fcc43c82deeeecb0f4415dd1b0fab0f27502ccb4bbe5620a6cd88720c"
+    },
+    {
+      "command": [
+        "/usr/bin/objdump",
+        "-drwC",
+        "--no-show-raw-insn",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "native-asm-disassembly",
+      "returncode": 0,
+      "stderr": "native-asm-disassembly.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-asm-disassembly.stdout",
+      "stdout_sha256": "840c8f275e329aff92ef886c509b851ce84670200041462412a0059dd92bdb4c"
+    },
+    {
+      "command": [
+        "/usr/bin/readelf",
+        "--relocs",
+        "--wide",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "native-asm-relocations",
+      "returncode": 0,
+      "stderr": "native-asm-relocations.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native-asm-relocations.stdout",
+      "stdout_sha256": "a6ece63483c2b441311441e2488d55357e96f03a5502ea5ae26dfa3f85c0f60b"
+    },
+    {
+      "command": [
+        "/usr/bin/readelf",
+        "--wide",
+        "--symbols",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "portable-asm-elf",
+      "returncode": 0,
+      "stderr": "portable-asm-elf.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-asm-elf.stdout",
+      "stdout_sha256": "6267ea24e3b29355c571a2f422d8c9c7a4ecd9f311e411fb87372bb5ba81535c"
+    },
+    {
+      "command": [
+        "/usr/bin/nm",
+        "--defined-only",
+        "--print-size",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "portable-asm-nm",
+      "returncode": 0,
+      "stderr": "portable-asm-nm.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-asm-nm.stdout",
+      "stdout_sha256": "75d6c4cb1962e4e8119fb10d9e2b0f6560bad9ec53e01826fd192c2f1d1977a3"
+    },
+    {
+      "command": [
+        "/usr/bin/nm",
+        "--defined-only",
+        "--print-size",
+        "--demangle",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "portable-asm-demangled",
+      "returncode": 0,
+      "stderr": "portable-asm-demangled.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-asm-demangled.stdout",
+      "stdout_sha256": "1ab4b004054e3af857304aaf908ccf81a9eb671a36d8e0030d88e800d13194cf"
+    },
+    {
+      "command": [
+        "/usr/bin/objdump",
+        "-drwC",
+        "--no-show-raw-insn",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "portable-asm-disassembly",
+      "returncode": 0,
+      "stderr": "portable-asm-disassembly.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-asm-disassembly.stdout",
+      "stdout_sha256": "8b96b0a0ad356baba1b4bd90880ed2d291c44bb7d63f6c5abae737aac20360fb"
+    },
+    {
+      "command": [
+        "/usr/bin/readelf",
+        "--relocs",
+        "--wide",
+        "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller"
+      ],
+      "complete": true,
+      "expected_rejection": null,
+      "explicit_environment": {},
+      "label": "portable-asm-relocations",
+      "returncode": 0,
+      "stderr": "portable-asm-relocations.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "portable-asm-relocations.stdout",
+      "stdout_sha256": "1e2000fbdbfc36e7935fdaab1984f234bc082e7ddb9986cfd8e87a3cd1a2d93e"
+    }
+  ],
+  "compiler_inputs": {
+    "native": {
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/byte_split.rs": "631fd01c09f40d5d08120ee3cdafb048a51cf4874a16a93776ecf0b30277d01b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/four_sector.rs": "51737bec1c5855c683bf94b88c8512241240647d424fcaf5ca5adf700de97f38",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/four_sector_range12.rs": "046e8aab9931d55ff2cdde372b94b310f872a64861241d221a849264afdea44b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/k12_parallel.rs": "79e2e90d897c2369c29941a3e5238688c232299e55a5577c85c2af909375723b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/layout_parallel.rs": "6e3fe5d56304de040bfb1c72c3de62d12f497ebdd9972c3eee4ea3e32f062dd0",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/lib.rs": "fd23d2fd2d083f00f003d49e89a05e9bc01c4421a026a691e94a7091c0944809",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/parallel.rs": "e361f421a79cab9cad7de4ef4f7074a07f1b7bcccfb0d01e443dd4c26ee86a96",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/patterns.rs": "fcdf871e1f92a7ba94b6bb71a9215c26168904faa96713401c06d308e380726f",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/range_parallel.rs": "7bacef765885388110e2d7403d236fcfa30222dac87bf0abac7cbc683c20712f",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/split64.rs": "d9facc9aaab86e094348c7acd7575b92d20a9e467bba9133842b38220de73944",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/split64_range.rs": "c0865b2582d6a1e6fa3a40b4fa91949a3bb2da424bba0d16b301dfc4c365219b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/byte_split.rs": "631fd01c09f40d5d08120ee3cdafb048a51cf4874a16a93776ecf0b30277d01b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/four_sector.rs": "51737bec1c5855c683bf94b88c8512241240647d424fcaf5ca5adf700de97f38",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/four_sector_range12.rs": "21cad88291f711cae92168ec07e2c8e02f2663057d35282e6da56a78e703d6ee",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/k12_parallel.rs": "79e2e90d897c2369c29941a3e5238688c232299e55a5577c85c2af909375723b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/layout_parallel.rs": "6e3fe5d56304de040bfb1c72c3de62d12f497ebdd9972c3eee4ea3e32f062dd0",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/lib.rs": "fd23d2fd2d083f00f003d49e89a05e9bc01c4421a026a691e94a7091c0944809",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/parallel.rs": "e361f421a79cab9cad7de4ef4f7074a07f1b7bcccfb0d01e443dd4c26ee86a96",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/patterns.rs": "fcdf871e1f92a7ba94b6bb71a9215c26168904faa96713401c06d308e380726f",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/range_parallel.rs": "7bacef765885388110e2d7403d236fcfa30222dac87bf0abac7cbc683c20712f",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/split64.rs": "d9facc9aaab86e094348c7acd7575b92d20a9e467bba9133842b38220de73944",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/split64_range.rs": "c0865b2582d6a1e6fa3a40b4fa91949a3bb2da424bba0d16b301dfc4c365219b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/main.rs": "766c6958d9f272d1f641e609a2260a9dc3eb782f621b75d7040167c14f4e081c",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/query.rs": "dea1fedb1cf5a39e158762b6245e89593ed52e83d3653294a187a8ea92bf0796"
+    },
+    "portable": {
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/byte_split.rs": "631fd01c09f40d5d08120ee3cdafb048a51cf4874a16a93776ecf0b30277d01b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/four_sector.rs": "51737bec1c5855c683bf94b88c8512241240647d424fcaf5ca5adf700de97f38",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/four_sector_range12.rs": "046e8aab9931d55ff2cdde372b94b310f872a64861241d221a849264afdea44b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/k12_parallel.rs": "79e2e90d897c2369c29941a3e5238688c232299e55a5577c85c2af909375723b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/layout_parallel.rs": "6e3fe5d56304de040bfb1c72c3de62d12f497ebdd9972c3eee4ea3e32f062dd0",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/lib.rs": "fd23d2fd2d083f00f003d49e89a05e9bc01c4421a026a691e94a7091c0944809",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/parallel.rs": "e361f421a79cab9cad7de4ef4f7074a07f1b7bcccfb0d01e443dd4c26ee86a96",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/patterns.rs": "fcdf871e1f92a7ba94b6bb71a9215c26168904faa96713401c06d308e380726f",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/range_parallel.rs": "7bacef765885388110e2d7403d236fcfa30222dac87bf0abac7cbc683c20712f",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/split64.rs": "d9facc9aaab86e094348c7acd7575b92d20a9e467bba9133842b38220de73944",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/candidate/src/split64_range.rs": "c0865b2582d6a1e6fa3a40b4fa91949a3bb2da424bba0d16b301dfc4c365219b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/byte_split.rs": "631fd01c09f40d5d08120ee3cdafb048a51cf4874a16a93776ecf0b30277d01b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/four_sector.rs": "51737bec1c5855c683bf94b88c8512241240647d424fcaf5ca5adf700de97f38",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/four_sector_range12.rs": "21cad88291f711cae92168ec07e2c8e02f2663057d35282e6da56a78e703d6ee",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/k12_parallel.rs": "79e2e90d897c2369c29941a3e5238688c232299e55a5577c85c2af909375723b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/layout_parallel.rs": "6e3fe5d56304de040bfb1c72c3de62d12f497ebdd9972c3eee4ea3e32f062dd0",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/lib.rs": "fd23d2fd2d083f00f003d49e89a05e9bc01c4421a026a691e94a7091c0944809",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/parallel.rs": "e361f421a79cab9cad7de4ef4f7074a07f1b7bcccfb0d01e443dd4c26ee86a96",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/patterns.rs": "fcdf871e1f92a7ba94b6bb71a9215c26168904faa96713401c06d308e380726f",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/range_parallel.rs": "7bacef765885388110e2d7403d236fcfa30222dac87bf0abac7cbc683c20712f",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/split64.rs": "d9facc9aaab86e094348c7acd7575b92d20a9e467bba9133842b38220de73944",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/control/src/split64_range.rs": "c0865b2582d6a1e6fa3a40b4fa91949a3bb2da424bba0d16b301dfc4c365219b",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/main.rs": "766c6958d9f272d1f641e609a2260a9dc3eb782f621b75d7040167c14f4e081c",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/query.rs": "dea1fedb1cf5a39e158762b6245e89593ed52e83d3653294a187a8ea92bf0796"
+    }
+  },
+  "complete": true,
+  "environment": {
+    "ASAN_OPTIONS": null,
+    "CARGO_BUILD_RUSTFLAGS": null,
+    "CARGO_ENCODED_RUSTDOCFLAGS": null,
+    "CARGO_ENCODED_RUSTFLAGS": null,
+    "CARGO_TARGET_DIR": null,
+    "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER": null,
+    "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS": null,
+    "GLIBC_TUNABLES": null,
+    "LD_LIBRARY_PATH": null,
+    "LD_PRELOAD": null,
+    "MALLOC_ARENA_MAX": null,
+    "MALLOC_CONF": null,
+    "RUSTC": null,
+    "RUSTC_WORKSPACE_WRAPPER": null,
+    "RUSTC_WRAPPER": null,
+    "RUSTDOC": null,
+    "RUSTDOCFLAGS": null,
+    "RUSTFLAGS": null,
+    "RUSTUP_TOOLCHAIN": null,
+    "UBSAN_OPTIONS": null
+  },
+  "executables": {
+    "native": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/native/release/rust-k12-simd-caller",
+    "portable": "/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3/portable/release/rust-k12-simd-caller"
+  },
+  "fault_cases": 4,
+  "formal_measurements": 0,
+  "functional_complete": true,
+  "incidental_check_timings_not_ranked": true,
+  "invalid_cli_cases": 8,
+  "kernel_matrix_reexecutions": 0,
+  "lease": {
+    "cpu": 3,
+    "inherited_lock_descriptors": [
+      3
+    ],
+    "lease": "socket1",
+    "lock_path": "/tmp/fastest-bf-socket1.lock"
+  },
+  "manual_assembly_review_pending": true,
+  "source_commit": "23e9b075a295deb11c3073cc3b4182b5810a9057",
+  "toolchains": {
+    "/home/yiming/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo": "310fa46c7903259368c0df3dbb3f4f52759563f3c9ce53b500404b7741fb6860",
+    "/home/yiming/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc": "028fd60b0e0add5505c661cd3ccde91393d615c8729bd95d94ab1e91409b36a1",
+    "/usr/bin/numactl": "2bb4801c050ced4512e6b1985ee1d1548808a0493b63993660069d05cc2d945a",
+    "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+  },
+  "topology": {
+    "core": 26,
+    "cpu": 3,
+    "nodes": [
+      1
+    ],
+    "socket": 1
+  },
+  "workload_prefix": [
+    "/usr/bin/taskset",
+    "-c",
+    "3",
+    "/usr/bin/numactl",
+    "--physcpubind=3",
+    "--membind=1"
+  ]
+}

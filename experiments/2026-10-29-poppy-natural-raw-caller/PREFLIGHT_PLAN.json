@@ -1,0 +1,46 @@
+{
+  "status": "Source-only bounded proposal; dependency lock and final driver still require review",
+  "profiles": ["normal", "address-sanitizer"],
+  "new_real_constructor_geometries": 14,
+  "new_public_input_forms": 28,
+  "new_test_functions_per_profile": 2,
+  "semantic_fixture": {
+    "constructor_n": [65536, 33554432],
+    "inserted_fixture_keys_per_form": 1031,
+    "query_storage_keys_per_form": 8200,
+    "query_offsets": [0, 1, 7],
+    "query_lengths": [0, 1, 3, 31, 4096, 8193],
+    "raw_query_contracts": 2,
+    "full_serialized_equality": "One public-iterator reference bitmap and one saved serialization per form; compare all bytes after insertion and after queries/duplicate insertion",
+    "allocation": "Actual constructor live heap equals declared bucket+cache bytes; raw add/query allocate no scratch; complete drop frees backing",
+    "not_a_full_population_or_fpr_result": true
+  },
+  "retained_control_cli": {
+    "arguments": ["7", "24", "50", "12", "31", "4", "42", "", "31", "12"],
+    "rows_per_profile": 45,
+    "reference": "Exact matching parent normal/ASan preflight case0 semantic fields; no old latency comparison"
+  },
+  "new_small_actual_caller": {
+    "key_power": 16,
+    "query_power": 12,
+    "hit_percent": 50,
+    "repeats": 4,
+    "seed": 42,
+    "insert_batch": 4096,
+    "query_batches": [1, 31],
+    "calibration_power": 0,
+    "groups": "All seven small constructors, both forms, grouped by their immutable16/24 declared budget",
+    "processes_per_profile": 4,
+    "rows_per_profile": 28,
+    "full_n_inserted_and_validated": 65536
+  },
+  "total_caller_rows": 146,
+  "retained_helper_tests_per_profile": ["actual_scratch_allocations_clock_boundaries_and_lifetimes", "skip_last_and_wrong_value_faults_fail_after_valid_warmups_in_both_modes"],
+  "invalid_cli_per_profile": 6,
+  "invalid_cli_categories": ["unknown name", "duplicate name", "Poppy wrong n", "Poppy wrong budget", "negative integer", "overflow integer"],
+  "invalid_requirements": "Exact expected2/101 code and source diagnostic; reject sanitizer/runtime diagnostics on every valid/invalid invocation",
+  "source_closure_before_bf": true,
+  "actual_asm": "Both natural public forms, raw visible/batched/insert, complete build scratch/constructor clocks and query poison-before-clock; ELF address+size, folded aliases and direct/GOT targets",
+  "formal_measurement": false,
+  "strong_raw8_control_selection": "Pending complete committed786 evidence; no partial inputs"
+}

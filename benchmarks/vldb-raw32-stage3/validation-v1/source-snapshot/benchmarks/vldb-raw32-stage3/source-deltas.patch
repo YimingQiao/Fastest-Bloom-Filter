@@ -1,0 +1,149 @@
+--- benchmarks/vldb-original-external/adapters.hpp
++++ benchmarks/vldb-raw32-stage3/legacy-adapters.hpp
+@@ -70,6 +70,7 @@
+   bool Contains(uint32_t key) const { return logic_.contains(bitmap_.data(),key); }
+   uint64_t Compact(uint32_t n,const uint32_t* keys,uint32_t* positions) const { return n?logic_.batch_contains(bitmap_.data(),keys,n,positions,0):0; }
+   uint64_t Dense(uint32_t n,const uint32_t* keys,uint32_t* out,uint32_t* positions) const { const auto count=Compact(n,keys,positions); PositionsToDense(n,positions,count,out); return count; }
++  std::string Metadata() { return logic_.name(); }
+   const Word* data() const { return bitmap_.data(); } size_t logical_bytes() const { return logic_.size_in_bytes(); }
+   size_t backing_bytes() const { return bitmap_.backing_bytes(); }
+ };
+@@ -121,6 +122,7 @@
+     ArtifactState<Public>::unroll=U;ArtifactState<Public>::configured=true;
+   }
+   explicit ArtifactPublic(size_t bits):logic_(CheckedBits(bits),K,W,S),bitmap_(logic_.size()) {}
++  std::string Metadata() const { return logic_.name(); }
+   void CheckConfiguration() const {
+     // Reject a tuner coverage gap or an inherited per-config calibration value.
+     const std::string token="\"u\":"+std::to_string(U)+",";
+--- experiments/2026-10-29-exact-budget-range/boost-adapters.hpp
++++ benchmarks/vldb-raw32-stage3/boost-adapters.hpp
+@@ -87,6 +87,7 @@
+ 	Adapter &operator=(const Adapter &) = delete;
+ 	Adapter(Adapter &&) = delete;
+ 	Adapter &operator=(Adapter &&) = delete;
++	BOOST_FORCEINLINE bool ScalarContains(uint64_t hash) const { return filter_.may_contain(hash); }
+ 	size_t SizeInBytes() const noexcept {
+ 		return allocated_;
+ 	}
+--- experiments/2026-10-29-exact-budget-range/geometry.hpp
++++ benchmarks/vldb-raw32-stage3/modern_geometry.hpp
+@@ -1,6 +1,6 @@
+ #pragma once
+ #include "fast_pattern_BF.h"
+-#include "adapters.hpp"
++#include "modern_types.hpp"
+ #include <iostream>
+ #include <string>
+ 
+@@ -116,18 +116,6 @@
+         return g;
+     }
+ };
+-template<class BF, size_t Width, int Probes> struct RangeTraits : ExternalMake<BF> {
+-    static Geometry Plan(size_t n, uint32_t bpk) {
+-        const size_t budget = Bytes(n, bpk), allocation = FloorUnits(AtLeast(budget, 128), 64);
+-        Geometry g{budget, allocation, allocation, Width, allocation / Width, Probes, "project_range_buckets"};
+-        g.constructor_argument = budget;
+-        g.origin = "project_experiment";
+-        if constexpr (Probes == -1) g.probe_policy = "variable_byte_mask_0_16";
+-        return g;
+-    }
+-};
+-template<> struct Traits<ByteSplitRangeExperiment> : RangeTraits<ByteSplitRangeExperiment, 16, -1> {};
+-template<> struct Traits<Split64RangeExperiment> : RangeTraits<Split64RangeExperiment, 64, 8> {};
+ inline const char *GeometryHeader() {
+     return "budget_bytes,logical_bytes,geometry_kind,unit_bytes,unit_count,effective_probes,probe_policy,constructor_argument,page_level,native_constructor_bpk,implementation_origin";
+ }
+--- benchmarks/vldb-original-external/accounting_check.cpp
++++ benchmarks/vldb-raw32-stage3/accounting.cpp
+@@ -1,10 +1,13 @@
+-#include "test_types.hpp"
++#include "legacy-adapters.hpp"
++#include "legacy-geometry.hpp"
++#include "common.hpp"
+ #include "raw32_workload.hpp"
+ #include <optional>
+ #include <sys/mman.h>
+ #include <unistd.h>
+ using namespace vldb_external;
+ namespace audit=vldb_external::allocation_audit;
++static vldb_stage2::Geometry active;
+ static void Require(bool value,const char* message) { if(!value) throw std::runtime_error(message); }
+ template<class F,class=void> struct HasConfigure:std::false_type {};
+ template<class F> struct HasConfigure<F,std::void_t<decltype(F::Configure())>>:std::true_type {};
+@@ -47,12 +50,12 @@
+   audit::ResetPeaks(audit::Phase::Control);audit::ResetPeaks(audit::Phase::Bitmap);
+   const auto before=audit::Read();
+   std::optional<F> filter;
+-  { audit::Scope phase(audit::Phase::Control);filter.emplace(32768); }
++  { audit::Scope phase(audit::Phase::Control);filter.emplace(active.constructor_bits); }
+   const auto constructed=audit::Read();
+   const auto control=At(constructed,audit::Phase::Control).requested_live-At(before,audit::Phase::Control).requested_live;
+   const auto bitmap=At(constructed,audit::Phase::Bitmap).requested_live-At(before,audit::Phase::Bitmap).requested_live;
+   Require(bitmap==filter->backing_bytes(),"bitmap allocation omitted or double-counted");
+-  Require(filter->logical_bytes()<=bitmap && bitmap%64==0,"bitmap padding contract");
++  Require(filter->logical_bytes()==active.logical_bytes && bitmap==active.backing_bytes && bitmap<=active.budget_bytes,"actual large bitmap/padding contract");
+   Require((control>0)==expects_control_heap,"unexpected public control heap classification");
+   const auto metadata_before=audit::Read();
+   { audit::Scope phase(audit::Phase::Metadata);if constexpr(HasMetadata<F>::value) filter->CheckConfiguration(); }
+@@ -81,7 +84,7 @@
+   const auto& sb=At(setup_before,audit::Phase::SharedSetup);const auto& sa=At(setup_after,audit::Phase::SharedSetup);
+   const auto& cb=At(before,audit::Phase::Control);const auto& ca=At(constructed,audit::Phase::Control);
+   const auto& ba=At(constructed,audit::Phase::Bitmap);const auto& bb=At(before,audit::Phase::Bitmap);
+-  std::cout<<name<<','<<HasConfigure<F>::value<<','<<logical<<','<<backing<<','<<sizeof(F)<<','<<control
++  std::cout<<active.budget_bytes<<','<<active.constructor_bits<<','<<vldb_stage2::AddressName(active.address)<<','<<workload.inserted.size()<<','<<name<<','<<HasConfigure<F>::value<<','<<logical<<','<<backing<<','<<sizeof(F)<<','<<control
+            <<','<<ca.requested_total-cb.requested_total<<','<<ca.requested_peak-cb.requested_live
+            <<','<<bitmap<<','<<ca.tracker_overhead_live-cb.tracker_overhead_live+ba.tracker_overhead_live-bb.tracker_overhead_live
+            <<','<<sa.requested_live<<','<<sa.requested_total-sb.requested_total<<','<<sa.requested_peak-sb.requested_live
+@@ -92,25 +95,29 @@
+            <<','<<count<<",true\n";
+ }
+ 
+-int main(int argc,char** argv) {
+-  if(argc!=2) return 2;
+-  const std::string which=argv[1];
+-  if(which!="sector32-u1" && which!="sector64-u1" && which!="register64-u0") return 2;
+-  audit::Scope harness(audit::Phase::Harness);
+-  CheckHooks();
+-  Raw32Workload workload(1024,4096,0,50,42);
+-  std::cout<<"filter,requires_shared_setup,logical_bitmap_bytes,backing_bitmap_bytes,adapter_object_bytes,control_heap_live_bytes,control_heap_requested_total_bytes,control_heap_peak_extra_bytes,bitmap_heap_live_bytes,tracker_owned_overhead_bytes,process_shared_setup_live_bytes,setup_requested_total_delta_bytes,setup_peak_extra_bytes,process_shared_mapped_requested_bytes,process_shared_mapped_page_bytes,metadata_requested_total_bytes,api_requested_total_bytes,position_scratch_bytes,startup_cpp_heap_live_bytes,matches,owned_heap_released\n";
+-  if(which=="sector32-u1") {
+-    CheckOne<Sector32<1>::Dynamic>("DirectDynamic32W8S8K8U1",workload,true);
+-    CheckOne<Sector32<1>::Static>("StaticLogic32W8S8K8U1",workload,false);
+-    CheckOne<Sector32<1>::Public>("ArtifactPublic32W8S8K8U1",workload,true);
+-  } else if(which=="sector64-u1") {
+-    CheckOne<Sector64<1>::Dynamic>("DirectDynamic64W8S8K8U1",workload,true);
+-    CheckOne<Sector64<1>::Static>("StaticLogic64W8S8K8U1",workload,false);
+-    CheckOne<Sector64<1>::Public>("ArtifactPublic64W8S8K8U1",workload,true);
+-  } else {
+-    CheckOne<Register64::Dynamic>("DirectDynamic64W1S1K8U0",workload,true);
+-    CheckOne<Register64::Static>("StaticLogic64W1S1K8U0",workload,false);
+-    CheckOne<Register64::Public>("ArtifactPublic64W1S1K8U0",workload,true);
+-  }
++template<class Word,unsigned W,unsigned S,unsigned U,dtl::block_addressing Address>
++void CheckLayout() {
++  using Public=std::conditional_t<sizeof(Word)==4,dtl::bbf_32,dtl::bbf_64>;
++  Raw32Workload workload(65536,4096,0,50,42);
++  CheckOne<DirectDynamic<Word,W,S,8,U>>("public_dynamic",workload,true);
++  CheckOne<StaticLogic<Word,W,S,8,U,Address>>("public_static",workload,false);
++  CheckOne<ArtifactPublic<Public,W,S,8,U>>("artifact_pimpl",workload,true);
+ }
++template<class Word,unsigned W,unsigned S,unsigned U> void Address() {
++  if(active.address==dtl::block_addressing::POWER_OF_TWO)
++    CheckLayout<Word,W,S,U,dtl::block_addressing::POWER_OF_TWO>();
++  else CheckLayout<Word,W,S,U,dtl::block_addressing::MAGIC>();
++}
++int main(int argc,char** argv)try {
++  if(argc!=3) return 2;
++  const std::string which=argv[1];const auto cap=raw32_stage3::Integer(argv[2]);
++  if((which!="sector32-u1" && which!="sector64-u1" && which!="register64-u0") || (cap!=16 && cap!=24))return 2;
++  const unsigned block=which=="sector32-u1"?32:which=="sector64-u1"?64:8;
++  active=vldb_stage2::Plan((size_t{1}<<25)*cap/8,block);
++  audit::Scope harness(audit::Phase::Harness);CheckHooks();
++  std::cout<<"budget_bytes,constructor_bits,address,inserted_fixture_keys,filter,requires_shared_setup,logical_bitmap_bytes,backing_bitmap_bytes,adapter_object_bytes,control_heap_live_bytes,control_heap_requested_total_bytes,control_heap_peak_extra_bytes,bitmap_heap_live_bytes,tracker_owned_overhead_bytes,process_shared_setup_live_bytes,setup_requested_total_delta_bytes,setup_peak_extra_bytes,process_shared_mapped_requested_bytes,process_shared_mapped_page_bytes,metadata_requested_total_bytes,api_requested_total_bytes,position_scratch_bytes,startup_cpp_heap_live_bytes,matches,owned_heap_released\n";
++  if(which=="sector32-u1")Address<uint32_t,8,8,1>();
++  else if(which=="sector64-u1")Address<uint64_t,8,8,1>();
++  else Address<uint64_t,1,1,0>();
++  return 0;
++}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 2;}

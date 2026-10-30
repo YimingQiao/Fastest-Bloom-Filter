@@ -1,0 +1,10 @@
+--- frozen/asm.py
++++ internal/asm.py
+@@ -37,6 +37,7 @@
+                              ('rust_k12_simd_caller::run','clock'),('rust_k12_simd_caller::timed_work','work')]:
+             if needle in name:role=label;break
+         if role is None and 'four_sector_range12::' in name and any('::'+n in name for n in ['contains_hash','lookup_hashes','contains_single_avx512','lookup_tiny_avx512']):role='native_public_or_target'
++        if role is None and 'PublicFilter' in name and name.endswith('::contains'):role='public_trait_facade'
+         if role is None or not size:continue
+         matches=[s for s in symbols if s['address']==addr and s['size']==size and (addr,size,s['name']) in raw_keys]
+         need(matches,'selected body lacks ELF FUNC identity')

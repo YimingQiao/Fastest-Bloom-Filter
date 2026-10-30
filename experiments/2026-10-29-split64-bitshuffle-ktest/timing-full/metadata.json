@@ -1,0 +1,509 @@
+{
+  "arguments": {
+    "executable": "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+    "output_dir": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-bitshuffle-ktest/timing-full",
+    "key_powers": [
+      16,
+      25
+    ],
+    "bits_per_key": [
+      8,
+      16
+    ],
+    "hits": [
+      50
+    ],
+    "batches": [
+      1,
+      3,
+      4,
+      8,
+      31,
+      4096
+    ],
+    "seeds": [
+      42
+    ],
+    "query_power": 22,
+    "repeats": 5,
+    "cpu": 3,
+    "filters": "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+    "binary_source_revision": "0f7303b9e473e49ec89714c729fec7e5b4f8ff30",
+    "insert_batch": 0,
+    "calibration_power": 0
+  },
+  "utc": "2026-10-28T20:09:17Z",
+  "platform": "Linux-6.1.0-45-amd64-x86_64-with-glibc2.36",
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  192\nOn-line CPU(s) list:                     0-191\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Xeon(R) Platinum 8474C\nCPU family:                              6\nModel:                                   143\nThread(s) per core:                      2\nCore(s) per socket:                      48\nSocket(s):                               2\nStepping:                                8\nBogoMIPS:                                4200.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cat_l2 cdp_l3 invpcid_single cdp_l2 ssbd mba ibrs ibpb stibp ibrs_enhanced tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb intel_pt avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local split_lock_detect avx_vnni avx512_bf16 wbnoinvd dtherm ida arat pln pts hfi avx512vbmi umip pku ospke waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg tme avx512_vpopcntdq la57 rdpid bus_lock_detect cldemote movdiri movdir64b enqcmd fsrm md_clear serialize tsxldtrk pconfig arch_lbr ibt amx_bf16 avx512_fp16 amx_tile amx_int8 flush_l1d arch_capabilities ibpb_exit_to_user\nVirtualization:                          VT-x\nL1d cache:                               4.5 MiB (96 instances)\nL1i cache:                               3 MiB (96 instances)\nL2 cache:                                192 MiB (96 instances)\nL3 cache:                                195 MiB (2 instances)\nNUMA node(s):                            2\nNUMA node0 CPU(s):                       0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178,180,182,184,186,188,190\nNUMA node1 CPU(s):                       1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179,181,183,185,187,189,191\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI BHI_DIS_S\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace",
+  "revision": "0f7303b9e473e49ec89714c729fec7e5b4f8ff30",
+  "status": "M experiments/2026-10-29-inline-single-query/summarize_screen.py\n?? experiments/2026-10-29-blowchoc-accuracy/\n?? experiments/2026-10-29-inline-single-query/screen/\n?? experiments/2026-10-29-rust-sbbf-screen/\n?? experiments/2026-10-29-split64-bitshuffle-ktest/timing-full-freeze.json",
+  "executable_sha256": "481f2978e6b38122dbce21c9a95702a134a1db731e768402fd2bd53868217411",
+  "cpu_affinity": [
+    3
+  ],
+  "runs": [
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "1",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 1.4241690412163734
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "3",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 1.077752735465765
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "4",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 1.094511428847909
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "8",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 1.0119959525763988
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "31",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 0.8400241881608963
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 0.7934749443084002
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "1",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 1.4292894713580608
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "3",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 1.0811202581971884
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "4",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 1.1005040109157562
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "8",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 1.0185949243605137
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "31",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 0.8468867633491755
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "65536"
+      ],
+      "returncode": 0,
+      "seconds": 0.7962604202330112
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "1",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 20.76878665573895
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "3",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 18.915972048416734
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "4",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 18.200196590274572
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "8",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 18.02413618005812
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "31",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 18.10299035720527
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 16.754411157220602
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "1",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 31.263332767412066
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "3",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 27.88482440635562
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "4",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 26.16688265092671
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "8",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 25.1134599968791
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "31",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 24.61869282834232
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-ktest-native/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "42",
+        "FastPatternBF,Split64Original,Split64BitShuffleHybrid,Split64BitShuffleNarrow,Split64BitShuffleWide,Split64BitShuffleHybridKtest",
+        "33554432"
+      ],
+      "returncode": 0,
+      "seconds": 22.033221488818526
+    }
+  ],
+  "binary_source_revision": "0f7303b9e473e49ec89714c729fec7e5b4f8ff30",
+  "RUSTFLAGS": "",
+  "rustc": "rustc 1.92.0 (ded5c06cf 2025-12-08)\nbinary: rustc\ncommit-hash: ded5c06cf21d2b93bffd5d884aa6e96934ee4234\ncommit-date: 2025-12-08\nhost: x86_64-unknown-linux-gnu\nrelease: 1.92.0\nLLVM version: 21.1.3",
+  "cargo": "cargo 1.92.0 (344c4567c 2025-10-21)",
+  "rust_build_fingerprints": {},
+  "clang++": "Debian clang version 23.0.0 (++20260614104823+cc613052fd6a-1~exp1~20260614224957.2204)\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/lib/llvm-23/bin",
+  "g++": "g++ (Debian 12.2.0-14+deb12u1) 12.2.0\nCopyright (C) 2022 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+}

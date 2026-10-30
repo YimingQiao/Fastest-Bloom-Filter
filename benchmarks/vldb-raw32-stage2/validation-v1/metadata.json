@@ -1,0 +1,5589 @@
+{
+  "scope": "Correctness-only; no throughput/FPR calibration",
+  "source_commit": "ec21cf239ae01acd658b6cfae24a1464fa8f6c5a",
+  "preparation_sha256": "9d071349b9ea7bb2edb239160fcc57a122fb63e5d6586a179671ada0a0b942eb",
+  "lease": {
+    "cpu": 2,
+    "lease": "socket0",
+    "lock_path": "/tmp/fastest-bf-socket0.lock",
+    "inherited_lock_descriptors": [
+      3
+    ],
+    "inherited_write_verified": true
+  },
+  "commands": [
+    {
+      "label": "compiler",
+      "command": [
+        "g++",
+        "--version"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.0012001413851976395
+    },
+    {
+      "label": "native-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-raw32-stage2",
+        "-B",
+        "build/vldb-raw32-stage2-v1/native",
+        "-DCMAKE_CXX_COMPILER=g++",
+        "-DVLDB_BACKEND=native",
+        "-DVLDB_ARCHIVE=/home/yiming/projects/fastest-bf-lab/build/vldb-public-preflight-v2-gcc/native/libvldb_pinned.a",
+        "-DVLDB_ARCHIVE_SHA256=1f64962e369c5d9289d41fd5919911ad36ff4e3cae7eada934f047918378a872"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2994471378624439
+    },
+    {
+      "label": "native-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/vldb-raw32-stage2-v1/native",
+        "-j1"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 275.6085834465921
+    },
+    {
+      "label": "native-macros",
+      "command": [
+        "/usr/bin/g++",
+        "-I/home/yiming/projects/fastest-bf-lab/include",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/src",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/thirdparty",
+        "-I/home/yiming/.local/boost-1.83/include",
+        "-O3",
+        "-march=native",
+        "-Wno-ignored-attributes",
+        "-include",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/compat.hpp",
+        "-std=gnu++17",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "/dev/null"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.04557996429502964
+    },
+    {
+      "label": "native-sector32-u1-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12257960438728333
+    },
+    {
+      "label": "native-sector32-u1-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12033292278647423
+    },
+    {
+      "label": "native-sector32-u1-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11616144329309464
+    },
+    {
+      "label": "native-sector32-u1-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1146362703293562
+    },
+    {
+      "label": "native-sector32-u1-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.21781976707279682
+    },
+    {
+      "label": "native-sector32-u1-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2485683634877205
+    },
+    {
+      "label": "native-sector32-u1-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3208354227244854
+    },
+    {
+      "label": "native-sector32-u1-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3846840225160122
+    },
+    {
+      "label": "native-sector32-u2-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1179503034800291
+    },
+    {
+      "label": "native-sector32-u2-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12086485512554646
+    },
+    {
+      "label": "native-sector32-u2-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11724284663796425
+    },
+    {
+      "label": "native-sector32-u2-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11435351334512234
+    },
+    {
+      "label": "native-sector32-u2-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.22043666057288647
+    },
+    {
+      "label": "native-sector32-u2-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.24999176152050495
+    },
+    {
+      "label": "native-sector32-u2-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3238396253436804
+    },
+    {
+      "label": "native-sector32-u2-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.38252224400639534
+    },
+    {
+      "label": "native-sector32-u4-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12644976004958153
+    },
+    {
+      "label": "native-sector32-u4-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11789063736796379
+    },
+    {
+      "label": "native-sector32-u4-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12109633348882198
+    },
+    {
+      "label": "native-sector32-u4-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11870242469012737
+    },
+    {
+      "label": "native-sector32-u4-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2241591438651085
+    },
+    {
+      "label": "native-sector32-u4-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.25351234152913094
+    },
+    {
+      "label": "native-sector32-u4-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3203148692846298
+    },
+    {
+      "label": "native-sector32-u4-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.38360633328557014
+    },
+    {
+      "label": "native-sector64-u1-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1151498518884182
+    },
+    {
+      "label": "native-sector64-u1-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11318887770175934
+    },
+    {
+      "label": "native-sector64-u1-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.115115225315094
+    },
+    {
+      "label": "native-sector64-u1-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11363734118640423
+    },
+    {
+      "label": "native-sector64-u1-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2169130276888609
+    },
+    {
+      "label": "native-sector64-u1-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.24877794459462166
+    },
+    {
+      "label": "native-sector64-u1-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.31655347906053066
+    },
+    {
+      "label": "native-sector64-u1-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.38317940197885036
+    },
+    {
+      "label": "native-sector64-u2-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11829406395554543
+    },
+    {
+      "label": "native-sector64-u2-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11602782271802425
+    },
+    {
+      "label": "native-sector64-u2-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11817245744168758
+    },
+    {
+      "label": "native-sector64-u2-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12321471236646175
+    },
+    {
+      "label": "native-sector64-u2-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.22119230590760708
+    },
+    {
+      "label": "native-sector64-u2-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.25247402489185333
+    },
+    {
+      "label": "native-sector64-u2-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3188630361109972
+    },
+    {
+      "label": "native-sector64-u2-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.38281898759305477
+    },
+    {
+      "label": "native-sector64-u4-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11873839795589447
+    },
+    {
+      "label": "native-sector64-u4-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11740238219499588
+    },
+    {
+      "label": "native-sector64-u4-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12005926668643951
+    },
+    {
+      "label": "native-sector64-u4-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11675045266747475
+    },
+    {
+      "label": "native-sector64-u4-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.22481892071664333
+    },
+    {
+      "label": "native-sector64-u4-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2539205253124237
+    },
+    {
+      "label": "native-sector64-u4-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3241400755941868
+    },
+    {
+      "label": "native-sector64-u4-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3842748086899519
+    },
+    {
+      "label": "native-register64-u0-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.10571944527328014
+    },
+    {
+      "label": "native-register64-u0-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.10579958371818066
+    },
+    {
+      "label": "native-register64-u0-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.10591547563672066
+    },
+    {
+      "label": "native-register64-u0-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1126337368041277
+    },
+    {
+      "label": "native-register64-u0-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.20998193323612213
+    },
+    {
+      "label": "native-register64-u0-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.24023256078362465
+    },
+    {
+      "label": "native-register64-u0-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.30932279862463474
+    },
+    {
+      "label": "native-register64-u0-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3734612613916397
+    },
+    {
+      "label": "avx2-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-raw32-stage2",
+        "-B",
+        "build/vldb-raw32-stage2-v1/avx2",
+        "-DCMAKE_CXX_COMPILER=g++",
+        "-DVLDB_BACKEND=avx2",
+        "-DVLDB_ARCHIVE=/home/yiming/projects/fastest-bf-lab/build/vldb-public-preflight-v6-gcc/avx2/libvldb_pinned.a",
+        "-DVLDB_ARCHIVE_SHA256=d9690a396d774cbf2164adf5dde712686cc5b811875aeacf5a8229b5f93f7e59"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.29657118767499924
+    },
+    {
+      "label": "avx2-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/vldb-raw32-stage2-v1/avx2",
+        "-j1"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 285.2580823749304
+    },
+    {
+      "label": "avx2-macros",
+      "command": [
+        "/usr/bin/g++",
+        "-I/home/yiming/projects/fastest-bf-lab/include",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/src",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/thirdparty",
+        "-I/home/yiming/.local/boost-1.83/include",
+        "-O3",
+        "-march=x86-64-v3",
+        "-Wno-ignored-attributes",
+        "-include",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/compat.hpp",
+        "-std=gnu++17",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "/dev/null"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.044778767973184586
+    },
+    {
+      "label": "avx2-sector32-u1-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11493825726211071
+    },
+    {
+      "label": "avx2-sector32-u1-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1166085060685873
+    },
+    {
+      "label": "avx2-sector32-u1-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11487320996820927
+    },
+    {
+      "label": "avx2-sector32-u1-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11426794715225697
+    },
+    {
+      "label": "avx2-sector32-u1-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.21816938929259777
+    },
+    {
+      "label": "avx2-sector32-u1-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2518148235976696
+    },
+    {
+      "label": "avx2-sector32-u1-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.317714374512434
+    },
+    {
+      "label": "avx2-sector32-u1-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3813308924436569
+    },
+    {
+      "label": "avx2-sector32-u2-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1135533656924963
+    },
+    {
+      "label": "avx2-sector32-u2-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11264300346374512
+    },
+    {
+      "label": "avx2-sector32-u2-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11721931584179401
+    },
+    {
+      "label": "avx2-sector32-u2-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11328648403286934
+    },
+    {
+      "label": "avx2-sector32-u2-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2163256462663412
+    },
+    {
+      "label": "avx2-sector32-u2-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.24820871464908123
+    },
+    {
+      "label": "avx2-sector32-u2-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3147248923778534
+    },
+    {
+      "label": "avx2-sector32-u2-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.382497226819396
+    },
+    {
+      "label": "avx2-sector32-u4-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12362873740494251
+    },
+    {
+      "label": "avx2-sector32-u4-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12245588190853596
+    },
+    {
+      "label": "avx2-sector32-u4-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.13029702007770538
+    },
+    {
+      "label": "avx2-sector32-u4-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12313209101557732
+    },
+    {
+      "label": "avx2-sector32-u4-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.22613869979977608
+    },
+    {
+      "label": "avx2-sector32-u4-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.26184492744505405
+    },
+    {
+      "label": "avx2-sector32-u4-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.32580891251564026
+    },
+    {
+      "label": "avx2-sector32-u4-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3889921549707651
+    },
+    {
+      "label": "avx2-sector64-u1-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11639491654932499
+    },
+    {
+      "label": "avx2-sector64-u1-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11484728194773197
+    },
+    {
+      "label": "avx2-sector64-u1-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11771105602383614
+    },
+    {
+      "label": "avx2-sector64-u1-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.11569321900606155
+    },
+    {
+      "label": "avx2-sector64-u1-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2248573713004589
+    },
+    {
+      "label": "avx2-sector64-u1-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2496171034872532
+    },
+    {
+      "label": "avx2-sector64-u1-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3223291411995888
+    },
+    {
+      "label": "avx2-sector64-u1-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.38198845088481903
+    },
+    {
+      "label": "avx2-sector64-u2-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12538246251642704
+    },
+    {
+      "label": "avx2-sector64-u2-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12417359091341496
+    },
+    {
+      "label": "avx2-sector64-u2-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1245961356908083
+    },
+    {
+      "label": "avx2-sector64-u2-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1253975499421358
+    },
+    {
+      "label": "avx2-sector64-u2-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2268565632402897
+    },
+    {
+      "label": "avx2-sector64-u2-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2624538727104664
+    },
+    {
+      "label": "avx2-sector64-u2-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.32630843855440617
+    },
+    {
+      "label": "avx2-sector64-u2-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.390656191855669
+    },
+    {
+      "label": "avx2-sector64-u4-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12718725390732288
+    },
+    {
+      "label": "avx2-sector64-u4-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1252453476190567
+    },
+    {
+      "label": "avx2-sector64-u4-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12733370997011662
+    },
+    {
+      "label": "avx2-sector64-u4-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.12539221718907356
+    },
+    {
+      "label": "avx2-sector64-u4-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.22948653250932693
+    },
+    {
+      "label": "avx2-sector64-u4-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.26327030174434185
+    },
+    {
+      "label": "avx2-sector64-u4-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3291674703359604
+    },
+    {
+      "label": "avx2-sector64-u4-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3906223624944687
+    },
+    {
+      "label": "avx2-register64-u0-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.10520236939191818
+    },
+    {
+      "label": "avx2-register64-u0-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.1043908204883337
+    },
+    {
+      "label": "avx2-register64-u0-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.10558019019663334
+    },
+    {
+      "label": "avx2-register64-u0-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.10430764220654964
+    },
+    {
+      "label": "avx2-register64-u0-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.2086222767829895
+    },
+    {
+      "label": "avx2-register64-u0-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.23925688676536083
+    },
+    {
+      "label": "avx2-register64-u0-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3107561767101288
+    },
+    {
+      "label": "avx2-register64-u0-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3740964997559786
+    },
+    {
+      "label": "native-asan-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-raw32-stage2",
+        "-B",
+        "build/vldb-raw32-stage2-v1/native-asan",
+        "-DCMAKE_CXX_COMPILER=g++",
+        "-DVLDB_BACKEND=native-asan",
+        "-DVLDB_ARCHIVE=/home/yiming/projects/fastest-bf-lab/build/vldb-public-preflight-v5-gcc/native-asan/libvldb_pinned.a",
+        "-DVLDB_ARCHIVE_SHA256=e8180d27f43afa1308a9451be1c12b2aeaadafcd84e690ef332e3f50b0c38e34"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.603031300008297
+    },
+    {
+      "label": "native-asan-build",
+      "command": [
+        "cmake",
+        "--build",
+        "build/vldb-raw32-stage2-v1/native-asan",
+        "-j1"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 506.32523594237864
+    },
+    {
+      "label": "native-asan-macros",
+      "command": [
+        "/usr/bin/g++",
+        "-I/home/yiming/projects/fastest-bf-lab/include",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/src",
+        "-I/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/.deps/dtl/thirdparty",
+        "-I/home/yiming/.local/boost-1.83/include",
+        "-O1",
+        "-march=native",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-fno-omit-frame-pointer",
+        "-Wno-ignored-attributes",
+        "-include",
+        "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-original-external/compat.hpp",
+        "-std=gnu++17",
+        "-dM",
+        "-E",
+        "-x",
+        "c++",
+        "/dev/null"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.04621070809662342
+    },
+    {
+      "label": "native-asan-sector32-u1-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4466116726398468
+    },
+    {
+      "label": "native-asan-sector32-u1-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.436224352568388
+    },
+    {
+      "label": "native-asan-sector32-u1-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.44373616948723793
+    },
+    {
+      "label": "native-asan-sector32-u1-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u1",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.44243079237639904
+    },
+    {
+      "label": "native-asan-sector32-u1-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.5806044228374958
+    },
+    {
+      "label": "native-asan-sector32-u1-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.6221907716244459
+    },
+    {
+      "label": "native-asan-sector32-u1-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.7154623679816723
+    },
+    {
+      "label": "native-asan-sector32-u1-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u1",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.7856595516204834
+    },
+    {
+      "label": "native-asan-sector32-u2-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4255539234727621
+    },
+    {
+      "label": "native-asan-sector32-u2-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4220663234591484
+    },
+    {
+      "label": "native-asan-sector32-u2-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4234829507768154
+    },
+    {
+      "label": "native-asan-sector32-u2-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u2",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.42459856905043125
+    },
+    {
+      "label": "native-asan-sector32-u2-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.5631405841559172
+    },
+    {
+      "label": "native-asan-sector32-u2-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.6032908074557781
+    },
+    {
+      "label": "native-asan-sector32-u2-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.6908403690904379
+    },
+    {
+      "label": "native-asan-sector32-u2-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u2",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.7691995389759541
+    },
+    {
+      "label": "native-asan-sector32-u4-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.420257817953825
+    },
+    {
+      "label": "native-asan-sector32-u4-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4131626710295677
+    },
+    {
+      "label": "native-asan-sector32-u4-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.41976659558713436
+    },
+    {
+      "label": "native-asan-sector32-u4-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u4",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.41657046042382717
+    },
+    {
+      "label": "native-asan-sector32-u4-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.5561815500259399
+    },
+    {
+      "label": "native-asan-sector32-u4-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.5980583280324936
+    },
+    {
+      "label": "native-asan-sector32-u4-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.686068881303072
+    },
+    {
+      "label": "native-asan-sector32-u4-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector32-u4",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.7585148718208075
+    },
+    {
+      "label": "native-asan-sector64-u1-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.45872701704502106
+    },
+    {
+      "label": "native-asan-sector64-u1-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.450722873210907
+    },
+    {
+      "label": "native-asan-sector64-u1-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.453734178096056
+    },
+    {
+      "label": "native-asan-sector64-u1-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u1",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.45211542025208473
+    },
+    {
+      "label": "native-asan-sector64-u1-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.5904964171350002
+    },
+    {
+      "label": "native-asan-sector64-u1-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.6273424122482538
+    },
+    {
+      "label": "native-asan-sector64-u1-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.7154967058449984
+    },
+    {
+      "label": "native-asan-sector64-u1-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u1",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.7889782413840294
+    },
+    {
+      "label": "native-asan-sector64-u2-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.44114459306001663
+    },
+    {
+      "label": "native-asan-sector64-u2-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4394943155348301
+    },
+    {
+      "label": "native-asan-sector64-u2-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4417327996343374
+    },
+    {
+      "label": "native-asan-sector64-u2-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u2",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.439523346722126
+    },
+    {
+      "label": "native-asan-sector64-u2-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.5798201560974121
+    },
+    {
+      "label": "native-asan-sector64-u2-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.620249567553401
+    },
+    {
+      "label": "native-asan-sector64-u2-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.7044512704014778
+    },
+    {
+      "label": "native-asan-sector64-u2-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u2",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.778287511318922
+    },
+    {
+      "label": "native-asan-sector64-u4-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4400950912386179
+    },
+    {
+      "label": "native-asan-sector64-u4-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4310918599367142
+    },
+    {
+      "label": "native-asan-sector64-u4-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4364398382604122
+    },
+    {
+      "label": "native-asan-sector64-u4-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u4",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4319834001362324
+    },
+    {
+      "label": "native-asan-sector64-u4-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.5734580811113119
+    },
+    {
+      "label": "native-asan-sector64-u4-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.6080757509917021
+    },
+    {
+      "label": "native-asan-sector64-u4-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.700473053380847
+    },
+    {
+      "label": "native-asan-sector64-u4-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "sector64-u4",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.7734264750033617
+    },
+    {
+      "label": "native-asan-register64-u0-n16-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3657634109258652
+    },
+    {
+      "label": "native-asan-register64-u0-n16-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3593656159937382
+    },
+    {
+      "label": "native-asan-register64-u0-n16-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.3657387066632509
+    },
+    {
+      "label": "native-asan-register64-u0-n16-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "register64-u0",
+        "16",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.36206071078777313
+    },
+    {
+      "label": "native-asan-register64-u0-n25-b12",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "12"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.4968088436871767
+    },
+    {
+      "label": "native-asan-register64-u0-n25-b16",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "16"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.5312021318823099
+    },
+    {
+      "label": "native-asan-register64-u0-n25-b24",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "24"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.6224648486822844
+    },
+    {
+      "label": "native-asan-register64-u0-n25-b32",
+      "command": [
+        "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+        "register64-u0",
+        "25",
+        "32"
+      ],
+      "returncode": 0,
+      "diagnostic_elapsed_seconds": 0.692206235602498
+    }
+  ],
+  "binaries": {
+    "native": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native/vldb_geometry_check",
+      "sha256": "a6526859b6bc55418ab5ba4939c5031945255a150f340eb432fe78e8996afa9f",
+      "retained": "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-raw32-stage2/validation-v1/binaries/native/vldb_geometry_check"
+    },
+    "avx2": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/avx2/vldb_geometry_check",
+      "sha256": "aeaaf8a92a707706ae115996e64639fe64ab10a86bec75fdbdeb45fd270c4c47",
+      "retained": "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-raw32-stage2/validation-v1/binaries/avx2/vldb_geometry_check"
+    },
+    "native-asan": {
+      "path": "/home/yiming/projects/fastest-bf-lab/build/vldb-raw32-stage2-v1/native-asan/vldb_geometry_check",
+      "sha256": "f267bbb16134c635f42156f8fe4dbc01c1c06eb9a83faf3e8f4c2029f41a6afe",
+      "retained": "/home/yiming/projects/fastest-bf-lab/benchmarks/vldb-raw32-stage2/validation-v1/binaries/native-asan/vldb_geometry_check"
+    }
+  },
+  "tuner_file_before": {
+    "path": "/home/yiming/.dtl-filter.dat",
+    "exists": false
+  },
+  "backend_rows": {
+    "native": [
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 12288,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 716681180964653487,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 16384,
+        "address": "pow2",
+        "digest": 16201372527599128573,
+        "bitmap_digest": 7139656440871983605,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 24576,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15658126736118143216,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 32768,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15784449620589902217,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 6291456,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17914224481333940665,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 8388608,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12790831736499341447,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 12582912,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11092325429820282777,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 16777216,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3345638595355628844,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      }
+    ],
+    "avx2": [
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 12288,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 716681180964653487,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 16384,
+        "address": "pow2",
+        "digest": 16201372527599128573,
+        "bitmap_digest": 7139656440871983605,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 24576,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15658126736118143216,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 32768,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15784449620589902217,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 6291456,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17914224481333940665,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 8388608,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12790831736499341447,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 12582912,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11092325429820282777,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 16777216,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3345638595355628844,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      }
+    ],
+    "native-asan": [
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 4250689868134905012,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11602080027657822256,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 6144,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 5526352120767786766,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 8192,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 10400861349587144801,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 1993956504533396318,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12288499368240215785,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 3145728,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2540816188715842484,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 4194304,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2218011738654713353,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 4,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 1,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 2,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 1536,
+        "address": "magic",
+        "digest": 7658506431873666597,
+        "bitmap_digest": 11801720798862589001,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 2048,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 2454719340257880008,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 3072,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11670864999745685934,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 4096,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 8649874714444195616,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 786432,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9170463304492834899,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 1048576,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3134778205677614116,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 1572864,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 9070211952199150850,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 2097152,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3696618009628949023,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 8,
+          "s": 8,
+          "u": 4,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 98304,
+        "constructor_bits": 786432,
+        "logical_bytes": 98304,
+        "backing_bytes": 98304,
+        "block_count": 12288,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 716681180964653487,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 98304,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 131072,
+        "constructor_bits": 1048576,
+        "logical_bytes": 131072,
+        "backing_bytes": 131072,
+        "block_count": 16384,
+        "address": "pow2",
+        "digest": 16201372527599128573,
+        "bitmap_digest": 7139656440871983605,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 131072,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 196608,
+        "constructor_bits": 1572864,
+        "logical_bytes": 196608,
+        "backing_bytes": 196608,
+        "block_count": 24576,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15658126736118143216,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 196608,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 262144,
+        "constructor_bits": 2097152,
+        "logical_bytes": 262144,
+        "backing_bytes": 262144,
+        "block_count": 32768,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 15784449620589902217,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 262144,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 50331648,
+        "constructor_bits": 402653184,
+        "logical_bytes": 50331648,
+        "backing_bytes": 50331648,
+        "block_count": 6291456,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 17914224481333940665,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 50331648,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 67108864,
+        "constructor_bits": 536870912,
+        "logical_bytes": 67108864,
+        "backing_bytes": 67108864,
+        "block_count": 8388608,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 12790831736499341447,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 67108864,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      },
+      {
+        "budget_bytes": 100663296,
+        "constructor_bits": 805306368,
+        "logical_bytes": 100663296,
+        "backing_bytes": 100663296,
+        "block_count": 12582912,
+        "address": "magic",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 11092325429820282777,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 100663296,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "magic"
+        }
+      },
+      {
+        "budget_bytes": 134217728,
+        "constructor_bits": 1073741824,
+        "logical_bytes": 134217728,
+        "backing_bytes": 134217728,
+        "block_count": 16777216,
+        "address": "pow2",
+        "digest": 12689670177146444069,
+        "bitmap_digest": 3345638595355628844,
+        "upstream_metadata": {
+          "name": "blocked_bloom_multiword",
+          "size": 134217728,
+          "word_size": 8,
+          "k": 8,
+          "w": 1,
+          "s": 1,
+          "u": 0,
+          "e": 0,
+          "addr": "pow2"
+        }
+      }
+    ]
+  },
+  "complete": true,
+  "tuner_file_after": {
+    "path": "/home/yiming/.dtl-filter.dat",
+    "exists": false
+  },
+  "all_sources_unchanged": true
+}

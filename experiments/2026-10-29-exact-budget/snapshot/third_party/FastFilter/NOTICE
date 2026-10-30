@@ -1,0 +1,23 @@
+ByteSplit Bloom filter attribution
+
+include/byte_split_bloom.h and rust/src/byte_split.rs adapt the mask construction
+from FastFilter/fastfilter_cpp's SimdBlockFilterFixed16:
+https://github.com/FastFilter/fastfilter_cpp/blob/7c5bf187d5096ccbcec6a16e02975d0af3328b01/src/bloom/simd-block-fixed-fpp.h
+
+Copyright 2018 the fastfilter_cpp authors.
+Licensed under the Apache License, Version 2.0; the unchanged upstream license
+is retained in LICENSE in this directory. These derived source files retain
+Apache-2.0 attribution despite the main repository's MIT license.
+
+Upstream attribution retained:
+"Copied from Apache Impala (incubating), usable under the terms in the Apache
+License, Version 2.0."
+
+Modifications in this repository: direct power-of-two bucket addressing;
+64-byte-aligned storage grouping four 16-byte buckets; portable scalar mask;
+native C++/Rust batch and single-query APIs; cache-line partitioned parallel
+construction and read-only query support. The signed 16-bit high multiplication
+and byte-shuffle mask mapping, including zero-mask lanes, is preserved.
+
+This notice documents the attribution of the adapted implementation. It is not
+an assertion that the ByteSplit layout is an unmodified upstream filter.

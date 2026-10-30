@@ -1,0 +1,547 @@
+{
+  "arguments": {
+    "mode": "speed",
+    "output": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-byte-split/port-cost",
+    "binary": "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+    "cpu": 3,
+    "key_powers": "16,25",
+    "requested_bpk": "8,16",
+    "seeds": "2053,4099",
+    "hits": "50",
+    "batches": "1,31,4096",
+    "query_power": 22,
+    "calibration_power": 0,
+    "repeats": 5,
+    "filters": "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1"
+  },
+  "binary_sha256": "09cd93185e86268deec4513926c4702a9f1817b75f5f1263ae8d361ae4859af0",
+  "sources": {
+    "experiments/2026-10-29-native-byte-split/snapshot/compare_benchmark.cpp": "95b54e3735404ed2e6b289a05b5aac10af17dd15aa129dd135351bf5535dba95",
+    "experiments/2026-10-29-native-byte-split/snapshot/direct_split.hpp": "16335440fb9c71ea076b317f96caf26da374a615c3677d0348f9746ce1bfbf58",
+    "experiments/2026-10-29-native-byte-split/snapshot/fastfilter_adapters.hpp": "3c192e4a73312bd3015ba1f3b53f1f9a5cb098ba0c240ee91e757d00f177a603",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/byte_split_bloom.h": "46d285a1676b0613a0759d9786d2d8afe67d75b5fc64ca839305922627fa332f",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/cache_sectorized_BF_32bit.h": "ee48aab598e0369fe92163dba420f42a51520a1e4792d61867c71dd52012a10a",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/fast_pattern_BF.h": "d10bb646c6fd40ecdda02a0d6b51304ae62cbd978b0dc9e058601c13c6d2b87b",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/four_sector_bloom.h": "127b46a8f065a34ce2028873a41476baccd5e68cfe2957ab3d0f5ef2d8900304",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/impala_blocked_BF_64bit.h": "7c20f4f15155477b9865d91ce01723e6f1f9f6378c4973741ede7f56fd885d02",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/impala_blocked_BF_64bit_avx512.h": "b088dcad98f5d9b18a010f5daf5e9b5d5fddacc744d17e8e0313fa71552ee452",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/new_cache_sectorized_BF_32bit.h": "cffa2fb61b1e38afb4c1bdc646219da3eb930a11ef1790dd8f4888de247bc769",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/parallel_bloom.h": "7a1744d8689a344bcb8d0161f52e7d8999db52fca11bcc45953c9e4c4f0327cf",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/parallel_layout_bloom.h": "7116b26a9d09f78be0a66daa990d3593a120ac5ce8c485eba89c8a06f82ba6e6",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/register_blocked_BF_2x32bit.h": "2ce6e2bba2342a2e2f6964aa5fda8fe6c3bdd090e759d91ae46b18878566ddde",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/register_blocked_BF_32bit.h": "aad3b10e1220d41ca06f818c4ded6b3b405a5c6f9cf7a31887cea58afeeaadd9",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/register_blocked_BF_32bit_Masks.h": "595b0d5ad008ef3f2eb7008684b4e5ba4ef038dd8334fab938504da06559754c",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/register_blocked_BF_64bit.h": "c64816638a58537ad3318e3707ec9ac3cd64732c1bd27f4347acbc70e6cad0c3",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/register_blocked_BF_64bit_Masks.h": "d63ffa01485942d886bd22b883a637929683f20d3c5e20e31cb5130e3bab2ecd",
+    "experiments/2026-10-29-native-byte-split/snapshot/include/split64_bloom.h": "9b548e880b927ade57ef27c946f0105e9abe9c2b2436eecdbbbff0a22d30f429",
+    "experiments/2026-10-29-native-byte-split/adapters.hpp": "244249e1c4424ae8332f04e6805c456321c523a6f86059da3fdb05bc9c503b7f",
+    "experiments/2026-10-29-native-byte-split/CMakeLists.txt": "e6ef6cd91e30c2aca2318664b075988add8133bee5465115207909cb860896fa",
+    "experiments/2026-10-29-native-byte-split/run.py": "13f1ab511f2e87af2e284e8c00d3bdd28559b0dc6418989ff28234cd2bd8ecca",
+    "experiments/2026-10-29-native-byte-split/snapshot.json": "e1a064eaa754946674746e765853180061ede5990ce1b6ca3494bfcc544fdc79"
+  },
+  "git_head": "c4b6a08f41f0256ba6bf901d1701fffa2cd663b8",
+  "compiler": "Debian clang version 23.0.0 (++20260614104823+cc613052fd6a-1~exp1~20260614224957.2204)\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/lib/llvm-23/bin\n",
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  192\nOn-line CPU(s) list:                     0-191\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Xeon(R) Platinum 8474C\nCPU family:                              6\nModel:                                   143\nThread(s) per core:                      2\nCore(s) per socket:                      48\nSocket(s):                               2\nStepping:                                8\nBogoMIPS:                                4200.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cat_l2 cdp_l3 invpcid_single cdp_l2 ssbd mba ibrs ibpb stibp ibrs_enhanced tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb intel_pt avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local split_lock_detect avx_vnni avx512_bf16 wbnoinvd dtherm ida arat pln pts hfi avx512vbmi umip pku ospke waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg tme avx512_vpopcntdq la57 rdpid bus_lock_detect cldemote movdiri movdir64b enqcmd fsrm md_clear serialize tsxldtrk pconfig arch_lbr ibt amx_bf16 avx512_fp16 amx_tile amx_int8 flush_l1d arch_capabilities ibpb_exit_to_user\nVirtualization:                          VT-x\nL1d cache:                               4.5 MiB (96 instances)\nL1i cache:                               3 MiB (96 instances)\nL2 cache:                                192 MiB (96 instances)\nL3 cache:                                195 MiB (2 instances)\nNUMA node(s):                            2\nNUMA node0 CPU(s):                       0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178,180,182,184,186,188,190\nNUMA node1 CPU(s):                       1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179,181,183,185,187,189,191\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI BHI_DIS_S\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "compile_commands": [
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-port",
+      "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-byte-split -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-byte-split/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/tmp/bf-fastfilter-upstream/src -I/tmp/bf-page-upstream/include -I/tmp/bf-page-upstream/src -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/compare_benchmark.dir/snapshot/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-byte-split/snapshot/compare_benchmark.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-native-byte-split/snapshot/compare_benchmark.cpp"
+    }
+  ],
+  "attribution": {
+    "source": "https://github.com/FastFilter/fastfilter_cpp/blob/7c5bf187d5096ccbcec6a16e02975d0af3328b01/src/bloom/simd-block-fixed-fpp.h",
+    "commit": "7c5bf187d5096ccbcec6a16e02975d0af3328b01",
+    "mask_header_sha256": "00f44b2651a7011aa875266429cbbcd49d7e70f16ad39f445c0d60b6f9601dca",
+    "license_sha256": "3f1c443ccd7c4e45549fb7f32e499fe63eab4a5876cf9772c185e087808f4957",
+    "native_split_header_sha256": "629c0aa848945f8993214e03b2d217aa1a8bc5f9b64d9ccf6b7d8a9dc40760f9"
+  },
+  "runs": [
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "31",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 12.651037469506264
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "1",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.8063750918954611
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "1",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 21.467602729797363
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.4755084551870823
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 16.84403182938695
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "1",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 14.20835187472403
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "31",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.48730984330177307
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "1",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.8015828654170036
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "31",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 12.671623956412077
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.4631785862147808
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "1",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 14.196433393284678
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "31",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.479691457003355
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "31",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.4723691139370203
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "1",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.8089717011898756
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "31",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 17.45604908466339
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "1",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 21.51706420816481
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.46772379986941814
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "1",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.8071753978729248
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "31",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 17.436221772804856
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.4669097736477852
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "16",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 16.831690933555365
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "16",
+        "16",
+        "50",
+        "22",
+        "31",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "65536",
+        "0"
+      ],
+      "seconds": 0.48666410334408283
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "2053",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 12.329295041039586
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/byte-split-port/compare_benchmark",
+        "25",
+        "8",
+        "50",
+        "22",
+        "4096",
+        "5",
+        "4099",
+        "ByteSplitBloomFilter,ByteSplitFrozenSingle,FastFilterFixed16,FastFilterFixed16SingleV1",
+        "33554432",
+        "0"
+      ],
+      "seconds": 12.334083992987871
+    }
+  ],
+  "snapshot": {
+    "purpose": "Same-process native-vs-frozen ByteSplit port cost; source frozen before measurements.",
+    "sources": {
+      "include/register_blocked_BF_32bit_Masks.h": "595b0d5ad008ef3f2eb7008684b4e5ba4ef038dd8334fab938504da06559754c",
+      "include/register_blocked_BF_32bit.h": "aad3b10e1220d41ca06f818c4ded6b3b405a5c6f9cf7a31887cea58afeeaadd9",
+      "include/register_blocked_BF_64bit_Masks.h": "d63ffa01485942d886bd22b883a637929683f20d3c5e20e31cb5130e3bab2ecd",
+      "include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+      "include/split64_bloom.h": "9b548e880b927ade57ef27c946f0105e9abe9c2b2436eecdbbbff0a22d30f429",
+      "include/register_blocked_BF_64bit.h": "c64816638a58537ad3318e3707ec9ac3cd64732c1bd27f4347acbc70e6cad0c3",
+      "include/register_blocked_BF_2x32bit.h": "2ce6e2bba2342a2e2f6964aa5fda8fe6c3bdd090e759d91ae46b18878566ddde",
+      "include/fast_pattern_BF.h": "d10bb646c6fd40ecdda02a0d6b51304ae62cbd978b0dc9e058601c13c6d2b87b",
+      "include/new_cache_sectorized_BF_32bit.h": "cffa2fb61b1e38afb4c1bdc646219da3eb930a11ef1790dd8f4888de247bc769",
+      "include/four_sector_bloom.h": "127b46a8f065a34ce2028873a41476baccd5e68cfe2957ab3d0f5ef2d8900304",
+      "include/parallel_bloom.h": "7a1744d8689a344bcb8d0161f52e7d8999db52fca11bcc45953c9e4c4f0327cf",
+      "include/parallel_layout_bloom.h": "7116b26a9d09f78be0a66daa990d3593a120ac5ce8c485eba89c8a06f82ba6e6",
+      "include/cache_sectorized_BF_32bit.h": "ee48aab598e0369fe92163dba420f42a51520a1e4792d61867c71dd52012a10a",
+      "include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c",
+      "include/impala_blocked_BF_64bit_avx512.h": "b088dcad98f5d9b18a010f5daf5e9b5d5fddacc744d17e8e0313fa71552ee452",
+      "include/byte_split_bloom.h": "46d285a1676b0613a0759d9786d2d8afe67d75b5fc64ca839305922627fa332f",
+      "include/impala_blocked_BF_64bit.h": "7c20f4f15155477b9865d91ce01723e6f1f9f6378c4973741ede7f56fd885d02",
+      "src/compare_benchmark.cpp": "95b54e3735404ed2e6b289a05b5aac10af17dd15aa129dd135351bf5535dba95",
+      "experiments/2026-10-29-direct-split/direct_split.hpp": "16335440fb9c71ea076b317f96caf26da374a615c3677d0348f9746ce1bfbf58",
+      "benchmarks/cpp-external/adapters.hpp": "3c192e4a73312bd3015ba1f3b53f1f9a5cb098ba0c240ee91e757d00f177a603"
+    }
+  },
+  "purpose": "Shared-harness speed comparison",
+  "utc": "2026-10-28T17:33:32Z",
+  "sources_changed_during_run": []
+}

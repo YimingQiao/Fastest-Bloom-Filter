@@ -1,0 +1,11 @@
+# Complete336 timing runner
+
+This additive runner preserves the initial18-case/336-row protocol and exact original timed package. All K1..12 rows are timed at all three batch tags, including configurations that fail every FPR gate. The minimum-qualified-K neighborhood in the accuracy report is diagnostic and does not select latency rows.
+
+The native performance executable is selected only from the completed focused preflight committed at `c5ed7d7d23f9c481dc61990544b0827502d187c4` and frozen separately from the untimed accuracy program. `freeze.py --create` binds the full preflight archive, actual compiled sources, upstream dependency trees and the additive runner. Root must commit that freeze before `run.py --source-commit FULL_SHA` executes under the inherited socket1 flock, CPU3 taskset and `BF_SOCKET_LEASE=socket1-cpu3`. There is no explicit NUMA memory binding.
+
+Every case checks exact source-derived job order, four seed-balanced query phase sequences, all individual query trials and medians/ranges, complete geometry/probe metadata, full-output checksum and both mixed/calibration counts. All336 rows reproduce the corresponding frozen112-row untimed semantics. Raw commands/stdout/stderr and the aggregate must reconstruct exactly; source/dependency/binary proofs are rechecked at completion. Loader overrides and changing the actual inherited lease are rejected.
+
+There are112 API/size/capacity/seed quality identities. Three batch observations reuse each construction; they do not add calibration trials. Only the proven default16/K11 aliases collapse to110 known mappings. The immutable complete quality document is retained; no SBBF/Bloomsday cross-family alias is assumed. All smaller allocations remain eligible under caps16/24/32 in later separate ranking, and all four query contracts and four build boundaries must stay separate.
+
+Seed42 is training. No broad fastest claim or promotion follows from this screen alone. All external K configurations, failures and native losses must remain in a separate report. Whole-array visible API loops retain the same contract across batch tags. Build phases keep the original fixed order and medians; the CSV does not expose build trial vectors, so none are synthesized.

@@ -1,0 +1,69 @@
+--- frozen-mt/benchmark.cpp
++++ exact-range-mt/benchmark.cpp
+@@ -41,6 +41,7 @@
+ #include BF_EXTERNAL_HEADER
+ #endif
+ 
++#include "geometry.hpp"
+ using namespace bloom_filters;
+ template <class BF, class = void>
+ struct RawKeyApi : std::false_type {};
+@@ -91,7 +92,7 @@
+ 			std::cout.rdbuf(buffer);
+ 		}
+ 	} restore {std::cout.rdbuf(ignored.rdbuf())};
+-	return BF(n, bpk);
++	return exact_budget::Traits<BF>::Make(n, bpk);
+ }
+ // One compiled query kernel per implementation, shared by pure and hash+query
+ // timing. Avoid call-site-specific vectorization changing the operation measured.
+@@ -164,7 +165,10 @@
+ 			validate_build(hashed, trial == 0);
+ 		}
+ 	}
++	const auto geometry = exact_budget::Traits<BF>::Plan(n, bpk);
+ 	BF bf = make_filter<BF>(n, bpk);
++	if (bf.SizeInBytes() != geometry.allocated_bytes || bf.SizeInBytes() > geometry.budget_bytes)
++		throw std::runtime_error("allocation disagrees with exact geometry plan");
+ 	for (size_t i = 0; i < n; i += insert_batch)
+ 		insert(bf, std::min(insert_batch, n - i), inserted.data() + i);
+ 	for (size_t i = 0; i < n; i += batch) {
+@@ -288,7 +292,7 @@
+ 			}
+ 		}
+ 	}
+-	std::cout << "cpp," << name << ',' << n << ',' << q << ',' << bpk << ',' << bf.SizeInBytes() << ','
++	std::cout << std::setprecision(17) << "cpp," << name << ',' << n << ',' << q << ',' << bpk << ',' << bf.SizeInBytes() << ','
+ 	          << 8.0 * bf.SizeInBytes() / n << ',' << sizeof(Hash) * 8 << ',' << hit << ',' << present << ',' << batch
+ 	          << ',' << repeats << ',' << seed << ','
+ 	          << (RawKeyApi<BF>::value ? std::numeric_limits<double>::quiet_NaN() : median(insert_times)) << ','
+@@ -310,7 +314,7 @@
+ 	          << BuildScratch<BF>::bytes(bf) << ',' << sizeof(Hash) * scratch.size() << ','
+ 	          << *std::min_element(total.begin(), total.end()) << ',' << *std::max_element(total.begin(), total.end())
+ 	          << ',' << calibration_queries << ',' << calibration_fp;
+-    std::cout << std::setprecision(12) << ',' << workers << ',' << (workers-1) << ',' << workers*batch*sizeof(Hash) << ",caller_worker0";
++    std::cout << std::setprecision(17) << ',' << workers << ',' << (workers-1) << ',' << workers*batch*sizeof(Hash) << ",caller_worker0";
+     auto samples = [&](const ParallelSamples &values, bool valid) {
+         const double missing = std::numeric_limits<double>::quiet_NaN();
+         for (const auto *v : {&values.end_to_end,&values.launch,&values.query,&values.join})
+@@ -326,6 +330,11 @@
+         }
+     };
+     samples(pure_parallel,!RawKeyApi<BF>::value); samples(hash_parallel,true);
++    std::cout << ','; exact_budget::PrintGeometry(std::cout,geometry);
++    std::cout << ",exact_byte_ceiling_v1,fixed_serial_pure_serial_hash_parallel_pure_parallel_hash,";
++    for(size_t i=0;i<lookup.size();++i) { if(i)std::cout<<'|'; if constexpr(RawKeyApi<BF>::value)std::cout<<"nan"; else std::cout<<lookup[i]; }
++    std::cout<<',';
++    for(size_t i=0;i<total.size();++i) { if(i)std::cout<<'|'; std::cout<<total[i]; }
+     std::cout << '\n';
+ }
+ int main(int argc, char **argv) {
+@@ -454,7 +463,7 @@
+                 if (std::string(phase)!="parallel_hash_lookup" || std::string(field)!="join_trials") std::cout << ',';
+             }
+         }
+-        std::cout << '\n';
++        std::cout << ',' << exact_budget::GeometryHeader() << ",size_contract,query_phase_order,lookup_trials_ns,hash_lookup_trials_ns\n";
+ 		shuffle(jobs, rng);
+ 		for (auto &job : jobs)
+ 			job();

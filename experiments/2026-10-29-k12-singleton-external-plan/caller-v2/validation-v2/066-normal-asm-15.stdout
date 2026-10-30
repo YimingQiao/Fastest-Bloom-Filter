@@ -1,0 +1,102 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000056380 <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj>:
+   56380:	mov    $0xffffffff,%eax
+   56385:	and    %rsi,%rax
+   56388:	je     5651e <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj+0x19e>
+   5638e:	cmp    $0x1,%eax
+   56391:	jne    5639a <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj+0x1a>
+   56393:	xor    %eax,%eax
+   56395:	jmp    564a9 <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj+0x129>
+   5639a:	mov    %esi,%r8d
+   5639d:	and    $0xfffffffe,%r8d
+   563a1:	xor    %eax,%eax
+   563a3:	vmovdqa -0x5216b(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   563ab:	vpxor  %xmm1,%xmm1,%xmm1
+   563af:	vpbroadcastq -0x54438(%rip),%ymm2        # 1f80 <_IO_stdin_used+0x88>
+   563b8:	nopl   0x0(%rax,%rax,1)
+   563c0:	mov    (%rdx,%rax,8),%r9
+   563c4:	vpbroadcastd %r9d,%ymm3
+   563ca:	shr    $0x20,%r9
+   563ce:	mov    (%rdi),%r10d
+   563d1:	imul   %r9,%r10
+   563d5:	vpmulld %ymm0,%ymm3,%ymm3
+   563da:	vpsrld $0x1a,%ymm3,%ymm3
+   563df:	vpunpckhdq %ymm1,%ymm3,%ymm4
+   563e3:	vpsllvq %ymm4,%ymm2,%ymm4
+   563e8:	vpunpckldq %ymm1,%ymm3,%ymm3
+   563ec:	vpsllvq %ymm3,%ymm2,%ymm3
+   563f1:	mov    0x8(%rdi),%r9
+   563f5:	shr    $0x1a,%r10
+   563f9:	and    $0xffffffffffffffc0,%r10
+   563fd:	vmovdqa (%r9,%r10,1),%ymm5
+   56403:	vmovdqa 0x20(%r9,%r10,1),%ymm6
+   5640a:	vptest %ymm4,%ymm5
+   5640f:	setb   %r9b
+   56413:	vptest %ymm3,%ymm6
+   56418:	setb   %r10b
+   5641c:	xor    %r11d,%r11d
+   5641f:	test   %r9b,%r10b
+   56422:	setne  %r11b
+   56426:	mov    %r11d,(%rcx,%rax,4)
+   5642a:	mov    0x8(%rdx,%rax,8),%r9
+   5642f:	vpbroadcastd %r9d,%ymm3
+   56435:	shr    $0x20,%r9
+   56439:	mov    (%rdi),%r10d
+   5643c:	imul   %r9,%r10
+   56440:	vpmulld %ymm0,%ymm3,%ymm3
+   56445:	vpsrld $0x1a,%ymm3,%ymm3
+   5644a:	vpunpckhdq %ymm1,%ymm3,%ymm4
+   5644e:	vpsllvq %ymm4,%ymm2,%ymm4
+   56453:	vpunpckldq %ymm1,%ymm3,%ymm3
+   56457:	vpsllvq %ymm3,%ymm2,%ymm3
+   5645c:	mov    0x8(%rdi),%r9
+   56460:	shr    $0x1a,%r10
+   56464:	and    $0xffffffffffffffc0,%r10
+   56468:	vmovdqa (%r9,%r10,1),%ymm5
+   5646e:	vmovdqa 0x20(%r9,%r10,1),%ymm6
+   56475:	vptest %ymm4,%ymm5
+   5647a:	setb   %r9b
+   5647e:	vptest %ymm3,%ymm6
+   56483:	setb   %r10b
+   56487:	xor    %r11d,%r11d
+   5648a:	test   %r9b,%r10b
+   5648d:	setne  %r11b
+   56491:	mov    %r11d,0x4(%rcx,%rax,4)
+   56496:	add    $0x2,%rax
+   5649a:	cmp    %rax,%r8
+   5649d:	jne    563c0 <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj+0x40>
+   564a3:	test   $0x1,%sil
+   564a7:	je     5651e <_Z13lookup_kernelIN14external_bloom7Fixed64EmEvRT_mPKT0_Pj+0x19e>
+   564a9:	mov    (%rdx,%rax,8),%rdx
+   564ad:	vpbroadcastd %edx,%ymm0
+   564b3:	shr    $0x20,%rdx
+   564b7:	mov    (%rdi),%esi
+   564b9:	imul   %rdx,%rsi
+   564bd:	vpmulld -0x52286(%rip),%ymm0,%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   564c6:	vpsrld $0x1a,%ymm0,%ymm0
+   564cb:	vpxor  %xmm1,%xmm1,%xmm1
+   564cf:	vpunpckhdq %ymm1,%ymm0,%ymm2
+   564d3:	vpbroadcastq -0x5455c(%rip),%ymm3        # 1f80 <_IO_stdin_used+0x88>
+   564dc:	vpsllvq %ymm2,%ymm3,%ymm2
+   564e1:	vpunpckldq %ymm1,%ymm0,%ymm0
+   564e5:	vpsllvq %ymm0,%ymm3,%ymm0
+   564ea:	mov    0x8(%rdi),%rdx
+   564ee:	shr    $0x1a,%rsi
+   564f2:	and    $0xffffffffffffffc0,%rsi
+   564f6:	vmovdqa (%rdx,%rsi,1),%ymm1
+   564fb:	vmovdqa 0x20(%rdx,%rsi,1),%ymm3
+   56501:	vptest %ymm2,%ymm1
+   56506:	setb   %dl
+   56509:	vptest %ymm0,%ymm3
+   5650e:	setb   %sil
+   56512:	xor    %edi,%edi
+   56514:	test   %dl,%sil
+   56517:	setne  %dil
+   5651b:	mov    %edi,(%rcx,%rax,4)
+   5651e:	vzeroupper
+   56521:	ret

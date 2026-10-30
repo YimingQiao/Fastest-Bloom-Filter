@@ -1,0 +1,31 @@
+--- frozen-v1/validate.py
++++ repair-v2/validate.py
+@@ -3,7 +3,9 @@
+ import argparse,csv,io,json,os,shlex,subprocess,traceback
+ from pathlib import Path
+ if not __debug__:raise SystemExit('Python -O unsupported')
+-from source_guard import HERE,BASE,ROOT,OLD,sha,verify
++import sys
++sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
++from repair_guard import HERE,PARENT,BASE,ROOT,OLD,sha,verify
+ from contract import CASES,TYPES,SEMANTICS,command,ordered_rows,need
+ from lease import require
+ 
+@@ -27,7 +29,7 @@
+   old_rows=list(csv.DictReader(io.StringIO((OLD/'caller/validation-v2/native-caller-0.stdout').read_text())))
+   old_control=next(r for r in old_rows if r['filter']=='K12ScalarOrControl')
+   for profile in ('native','minimal-f','asan'):
+-   build=ROOT/'build'/f'k12-prefetch-line-or-v1-cpu2-{profile}';need(not build.exists()and not build.is_symlink(),'Preserve old build')
++   build=ROOT/'build'/f'k12-prefetch-line-or-v2-cpu2-{profile}';need(not build.exists()and not build.is_symlink(),'Preserve old build')
+    run(profile+'-configure',['cmake','-S',HERE,'-B',build,'-DCMAKE_BUILD_TYPE=Release','-DCMAKE_CXX_COMPILER=/usr/bin/clang++','-DBF_ISA='+('minimal-f'if profile=='minimal-f'else'native'),'-DBF_SANITIZERS='+('ON'if profile=='asan'else'OFF')])
+    run(profile+'-build',['cmake','--build',build,'--parallel','1'])
+    (out/(profile+'-compile_commands.json')).write_bytes((build/'compile_commands.json').read_bytes())
+@@ -38,7 +40,7 @@
+      path=Path(token);path=(path if path.is_absolute()else build/path).resolve();need(path.is_file(),'Missing compiler input')
+      if path.is_relative_to(ROOT):need(str(path)in pins and sha(path)==pins[str(path)],'Unprepared repository compiler input '+str(path))
+      consumed[str(path)]=sha(path)
+-   for path in [HERE/'compare_benchmark.cpp',HERE/'check.cpp',HERE/'geometry.hpp',BASE/'control.hpp',BASE/'conditional.hpp',BASE/'split64_range_bloom.h',BASE/'base.h',BASE/'range_size.hpp']:need(str(path)in consumed,'Missing required actual dependency')
++   for path in [HERE/'compare_benchmark.cpp',PARENT/'check.cpp',PARENT/'geometry.hpp',BASE/'control.hpp',BASE/'conditional.hpp',BASE/'split64_range_bloom.h',BASE/'base.h',BASE/'range_size.hpp']:need(str(path)in consumed,'Missing required actual dependency')
+    for path,digest in consumed.items():need(inputs.get(path,digest)==digest,'Compiler input changed');inputs[path]=digest
+    executables={name:dict(path=str(build/name),sha256=sha(build/name))for name in ('check','compare_benchmark')}
+    for b in executables.values():bins[b['path']]=b['sha256']

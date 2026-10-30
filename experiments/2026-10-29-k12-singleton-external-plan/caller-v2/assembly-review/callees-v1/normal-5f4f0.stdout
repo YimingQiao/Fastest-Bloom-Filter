@@ -1,0 +1,76 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000005f4f0 <_ZNK13bloom_filters28FourSectorRange12BloomFilter12LookupScalarEjPKmPj>:
+   5f4f0:	mov    %esi,%eax
+   5f4f2:	test   %esi,%esi
+   5f4f4:	je     5f618 <_ZNK13bloom_filters28FourSectorRange12BloomFilter12LookupScalarEjPKmPj+0x128>
+   5f4fa:	push   %r14
+   5f4fc:	push   %rbx
+   5f4fd:	mov    %eax,%esi
+   5f4ff:	xor    %r8d,%r8d
+   5f502:	lea    -0x598b9(%rip),%r9        # 5c50 <_ZN13bloom_filters28FourSectorRange12BloomFilter9patterns3E>
+   5f509:	vmovdqa -0x5ae71(%rip),%xmm0        # 46a0 <_IO_stdin_used+0x27a8>
+   5f511:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   5f520:	mov    (%rdx,%r8,8),%r10
+   5f524:	mov    %r10,%r11
+   5f527:	shr    $0x28,%r11
+   5f52b:	mov    0x18(%rdi),%r14d
+   5f52f:	imul   %r11,%r14
+   5f533:	mov    %r10,%rbx
+   5f536:	mov    %r10,%r11
+   5f539:	shr    $0x20,%r11
+   5f53d:	shr    $0x14,%r14
+   5f541:	and    $0xfffffff0,%r14d
+   5f545:	and    $0x3,%r11d
+   5f549:	or     %r14d,%r11d
+   5f54c:	rorx   $0x18,%r10d,%r14d
+   5f552:	vmovd  %r14d,%xmm1
+   5f557:	and    $0xf,%r14d
+   5f55b:	vmovd  (%r9,%r14,4),%xmm2
+   5f561:	mov    %r10d,%r14d
+   5f564:	shr    $0xe,%r14d
+   5f568:	and    $0x3c,%r14d
+   5f56c:	vpinsrd $0x1,(%r14,%r9,1),%xmm2,%xmm2
+   5f573:	mov    %r10d,%r14d
+   5f576:	shr    $0x6,%r14d
+   5f57a:	and    $0x3c,%r14d
+   5f57e:	vpinsrd $0x2,(%r14,%r9,1),%xmm2,%xmm2
+   5f585:	mov    %r10d,%r14d
+   5f588:	shr    $0x26,%rbx
+   5f58c:	and    $0xf,%r14d
+   5f590:	vpinsrd $0x3,(%r9,%r14,4),%xmm2,%xmm2
+   5f597:	and    $0x3,%ebx
+   5f59a:	mov    (%rdi),%r14
+   5f59d:	xor    %r11d,%ebx
+   5f5a0:	vmovd  0x30(%r14,%rbx,4),%xmm3
+   5f5a7:	mov    %r10,%rbx
+   5f5aa:	shr    $0x24,%rbx
+   5f5ae:	and    $0x3,%ebx
+   5f5b1:	xor    %r11d,%ebx
+   5f5b4:	vpinsrd $0x1,0x20(%r14,%rbx,4),%xmm3,%xmm3
+   5f5bc:	vpinsrd $0x1,%r10d,%xmm1,%xmm1
+   5f5c2:	shr    $0x22,%r10
+   5f5c6:	and    $0x3,%r10d
+   5f5ca:	xor    %r11d,%r10d
+   5f5cd:	vpinsrd $0x2,0x10(%r14,%r10,4),%xmm3,%xmm3
+   5f5d5:	vpshufd $0x54,%xmm1,%xmm1
+   5f5da:	vpsrlvd %xmm0,%xmm1,%xmm1
+   5f5df:	vprolvd %xmm1,%xmm2,%xmm1
+   5f5e5:	vpinsrd $0x3,(%r14,%r11,4),%xmm3,%xmm2
+   5f5ec:	vpand  %xmm2,%xmm1,%xmm2
+   5f5f0:	vpcmpeqd %xmm1,%xmm2,%k0
+   5f5f6:	kmovd  %k0,%r10d
+   5f5fa:	xor    %r11d,%r11d
+   5f5fd:	cmp    $0xf,%r10b
+   5f601:	sete   %r11b
+   5f605:	mov    %r11d,(%rcx,%r8,4)
+   5f609:	inc    %r8
+   5f60c:	cmp    %r8,%rsi
+   5f60f:	jne    5f520 <_ZNK13bloom_filters28FourSectorRange12BloomFilter12LookupScalarEjPKmPj+0x30>
+   5f615:	pop    %rbx
+   5f616:	pop    %r14
+   5f618:	ret

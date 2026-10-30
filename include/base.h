@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <type_traits>
 #include <new>
 #ifndef BF_RESTRICT
 #if defined(_MSC_VER)

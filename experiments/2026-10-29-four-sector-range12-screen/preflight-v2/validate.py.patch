@@ -1,0 +1,37 @@
+--- preflight/validate.py
++++ preflight-v2/validate.py
+@@ -1,6 +1,9 @@
+ #!/usr/bin/env python3
+ """Focused234 actual-caller rows+75 old25 controls+9 independent K12 records."""
+ if not __debug__:raise RuntimeError('Use Python without -O')
++import sys
++from pathlib import Path
++sys.path.insert(0,str(Path(__file__).resolve().parent.parent/"preflight"))
+ import argparse
+ import json
+ import os
+@@ -10,13 +13,14 @@
+ import subprocess
+ import time
+ from source_guard import HERE,STAGE,ROOT,PARENT,need,sha,save,verify,consumed
++from revision_guard import verify
+ from lease import require_lease
+ from checks import csvrows,validate_case,same,oracle,command
+ 
+ def main():
+     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--source-commit',required=True);parser.add_argument('--cpu',type=int,choices=[2,3],required=True)
+     args=parser.parse_args();lease=require_lease(args.cpu);pins=verify(args.source_commit)
+-    out=STAGE/'caller-validation-v1';build_root=Path('/tmp/fastest-bf-k12-actual-caller-v1')
++    out=STAGE/'caller-validation-v2';build_root=Path('/tmp/fastest-bf-k12-actual-caller-v2')
+     need(not out.exists()and not out.is_symlink()and not build_root.exists()and not build_root.is_symlink(),'Preserve previous attempt; no stale/dangling target')
+     env={k:os.environ.get(k)for k in ['BF_SOCKET_LEASE','LD_PRELOAD','LD_LIBRARY_PATH','GLIBC_TUNABLES','MALLOC_CONF','MALLOC_ARENA_MAX','CXXFLAGS','CPPFLAGS','LDFLAGS','ASAN_OPTIONS','UBSAN_OPTIONS']}
+     need(all(v is None for k,v in env.items()if k!='BF_SOCKET_LEASE'),'Unfrozen build/runtime environment')
+@@ -36,7 +40,7 @@
+         need(result.returncode==0 if expect==0 else result.returncode!=0,'Unexpected command exit '+label)
+         record['complete']=True;save(out/'metadata.json',meta);return result.stdout.decode(),result.stderr.decode()
+     try:
+-        compiler=Path(shutil.which('clang++')).resolve();need(compiler.is_file(),'Missing compiler')
++        compiler=Path(shutil.which('clang++')).absolute();need(compiler.is_file(),'Missing compiler')
+         run('compiler',[str(compiler),'--version']);run('cmake-version',['cmake','--version'])
+         meta['compiler']=dict(path=str(compiler),sha256=sha(compiler))
+         names=json.loads((STAGE/'registry.json').read_text());old_names=json.loads((PARENT/'registry.json').read_text());reference={};allrows=[];oracles=[];plans={};binary_hashes={}

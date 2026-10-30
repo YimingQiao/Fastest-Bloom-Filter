@@ -1,0 +1,29 @@
+--- frozen-parent/test_screen.py
++++ fixed192/test_screen.py
+@@ -37,9 +37,9 @@
+     def setUpClass(cls):cls.good=fixtures()
+     def test_complete_counts_known_groups_and_reuse(self):
+         counts,quality=c.validate_records(self.good)
+-        self.assertEqual(counts,dict(processes=24,rows=216,query_vectors=576,query_samples=4608,
+-            calibration_rows=36,reuse_rows=180,api_quality_records=36,known_alias_records=34))
+-        self.assertEqual(sum(len(r['reuse_case_indices'])for r in quality['api_records']),180);self.assertFalse(quality['pooling'])
++        self.assertEqual(counts,dict(processes=24,rows=192,query_vectors=512,query_samples=4096,
++            calibration_rows=32,reuse_rows=160,api_quality_records=32,known_alias_records=26))
++        self.assertEqual(sum(len(r['reuse_case_indices'])for r in quality['api_records']),160);self.assertFalse(quality['pooling'])
+     def test_exact_ledger_and_row_order(self):
+         for action in ('missing','empty','reversed','duplicate'):
+             bad=copy.deepcopy(self.good)
+@@ -54,10 +54,12 @@
+             for row in bad[1]['rows']:row[field]^=1
+             with self.assertRaises(ValueError):c.validate_records(bad)
+     def test_alias_availability_actual_bytes(self):
+-        for action in ('alias','opaque','bytes'):
++        for action in ('alias','pipeline','opaque','bytes'):
+             bad=copy.deepcopy(self.good)
+             if action=='alias':
+                 row=next(r for r in bad[0]['rows']if r['filter']=='FastFilterFixed16SingleV1'and r['actual_bytes']==131072);row['calibration_fp']+=1
++            elif action=='pipeline':
++                row=next(r for r in bad[1]['rows']if r['owner']=='candidate');row['result_digest']^=1
+             elif action=='opaque':
+                 row=next(r for r in bad[0]['rows']if not r['bitmap_available']);row['bitmap_digest']=123
+             else:bad[0]['rows'][0]['actual_bytes']+=1

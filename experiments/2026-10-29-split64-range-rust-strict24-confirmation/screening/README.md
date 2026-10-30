@@ -1,0 +1,15 @@
+# Frozen24-row execution entry
+
+This is the separate performance runner following the committed no-rebuild preflight `a81a9ab4fef493f575d4c3ecc1a6e42b2bcb6c8c`. It reuses native executable f499; no compilation or API/kernel modification occurs. The initial87300 proposal remains untouched and the0ed9079 pre-data order correction is the execution authority. Every command remains the originally proposed command.
+
+Run only after this additive source has been reviewed and committed, with the explicitly granted whole CPU3/socket1 flock and `BF_SOCKET_LEASE=socket1-cpu3`. All original592 source/dependency/binary pins, initial proposal, corrected subset source and19 completed preflight artifacts are checked against their own commits before and after the matrix. The formal source descriptor binds every local script and protocol. CPU affinity is used without adding a NUMA memory policy.
+
+The ledger has12 cases/24 rows, all with actual24-bpk cap and fixed Range/K7 APIs: sizes2^16/2^25, batches1/31/4096, seeds32452843/49979687. Each performs q2^22 queries, independent calibration2^24, full insertion and eight repetitions for four query and four construction contracts. Exact source-derived API order reverses between seeds for every size/batch. Query phase order, all trial vectors/medians/ranges, actual bytes/probe metadata, full output checksums and cross-batch calibration identity remain guarded. The two public visible loops operate on the whole query array regardless of the batch tag.
+
+All outputs, exit statuses and partial ledgers are saved; existing attempts are refused. Summary counts are nested under `counts`, so they cannot overwrite the command-list `cases`. The final audit reconstructs all ordered raw rows and aggregates. No partial result changes the fixed cases, K, seeds or thresholds. A failed quality gate is recorded rather than triggering extra observations or replacing the baseline.
+
+Eight API/size/seed quality records are retained without pooling batch or mode repeats. Four family/size summaries require **both** fresh seed-specific Wilson95 upper bounds to meet0.01%; per-seed gates remain available separately. Every latency/build result, loss and exact tie is kept regardless of eligibility. Build order remains fixed and only build medians are recorded; no missing dispersion is inferred.
+
+This confirms a bounded capacity niche versus the strongest training-derived external shortlist. It does not prove K7 is the fresh-seed winner among unmeasured K values, does not discard the original full-grid support for SBBF/Bloomsday/all public K settings, and does not claim global or32-bpk leadership. An optional public Range integration requires a subsequent evidence decision; this runner changes no production source.
+
+Before any timing, peer review added an explicit offline metadata identity check. Audits require the caller-supplied expected source commit, completed proof commit, binary/protocol/selection hashes, measured host, CPU3/socket1 lease descriptor evidence, affinity and exact environment. A synthetic mutation of every identity field is rejected. This changes no workload or executable.

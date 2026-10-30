@@ -1,0 +1,21 @@
+[package]
+name = "fastest-bloom-filter-byte-inline-only-harness"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "compare_benchmark"
+path = "src/main.rs"
+
+[features]
+disable-avx512 = ["fastest-bloom-filter/disable-avx512", "byte_only_native/disable-avx512", "triple_hint_native/disable-avx512"]
+
+[dependencies]
+fastest-bloom-filter = { path = "../original" }
+byte_only_native = { package = "fastest-bloom-filter-byte-inline-only", path = "../byte_only" }
+triple_hint_native = { package = "fastest-bloom-filter-leaf-inline", path = "../triple_hint" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

@@ -1,0 +1,101 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/avx2/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002a180 <_Z20inline_single_kernelILb1EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj>:
+   2a180:	test   %rsi,%rsi
+   2a183:	je     2a2f6 <_Z20inline_single_kernelILb1EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj+0x176>
+   2a189:	push   %rbx
+   2a18a:	movabs $0xd6e8feb86659fd93,%r8
+   2a194:	cmp    $0x1,%rsi
+   2a198:	jne    2a1a1 <_Z20inline_single_kernelILb1EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj+0x21>
+   2a19a:	xor    %eax,%eax
+   2a19c:	jmp    2a291 <_Z20inline_single_kernelILb1EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj+0x111>
+   2a1a1:	mov    %rsi,%r9
+   2a1a4:	and    $0xfffffffffffffffe,%r9
+   2a1a8:	xor    %eax,%eax
+   2a1aa:	vmovdqa -0x28682(%rip),%xmm0        # 1b30 <_IO_stdin_used+0x440>
+   2a1b2:	vpbroadcastq -0x287a3(%rip),%xmm1        # 1a18 <_IO_stdin_used+0x328>
+   2a1bb:	nopl   0x0(%rax,%rax,1)
+   2a1c0:	mov    (%rdx,%rax,8),%r10
+   2a1c4:	mov    %r10,%r11
+   2a1c7:	shr    $0x20,%r11
+   2a1cb:	xor    %r10,%r11
+   2a1ce:	imul   %r8,%r11
+   2a1d2:	mov    %r11,%r10
+   2a1d5:	shr    $0x20,%r10
+   2a1d9:	xor    %r11,%r10
+   2a1dc:	imul   %r8,%r10
+   2a1e0:	mov    %r10,%r11
+   2a1e3:	shr    $0x20,%r11
+   2a1e7:	xor    %r11d,%r10d
+   2a1ea:	and    0x18(%rdi),%r11d
+   2a1ee:	mov    (%rdi),%rbx
+   2a1f1:	shl    $0x4,%r11
+   2a1f5:	vmovdqa (%rbx,%r11,1),%xmm2
+   2a1fb:	vmovd  %r10d,%xmm3
+   2a200:	vpbroadcastd %xmm3,%xmm3
+   2a205:	vpmulhw %xmm0,%xmm3,%xmm3
+   2a209:	vpshufb %xmm3,%xmm1,%xmm3
+   2a20e:	xor    %r10d,%r10d
+   2a211:	vptest %xmm3,%xmm2
+   2a216:	setb   %r10b
+   2a21a:	mov    %r10d,(%rcx,%rax,4)
+   2a21e:	mov    0x8(%rdx,%rax,8),%r10
+   2a223:	mov    %r10,%r11
+   2a226:	shr    $0x20,%r11
+   2a22a:	xor    %r10,%r11
+   2a22d:	imul   %r8,%r11
+   2a231:	mov    %r11,%r10
+   2a234:	shr    $0x20,%r10
+   2a238:	xor    %r11,%r10
+   2a23b:	imul   %r8,%r10
+   2a23f:	mov    %r10,%r11
+   2a242:	shr    $0x20,%r11
+   2a246:	xor    %r11d,%r10d
+   2a249:	and    0x18(%rdi),%r11d
+   2a24d:	mov    (%rdi),%rbx
+   2a250:	shl    $0x4,%r11
+   2a254:	vmovdqa (%rbx,%r11,1),%xmm2
+   2a25a:	vmovd  %r10d,%xmm3
+   2a25f:	vpbroadcastd %xmm3,%xmm3
+   2a264:	vpmulhw %xmm0,%xmm3,%xmm3
+   2a268:	vpshufb %xmm3,%xmm1,%xmm3
+   2a26d:	xor    %r10d,%r10d
+   2a270:	vptest %xmm3,%xmm2
+   2a275:	setb   %r10b
+   2a279:	mov    %r10d,0x4(%rcx,%rax,4)
+   2a27e:	add    $0x2,%rax
+   2a282:	cmp    %rax,%r9
+   2a285:	jne    2a1c0 <_Z20inline_single_kernelILb1EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj+0x40>
+   2a28b:	test   $0x1,%sil
+   2a28f:	je     2a2f5 <_Z20inline_single_kernelILb1EN13bloom_filters20ByteSplitBloomFilterEmEvRKT0_mPKmPj+0x175>
+   2a291:	mov    (%rdx,%rax,8),%rdx
+   2a295:	mov    %rdx,%rsi
+   2a298:	shr    $0x20,%rsi
+   2a29c:	xor    %rdx,%rsi
+   2a29f:	imul   %r8,%rsi
+   2a2a3:	mov    %rsi,%rdx
+   2a2a6:	shr    $0x20,%rdx
+   2a2aa:	xor    %rsi,%rdx
+   2a2ad:	imul   %r8,%rdx
+   2a2b1:	mov    %rdx,%rsi
+   2a2b4:	shr    $0x20,%rsi
+   2a2b8:	xor    %esi,%edx
+   2a2ba:	and    0x18(%rdi),%esi
+   2a2bd:	mov    (%rdi),%rdi
+   2a2c0:	shl    $0x4,%rsi
+   2a2c4:	vmovd  %edx,%xmm0
+   2a2c8:	vpbroadcastd %xmm0,%xmm0
+   2a2cd:	vpmulhw -0x287a5(%rip),%xmm0,%xmm0        # 1b30 <_IO_stdin_used+0x440>
+   2a2d5:	vmovdqa (%rdi,%rsi,1),%xmm1
+   2a2da:	vpbroadcastq -0x288cb(%rip),%xmm2        # 1a18 <_IO_stdin_used+0x328>
+   2a2e3:	vpshufb %xmm0,%xmm2,%xmm0
+   2a2e8:	xor    %edx,%edx
+   2a2ea:	vptest %xmm0,%xmm1
+   2a2ef:	setb   %dl
+   2a2f2:	mov    %edx,(%rcx,%rax,4)
+   2a2f5:	pop    %rbx
+   2a2f6:	ret

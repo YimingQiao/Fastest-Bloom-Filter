@@ -1,0 +1,454 @@
+[
+  {
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-native",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBF_BACKEND=native",
+      "-DBF_SANITIZERS=OFF"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/native-configure.log"
+  },
+  {
+    "command": [
+      "/usr/bin/clang++",
+      "-I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range/source-snapshot",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-march=native",
+      "-std=gnu++17",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/native-macros.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-native",
+      "-j1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/native-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-native",
+      "-V",
+      "--output-on-failure"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/native-test.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-native-asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBF_BACKEND=native",
+      "-DBF_SANITIZERS=ON"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/native-asan-configure.log"
+  },
+  {
+    "command": [
+      "/usr/bin/clang++",
+      "-I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range/source-snapshot",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-march=native",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-std=gnu++17",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/native-asan-macros.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-native-asan",
+      "-j1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/native-asan-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-native-asan",
+      "-V",
+      "--output-on-failure"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/native-asan-test.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx2",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBF_BACKEND=avx2",
+      "-DBF_SANITIZERS=OFF"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx2-configure.log"
+  },
+  {
+    "command": [
+      "/usr/bin/clang++",
+      "-I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range/source-snapshot",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-mavx2",
+      "-mno-avx512f",
+      "-std=gnu++17",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx2-macros.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx2",
+      "-j1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx2-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx2",
+      "-V",
+      "--output-on-failure"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx2-test.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx2-asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBF_BACKEND=avx2",
+      "-DBF_SANITIZERS=ON"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx2-asan-configure.log"
+  },
+  {
+    "command": [
+      "/usr/bin/clang++",
+      "-I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range/source-snapshot",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-mavx2",
+      "-mno-avx512f",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-std=gnu++17",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx2-asan-macros.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx2-asan",
+      "-j1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx2-asan-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx2-asan",
+      "-V",
+      "--output-on-failure"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx2-asan-test.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-scalar",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBF_BACKEND=scalar",
+      "-DBF_SANITIZERS=OFF"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/scalar-configure.log"
+  },
+  {
+    "command": [
+      "/usr/bin/clang++",
+      "-I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range/source-snapshot",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-mno-avx2",
+      "-mno-avx512f",
+      "-std=gnu++17",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/scalar-macros.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-scalar",
+      "-j1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/scalar-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-scalar",
+      "-V",
+      "--output-on-failure"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/scalar-test.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-scalar-asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBF_BACKEND=scalar",
+      "-DBF_SANITIZERS=ON"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/scalar-asan-configure.log"
+  },
+  {
+    "command": [
+      "/usr/bin/clang++",
+      "-I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range/source-snapshot",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-mno-avx2",
+      "-mno-avx512f",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-std=gnu++17",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/scalar-asan-macros.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-scalar-asan",
+      "-j1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/scalar-asan-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-scalar-asan",
+      "-V",
+      "--output-on-failure"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/scalar-asan-test.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx512f-min",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBF_BACKEND=avx512f-min",
+      "-DBF_SANITIZERS=OFF"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx512f-min-configure.log"
+  },
+  {
+    "command": [
+      "/usr/bin/clang++",
+      "-I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range/source-snapshot",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-mavx2",
+      "-mavx512f",
+      "-mno-avx512vl",
+      "-mno-avx512dq",
+      "-mno-avx512bw",
+      "-std=gnu++17",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx512f-min-macros.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx512f-min",
+      "-j1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx512f-min-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx512f-min",
+      "-V",
+      "--output-on-failure"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx512f-min-test.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx512f-min-asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DBF_BACKEND=avx512f-min",
+      "-DBF_SANITIZERS=ON"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx512f-min-asan-configure.log"
+  },
+  {
+    "command": [
+      "/usr/bin/clang++",
+      "-I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-fast-pattern-range/source-snapshot",
+      "-O3",
+      "-DNDEBUG",
+      "-fno-strict-aliasing",
+      "-mavx2",
+      "-mavx512f",
+      "-mno-avx512vl",
+      "-mno-avx512dq",
+      "-mno-avx512bw",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-std=gnu++17",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx512f-min-asan-macros.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx512f-min-asan",
+      "-j1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx512f-min-asan-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/fast-pattern-range-correctness-avx512f-min-asan",
+      "-V",
+      "--output-on-failure"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "log": "experiments/2026-10-29-fast-pattern-range/validation-v1/avx512f-min-asan-test.log"
+  }
+]

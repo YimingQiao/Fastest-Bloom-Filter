@@ -1,0 +1,60 @@
+--- frozen-v1/bindings.py
++++ repair-v2/bindings.py
+@@ -1,5 +1,5 @@
+ """Bind reviewed source/resolution and actual Cargo inputs before any filter execution."""
+-import hashlib,json,re,subprocess
++import hashlib,json,re,subprocess,tarfile,tomllib
+ from pathlib import Path
+ HERE=Path(__file__).resolve().parent;CALLER=HERE.parent;ROOT=CALLER.parents[1]
+ SOURCE='d3da7464052c4f3a5c298703654e2921b37b319a'
+@@ -8,7 +8,9 @@
+ RESOLUTION_MANIFEST='3c7e23981cf83fc23bd118eacd03848c97f612ba77babfaaf018eaba81eecefd'
+ PARENT=ROOT/'experiments/2026-10-29-fastbloom-rs-raw8-caller'
+ REFERENCE='73ff8ed51da5b54a3d19b76ab5da403291c4d51f'
+-TARGET=Path('/tmp/fastest-bf-poppy-natural-raw-v1-cpu3');OUTPUT=CALLER/'validation-v1'
++PREFLIGHT_SOURCE='8d533d9711f5d4cb30f7496dcf29860b35359bca'
++FAILED='35e22898d0a4afa23113b190617a7bce09e8660d'
++TARGET=Path('/tmp/fastest-bf-poppy-natural-raw-v2-cpu3');OUTPUT=CALLER/'validation-v2'
+ LOCAL_MANIFESTS={str((p/'Cargo.toml').resolve())for p in [CALLER/'benchmark',PARENT/'native',PARENT/'upstream/fastbloom-rs',ROOT/'build/poppy-source/poppy']}
+ def need(ok,message):
+     if not ok:raise ValueError(message)
+@@ -18,6 +20,25 @@
+     need(re.fullmatch('[0-9a-f]{40}',commit),'Full immutable commit required')
+     path=Path(path).resolve();need(path.is_relative_to(ROOT),'Repository path escaped')
+     need(path.read_bytes()==subprocess.check_output(['git','show',commit+':'+str(path.relative_to(ROOT))],cwd=ROOT),'Committed source changed: '+str(path))
++def add_cc_source_members(tree):
++    """Four original crate members omitted by a historical directory-name filter."""
++    spec=json.loads((HERE/'CC_SOURCE_MEMBERS.json').read_text())
++    need(set(spec['members'])=={'cc-1.10.0/src/target/'+n for n in ['apple.rs','generated.rs','llvm.rs','parser.rs']},'Only four prescribed cc source members allowed')
++    package=tree['package_sources'][spec['package_id']];base=Path(package['manifest_path']).parent
++    lock=tomllib.loads((CALLER/'benchmark/Cargo.lock').read_text())
++    matches=[p for p in lock['package']if p['name']=='cc'and p['version']=='1.10.0'and p.get('source')=='registry+https://github.com/rust-lang/crates.io-index']
++    need(len(matches)==1 and matches[0]['checksum']==spec['archive_sha256'],'Crate archive not bound to frozen lock')
++    archive=Path(spec['archive_path']);need(sha(archive)==spec['archive_sha256'],'Crate archive checksum changed')
++    with tarfile.open(archive,'r:gz')as compressed:
++        for name,item in spec['members'].items():
++            matching=[m for m in compressed.getmembers()if m.name==name]
++            need(len(matching)==1 and matching[0].isfile(),'Missing/ambiguous regular crate member')
++            data=compressed.extractfile(matching[0]).read();path=base/Path(name).relative_to('cc-1.10.0')
++            need(len(data)==item['bytes']and hashlib.sha256(data).hexdigest()==item['sha256']and path.read_bytes()==data,'Crate member bytes differ')
++            need(str(path)not in tree['file_sha256']and str(path)not in package['files'],'Expected omitted member was already inventoried')
++            tree['file_sha256'][str(path)]=item['sha256'];package['files'].append(str(path))
++    package['files'].sort();need(len(tree['file_sha256'])==4487,'Repaired source count differs')
++    return {str(archive):spec['archive_sha256']}
+ def prepared_inputs():
+     inputs={};anchors={}
+     def anchor(commit,path,digest=None):
+@@ -29,8 +50,13 @@
+             path=CALLER/relative;anchor(commit,path,item['sha256']);need(path.stat().st_size==item['bytes'],'Prepared artifact length changed')
+     original=json.loads((CALLER/'INPUT_SOURCE_ANCHORS.json').read_text())
+     for relative,item in original['parent'].items():anchor(item['commit'],ROOT/relative,item['sha256'])
++    # Bind all original driver bytes and the zero-execution failure as ancestors.
++    for directory,manifest_name,commit,count in [(CALLER/'preflight','PREPARATION.json',PREFLIGHT_SOURCE,13),(CALLER,'FAILED_V1_ARCHIVE.json',FAILED,7)]:
++        descriptor=directory/manifest_name;anchor(commit,descriptor);prior=json.loads(descriptor.read_text());need(len(prior['files'])==count,'Prior evidence coverage changed')
++        for name,item in prior['files'].items():anchor(commit,directory/name,item['sha256'])
+     tree=json.loads((CALLER/'resolution-v1/prepared-package-trees.json').read_text())
+     need(tree['package_count']==87 and tree['file_count']==4483,'Prepared dependency coverage changed')
++    inputs.update(add_cc_source_members(tree))
+     for name,digest in tree['file_sha256'].items():
+         need(name not in inputs or inputs[name]==digest,'Prepared source descriptors disagree');inputs[name]=digest
+     for record in json.loads((HERE/'HELPERS.json').read_text()):

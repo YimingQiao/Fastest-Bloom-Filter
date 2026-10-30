@@ -1,0 +1,13 @@
+[package]
+name = "native-rust-k12-port-proof"
+version = "0.0.0"
+edition = "2021"
+publish = false
+[dependencies]
+native = { package = "fastest-bloom-filter", path = "/home/yiming/projects/fastest-bf-rust-k12-integration/rust" }
+reference = { package = "four-sector-range12-single-line-isolated", path = "../../../2026-10-29-rust-k12-single-line/native" }
+[features]
+disable-avx512 = ["native/disable-avx512", "reference/disable-avx512"]
+[profile.release]
+lto = "thin"
+codegen-units = 1

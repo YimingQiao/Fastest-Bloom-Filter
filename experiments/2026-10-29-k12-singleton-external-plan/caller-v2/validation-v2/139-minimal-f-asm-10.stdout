@@ -1,0 +1,54 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004d2c0 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj>:
+   4d2c0:	cmp    $0x1,%esi
+   4d2c3:	jne    4d30e <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0x4e>
+   4d2c5:	mov    (%rdx),%rax
+   4d2c8:	vmovd  %eax,%xmm0
+   4d2cc:	shr    $0x20,%rax
+   4d2d0:	mov    (%rdi),%edx
+   4d2d2:	vpbroadcastd %xmm0,%xmm0
+   4d2d7:	vpmulhw -0x4b2af(%rip),%xmm0,%xmm0        # 2030 <_IO_stdin_used+0x138>
+   4d2df:	imul   %rax,%rdx
+   4d2e3:	vmovdqa -0x4b2cb(%rip),%xmm1        # 2020 <_IO_stdin_used+0x128>
+   4d2eb:	vpshufb %xmm0,%xmm1,%xmm0
+   4d2f0:	mov    0x8(%rdi),%rax
+   4d2f4:	shr    $0x1c,%rdx
+   4d2f8:	and    $0xfffffffffffffff0,%rdx
+   4d2fc:	vmovdqu (%rax,%rdx,1),%xmm1
+   4d301:	xor    %eax,%eax
+   4d303:	vptest %xmm0,%xmm1
+   4d308:	setb   %al
+   4d30b:	mov    %eax,(%rcx)
+   4d30d:	ret
+   4d30e:	test   %esi,%esi
+   4d310:	je     4d37c <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0xbc>
+   4d312:	mov    %esi,%eax
+   4d314:	xor    %esi,%esi
+   4d316:	vmovdqa -0x4b2ee(%rip),%xmm0        # 2030 <_IO_stdin_used+0x138>
+   4d31e:	vmovdqa -0x4b306(%rip),%xmm1        # 2020 <_IO_stdin_used+0x128>
+   4d326:	cs nopw 0x0(%rax,%rax,1)
+   4d330:	mov    (%rdx,%rsi,8),%r8
+   4d334:	vmovd  %r8d,%xmm2
+   4d339:	shr    $0x20,%r8
+   4d33d:	mov    (%rdi),%r9d
+   4d340:	imul   %r8,%r9
+   4d344:	vpbroadcastd %xmm2,%xmm2
+   4d349:	vpmulhw %xmm0,%xmm2,%xmm2
+   4d34d:	vpshufb %xmm2,%xmm1,%xmm2
+   4d352:	mov    0x8(%rdi),%r8
+   4d356:	shr    $0x1c,%r9
+   4d35a:	and    $0xfffffffffffffff0,%r9
+   4d35e:	vmovdqu (%r8,%r9,1),%xmm3
+   4d364:	xor    %r8d,%r8d
+   4d367:	vptest %xmm2,%xmm3
+   4d36c:	setb   %r8b
+   4d370:	mov    %r8d,(%rcx,%rsi,4)
+   4d374:	inc    %rsi
+   4d377:	cmp    %rsi,%rax
+   4d37a:	jne    4d330 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_7Fixed16EEEmEvRT_mPKT0_Pj+0x70>
+   4d37c:	ret

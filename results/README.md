@@ -1,0 +1,124 @@
+# Benchmark records
+
+The [historical report](../docs/results-2026-10-28.md) uses 2,772 aggregate rows
+across the original main, external, scaling, and ablation runs listed below.
+New modern-baseline results are recorded separately; they are not silently folded
+into that historical total.
+Every directory contains `results.csv`, individual case output, `metadata.json`,
+`source.patch`, and CMake compile commands when applicable. Metadata contains exact
+commands, source revision, binary SHA-256, CPU/compiler details, and Rust build
+fingerprints when available beside the executable. Empty patches mean no tracked source changes at measurement start.
+For a frozen executable, `binary_source_revision` identifies the compiled sources;
+`revision`, `status` and `source.patch` retain the workspace state at launch.
+The binary SHA-256 is retained independently of later source edits.
+
+| Modern directory | Purpose | Cases | Rows |
+| --- | --- | --- | --- |
+| [modern-screen](2026-10-28-modern-screen) | 43 C++ configurations, exploratory seed 42 | 18 | 774 |
+| [page-aes-screen](2026-10-28-page-aes-screen) | PageBloom optional AES hashing, separate cohort | 4 | 28 |
+| [modern-confirmation-cpp](2026-10-28-modern-confirmation-cpp) | Frozen 13-candidate large-batch shortlist, three new seeds | 18 | 234 |
+| [modern-confirmation-rust](2026-10-28-modern-confirmation-rust) | Five native Rust candidates on the same confirmation inputs | 18 | 90 |
+| [single-screen](2026-10-28-single-screen) | 47 configurations at batch 1, exploratory seed 42 | 4 | 188 |
+| [layout-parallel-cpp](2026-10-28-layout-parallel-cpp) | Native FourSector/Split64, serial and partitioned, 1–8 physical cores | 24 | 96 |
+| [layout-parallel-rust](2026-10-28-layout-parallel-rust) | Same new-layout scaling matrix in Rust | 24 | 96 |
+| [rocksdb-screen](2026-10-29-rocksdb-screen) | 20 candidates including all eight RocksDB configurations; batch 1/31/4096 | 12 | 240 |
+| [byte-confirmation-cpp](2026-10-29-byte-confirmation-cpp) | 23 candidates including native ByteSplit and stronger FastFilter single-call controls; three held-out seeds, batch 1 | 12 | 276 |
+| [byte-confirmation-rust](2026-10-29-byte-confirmation-rust) | Four native layouts, two frozen controls and two external families on matching inputs | 12 | 96 |
+
+The [public single-call screen](../experiments/2026-10-29-inline-single-query/screen/RESULTS.md)
+adds four cases / 240 rows across 60 C++ configurations. Its four balanced query
+modes retain both the original batch-one wrapper and compiler-visible per-key
+calls, with separate prehashed/raw-key rankings. Seed42 is exploratory; this
+screen does not supersede the three-seed native confirmation. Every timed output
+is checked, and the archive freezes the binary, source provenance and analysis.
+
+The [Rust SBBF screen](../experiments/2026-10-29-rust-sbbf-screen/screen/RESULTS.md)
+has 12 cases / 168 rows: four native layouts and three external families, each
+with an explicit public singleton control. Four API rankings retain native losses
+and distinguish production paths from experimental native controls. This is
+seed42 exploration at actual16/32 bpk, not a new confirmation or a finer-capacity sweep.
+
+The [Rust public-call screen](../experiments/2026-10-29-rust-visible-single/screen/RESULTS.md)
+adds 28 rows with four balanced query modes and retains all native losses.
+Public-call visibility changes the caller contract; no native code changed in that screen.
+The [112-row leaf-inlining experiment](../experiments/2026-10-29-rust-leaf-inline/screen/DECISION.md)
+then tests three annotations in an isolated crate. ByteSplit's public-call gains
+come with observed short-batch regressions, so it remains unpromoted.
+A [separate assembly audit](../experiments/2026-10-29-rust-leaf-inline/post-screen-byte-bulk-audit/README.md)
+finds identical active Byte bulk instructions; fresh-seed confirmation is needed
+to distinguish repeatable regressions from placement and run-order effects.
+The [BlowChoc throughput screen](../experiments/2026-10-29-blowchoc-throughput/RESULTS.md)
+contains 48 rows and 144 separate-contract timings for eight upstream configurations
+and four native controls. It uses input seed42 and construction seed113; its speed
+results are exploratory, while the separate held-out archive measures accuracy only.
+
+The native Independent32 packaging has separate [C++ correctness](../experiments/2026-10-29-independent32-native-cpp/README.md)
+and [Rust correctness](../experiments/2026-10-29-independent32-native-rust/README.md)
+archives, including exact cross-language bitmaps and whole-cache-line parallel
+construction. These preflights establish correctness, not a speed result for
+the packaged implementations.
+
+The [988-row exact-capacity screen](../experiments/2026-10-29-exact-budget-range/screen/OBSERVATIONS.md)
+compares68 external configurations, four production natives and two range
+experiments at seven backing-byte ceilings. It exposes a large strict-FPR
+production loss to a smaller Boost allocation; narrow range-prototype leads
+remain training observations. The [capacity frontier](../experiments/2026-10-29-exact-budget-range/screen/CAPACITY-FRONTIER.md)
+shows all seven budgets as a supplementary descriptive view. Regenerate the
+main tables with `scripts/summarize_exact_budget.py` and the figure with
+`scripts/plot_exact_budget.py`; the former also supports `--verify-live` for
+checking every original executable and fetched build dependency.
+
+The external multithreaded archives live under `experiments/` because they freeze a
+separate shared-bitmap executor and retain both original serial and new parallel
+metrics. They are not merged with single-thread timings:
+
+| Archive | Purpose | Cases | Rows |
+| --- | --- | --- | --- |
+| [External parallel screen](../experiments/2026-10-29-external-parallel-query/screening) | Same 23-configuration shortlist at 1/4/8 physical cores; seed 42 | 12 | 276 |
+| [External eight-core confirmation](../experiments/2026-10-29-external-parallel-query/confirmation8) | Three new seeds, eight physical cores, batch 4096; full trial decomposition and quality bounds | 12 | 276 |
+
+The [eight-core report](../docs/external-parallel-confirmation-2026-10-29.md) is generated
+by `scripts/summarize_external_parallel.py`, which verifies the frozen archive before
+publishing the tables and plot. Its Wilson upper is the two-sided 95% interval endpoint;
+earlier single-thread reports use a one-sided 95% upper bound.
+
+See the [modern confirmation report](../docs/modern-confirmation-2026-10-28.md).
+Generate its rankings with `scripts/rank_external.py` at 16/32 bits/key and zero
+allocation slack, then render the report/figure with `scripts/summarize_modern.py`
+(matplotlib required). Single-key screening and new-layout scaling have separate
+reports and must not be inferred from the large-batch result. Regenerate the
+[layout scaling report](../docs/layout-parallel-2026-10-28.md) with
+`scripts/summarize_layout_parallel.py`.
+The [RocksDB-inclusive screen](../docs/rocksdb-screen-2026-10-29.md) is generated by
+`scripts/summarize_rocksdb.py`; its interrupted preliminary run is explicitly rejected.
+The [native single-key confirmation](../docs/byte-confirmation-2026-10-29.md) is
+generated by `scripts/summarize_byte_confirmation.py`, including prehashed query,
+hash+query and hash+construction rankings. The C++ directory retains the original
+launch metadata flag and a documented source-revision correction backed by digests.
+
+| Directory | Purpose | Cases | Rows |
+| --- | --- | --- | --- |
+| [cpp](2026-10-28-cpp) | Original nine filters + FastPattern, native AVX-512 | 135 | 1,350 |
+| [rust](2026-10-28-rust) | Two independent native Rust layouts, AVX-512 | 135 | 270 |
+| [parallel-cpp](2026-10-28-parallel-cpp) | Serial / partitioned / atomic, 1–32 cores | 54 | 162 |
+| [parallel-rust](2026-10-28-parallel-rust) | Same scaling matrix in Rust | 54 | 162 |
+| [small-batches-cpp](2026-10-28-small-batches-cpp) | Batch sizes 1 and 31 | 36 | 108 |
+| [small-batches-rust](2026-10-28-small-batches-rust) | Same small-batch matrix in Rust | 36 | 72 |
+| [avx2-cpp](2026-10-28-avx2-cpp) | Dedicated AVX2 kernels, GCC | 27 | 81 |
+| [avx2-rust](2026-10-28-avx2-rust) | Dedicated AVX2 kernels, Rust x86-64-v3 | 27 | 54 |
+| [external](2026-10-28-external) | Native Rust FastPattern / pinned fastbloom 0.17.0 | 54 | 108 |
+| [before-alignment-cpp](2026-10-28-before-alignment-cpp) | Initial parallel histograms, padded but not aligned | 54 | 162 |
+| [before-alignment-rust](2026-10-28-before-alignment-rust) | Same initial experiment in Rust | 54 | 162 |
+| [before-avx2-cpp](2026-10-28-before-avx2-cpp) | Original scalar fallback in AVX2 build | 27 | 81 |
+
+The `before-*` directories were renamed when archiving ablations; metadata retains
+the original command paths. Their measurements are not silently replaced.
+The first C++ native run recorded unpublished local commit `0dc51d7`; its published
+equivalent is `fa8fe3d`. Only an identical CI YAML was relocated during that amendment,
+with no compiled-source changes. The measured revision is preserved, and metadata
+adds the published equivalence note. Later runs use subsequent recorded revisions.
+
+Regenerate tables with `python3 scripts/summarize_results.py`. Regenerate figures
+with `python3 scripts/plot_results.py` (matplotlib 3.10 tested). The table generator
+uses only Python's standard library. See the root README for benchmark commands.
+The external adapter has a separate lockfile and does not add a core-library dependency.

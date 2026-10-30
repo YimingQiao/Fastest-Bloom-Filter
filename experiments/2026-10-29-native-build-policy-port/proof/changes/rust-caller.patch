@@ -1,0 +1,121 @@
+--- frozen-wrapper/rust/src/main.rs
++++ actual-native/rust/src/main.rs
+@@ -1,5 +1,5 @@
+-use fastest_bloom_filter::{Split64BloomFilter, Split64RangeBloomFilter};
+-use native_build_policy_experiment::{Filter, Native};
++mod bindings;
++use bindings::Native;
+ use std::{collections::BTreeSet, hint::black_box, time::Instant};
+ 
+ const BLOCK: usize = 4096;
+@@ -56,16 +56,7 @@
+         (large, 65536, 0, false), (large, 65536, large / 2, true)][id];
+     Case { id, bytes: g.0, n: g.1, requested, history: g.2, seed, base: seed << 42, hotspot: g.3, cpus }
+ }
+-trait Make: Native + Sized { fn make(bytes: usize) -> Self; }
+-impl Make for Split64BloomFilter {
+-    fn make(bytes: usize) -> Self { Self::new(bytes / 2, 8).unwrap() }
+-}
+-impl Make for Split64RangeBloomFilter {
+-    fn make(bytes: usize) -> Self { Self::with_byte_budget(bytes).unwrap() }
+-}
+-fn make<F: Make, const ENABLED: bool>(c: &Case) -> Filter<F, ENABLED> {
+-    Filter::from_native(F::make(c.bytes))
+-}
++fn make<F: Native>(c: &Case) -> F { F::make(c.bytes) }
+ struct Data { batch: Vec<u64>, query: Vec<u64> }
+ fn workload(c: &Case) -> Data {
+     let batch: Vec<_> = (0..c.n).map(|i| {
+@@ -84,7 +75,7 @@
+ fn digest(values: &[u64]) -> u64 {
+     values.iter().fold(14695981039346656037u64, |sum, &v| (sum ^ v).wrapping_mul(1099511628211))
+ }
+-fn prefill<F: Native, const ENABLED: bool>(filter: &mut Filter<F, ENABLED>, c: &Case) {
++fn prefill<F: Native>(filter: &mut F, c: &Case) {
+     let mut hashes = [0u64; BLOCK];
+     for begin in (0..c.history).step_by(BLOCK) {
+         let len = BLOCK.min(c.history - begin);
+@@ -95,7 +86,7 @@
+ fn guards(out: &[u32], n: usize) {
+     assert!(out[..16].iter().chain(out[n + 16..n + 32].iter()).all(|&x| x == GUARD), "output guard changed");
+ }
+-fn validate<F: Native, const ENABLED: bool>(filter: &Filter<F, ENABLED>, c: &Case, d: &Data,
++fn validate<F: Native>(filter: &F, c: &Case, d: &Data,
+                                           expected: &[u32], out: &mut [u32]) {
+     assert_eq!(filter.size_in_bytes(), c.bytes, "actual allocation changed");
+     let mut hashes = [0u64; BLOCK]; let mut answers = [GUARD; BLOCK + 32];
+@@ -120,12 +111,11 @@
+ }
+ #[derive(Default)]
+ struct Stats { effective: usize, workers: usize, scratch: usize }
+-fn observe<F: Native, const ENABLED: bool>(filter: &Filter<F, ENABLED>, c: &Case, serial: bool) -> Stats {
++fn observe<F: Native>(filter: &F, c: &Case, serial: bool) -> Stats {
+     assert_eq!(filter.size_in_bytes(), c.bytes);
+-    let effective = if ENABLED && c.n <= 65536 && c.bytes <= 262144 { 1 } else { c.requested };
++    let effective = if F::BOUNDED && c.n <= 65536 && c.bytes <= 262144 { 1 } else { c.requested };
+     let w = effective; // Fixed cases exceed native fallback/count bounds.
+     let scratch = if w == 1 { 0 } else { c.n * 8 + w * w.div_ceil(8) * 64 + (w + 1) * 8 + w * w * 24 + w * 48 };
+-    assert_eq!(filter.effective_build_request(c.n, c.requested), effective);
+     assert_eq!(filter.build_workers(c.n, c.requested), w);
+     assert_eq!(filter.build_scratch_bytes(c.n, c.requested), scratch);
+     if serial { Stats { effective: 1, workers: 1, scratch: 0 } }
+@@ -133,11 +123,11 @@
+ }
+ #[derive(Default)]
+ struct Samples { stats: Stats, ns: [Vec<u128>; 2], setup_ns: [Vec<u128>; 2] }
+-fn trial<F: Make, const ENABLED: bool>(c: &Case, d: &Data, expected: &[u32], out: &mut [u32],
++fn trial<F: Native>(c: &Case, d: &Data, expected: &[u32], out: &mut [u32],
+                                       serial: bool, allocate: bool, samples: &mut Samples) {
+     affinity(&[c.cpus[0]]);
+     if !allocate {
+-        let mut filter = make::<F, ENABLED>(c);
++        let mut filter = make::<F>(c);
+         samples.stats = observe(&filter, c, serial);
+         let setup_start = Instant::now(); prefill(&mut filter, c); let setup = setup_start.elapsed();
+         if !serial { affinity(&c.cpus); }
+@@ -152,7 +142,7 @@
+         assert_eq!(c.history, 0, "populated allocation+build is unavailable");
+         if !serial { affinity(&c.cpus); }
+         let start = Instant::now();
+-        let mut filter = make::<F, ENABLED>(c);
++        let mut filter = make::<F>(c);
+         if serial { filter.insert_hashes(black_box(&d.batch)); }
+         else { filter.insert_hashes_parallel(black_box(&d.batch), c.requested); }
+         let elapsed = start.elapsed();
+@@ -161,13 +151,13 @@
+     } // The bitmap is dropped before the next arm and outside every clock.
+ }
+ fn array(values: &[u128]) { print!("["); for (i, v) in values.iter().enumerate() { if i != 0 { print!(","); } print!("{v}"); } print!("]"); }
+-fn run<F: Make>(family: &str, c: &Case, corrupt: bool) {
++fn run<Before: Native, After: Native>(family: &str, c: &Case, corrupt: bool) {
+     let d = workload(c); let batch_before = digest(&d.batch); let query_before = digest(&d.query);
+     let mut expected = vec![0u32; QUERIES]; let mut out = vec![GUARD; QUERIES + 32];
+     let mut samples: [Samples; 3] = std::array::from_fn(|_| Samples::default());
+     let mut executed = Vec::new();
+     affinity(&[c.cpus[0]]);
+-    { let mut oracle = make::<F, false>(c); assert_eq!(oracle.size_in_bytes(), c.bytes);
++    { let mut oracle = make::<Before>(c); assert_eq!(oracle.size_in_bytes(), c.bytes);
+       prefill(&mut oracle, c); oracle.insert_hashes(&d.batch); oracle.lookup_hashes(&d.query, &mut expected);
+       validate(&oracle, c, &d, &expected, &mut out); }
+     assert!(expected.iter().all(|&x| x <= 1));
+@@ -178,8 +168,8 @@
+         for phase in 0..phases {
+             let allocate = c.history == 0 && if phase == 0 { allocation_first } else { !allocation_first };
+             for &arm in schedule {
+-                if arm == 2 { trial::<F, true>(c, &d, &expected, &mut out, false, allocate, &mut samples[arm]); }
+-                else { trial::<F, false>(c, &d, &expected, &mut out, arm == 0, allocate, &mut samples[arm]); }
++                if arm == 2 { trial::<After>(c, &d, &expected, &mut out, false, allocate, &mut samples[arm]); }
++                else { trial::<Before>(c, &d, &expected, &mut out, arm == 0, allocate, &mut samples[arm]); }
+                 executed.push(format!("{repeat}:{}:{}", if allocate { "allocate_insert" } else { "insert" }, ARMS[arm]));
+             }
+         }
+@@ -211,6 +201,6 @@
+     assert!(["--measure", "--check-bad-output"].contains(&args[6].as_str()), "unknown mode");
+     let cpus = parse_cpus(&args[5], requested as usize);
+     let c = case(args[1] == "Split64Range", scenario as usize, requested as usize, seed, cpus);
+-    if args[1] == "Split64Range" { run::<Split64RangeBloomFilter>(&args[1], &c, args[6] == "--check-bad-output"); }
+-    else { run::<Split64BloomFilter>(&args[1], &c, args[6] == "--check-bad-output"); }
+-}
++    if args[1] == "Split64Range" { run::<before_native::Split64RangeBloomFilter, after_native::Split64RangeBloomFilter>(&args[1], &c, args[6] == "--check-bad-output"); }
++    else { run::<before_native::Split64BloomFilter, after_native::Split64BloomFilter>(&args[1], &c, args[6] == "--check-bad-output"); }
++}

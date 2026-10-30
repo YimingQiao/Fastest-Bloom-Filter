@@ -1,0 +1,39 @@
+--- immutable-caller/contract.py
++++ screening/row_guard.py
+@@ -1,10 +1,10 @@
+-"""Focused public caller proof only. No formal input is consumed here."""
++"""Exact-derived formal row guard; unused proof helpers retain their parent bytes."""
+ import json
+ import math
+ from pathlib import Path
+ 
+ HERE=Path(__file__).resolve().parent
+-PLAN=json.loads((HERE.parent/'selection.json').read_text())
++PLAN=json.loads((HERE/'selection.json').read_text())
+ POINTS={p['id']:p for p in PLAN['points']}
+ MODES=('generic_pure','generic_staged_common_hash','visible_public_pure','visible_public_fused_common_hash')
+ FOUR=((0,1,3,2),(1,2,0,3),(2,3,1,0),(3,0,2,1))
+@@ -78,8 +78,8 @@
+         if allocation:
+             need(row.get('allocation_only') is True,'not allocation observation');continue
+         q=1<<case['query_power'];present=q//100*case['hit']+min(q%100,case['hit'])
+-        for key,value in dict(queries=q,hit=case['hit'],batch=case['batch'],repeats=4,seed=74381,
+-            reverse_jobs=bool(case['order']),measure=False,key_base=base,present=present,absent=q-present,
++        for key,value in dict(queries=q,hit=case['hit'],batch=case['batch'],repeats=case['repeats'],seed=case['seed'],
++            reverse_jobs=bool(case['order']),measure=True,key_base=base,present=present,absent=q-present,
+             query_scratch_bytes=case['batch']*8,calibration_negatives=(1<<case['calibration_power']) if case['calibration_power'] else 0).items():
+             need(row.get(key)==value,'wrong caller '+key)
+         need(type(row['false_positives']) is int and 0<=row['false_positives']<=row['absent'],'invalid mixed FP')
+@@ -91,10 +91,10 @@
+         if p['owner'] in ('candidate','old_k12','native_range'):need(row['bitmap_digest'] is not None,'missing public native bitmap')
+         need((row['calibration_digest'] is None)==(case['calibration_power']==0),'wrong calibration availability')
+         schedule=FOUR if case['batch']==1 else TWO
+-        need(row['phase_order']==[m for r in schedule for m in r],'wrong phase order')
++        need(row['phase_order']==[m for r in range(case['repeats']) for m in schedule[r%4]],'wrong phase order')
+         need(set(row['samples'])==set(MODES),'wrong query mode set')
+         for index,mode in enumerate(MODES):
+-            values=row['samples'][mode];need(len(values)==(4 if index<2 or case['batch']==1 else 0),'wrong vector length')
++            values=row['samples'][mode];need(len(values)==(case['repeats'] if index<2 or case['batch']==1 else 0),'wrong vector length')
+             need(all(type(v) in (int,float) and math.isfinite(v) and v>0 for v in values),'invalid vector')
+     if not allocation:
+         for key in ('inserted_digest','query_digest','inserted_hash_digest','query_hash_digest'):

@@ -1,0 +1,55 @@
+{
+  "utc": "2026-10-28T15:53:06Z",
+  "revision": "d53a48b710809dd88734f1a60c688b8fd1c5da2f",
+  "source_sha256": {
+    "rust/src/four_sector.rs": "51737bec1c5855c683bf94b88c8512241240647d424fcaf5ca5adf700de97f38",
+    "rust/src/layout_parallel.rs": "6e3fe5d56304de040bfb1c72c3de62d12f497ebdd9972c3eee4ea3e32f062dd0",
+    "rust/src/lib.rs": "fd9214e433c6d519f1ad07a21328de5ba4e6eced323ca06216b29e03cd0037e6",
+    "rust/Cargo.toml": "b0efd468b413ab0a357d7a5c312a9e70b80c37d9efcb6dc3445189f710ad0eda",
+    "rust/src/bin/compare_benchmark.rs": "f4440db06cda174f7c71e2dc4c4c9caa00d23f7a1a1cf90cbd4c88a3e30470d2",
+    "rust/src/bin/parallel_benchmark.rs": "d6152acd523ba212999d795abbc9bc387596820beb3001962cb523b715c74c77"
+  },
+  "binary_sha256": {
+    "rust/target/release/compare_benchmark": "33433477b269d75875ecd39e53ec43115107d0e552e61fab2395a44bdc181247",
+    "rust/target/release/parallel_benchmark": "c60f716fc6d6cdf7ed51ec284953225fc4ace62fb63a25be0d48196db8eacd85",
+    "build/native-layout-base/parallel_benchmark-rust": "3439043e9b16ad0f3120b4e2b2039330ea9436f8e6964313194a0f65a3056ef6",
+    "benchmarks/rust-external/target/release/compare_benchmark": "8fe9b4903c6c9165eb4b7def6a921294937e8e4a3a77146fea22647ddd4c7c3e"
+  },
+  "results": {
+    "normal_foursector_tests": 7,
+    "disable_avx512_foursector_tests": 7,
+    "asan_foursector_tests": 7,
+    "full_output_lengths": [
+      0,
+      131
+    ],
+    "input_offsets": [
+      0,
+      15
+    ],
+    "bitmap_threshold_cases": [
+      "below2MiB",
+      "exactly2MiB",
+      "above2MiB"
+    ],
+    "comparison_workloads": 12,
+    "comparison_rows": 24
+  },
+  "review": "Independent read-only agent review found dispatch/lane masks/ranges/bounded addresses/feature gates correct.",
+  "validation_commands": [
+    "RUST_TEST_THREADS=1 taskset -c 3 cargo test --manifest-path rust/Cargo.toml --lib four_sector::tests",
+    "RUST_TEST_THREADS=1 taskset -c 3 cargo test --manifest-path rust/Cargo.toml --features disable-avx512 --lib four_sector::tests",
+    "RUSTFLAGS=\"-Zsanitizer=address\" RUST_TEST_THREADS=1 CARGO_TARGET_DIR=/tmp/fastest-bf-native-rust-asan taskset -c 3 cargo +nightly test --manifest-path rust/Cargo.toml --target x86_64-unknown-linux-gnu --lib four_sector::tests",
+    "taskset -c 3 cargo clippy --manifest-path rust/Cargo.toml --all-targets -- -D warnings",
+    "RUSTFLAGS=\"-C target-cpu=native\" taskset -c 3 cargo build --manifest-path rust/Cargo.toml --release --bins"
+  ],
+  "log_sha256": {
+    "confirmation-build.log": "63fe468c892757b079b223380694a22826b78b5ab93fa177b22ba044231bbf22",
+    "normal-test.log": "c1b8c222a756beb32e91403e22f3094a620065b1c8842cab73a3040103713a5c",
+    "clippy.log": "a6b1baa5cf49457d2be4ab7d508ea20d59ec7ee1967ad1df651259ce30f31a12",
+    "disable-test.log": "47d1bb4259fa02f5ce59e10e8c1d346d1d98a977cb189eaabbd25bc71926e801",
+    "build.log": "522297c45f1cb0161440bbb89ca96c5752d435b3ea26a4396cda1391e662d19d",
+    "confirmation.log": "0992d684a28a6d569e8b4ba0bef741f588566c0bcaee769bbff089ed59544b2e",
+    "asan-test.log": "4fa43f1722dca8607dc580d13043ff96ab0da739e6c4ba35a3517b2261b3e67d"
+  }
+}

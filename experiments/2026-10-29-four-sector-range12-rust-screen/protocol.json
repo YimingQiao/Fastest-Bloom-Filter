@@ -1,0 +1,71 @@
+{
+  "status": "Source-only finite Rust K12 proposal; no compiler/BF/performance execution",
+  "candidate_public_type": "FourSectorRange12BloomFilter",
+  "candidate_correctness_commit": "645f397cd406fd7e89cc75020b0b6fe2f142b3ab",
+  "candidate_core_commit": "e0f44536beb147a4c8d1befd219715379b65009a",
+  "producer_source_commit": "571186b420bf7e5fc08269ed4a65feab42ac8400",
+  "training_raw_commit": "2624516177e02d9019c582b2e76a6b6ac8fad7ae",
+  "training_analysis_commit": "434747e8d83b1ad1f43a1ce01149afc1d41fceb7",
+  "previous_Rust_Range24_analysis_commit": "3f830f99c84e03ff3b2ef2b0903c500e19062ee9",
+  "selection_sha256": "229f8b013ce3adef73104de81a95f8d65d52bca882bf60a8454bc40b41f61c2f",
+  "key_powers": [
+    16,
+    25
+  ],
+  "batches": [
+    1,
+    31,
+    4096
+  ],
+  "budget_bpk": [
+    24,
+    32
+  ],
+  "candidate_actual_bpk": 24,
+  "primary_cap_bpk": 24,
+  "secondary_cap_bpk": 32,
+  "fpr_ceiling": 0.0001,
+  "seeds": [
+    48714180869863897,
+    13312860449584497766,
+    9336338316380403537
+  ],
+  "query_power": 22,
+  "hit_percent": 50,
+  "calibration_power": 26,
+  "query_repeats": 8,
+  "build_repeats": 8,
+  "insert_batch": "all inserted hashes",
+  "counts": {
+    "training_views": 96,
+    "commands": 36,
+    "rows": 108,
+    "api_geometry_seed_quality": 36,
+    "all_three_seed_api_geometry_gates": 12,
+    "query_metric_rows": 432,
+    "build_metric_rows": 432,
+    "primary_metric_seed_views": 144,
+    "secondary_metric_seed_views": 144
+  },
+  "metrics": {
+    "query": [
+      "lookup_ns",
+      "hash_lookup_ns",
+      "inline_lookup_ns",
+      "inline_hash_lookup_ns"
+    ],
+    "build": [
+      "insert_ns",
+      "allocate_insert_ns",
+      "hash_insert_ns",
+      "allocate_hash_insert_ns"
+    ]
+  },
+  "selection_rule": "Union of all ties for strongest external and combined retained-project allocation over every96 strict24/32 training view, then each size uses its same union at all3 batch tags. Add only K12@24. No new K/budget search.",
+  "quality": "Every selected API/allocation/size uses three separate cal26 streams; main eligibility requires allthree Wilson95upper<=.0001. Preserve per-seed gates and unconditional latency losses; no pooling or adaptive extension.",
+  "order": "Source-derived exact job order; K12 first/middle/last once at each size in the primary3-row case. No complete pairwise balance or secondary position-balance claim.",
+  "case_scope": "Primary24 API comparisons share a process. Secondary32 compares candidate24 from primary process to extra32 allocations measured in a different process; record this explicitly.",
+  "build_scope": "Reuse existing four serial build boundaries and original fixed phase order; no parallel-build performance claim and no unrecorded build dispersion.",
+  "execution": "Not authorized by this proposal. Actual new caller source, focused validation, binary/codegen and immutable execution freeze required first.",
+  "placement": "Assigned in a later reviewed execution freeze; no current CPU lease or NUMA policy claim."
+}

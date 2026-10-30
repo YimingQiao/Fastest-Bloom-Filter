@@ -1,0 +1,47 @@
+{
+  "status": "Completed final correctness/ASM preflight; see validation/summary.json. Batch1-only predecessor is archived separately.",
+  "base_visible_source_commit": "4004e3f50e85385e5a3c7752d62b7a8797f15146",
+  "original_reference_binary": "/tmp/fastest-bf-rust-visible-single/release/compare_benchmark",
+  "original_reference_sha256": "444a7e083bc814b8d0a2f0fc3c3807e4a430485d2112704bad164603a2d5fcf6",
+  "production_edits": false,
+  "source_scope": "Exactly three inline(always) hints in cloned native library; metadata identity changes only otherwise",
+  "controls": {
+    "ByteLeafInlineV1": "Byte public contains_hash",
+    "FourSectorLeafInlineV1": "Four private contains_scalar",
+    "Split64LeafInlineV1": "Split private contains_scalar"
+  },
+  "unchanged": [
+    "bulk dispatch",
+    "mask mapping",
+    "backend detection",
+    "allocation",
+    "parallel ownership",
+    "upstream external public APIs",
+    "four-mode timers and phase schedule"
+  ],
+  "filters": [
+    "FastPatternBF",
+    "ByteSplitBloomFilter",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter",
+    "Fastbloom017",
+    "BloomsdayPinned",
+    "SbbfSafePinned",
+    "ByteLeafInlineV1",
+    "FourSectorLeafInlineV1",
+    "Split64LeafInlineV1"
+  ],
+  "compiler_flags": "-C target-cpu=native -C symbol-mangling-version=v0",
+  "preflight": [
+    "clone exact-diff guard",
+    "native normal/disable/ASan tests",
+    "harness normal/disable/ASan tests",
+    "clippy",
+    "6 workloads60-row semantic parity with unchanged reference",
+    "all four timed-mode corruption tests",
+    "exact seed-derived four-mode schedule",
+    "20 typed visible-loop assembly bodies; inspect targeted calls"
+  ],
+  "performance_rule": "No timing matrix until correctness/ASM report, freeze, parent review and committed protocol. If target hotcalls remain, report them before any additional annotation.",
+  "revised_harness_scope": "Original batch sizes3/31/4096 enabled for regression guards; visible singleton modes unchanged. No native changes beyond the same three hints."
+}

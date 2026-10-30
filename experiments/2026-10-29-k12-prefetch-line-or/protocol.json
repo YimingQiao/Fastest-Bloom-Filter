@@ -1,0 +1,80 @@
+{
+  "stage": "fixed conditional confirmation plus two new intermediate table sizes",
+  "candidate_count": 1,
+  "source_proposal_only": true,
+  "threshold_bytes": 2097152,
+  "strict_existing_comparison": "SizeInBytes() > threshold",
+  "algorithm_change": "line OR only in existing Prefetch=true template; false restores original word OR",
+  "filters": [
+    "K12ScalarOrControl",
+    "K12PrefetchLineOrCandidate",
+    "Split64RangeBloomFilter"
+  ],
+  "keys_powers": [
+    16,
+    20,
+    22,
+    25
+  ],
+  "actual_bpk": 24,
+  "insert_chunks": [
+    4,
+    "whole_input"
+  ],
+  "seeds": [
+    15485863,
+    32452843,
+    49979687
+  ],
+  "seed_scope": "Unseen relative to previous line-OR screen seeds5011/6011 and tiny proof74381; no global all-history or independent-construction-function claim, no quality-based seed selection",
+  "cases": 24,
+  "rows": 72,
+  "build_repeats": 7,
+  "query_repeats": 2,
+  "build_vectors": 288,
+  "build_metric_samples": 2016,
+  "timed_fresh_bitmaps": 1008,
+  "canonical_bitmaps": 72,
+  "calibration_power": 26,
+  "api_quality_records": 36,
+  "mapping_quality_records": 24,
+  "quality_alias": "Control/conditional exact bitmap aliases; repeated insertion chunks reuse stream and are not pooled",
+  "primary_fpr_threshold": 0.0001,
+  "quality_rule": "Per construction pointwise95% Wilson upper, no pooling across seeds or layouts. Comparison against Range must retain eligibility of both; an across-three-seed claim requires all three pass. Current mapping comparison remains reportable even if quality fails.",
+  "raw_interval": "Insert raw keys base..base+n-1, mixed absent keys base+n+i within base+n..base+n+q-1, calibration base+n+q..base+n+q+2^26-1; caller must assert bounds and report base/digests",
+  "relative_filter_order": "Fixed Latin rotation by seed index AFTER original shuffle, with no extra RNG. Every filter occupies each position once for each size/chunk; predecessor/direction balance is not complete with3 rows.",
+  "case_order": "Seed0 cells forward, seed1 reverse, seed2 rotated by4; finite ledger retained",
+  "clock_policy": "Same public noinline helpers and existing build boundaries; one fresh bitmap per contract; canonical after all builds; full validation and destruction outside timers",
+  "metrics": [
+    "insert_ns",
+    "allocate_insert_ns",
+    "hash_insert_ns",
+    "allocate_hash_insert_ns"
+  ],
+  "analysis": {
+    "priority": "Complete allocate+build, with insertion subinterval retained",
+    "contrasts": [
+      "conditional/control",
+      "conditional/Range",
+      "control/Range"
+    ],
+    "ratio": "numerator latency / denominator latency; >1 slower",
+    "contrast_records": 288,
+    "all_losses": true,
+    "seed_ranges": "Descriptive fixed-cell ranges only; no pooling or independent-sample inference",
+    "query_ranking": false,
+    "external_leadership": false
+  },
+  "preflight": {
+    "policy": "Focused caller and existing branches, reuse previous independent kernel proof",
+    "checks": [
+      "Boundary dispatch below/equal/above2MiB via actual byte constructor",
+      "Full bitmaps/dense outputs and incremental duplicate/shared-line cases for both compiled branches against old oracle",
+      "Normal/minimalAVX512F/ASan small caller checks using seen74381 only",
+      "Actual timed insertion bodies and clock/public-call ASM; false branch match original and true branch match prior lineOR after address normalization",
+      "Explicit3-filter order is validated before allocations and after source shuffle without new RNG"
+    ]
+  },
+  "hardware": "CPU/socket assigned only after source/proof freeze; no lease requested by this proposal",
+  "promotion": "No default edit; unknown3/12MiB results and current192KiB losses retained. No threshold sweep, dictionary/prefetch change or outcome-driven extension."
+}

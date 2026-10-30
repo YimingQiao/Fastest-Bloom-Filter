@@ -1,0 +1,32 @@
+#pragma once
+#include "cpp-adapters.hpp"
+#include "boost-adapters.hpp"
+#include "rocks-adapters.hpp"
+#include "fast_pattern_BF.h"
+#include "four_sector_bloom.h"
+#include "split64_bloom.h"
+#include "byte_split_bloom.h"
+#include "split64_range_bloom.h"
+#include "four_sector_range12_bloom.h"
+using bloom_filters::FastPatternBF;
+using bloom_filters::FourSectorBloomFilter;
+using bloom_filters::Split64BloomFilter;
+using bloom_filters::ByteSplitBloomFilter;
+using bloom_filters::Split64RangeBloomFilter;
+using bloom_filters::FourSectorRange12BloomFilter;
+#define BF_REGISTER_QUERY_FILTERS(ADD) \
+    ADD(FastPatternBF,uint64_t); \
+    ADD(FourSectorBloomFilter,uint64_t); \
+    ADD(Split64BloomFilter,uint64_t); \
+    ADD(ByteSplitBloomFilter,uint64_t); \
+    ADD(Split64RangeBloomFilter,uint64_t); \
+    ADD(FourSectorRange12BloomFilter,uint64_t); \
+    ADD(FastFilterFixed16,uint64_t); \
+    ADD(FastFilterFixed16SingleV1,uint64_t); \
+    ADD(FastFilterFixed32,uint64_t); \
+    ADD(FastFilterFixed32Bulk,uint64_t); \
+    ADD(FastFilterFixed64,uint64_t); \
+    ADD(FastFilterSimdBlock,uint64_t); \
+    ADD(FastFilterSimdBlockSingleV1,uint64_t); \
+    ADD(Boost192Multi32K8,uint64_t); \
+    ADD(Boost192Multi64K8,uint64_t)

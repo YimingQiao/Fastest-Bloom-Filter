@@ -1,0 +1,102 @@
+--- old/Cargo.toml
++++ new/Cargo.toml
+@@ -1,5 +1,5 @@
+ [package]
+-name = "fastest-bloom-filter-fastbloom-fixed-probes"
++name = "fastest-bloom-filter-rust-k12-public-caller"
+ version = "0.1.0"
+ edition = "2021"
+ publish = false
+@@ -9,10 +9,11 @@
+ path = "src/main.rs"
+ 
+ [features]
+-disable-avx512 = ["fastest-bloom-filter/disable-avx512"]
++disable-avx512 = ["fastest-bloom-filter/disable-avx512", "four-sector-range12-isolated/disable-avx512"]
+ 
+ [dependencies]
+-fastest-bloom-filter = { path = "../../2026-10-29-split64-range-rust-screen/native" }
++four-sector-range12-isolated = { path = "../../../2026-10-29-four-sector-range12-rust-port/native" }
++fastest-bloom-filter = { path = "../../../2026-10-29-split64-range-rust-screen/native" }
+ bloomsday = { git = "https://github.com/sidd-27/Bloomsday.git", rev = "11f16a91a1c8a20344cd263e908f957dac7cf5d0" }
+ fastbloom = { version = "=0.17.0", default-features = false, features = ["std"] }
+ sbbf-rs = "=0.2.8"
+--- old/Cargo.lock
++++ new/Cargo.lock
+@@ -36,15 +36,20 @@
+ version = "0.1.0"
+ 
+ [[package]]
+-name = "fastest-bloom-filter-fastbloom-fixed-probes"
++name = "fastest-bloom-filter-rust-k12-public-caller"
+ version = "0.1.0"
+ dependencies = [
+  "bloomsday",
+  "fastbloom",
+  "fastest-bloom-filter",
++ "four-sector-range12-isolated",
+  "sbbf-rs",
+  "sbbf-rs-safe",
+ ]
++
++[[package]]
++name = "four-sector-range12-isolated"
++version = "0.0.0"
+ 
+ [[package]]
+ name = "fastrange-rs"
+--- old/src/main.rs
++++ new/src/main.rs
+@@ -1,3 +1,4 @@
++use four_sector_range12_isolated::FourSectorRange12BloomFilter;
+ use fastest_bloom_filter::{
+     hash64, BloomFilter, ByteSplitBloomFilter, FourSectorBloomFilter, Split64BloomFilter, Split64RangeBloomFilter,
+ };
+@@ -75,6 +76,8 @@
+     fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) { Self::lookup_hashes(self, hashes, out) }
+ }
+ 
++
++include!("k12_adapter.rs");
+ 
+ struct Fastbloom017(fastbloom::BloomFilter);
+ impl Filter for Fastbloom017 {
+@@ -550,6 +553,7 @@
+     "Fastbloom017K10",
+     "Fastbloom017K11",
+     "Fastbloom017K12",
++    "FourSectorRange12BloomFilter",
+ ];
+ 
+ fn main() {
+@@ -657,6 +661,7 @@
+             "Fastbloom017K12" => run::<Fastbloom017K12>(name, &inserted, &query, &c),
+             "BloomsdayPinned" => run::<BloomsdayPinned>(name, &inserted, &query, &c),
+             "SbbfSafePinned" => run::<SbbfSafePinned>(name, &inserted, &query, &c),
++            "FourSectorRange12BloomFilter" => run::<FourSectorRange12BloomFilter>(name, &inserted, &query, &c),
+             _ => unreachable!(),
+         }
+     }
+@@ -667,3 +672,6 @@
+ 
+ #[cfg(test)]
+ mod exact_tests;
++
++#[cfg(test)]
++mod k12_tests;
+--- old/src/geometry.rs
++++ new/src/geometry.rs
+@@ -103,6 +103,13 @@
+             g.allocated_bytes = g.logical_bytes;
+             g.origin = "native_experimental";
+         }
++        "FourSectorRange12BloomFilter" => {
++            g.logical_bytes = budget / 64 * 64;
++            g.allocated_bytes = g.logical_bytes;
++            g.kind = "top24_range_lines";
++            g.effective_probes = 12;
++            g.origin = "K12_experiment";
++        }
+         "Fastbloom017" => {
+             g.logical_bytes = budget / 8 * 8;
+             g.allocated_bytes = g.logical_bytes;

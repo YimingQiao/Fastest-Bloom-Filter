@@ -1,0 +1,97 @@
+{
+  "inputs_sha256": {
+    "repair-v2/validation-v1/metadata.json": "324d596b6e10d578f05de193270854c6289fbc05343912f87003f396fc91c7aa",
+    "repair-v2/validation-v1/native-asm-capture.json": "9fd4387ac3204c03124f391259de29ebfc990d339cc7f328ec6f6f20701fcf20",
+    "repair-v2/validation-v1/native-asm-demangled.stdout": "760dce58221960f605681d4d1237e4ea932bf3e6c5b41c93d0864f27c97fbe21",
+    "repair-v2/validation-v1/native-asm-disassembly.stdout": "e7750f592e30e4c90f8ace46154b0c064e9545f2ba705ab3a165a725c9cec7ca",
+    "repair-v2/validation-v1/native-asm-elf.stdout": "4fc039a1bad3bab6d81ee097a4157866034a1ed6042479945cd7363483bc34df",
+    "repair-v2/validation-v1/native-asm-nm.stdout": "d2454da4f2c3d81216c18cf06a8fd6190f207d9191aa51fa2fa4a03179793e7e",
+    "repair-v2/validation-v1/native-asm-relocations.stdout": "50ff369715346369ad738ed89c5a80f59d68a8b4322b009182f27a0f758ddf66",
+    "repair-v2/validation-v1/portable-asm-capture.json": "c3109777f0a77cea3cbf1fccc4ea2f655a38673e4090437241fac11b807a994a",
+    "repair-v2/validation-v1/portable-asm-demangled.stdout": "edeeb2cecf8210ccadeb13602ccd2097459110f0de1331ce5c7e5ab47cfa2c7a",
+    "repair-v2/validation-v1/portable-asm-disassembly.stdout": "fe27fbacecaf59627b59113d9604e43260fb3490e02312c15f1fb0622aa49e88",
+    "repair-v2/validation-v1/portable-asm-elf.stdout": "1467c4e3b9fb8162f88b6907f756e7c0f2809e94ad59aaef285bc779432b17d3",
+    "repair-v2/validation-v1/portable-asm-nm.stdout": "248032d22b3416f6b63acf8df2b598e420056a6466c126f355f119c45d751be7",
+    "repair-v2/validation-v1/portable-asm-relocations.stdout": "471043c6af26ae5fa17c1642b7dee34687049eef0be0cdff2b04ac5c1ba12593"
+  },
+  "method": "Fixed ELF address/size extraction from already-captured text; no disassembler, compiler or BF execution.",
+  "records": {
+    "native": {
+      "binary": "/tmp/fastest-bf-rust-k12-simd-caller-v1-cpu3/native/release/rust-k12-simd-caller",
+      "binary_sha256": "bb7abe3715926016c0e74108602032b6fc800d820dd830b484fcb701aa0767c3",
+      "relocations": {
+        "0x6f3d8": {
+          "line": "000000000006f3d8  0000000000000008 R_X86_64_RELATIVE                         192b0",
+          "target": 103088
+        },
+        "0x6f710": {
+          "line": "000000000006f710  0000000000000008 R_X86_64_RELATIVE                         4b270",
+          "target": 307824
+        },
+        "0x6f718": {
+          "line": "000000000006f718  0000000000000008 R_X86_64_RELATIVE                         4b280",
+          "target": 307840
+        }
+      },
+      "spans": [
+        {
+          "address": 307824,
+          "elf_aliases": [
+            {
+              "address": 307824,
+              "binding": "GLOBAL",
+              "name": "_ZN3std4time7Instant3now17h85e5dfc2f76449beE",
+              "section": "15",
+              "size": 10
+            }
+          ],
+          "file": "native-4b270.txt",
+          "sha256": "b202d51102a1843d822daff5bebfa274955a038f6b6f30be874369ca2f95a5c8",
+          "size": 10
+        },
+        {
+          "address": 307840,
+          "elf_aliases": [
+            {
+              "address": 307840,
+              "binding": "GLOBAL",
+              "name": "_ZN3std4time7Instant7elapsed17hf6ed2a969b0e9ab4E",
+              "section": "15",
+              "size": 83
+            }
+          ],
+          "file": "native-4b280.txt",
+          "sha256": "0c18b1e147bcee22597c4b3a921bb930d5471072e47cd6f65104f440c1f7c239",
+          "size": 83
+        }
+      ]
+    },
+    "portable": {
+      "binary": "/tmp/fastest-bf-rust-k12-simd-caller-v2-cpu3/portable/release/rust-k12-simd-caller",
+      "binary_sha256": "86eaf1dd33d2f91ab3f2aa1363a4d630d528dafcd3b816eb0b50d8330e7b190a",
+      "relocations": {
+        "0x6e4e0": {
+          "line": "000000000006e4e0  0000000000000008 R_X86_64_RELATIVE                         1b6f0",
+          "target": 112368
+        }
+      },
+      "spans": [
+        {
+          "address": 204352,
+          "elf_aliases": [
+            {
+              "address": 204352,
+              "binding": "LOCAL",
+              "name": "_RNvXs_NtCshzlfZ89OmQq_20rust_k12_simd_caller5queryNtNtCsCIYyhOWUGh_16candidate_native19four_sector_range1228FourSectorRange12BloomFilterNtB4_12PublicFilter8contains",
+              "section": "15",
+              "size": 270
+            }
+          ],
+          "file": "portable-31e40.txt",
+          "sha256": "a3fe4b510087f13003c3b4eae7c445933b28452f08d90caf8ad70ab101c94f60",
+          "size": 270
+        }
+      ]
+    }
+  }
+}

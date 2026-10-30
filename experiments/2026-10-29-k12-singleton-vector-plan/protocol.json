@@ -1,0 +1,153 @@
+{
+  "status": "source-only proposal; no compiler, BF or measurement execution",
+  "candidate_count": 1,
+  "language": "C++",
+  "source_commit": "36979eb4439abce1977accb505053f7b5fa74b1a",
+  "mapping": "unchanged FourSectorRange12",
+  "actual_bits_per_key": 24,
+  "n_exponents": [
+    16,
+    25
+  ],
+  "hit_percent": [
+    0,
+    50,
+    100
+  ],
+  "batches": [
+    1,
+    3,
+    31,
+    4096
+  ],
+  "input_seeds": [
+    16057,
+    32029
+  ],
+  "seed_scope": "fixed before data; different from this query proposal correctness74381 and prior lineOR5011/6011; no global-history independence claim",
+  "query_exponent": 22,
+  "repeats": 8,
+  "build_mode": "one canonical whole-input serial build, untimed; no build-speed claim",
+  "modes_all_batches": [
+    "generic_pure",
+    "generic_staged_common_hash"
+  ],
+  "additional_modes_batch1": [
+    "visible_public_pure",
+    "visible_public_fused_common_hash"
+  ],
+  "clock_contract": "use actual public Lookup or ContainsHash; hash+output cost retained, validation/consumption outside clocks",
+  "row_order": "round1 explicitly orders Control,Candidate for seed16057 and Candidate,Control for seed32029 after original job shuffle; round2 reverses the entire48-case ledger and each API order, without extra RNG",
+  "phase_order_batch1": [
+    [
+      0,
+      1,
+      3,
+      2
+    ],
+    [
+      1,
+      2,
+      0,
+      3
+    ],
+    [
+      2,
+      3,
+      1,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      1
+    ],
+    [
+      0,
+      1,
+      3,
+      2
+    ],
+    [
+      1,
+      2,
+      0,
+      3
+    ],
+    [
+      2,
+      3,
+      1,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      1
+    ]
+  ],
+  "phase_order_other_batches": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      0,
+      1
+    ]
+  ],
+  "quality": "same mapping/bytes/full answers required; no fresh quality qualification or external ranking",
+  "proof_seed": 74381,
+  "proof_modes": [
+    "normal",
+    "AVX512F only without VL/DQ/BW",
+    "ASan+UBSan"
+  ],
+  "unchanged_controls": [
+    "scalar oracle",
+    "AVX2/scalar fallbacks",
+    "Lookup n>=4",
+    "insertion",
+    "allocation",
+    "parallel ownership"
+  ],
+  "analysis": {
+    "ratio": "candidate/control latency; greater than1 is slower",
+    "preserve": "all240 candidate/control metric contrasts,480 total vectors and every loss; no mode/hit/size/round pooling",
+    "metric_contrasts": 240,
+    "vectors": 480,
+    "samples": 3840,
+    "independent_unit_warning": "public and generic tracks reuse the same input/filter, paired seeds are descriptive, not independent repetitions of every metric"
+  },
+  "processes": 96,
+  "rows": 192,
+  "no_performance_authorization": true,
+  "rounds": 2,
+  "round_scope": "same-seed/same-input AB and BA are retained; rounds have different environment histories and shared inputs, not independent order-effect causal evidence"
+}

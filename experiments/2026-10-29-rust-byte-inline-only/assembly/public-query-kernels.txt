@@ -1,0 +1,1231 @@
+0000000000019f90 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>>:
+   19f90:	push   %rbp
+   19f91:	push   %r15
+   19f93:	push   %r14
+   19f95:	push   %r13
+   19f97:	push   %r12
+   19f99:	push   %rbx
+   19f9a:	sub    $0x48,%rsp
+   19f9e:	mov    %rdx,0x8(%rsp)
+   19fa3:	mov    %r8,0x10(%rsp)
+   19fa8:	cmp    %r8,%rdx
+   19fab:	jne    1a0f1 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0x161>
+   19fb1:	mov    %rdx,%r15
+   19fb4:	test   %rdx,%rdx
+   19fb7:	je     1a0e2 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0x152>
+   19fbd:	mov    %rcx,%rbx
+   19fc0:	mov    %rsi,%r14
+   19fc3:	mov    %rdi,%r12
+   19fc6:	cmpb   $0x0,0x1c(%rdi)
+   19fca:	je     19fe3 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0x53>
+   19fcc:	mov    0x18(%r12),%eax
+   19fd1:	mov    0x8(%r12),%rcx
+   19fd6:	cmp    $0x1,%r15
+   19fda:	jne    1a014 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0x84>
+   19fdc:	xor    %edi,%edi
+   19fde:	jmp    1a0a0 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0x110>
+   19fe3:	xor    %r13d,%r13d
+   19fe6:	cs nopw 0x0(%rax,%rax,1)
+   19ff0:	lea    0x1(%r13),%rbp
+   19ff4:	mov    (%r14,%r13,8),%rsi
+   19ff8:	mov    %r12,%rdi
+   19ffb:	call   2eaf0 <<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter>::contains_scalar>
+   1a000:	movzbl %al,%eax
+   1a003:	mov    %eax,(%rbx,%r13,4)
+   1a007:	mov    %rbp,%r13
+   1a00a:	cmp    %rbp,%r15
+   1a00d:	jne    19ff0 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0x60>
+   1a00f:	jmp    1a0e2 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0x152>
+   1a014:	mov    %r15,%rdx
+   1a017:	and    $0xfffffffffffffffe,%rdx
+   1a01b:	xor    %esi,%esi
+   1a01d:	vmovdqa -0x11f25(%rip),%xmm0        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   1a025:	vpbroadcastq -0x123b6(%rip),%xmm1        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   1a02e:	xchg   %ax,%ax
+   1a030:	mov    (%r14,%rsi,8),%rdi
+   1a034:	vpbroadcastd %edi,%xmm2
+   1a03a:	shr    $0x20,%rdi
+   1a03e:	and    %eax,%edi
+   1a040:	shl    $0x4,%rdi
+   1a044:	vmovdqa (%rcx,%rdi,1),%xmm3
+   1a049:	vpmulhw %xmm0,%xmm2,%xmm2
+   1a04d:	vpshufb %xmm2,%xmm1,%xmm2
+   1a052:	xor    %edi,%edi
+   1a054:	vptest %xmm2,%xmm3
+   1a059:	setb   %dil
+   1a05d:	mov    %edi,(%rbx,%rsi,4)
+   1a060:	mov    0x8(%r14,%rsi,8),%rdi
+   1a065:	vpbroadcastd %edi,%xmm2
+   1a06b:	shr    $0x20,%rdi
+   1a06f:	and    %eax,%edi
+   1a071:	shl    $0x4,%rdi
+   1a075:	vmovdqa (%rcx,%rdi,1),%xmm3
+   1a07a:	vpmulhw %xmm0,%xmm2,%xmm2
+   1a07e:	vpshufb %xmm2,%xmm1,%xmm2
+   1a083:	xor    %r8d,%r8d
+   1a086:	vptest %xmm2,%xmm3
+   1a08b:	lea    0x2(%rsi),%rdi
+   1a08f:	setb   %r8b
+   1a093:	mov    %r8d,0x4(%rbx,%rsi,4)
+   1a098:	mov    %rdi,%rsi
+   1a09b:	cmp    %rdi,%rdx
+   1a09e:	jne    1a030 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0xa0>
+   1a0a0:	test   $0x1,%r15b
+   1a0a4:	je     1a0e2 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, false>+0x152>
+   1a0a6:	mov    (%r14,%rdi,8),%rdx
+   1a0aa:	vpbroadcastd %edx,%xmm0
+   1a0b0:	shr    $0x20,%rdx
+   1a0b4:	and    %edx,%eax
+   1a0b6:	shl    $0x4,%rax
+   1a0ba:	vmovdqa (%rcx,%rax,1),%xmm1
+   1a0bf:	vpmulhw -0x11fc7(%rip),%xmm0,%xmm0        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   1a0c7:	vpbroadcastq -0x12458(%rip),%xmm2        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   1a0d0:	vpshufb %xmm0,%xmm2,%xmm0
+   1a0d5:	xor    %eax,%eax
+   1a0d7:	vptest %xmm0,%xmm1
+   1a0dc:	setb   %al
+   1a0df:	mov    %eax,(%rbx,%rdi,4)
+   1a0e2:	add    $0x48,%rsp
+   1a0e6:	pop    %rbx
+   1a0e7:	pop    %r12
+   1a0e9:	pop    %r13
+   1a0eb:	pop    %r14
+   1a0ed:	pop    %r15
+   1a0ef:	pop    %rbp
+   1a0f0:	ret
+   1a0f1:	lea    0x5dcc0(%rip),%rax        # 77db8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x88>
+   1a0f8:	mov    %rax,0x18(%rsp)
+   1a0fd:	movq   $0x1,0x20(%rsp)
+   1a106:	movq   $0x8,0x28(%rsp)
+   1a10f:	vxorps %xmm0,%xmm0,%xmm0
+   1a113:	vmovups %xmm0,0x30(%rsp)
+   1a119:	lea    0x5dca8(%rip),%r8        # 77dc8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x98>
+   1a120:	lea    0x8(%rsp),%rsi
+   1a125:	lea    0x10(%rsp),%rdx
+   1a12a:	lea    0x18(%rsp),%rcx
+   1a12f:	xor    %edi,%edi
+   1a131:	call   *0x613d1(%rip)        # 7b508 <_DYNAMIC+0x2d8>
+   1a137:	int3
+   1a138:	int3
+   1a139:	int3
+   1a13a:	int3
+   1a13b:	int3
+   1a13c:	int3
+   1a13d:	int3
+   1a13e:	int3
+   1a13f:	int3
+
+
+000000000001a140 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>>:
+   1a140:	push   %rbp
+   1a141:	push   %r15
+   1a143:	push   %r14
+   1a145:	push   %r13
+   1a147:	push   %r12
+   1a149:	push   %rbx
+   1a14a:	sub    $0x48,%rsp
+   1a14e:	mov    %rdx,0x8(%rsp)
+   1a153:	mov    %r8,0x10(%rsp)
+   1a158:	cmp    %r8,%rdx
+   1a15b:	jne    1a352 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>+0x212>
+   1a161:	mov    %rcx,%r13
+   1a164:	mov    %rsi,%r12
+   1a167:	mov    %rdi,%r15
+   1a16a:	movabs $0xd6e8feb86659fd93,%r14
+   1a174:	cmpb   $0x0,0x1c(%rdi)
+   1a178:	je     1a18f <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>+0x4f>
+   1a17a:	mov    0x18(%r15),%eax
+   1a17e:	mov    0x8(%r15),%r10
+   1a182:	cmp    $0x1,%rdx
+   1a186:	jne    1a1f9 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>+0xb9>
+   1a188:	xor    %edi,%edi
+   1a18a:	jmp    1a2de <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>+0x19e>
+   1a18f:	xor    %ebp,%ebp
+   1a191:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   1a1a0:	lea    0x1(%rbp),%rax
+   1a1a4:	mov    %rax,(%rsp)
+   1a1a8:	mov    (%r12,%rbp,8),%rax
+   1a1ac:	mov    %rax,%rsi
+   1a1af:	shr    $0x20,%rsi
+   1a1b3:	xor    %rax,%rsi
+   1a1b6:	imul   %r14,%rsi
+   1a1ba:	mov    %rsi,%rax
+   1a1bd:	shr    $0x20,%rax
+   1a1c1:	xor    %rsi,%rax
+   1a1c4:	imul   %r14,%rax
+   1a1c8:	mov    %rax,%rsi
+   1a1cb:	shr    $0x20,%rsi
+   1a1cf:	xor    %rax,%rsi
+   1a1d2:	mov    %r15,%rdi
+   1a1d5:	mov    %rdx,%rbx
+   1a1d8:	call   2eaf0 <<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter>::contains_scalar>
+   1a1dd:	mov    %rbx,%rdx
+   1a1e0:	movzbl %al,%eax
+   1a1e3:	mov    %eax,0x0(%r13,%rbp,4)
+   1a1e8:	mov    (%rsp),%rax
+   1a1ec:	mov    %rax,%rbp
+   1a1ef:	cmp    %rax,%rbx
+   1a1f2:	jne    1a1a0 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>+0x60>
+   1a1f4:	jmp    1a343 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>+0x203>
+   1a1f9:	movabs $0x7ffffffffffffffe,%r9
+   1a203:	and    %rdx,%r9
+   1a206:	xor    %esi,%esi
+   1a208:	vmovdqa -0x12110(%rip),%xmm0        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   1a210:	vpbroadcastq -0x125a1(%rip),%xmm1        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   1a219:	nopl   0x0(%rax)
+   1a220:	mov    (%r12,%rsi,8),%rdi
+   1a224:	mov    %rdi,%r8
+   1a227:	shr    $0x20,%r8
+   1a22b:	xor    %rdi,%r8
+   1a22e:	imul   %r14,%r8
+   1a232:	mov    %r8,%rdi
+   1a235:	shr    $0x20,%rdi
+   1a239:	xor    %r8,%rdi
+   1a23c:	imul   %r14,%rdi
+   1a240:	mov    %rdi,%r8
+   1a243:	shr    $0x20,%r8
+   1a247:	xor    %r8d,%edi
+   1a24a:	and    %eax,%r8d
+   1a24d:	shl    $0x4,%r8
+   1a251:	vmovdqa (%r10,%r8,1),%xmm2
+   1a257:	vpbroadcastd %edi,%xmm3
+   1a25d:	vpmulhw %xmm0,%xmm3,%xmm3
+   1a261:	vpshufb %xmm3,%xmm1,%xmm3
+   1a266:	xor    %edi,%edi
+   1a268:	vptest %xmm3,%xmm2
+   1a26d:	setb   %dil
+   1a271:	mov    %edi,0x0(%r13,%rsi,4)
+   1a276:	mov    0x8(%r12,%rsi,8),%rdi
+   1a27b:	mov    %rdi,%r8
+   1a27e:	shr    $0x20,%r8
+   1a282:	xor    %rdi,%r8
+   1a285:	imul   %r14,%r8
+   1a289:	mov    %r8,%rdi
+   1a28c:	shr    $0x20,%rdi
+   1a290:	xor    %r8,%rdi
+   1a293:	imul   %r14,%rdi
+   1a297:	mov    %rdi,%r8
+   1a29a:	shr    $0x20,%r8
+   1a29e:	xor    %r8d,%edi
+   1a2a1:	and    %eax,%r8d
+   1a2a4:	shl    $0x4,%r8
+   1a2a8:	vmovdqa (%r10,%r8,1),%xmm2
+   1a2ae:	vpbroadcastd %edi,%xmm3
+   1a2b4:	vpmulhw %xmm0,%xmm3,%xmm3
+   1a2b8:	vpshufb %xmm3,%xmm1,%xmm3
+   1a2bd:	xor    %r8d,%r8d
+   1a2c0:	vptest %xmm3,%xmm2
+   1a2c5:	lea    0x2(%rsi),%rdi
+   1a2c9:	setb   %r8b
+   1a2cd:	mov    %r8d,0x4(%r13,%rsi,4)
+   1a2d2:	mov    %rdi,%rsi
+   1a2d5:	cmp    %rdi,%r9
+   1a2d8:	jne    1a220 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>+0xe0>
+   1a2de:	test   $0x1,%dl
+   1a2e1:	je     1a343 <compare_benchmark::visible_lookup::<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter, true>+0x203>
+   1a2e3:	mov    (%r12,%rdi,8),%rdx
+   1a2e7:	mov    %rdx,%rsi
+   1a2ea:	shr    $0x20,%rsi
+   1a2ee:	xor    %rdx,%rsi
+   1a2f1:	imul   %r14,%rsi
+   1a2f5:	mov    %rsi,%rdx
+   1a2f8:	shr    $0x20,%rdx
+   1a2fc:	xor    %rsi,%rdx
+   1a2ff:	imul   %r14,%rdx
+   1a303:	mov    %rdx,%rsi
+   1a306:	shr    $0x20,%rsi
+   1a30a:	xor    %esi,%edx
+   1a30c:	and    %esi,%eax
+   1a30e:	shl    $0x4,%rax
+   1a312:	vmovdqa (%r10,%rax,1),%xmm0
+   1a318:	vpbroadcastd %edx,%xmm1
+   1a31e:	vpmulhw -0x12226(%rip),%xmm1,%xmm1        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   1a326:	vpbroadcastq -0x126b7(%rip),%xmm2        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   1a32f:	vpshufb %xmm1,%xmm2,%xmm1
+   1a334:	xor    %eax,%eax
+   1a336:	vptest %xmm1,%xmm0
+   1a33b:	setb   %al
+   1a33e:	mov    %eax,0x0(%r13,%rdi,4)
+   1a343:	add    $0x48,%rsp
+   1a347:	pop    %rbx
+   1a348:	pop    %r12
+   1a34a:	pop    %r13
+   1a34c:	pop    %r14
+   1a34e:	pop    %r15
+   1a350:	pop    %rbp
+   1a351:	ret
+   1a352:	lea    0x5da5f(%rip),%rax        # 77db8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x88>
+   1a359:	mov    %rax,0x18(%rsp)
+   1a35e:	movq   $0x1,0x20(%rsp)
+   1a367:	movq   $0x8,0x28(%rsp)
+   1a370:	vxorps %xmm0,%xmm0,%xmm0
+   1a374:	vmovups %xmm0,0x30(%rsp)
+   1a37a:	lea    0x5da47(%rip),%r8        # 77dc8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x98>
+   1a381:	lea    0x8(%rsp),%rsi
+   1a386:	lea    0x10(%rsp),%rdx
+   1a38b:	lea    0x18(%rsp),%rcx
+   1a390:	xor    %edi,%edi
+   1a392:	call   *0x61170(%rip)        # 7b508 <_DYNAMIC+0x2d8>
+   1a398:	int3
+   1a399:	int3
+   1a39a:	int3
+   1a39b:	int3
+   1a39c:	int3
+   1a39d:	int3
+   1a39e:	int3
+   1a39f:	int3
+
+
+000000000001a3a0 <compare_benchmark::visible_lookup::<fastest_bloom_filter::byte_split::ByteSplitBloomFilter, false>>:
+   1a3a0:	push   %rbp
+   1a3a1:	push   %r15
+   1a3a3:	push   %r14
+   1a3a5:	push   %r13
+   1a3a7:	push   %r12
+   1a3a9:	push   %rbx
+   1a3aa:	sub    $0x48,%rsp
+   1a3ae:	mov    %rdx,0x8(%rsp)
+   1a3b3:	mov    %r8,0x10(%rsp)
+   1a3b8:	cmp    %r8,%rdx
+   1a3bb:	jne    1a40e <compare_benchmark::visible_lookup::<fastest_bloom_filter::byte_split::ByteSplitBloomFilter, false>+0x6e>
+   1a3bd:	mov    %rdx,%r14
+   1a3c0:	test   %rdx,%rdx
+   1a3c3:	je     1a3ff <compare_benchmark::visible_lookup::<fastest_bloom_filter::byte_split::ByteSplitBloomFilter, false>+0x5f>
+   1a3c5:	mov    %rcx,%rbx
+   1a3c8:	mov    %rsi,%r15
+   1a3cb:	mov    %rdi,%r12
+   1a3ce:	xor    %r13d,%r13d
+   1a3d1:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   1a3e0:	lea    0x1(%r13),%rbp
+   1a3e4:	mov    (%r15,%r13,8),%rsi
+   1a3e8:	mov    %r12,%rdi
+   1a3eb:	call   2ec60 <<fastest_bloom_filter::byte_split::ByteSplitBloomFilter>::contains_hash>
+   1a3f0:	movzbl %al,%eax
+   1a3f3:	mov    %eax,(%rbx,%r13,4)
+   1a3f7:	mov    %rbp,%r13
+   1a3fa:	cmp    %rbp,%r14
+   1a3fd:	jne    1a3e0 <compare_benchmark::visible_lookup::<fastest_bloom_filter::byte_split::ByteSplitBloomFilter, false>+0x40>
+   1a3ff:	add    $0x48,%rsp
+   1a403:	pop    %rbx
+   1a404:	pop    %r12
+   1a406:	pop    %r13
+   1a408:	pop    %r14
+   1a40a:	pop    %r15
+   1a40c:	pop    %rbp
+   1a40d:	ret
+   1a40e:	lea    0x5d9a3(%rip),%rax        # 77db8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x88>
+   1a415:	mov    %rax,0x18(%rsp)
+   1a41a:	movq   $0x1,0x20(%rsp)
+   1a423:	movq   $0x8,0x28(%rsp)
+   1a42c:	vxorps %xmm0,%xmm0,%xmm0
+   1a430:	vmovups %xmm0,0x30(%rsp)
+   1a436:	lea    0x5d98b(%rip),%r8        # 77dc8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x98>
+   1a43d:	lea    0x8(%rsp),%rsi
+   1a442:	lea    0x10(%rsp),%rdx
+   1a447:	lea    0x18(%rsp),%rcx
+   1a44c:	xor    %edi,%edi
+   1a44e:	call   *0x610b4(%rip)        # 7b508 <_DYNAMIC+0x2d8>
+   1a454:	int3
+   1a455:	int3
+   1a456:	int3
+   1a457:	int3
+   1a458:	int3
+   1a459:	int3
+   1a45a:	int3
+   1a45b:	int3
+   1a45c:	int3
+   1a45d:	int3
+   1a45e:	int3
+   1a45f:	int3
+
+
+000000000001a460 <compare_benchmark::visible_lookup::<fastest_bloom_filter::byte_split::ByteSplitBloomFilter, true>>:
+   1a460:	push   %rbp
+   1a461:	push   %r15
+   1a463:	push   %r14
+   1a465:	push   %r13
+   1a467:	push   %r12
+   1a469:	push   %rbx
+   1a46a:	sub    $0x48,%rsp
+   1a46e:	mov    %rdx,0x8(%rsp)
+   1a473:	mov    %r8,0x10(%rsp)
+   1a478:	cmp    %r8,%rdx
+   1a47b:	jne    1a4ee <compare_benchmark::visible_lookup::<fastest_bloom_filter::byte_split::ByteSplitBloomFilter, true>+0x8e>
+   1a47d:	mov    %rcx,%r15
+   1a480:	mov    %rdx,%r13
+   1a483:	mov    %rsi,%r12
+   1a486:	mov    %rdi,%r14
+   1a489:	xor    %ebp,%ebp
+   1a48b:	nopl   0x0(%rax,%rax,1)
+   1a490:	lea    0x1(%rbp),%rbx
+   1a494:	mov    (%r12,%rbp,8),%rax
+   1a498:	mov    %rax,%rcx
+   1a49b:	shr    $0x20,%rcx
+   1a49f:	xor    %rax,%rcx
+   1a4a2:	movabs $0xd6e8feb86659fd93,%r8
+   1a4ac:	imul   %r8,%rcx
+   1a4b0:	mov    %rcx,%rax
+   1a4b3:	shr    $0x20,%rax
+   1a4b7:	xor    %rcx,%rax
+   1a4ba:	imul   %r8,%rax
+   1a4be:	mov    %rax,%rsi
+   1a4c1:	shr    $0x20,%rsi
+   1a4c5:	xor    %rax,%rsi
+   1a4c8:	mov    %r14,%rdi
+   1a4cb:	call   2ec60 <<fastest_bloom_filter::byte_split::ByteSplitBloomFilter>::contains_hash>
+   1a4d0:	movzbl %al,%eax
+   1a4d3:	mov    %eax,(%r15,%rbp,4)
+   1a4d7:	mov    %rbx,%rbp
+   1a4da:	cmp    %rbx,%r13
+   1a4dd:	jne    1a490 <compare_benchmark::visible_lookup::<fastest_bloom_filter::byte_split::ByteSplitBloomFilter, true>+0x30>
+   1a4df:	add    $0x48,%rsp
+   1a4e3:	pop    %rbx
+   1a4e4:	pop    %r12
+   1a4e6:	pop    %r13
+   1a4e8:	pop    %r14
+   1a4ea:	pop    %r15
+   1a4ec:	pop    %rbp
+   1a4ed:	ret
+   1a4ee:	lea    0x5d8c3(%rip),%rax        # 77db8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x88>
+   1a4f5:	mov    %rax,0x18(%rsp)
+   1a4fa:	movq   $0x1,0x20(%rsp)
+   1a503:	movq   $0x8,0x28(%rsp)
+   1a50c:	vxorps %xmm0,%xmm0,%xmm0
+   1a510:	vmovups %xmm0,0x30(%rsp)
+   1a516:	lea    0x5d8ab(%rip),%r8        # 77dc8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x98>
+   1a51d:	lea    0x8(%rsp),%rsi
+   1a522:	lea    0x10(%rsp),%rdx
+   1a527:	lea    0x18(%rsp),%rcx
+   1a52c:	xor    %edi,%edi
+   1a52e:	call   *0x60fd4(%rip)        # 7b508 <_DYNAMIC+0x2d8>
+   1a534:	int3
+   1a535:	int3
+   1a536:	int3
+   1a537:	int3
+   1a538:	int3
+   1a539:	int3
+   1a53a:	int3
+   1a53b:	int3
+   1a53c:	int3
+   1a53d:	int3
+   1a53e:	int3
+   1a53f:	int3
+
+
+000000000001a540 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>>:
+   1a540:	push   %rbp
+   1a541:	push   %r15
+   1a543:	push   %r14
+   1a545:	push   %r13
+   1a547:	push   %r12
+   1a549:	push   %rbx
+   1a54a:	sub    $0x48,%rsp
+   1a54e:	mov    %rdx,0x8(%rsp)
+   1a553:	mov    %r8,0x10(%rsp)
+   1a558:	cmp    %r8,%rdx
+   1a55b:	jne    1a6a1 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0x161>
+   1a561:	mov    %rdx,%r15
+   1a564:	test   %rdx,%rdx
+   1a567:	je     1a692 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0x152>
+   1a56d:	mov    %rcx,%rbx
+   1a570:	mov    %rsi,%r14
+   1a573:	mov    %rdi,%r12
+   1a576:	cmpb   $0x0,0x1c(%rdi)
+   1a57a:	je     1a593 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0x53>
+   1a57c:	mov    0x18(%r12),%eax
+   1a581:	mov    0x8(%r12),%rcx
+   1a586:	cmp    $0x1,%r15
+   1a58a:	jne    1a5c4 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0x84>
+   1a58c:	xor    %edi,%edi
+   1a58e:	jmp    1a650 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0x110>
+   1a593:	xor    %r13d,%r13d
+   1a596:	cs nopw 0x0(%rax,%rax,1)
+   1a5a0:	lea    0x1(%r13),%rbp
+   1a5a4:	mov    (%r14,%r13,8),%rsi
+   1a5a8:	mov    %r12,%rdi
+   1a5ab:	call   2ee10 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::contains_scalar>
+   1a5b0:	movzbl %al,%eax
+   1a5b3:	mov    %eax,(%rbx,%r13,4)
+   1a5b7:	mov    %rbp,%r13
+   1a5ba:	cmp    %rbp,%r15
+   1a5bd:	jne    1a5a0 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0x60>
+   1a5bf:	jmp    1a692 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0x152>
+   1a5c4:	mov    %r15,%rdx
+   1a5c7:	and    $0xfffffffffffffffe,%rdx
+   1a5cb:	xor    %esi,%esi
+   1a5cd:	vmovdqa -0x124d5(%rip),%xmm0        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   1a5d5:	vpbroadcastq -0x12966(%rip),%xmm1        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   1a5de:	xchg   %ax,%ax
+   1a5e0:	mov    (%r14,%rsi,8),%rdi
+   1a5e4:	vpbroadcastd %edi,%xmm2
+   1a5ea:	shr    $0x20,%rdi
+   1a5ee:	and    %eax,%edi
+   1a5f0:	shl    $0x4,%rdi
+   1a5f4:	vmovdqa (%rcx,%rdi,1),%xmm3
+   1a5f9:	vpmulhw %xmm0,%xmm2,%xmm2
+   1a5fd:	vpshufb %xmm2,%xmm1,%xmm2
+   1a602:	xor    %edi,%edi
+   1a604:	vptest %xmm2,%xmm3
+   1a609:	setb   %dil
+   1a60d:	mov    %edi,(%rbx,%rsi,4)
+   1a610:	mov    0x8(%r14,%rsi,8),%rdi
+   1a615:	vpbroadcastd %edi,%xmm2
+   1a61b:	shr    $0x20,%rdi
+   1a61f:	and    %eax,%edi
+   1a621:	shl    $0x4,%rdi
+   1a625:	vmovdqa (%rcx,%rdi,1),%xmm3
+   1a62a:	vpmulhw %xmm0,%xmm2,%xmm2
+   1a62e:	vpshufb %xmm2,%xmm1,%xmm2
+   1a633:	xor    %r8d,%r8d
+   1a636:	vptest %xmm2,%xmm3
+   1a63b:	lea    0x2(%rsi),%rdi
+   1a63f:	setb   %r8b
+   1a643:	mov    %r8d,0x4(%rbx,%rsi,4)
+   1a648:	mov    %rdi,%rsi
+   1a64b:	cmp    %rdi,%rdx
+   1a64e:	jne    1a5e0 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0xa0>
+   1a650:	test   $0x1,%r15b
+   1a654:	je     1a692 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, false>+0x152>
+   1a656:	mov    (%r14,%rdi,8),%rdx
+   1a65a:	vpbroadcastd %edx,%xmm0
+   1a660:	shr    $0x20,%rdx
+   1a664:	and    %edx,%eax
+   1a666:	shl    $0x4,%rax
+   1a66a:	vmovdqa (%rcx,%rax,1),%xmm1
+   1a66f:	vpmulhw -0x12577(%rip),%xmm0,%xmm0        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   1a677:	vpbroadcastq -0x12a08(%rip),%xmm2        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   1a680:	vpshufb %xmm0,%xmm2,%xmm0
+   1a685:	xor    %eax,%eax
+   1a687:	vptest %xmm0,%xmm1
+   1a68c:	setb   %al
+   1a68f:	mov    %eax,(%rbx,%rdi,4)
+   1a692:	add    $0x48,%rsp
+   1a696:	pop    %rbx
+   1a697:	pop    %r12
+   1a699:	pop    %r13
+   1a69b:	pop    %r14
+   1a69d:	pop    %r15
+   1a69f:	pop    %rbp
+   1a6a0:	ret
+   1a6a1:	lea    0x5d710(%rip),%rax        # 77db8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x88>
+   1a6a8:	mov    %rax,0x18(%rsp)
+   1a6ad:	movq   $0x1,0x20(%rsp)
+   1a6b6:	movq   $0x8,0x28(%rsp)
+   1a6bf:	vxorps %xmm0,%xmm0,%xmm0
+   1a6c3:	vmovups %xmm0,0x30(%rsp)
+   1a6c9:	lea    0x5d6f8(%rip),%r8        # 77dc8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x98>
+   1a6d0:	lea    0x8(%rsp),%rsi
+   1a6d5:	lea    0x10(%rsp),%rdx
+   1a6da:	lea    0x18(%rsp),%rcx
+   1a6df:	xor    %edi,%edi
+   1a6e1:	call   *0x60e21(%rip)        # 7b508 <_DYNAMIC+0x2d8>
+   1a6e7:	int3
+   1a6e8:	int3
+   1a6e9:	int3
+   1a6ea:	int3
+   1a6eb:	int3
+   1a6ec:	int3
+   1a6ed:	int3
+   1a6ee:	int3
+   1a6ef:	int3
+
+
+000000000001a6f0 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>>:
+   1a6f0:	push   %rbp
+   1a6f1:	push   %r15
+   1a6f3:	push   %r14
+   1a6f5:	push   %r13
+   1a6f7:	push   %r12
+   1a6f9:	push   %rbx
+   1a6fa:	sub    $0x48,%rsp
+   1a6fe:	mov    %rdx,0x8(%rsp)
+   1a703:	mov    %r8,0x10(%rsp)
+   1a708:	cmp    %r8,%rdx
+   1a70b:	jne    1a902 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>+0x212>
+   1a711:	mov    %rcx,%r13
+   1a714:	mov    %rsi,%r12
+   1a717:	mov    %rdi,%r15
+   1a71a:	movabs $0xd6e8feb86659fd93,%r14
+   1a724:	cmpb   $0x0,0x1c(%rdi)
+   1a728:	je     1a73f <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>+0x4f>
+   1a72a:	mov    0x18(%r15),%eax
+   1a72e:	mov    0x8(%r15),%r10
+   1a732:	cmp    $0x1,%rdx
+   1a736:	jne    1a7a9 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>+0xb9>
+   1a738:	xor    %edi,%edi
+   1a73a:	jmp    1a88e <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>+0x19e>
+   1a73f:	xor    %ebp,%ebp
+   1a741:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   1a750:	lea    0x1(%rbp),%rax
+   1a754:	mov    %rax,(%rsp)
+   1a758:	mov    (%r12,%rbp,8),%rax
+   1a75c:	mov    %rax,%rsi
+   1a75f:	shr    $0x20,%rsi
+   1a763:	xor    %rax,%rsi
+   1a766:	imul   %r14,%rsi
+   1a76a:	mov    %rsi,%rax
+   1a76d:	shr    $0x20,%rax
+   1a771:	xor    %rsi,%rax
+   1a774:	imul   %r14,%rax
+   1a778:	mov    %rax,%rsi
+   1a77b:	shr    $0x20,%rsi
+   1a77f:	xor    %rax,%rsi
+   1a782:	mov    %r15,%rdi
+   1a785:	mov    %rdx,%rbx
+   1a788:	call   2ee10 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::contains_scalar>
+   1a78d:	mov    %rbx,%rdx
+   1a790:	movzbl %al,%eax
+   1a793:	mov    %eax,0x0(%r13,%rbp,4)
+   1a798:	mov    (%rsp),%rax
+   1a79c:	mov    %rax,%rbp
+   1a79f:	cmp    %rax,%rbx
+   1a7a2:	jne    1a750 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>+0x60>
+   1a7a4:	jmp    1a8f3 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>+0x203>
+   1a7a9:	movabs $0x7ffffffffffffffe,%r9
+   1a7b3:	and    %rdx,%r9
+   1a7b6:	xor    %esi,%esi
+   1a7b8:	vmovdqa -0x126c0(%rip),%xmm0        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   1a7c0:	vpbroadcastq -0x12b51(%rip),%xmm1        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   1a7c9:	nopl   0x0(%rax)
+   1a7d0:	mov    (%r12,%rsi,8),%rdi
+   1a7d4:	mov    %rdi,%r8
+   1a7d7:	shr    $0x20,%r8
+   1a7db:	xor    %rdi,%r8
+   1a7de:	imul   %r14,%r8
+   1a7e2:	mov    %r8,%rdi
+   1a7e5:	shr    $0x20,%rdi
+   1a7e9:	xor    %r8,%rdi
+   1a7ec:	imul   %r14,%rdi
+   1a7f0:	mov    %rdi,%r8
+   1a7f3:	shr    $0x20,%r8
+   1a7f7:	xor    %r8d,%edi
+   1a7fa:	and    %eax,%r8d
+   1a7fd:	shl    $0x4,%r8
+   1a801:	vmovdqa (%r10,%r8,1),%xmm2
+   1a807:	vpbroadcastd %edi,%xmm3
+   1a80d:	vpmulhw %xmm0,%xmm3,%xmm3
+   1a811:	vpshufb %xmm3,%xmm1,%xmm3
+   1a816:	xor    %edi,%edi
+   1a818:	vptest %xmm3,%xmm2
+   1a81d:	setb   %dil
+   1a821:	mov    %edi,0x0(%r13,%rsi,4)
+   1a826:	mov    0x8(%r12,%rsi,8),%rdi
+   1a82b:	mov    %rdi,%r8
+   1a82e:	shr    $0x20,%r8
+   1a832:	xor    %rdi,%r8
+   1a835:	imul   %r14,%r8
+   1a839:	mov    %r8,%rdi
+   1a83c:	shr    $0x20,%rdi
+   1a840:	xor    %r8,%rdi
+   1a843:	imul   %r14,%rdi
+   1a847:	mov    %rdi,%r8
+   1a84a:	shr    $0x20,%r8
+   1a84e:	xor    %r8d,%edi
+   1a851:	and    %eax,%r8d
+   1a854:	shl    $0x4,%r8
+   1a858:	vmovdqa (%r10,%r8,1),%xmm2
+   1a85e:	vpbroadcastd %edi,%xmm3
+   1a864:	vpmulhw %xmm0,%xmm3,%xmm3
+   1a868:	vpshufb %xmm3,%xmm1,%xmm3
+   1a86d:	xor    %r8d,%r8d
+   1a870:	vptest %xmm3,%xmm2
+   1a875:	lea    0x2(%rsi),%rdi
+   1a879:	setb   %r8b
+   1a87d:	mov    %r8d,0x4(%r13,%rsi,4)
+   1a882:	mov    %rdi,%rsi
+   1a885:	cmp    %rdi,%r9
+   1a888:	jne    1a7d0 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>+0xe0>
+   1a88e:	test   $0x1,%dl
+   1a891:	je     1a8f3 <compare_benchmark::visible_lookup::<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter, true>+0x203>
+   1a893:	mov    (%r12,%rdi,8),%rdx
+   1a897:	mov    %rdx,%rsi
+   1a89a:	shr    $0x20,%rsi
+   1a89e:	xor    %rdx,%rsi
+   1a8a1:	imul   %r14,%rsi
+   1a8a5:	mov    %rsi,%rdx
+   1a8a8:	shr    $0x20,%rdx
+   1a8ac:	xor    %rsi,%rdx
+   1a8af:	imul   %r14,%rdx
+   1a8b3:	mov    %rdx,%rsi
+   1a8b6:	shr    $0x20,%rsi
+   1a8ba:	xor    %esi,%edx
+   1a8bc:	and    %esi,%eax
+   1a8be:	shl    $0x4,%rax
+   1a8c2:	vmovdqa (%r10,%rax,1),%xmm0
+   1a8c8:	vpbroadcastd %edx,%xmm1
+   1a8ce:	vpmulhw -0x127d6(%rip),%xmm1,%xmm1        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   1a8d6:	vpbroadcastq -0x12c67(%rip),%xmm2        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   1a8df:	vpshufb %xmm1,%xmm2,%xmm1
+   1a8e4:	xor    %eax,%eax
+   1a8e6:	vptest %xmm1,%xmm0
+   1a8eb:	setb   %al
+   1a8ee:	mov    %eax,0x0(%r13,%rdi,4)
+   1a8f3:	add    $0x48,%rsp
+   1a8f7:	pop    %rbx
+   1a8f8:	pop    %r12
+   1a8fa:	pop    %r13
+   1a8fc:	pop    %r14
+   1a8fe:	pop    %r15
+   1a900:	pop    %rbp
+   1a901:	ret
+   1a902:	lea    0x5d4af(%rip),%rax        # 77db8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x88>
+   1a909:	mov    %rax,0x18(%rsp)
+   1a90e:	movq   $0x1,0x20(%rsp)
+   1a917:	movq   $0x8,0x28(%rsp)
+   1a920:	vxorps %xmm0,%xmm0,%xmm0
+   1a924:	vmovups %xmm0,0x30(%rsp)
+   1a92a:	lea    0x5d497(%rip),%r8        # 77dc8 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x98>
+   1a931:	lea    0x8(%rsp),%rsi
+   1a936:	lea    0x10(%rsp),%rdx
+   1a93b:	lea    0x18(%rsp),%rcx
+   1a940:	xor    %edi,%edi
+   1a942:	call   *0x60bc0(%rip)        # 7b508 <_DYNAMIC+0x2d8>
+   1a948:	int3
+   1a949:	int3
+   1a94a:	int3
+   1a94b:	int3
+   1a94c:	int3
+   1a94d:	int3
+   1a94e:	int3
+   1a94f:	int3
+
+
+000000000002eaf0 <<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter>::contains_scalar>:
+   2eaf0:	mov    %rdi,%rax
+   2eaf3:	mov    %rsi,%rdx
+   2eaf6:	shr    $0x20,%rdx
+   2eafa:	and    0x18(%rdi),%edx
+   2eafd:	mov    %edx,%edi
+   2eaff:	shr    $0x2,%edi
+   2eb02:	mov    0x10(%rax),%rcx
+   2eb06:	cmp    %rcx,%rdi
+   2eb09:	jae    2ec48 <<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter>::contains_scalar+0x158>
+   2eb0f:	shl    $0x6,%rdi
+   2eb13:	add    0x8(%rax),%rdi
+   2eb17:	shl    $0x4,%edx
+   2eb1a:	vmovd  %esi,%xmm0
+   2eb1e:	shl    $0x10,%esi
+   2eb21:	vpinsrd $0x1,%esi,%xmm0,%xmm0
+   2eb27:	and    $0x30,%edx
+   2eb2a:	vpsrad $0x10,%xmm0,%xmm0
+   2eb2f:	vpbroadcastq %xmm0,%ymm1
+   2eb34:	vmovd  %xmm0,%ecx
+   2eb38:	vpextrd $0x1,%xmm0,%eax
+   2eb3e:	test   %eax,%eax
+   2eb40:	setg   %al
+   2eb43:	sets   %sil
+   2eb47:	test   %ecx,%ecx
+   2eb49:	sets   %r8b
+   2eb4d:	vpmaddwd -0x26db5(%rip),%ymm1,%ymm0        # 7da0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xd0>
+   2eb55:	vmovdqa64 -0x2689f(%rip),%zmm1        # 82c0 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x80>
+   2eb5f:	vpermd %zmm0,%zmm1,%zmm0
+   2eb65:	vpsrlvd -0x2686f(%rip),%zmm0,%zmm0        # 8300 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0xc0>
+   2eb6f:	vpmovdb %zmm0,%xmm0
+   2eb75:	setg   %cl
+   2eb78:	vpandd -0x26fea(%rip){1to4},%xmm0,%xmm1        # 7b98 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x144>
+   2eb82:	vmovq  -0x26b0a(%rip),%xmm2        # 8080 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x80>
+   2eb8a:	vpxor  %xmm3,%xmm3,%xmm3
+   2eb8e:	mov    $0xfffd,%r9w
+   2eb93:	kmovd  %r9d,%k1
+   2eb98:	vpcmpgtb %xmm0,%xmm3,%k0{%k1}
+   2eb9e:	kmovd  %esi,%k1
+   2eba2:	kshiftlw $0xf,%k1,%k1
+   2eba8:	kshiftrw $0xe,%k1,%k1
+   2ebae:	korw   %k1,%k0,%k0
+   2ebb2:	mov    $0xfff7,%si
+   2ebb6:	kmovd  %esi,%k1
+   2ebba:	kandw  %k1,%k0,%k0
+   2ebbe:	kmovd  %r8d,%k1
+   2ebc3:	kshiftlw $0xf,%k1,%k1
+   2ebc9:	kshiftrw $0xc,%k1,%k1
+   2ebcf:	korw   %k1,%k0,%k0
+   2ebd3:	mov    $0xffdf,%si
+   2ebd7:	kmovd  %esi,%k1
+   2ebdb:	kandw  %k1,%k0,%k0
+   2ebdf:	kmovd  %eax,%k1
+   2ebe3:	kshiftlw $0xf,%k1,%k1
+   2ebe9:	kshiftrw $0xa,%k1,%k1
+   2ebef:	korw   %k1,%k0,%k0
+   2ebf3:	mov    $0xff7f,%ax
+   2ebf7:	kmovd  %eax,%k1
+   2ebfb:	kandw  %k1,%k0,%k0
+   2ebff:	kmovd  %ecx,%k1
+   2ec03:	kshiftlw $0xf,%k1,%k1
+   2ec09:	kshiftrw $0x8,%k1,%k1
+   2ec0f:	korw   %k1,%k0,%k0
+   2ec13:	vpmovm2w %k0,%ymm0
+   2ec19:	vmovdqa -0x26ea1(%rip),%ymm3        # 7d80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xb0>
+   2ec21:	vpermw %ymm0,%ymm3,%ymm0
+   2ec27:	vpmovw2m %ymm0,%k0
+   2ec2d:	knotw  %k0,%k1
+   2ec31:	vpshufb %xmm1,%xmm2,%xmm0{%k1}{z}
+   2ec37:	vmovdqu (%rdx,%rdi,1),%xmm1
+   2ec3c:	vptest %xmm0,%xmm1
+   2ec41:	setb   %al
+   2ec44:	vzeroupper
+   2ec47:	ret
+   2ec48:	push   %rax
+   2ec49:	lea    0x499e0(%rip),%rdx        # 78630 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x900>
+   2ec50:	mov    %rcx,%rsi
+   2ec53:	call   *0x4c827(%rip)        # 7b480 <_DYNAMIC+0x250>
+   2ec59:	int3
+   2ec5a:	int3
+   2ec5b:	int3
+   2ec5c:	int3
+   2ec5d:	int3
+   2ec5e:	int3
+   2ec5f:	int3
+
+
+000000000002ec60 <<fastest_bloom_filter::byte_split::ByteSplitBloomFilter>::contains_hash>:
+   2ec60:	mov    %rdi,%rax
+   2ec63:	mov    %rsi,%rdx
+   2ec66:	shr    $0x20,%rdx
+   2ec6a:	cmpb   $0x0,0x1c(%rdi)
+   2ec6e:	je     2eca5 <<fastest_bloom_filter::byte_split::ByteSplitBloomFilter>::contains_hash+0x45>
+   2ec70:	and    0x18(%rax),%edx
+   2ec73:	mov    0x8(%rax),%rax
+   2ec77:	shl    $0x4,%rdx
+   2ec7b:	vmovdqa (%rax,%rdx,1),%xmm0
+   2ec80:	vpbroadcastd %esi,%xmm1
+   2ec86:	vpmulhw -0x26b8e(%rip),%xmm1,%xmm1        # 8100 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x100>
+   2ec8e:	vpbroadcastq -0x2701f(%rip),%xmm2        # 7c78 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x224>
+   2ec97:	vpshufb %xmm1,%xmm2,%xmm1
+   2ec9c:	vptest %xmm1,%xmm0
+   2eca1:	setb   %al
+   2eca4:	ret
+   2eca5:	and    0x18(%rax),%edx
+   2eca8:	mov    %edx,%edi
+   2ecaa:	shr    $0x2,%edi
+   2ecad:	mov    0x10(%rax),%rcx
+   2ecb1:	cmp    %rcx,%rdi
+   2ecb4:	jae    2edf3 <<fastest_bloom_filter::byte_split::ByteSplitBloomFilter>::contains_hash+0x193>
+   2ecba:	shl    $0x6,%rdi
+   2ecbe:	add    0x8(%rax),%rdi
+   2ecc2:	shl    $0x4,%edx
+   2ecc5:	vmovd  %esi,%xmm0
+   2ecc9:	shl    $0x10,%esi
+   2eccc:	vpinsrd $0x1,%esi,%xmm0,%xmm0
+   2ecd2:	and    $0x30,%edx
+   2ecd5:	vpsrad $0x10,%xmm0,%xmm0
+   2ecda:	vpbroadcastq %xmm0,%ymm1
+   2ecdf:	vmovd  %xmm0,%ecx
+   2ece3:	vpextrd $0x1,%xmm0,%eax
+   2ece9:	test   %eax,%eax
+   2eceb:	setg   %al
+   2ecee:	sets   %sil
+   2ecf2:	test   %ecx,%ecx
+   2ecf4:	sets   %r8b
+   2ecf8:	vpmaddwd -0x26f60(%rip),%ymm1,%ymm0        # 7da0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xd0>
+   2ed00:	vmovdqa64 -0x269ca(%rip),%zmm1        # 8340 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x100>
+   2ed0a:	vpermd %zmm0,%zmm1,%zmm0
+   2ed10:	vpsrlvd -0x2699a(%rip),%zmm0,%zmm0        # 8380 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x140>
+   2ed1a:	vpmovdb %zmm0,%xmm0
+   2ed20:	setg   %cl
+   2ed23:	vpandd -0x27195(%rip){1to4},%xmm0,%xmm1        # 7b98 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x144>
+   2ed2d:	vmovq  -0x26cb5(%rip),%xmm2        # 8080 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x80>
+   2ed35:	vpxor  %xmm3,%xmm3,%xmm3
+   2ed39:	mov    $0xfffd,%r9w
+   2ed3e:	kmovd  %r9d,%k1
+   2ed43:	vpcmpgtb %xmm0,%xmm3,%k0{%k1}
+   2ed49:	kmovd  %esi,%k1
+   2ed4d:	kshiftlw $0xf,%k1,%k1
+   2ed53:	kshiftrw $0xe,%k1,%k1
+   2ed59:	korw   %k1,%k0,%k0
+   2ed5d:	mov    $0xfff7,%si
+   2ed61:	kmovd  %esi,%k1
+   2ed65:	kandw  %k1,%k0,%k0
+   2ed69:	kmovd  %r8d,%k1
+   2ed6e:	kshiftlw $0xf,%k1,%k1
+   2ed74:	kshiftrw $0xc,%k1,%k1
+   2ed7a:	korw   %k1,%k0,%k0
+   2ed7e:	mov    $0xffdf,%si
+   2ed82:	kmovd  %esi,%k1
+   2ed86:	kandw  %k1,%k0,%k0
+   2ed8a:	kmovd  %eax,%k1
+   2ed8e:	kshiftlw $0xf,%k1,%k1
+   2ed94:	kshiftrw $0xa,%k1,%k1
+   2ed9a:	korw   %k1,%k0,%k0
+   2ed9e:	mov    $0xff7f,%ax
+   2eda2:	kmovd  %eax,%k1
+   2eda6:	kandw  %k1,%k0,%k0
+   2edaa:	kmovd  %ecx,%k1
+   2edae:	kshiftlw $0xf,%k1,%k1
+   2edb4:	kshiftrw $0x8,%k1,%k1
+   2edba:	korw   %k1,%k0,%k0
+   2edbe:	vpmovm2w %k0,%ymm0
+   2edc4:	vmovdqa -0x2704c(%rip),%ymm3        # 7d80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xb0>
+   2edcc:	vpermw %ymm0,%ymm3,%ymm0
+   2edd2:	vpmovw2m %ymm0,%k0
+   2edd8:	knotw  %k0,%k1
+   2eddc:	vpshufb %xmm1,%xmm2,%xmm0{%k1}{z}
+   2ede2:	vmovdqu (%rdx,%rdi,1),%xmm1
+   2ede7:	vptest %xmm0,%xmm1
+   2edec:	setb   %al
+   2edef:	vzeroupper
+   2edf2:	ret
+   2edf3:	push   %rax
+   2edf4:	lea    0x4984d(%rip),%rdx        # 78648 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x918>
+   2edfb:	mov    %rcx,%rsi
+   2edfe:	call   *0x4c67c(%rip)        # 7b480 <_DYNAMIC+0x250>
+   2ee04:	int3
+   2ee05:	int3
+   2ee06:	int3
+   2ee07:	int3
+   2ee08:	int3
+   2ee09:	int3
+   2ee0a:	int3
+   2ee0b:	int3
+   2ee0c:	int3
+   2ee0d:	int3
+   2ee0e:	int3
+   2ee0f:	int3
+
+
+000000000002ee10 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::contains_scalar>:
+   2ee10:	mov    %rdi,%rax
+   2ee13:	mov    %rsi,%rdx
+   2ee16:	shr    $0x20,%rdx
+   2ee1a:	and    0x18(%rdi),%edx
+   2ee1d:	mov    %edx,%edi
+   2ee1f:	shr    $0x2,%edi
+   2ee22:	mov    0x10(%rax),%rcx
+   2ee26:	cmp    %rcx,%rdi
+   2ee29:	jae    2ef68 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::contains_scalar+0x158>
+   2ee2f:	shl    $0x6,%rdi
+   2ee33:	add    0x8(%rax),%rdi
+   2ee37:	shl    $0x4,%edx
+   2ee3a:	vmovd  %esi,%xmm0
+   2ee3e:	shl    $0x10,%esi
+   2ee41:	vpinsrd $0x1,%esi,%xmm0,%xmm0
+   2ee47:	and    $0x30,%edx
+   2ee4a:	vpsrad $0x10,%xmm0,%xmm0
+   2ee4f:	vpbroadcastq %xmm0,%ymm1
+   2ee54:	vmovd  %xmm0,%ecx
+   2ee58:	vpextrd $0x1,%xmm0,%eax
+   2ee5e:	test   %eax,%eax
+   2ee60:	setg   %al
+   2ee63:	sets   %sil
+   2ee67:	test   %ecx,%ecx
+   2ee69:	sets   %r8b
+   2ee6d:	vpmaddwd -0x270d5(%rip),%ymm1,%ymm0        # 7da0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xd0>
+   2ee75:	vmovdqa64 -0x26abf(%rip),%zmm1        # 83c0 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x180>
+   2ee7f:	vpermd %zmm0,%zmm1,%zmm0
+   2ee85:	vpsrlvd -0x26a8f(%rip),%zmm0,%zmm0        # 8400 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x1c0>
+   2ee8f:	vpmovdb %zmm0,%xmm0
+   2ee95:	setg   %cl
+   2ee98:	vpandd -0x2730a(%rip){1to4},%xmm0,%xmm1        # 7b98 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x144>
+   2eea2:	vmovq  -0x26e2a(%rip),%xmm2        # 8080 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x80>
+   2eeaa:	vpxor  %xmm3,%xmm3,%xmm3
+   2eeae:	mov    $0xfffd,%r9w
+   2eeb3:	kmovd  %r9d,%k1
+   2eeb8:	vpcmpgtb %xmm0,%xmm3,%k0{%k1}
+   2eebe:	kmovd  %esi,%k1
+   2eec2:	kshiftlw $0xf,%k1,%k1
+   2eec8:	kshiftrw $0xe,%k1,%k1
+   2eece:	korw   %k1,%k0,%k0
+   2eed2:	mov    $0xfff7,%si
+   2eed6:	kmovd  %esi,%k1
+   2eeda:	kandw  %k1,%k0,%k0
+   2eede:	kmovd  %r8d,%k1
+   2eee3:	kshiftlw $0xf,%k1,%k1
+   2eee9:	kshiftrw $0xc,%k1,%k1
+   2eeef:	korw   %k1,%k0,%k0
+   2eef3:	mov    $0xffdf,%si
+   2eef7:	kmovd  %esi,%k1
+   2eefb:	kandw  %k1,%k0,%k0
+   2eeff:	kmovd  %eax,%k1
+   2ef03:	kshiftlw $0xf,%k1,%k1
+   2ef09:	kshiftrw $0xa,%k1,%k1
+   2ef0f:	korw   %k1,%k0,%k0
+   2ef13:	mov    $0xff7f,%ax
+   2ef17:	kmovd  %eax,%k1
+   2ef1b:	kandw  %k1,%k0,%k0
+   2ef1f:	kmovd  %ecx,%k1
+   2ef23:	kshiftlw $0xf,%k1,%k1
+   2ef29:	kshiftrw $0x8,%k1,%k1
+   2ef2f:	korw   %k1,%k0,%k0
+   2ef33:	vpmovm2w %k0,%ymm0
+   2ef39:	vmovdqa -0x271c1(%rip),%ymm3        # 7d80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xb0>
+   2ef41:	vpermw %ymm0,%ymm3,%ymm0
+   2ef47:	vpmovw2m %ymm0,%k0
+   2ef4d:	knotw  %k0,%k1
+   2ef51:	vpshufb %xmm1,%xmm2,%xmm0{%k1}{z}
+   2ef57:	vmovdqu (%rdx,%rdi,1),%xmm1
+   2ef5c:	vptest %xmm0,%xmm1
+   2ef61:	setb   %al
+   2ef64:	vzeroupper
+   2ef67:	ret
+   2ef68:	push   %rax
+   2ef69:	lea    0x496f0(%rip),%rdx        # 78660 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x930>
+   2ef70:	mov    %rcx,%rsi
+   2ef73:	call   *0x4c507(%rip)        # 7b480 <_DYNAMIC+0x250>
+   2ef79:	int3
+   2ef7a:	int3
+   2ef7b:	int3
+   2ef7c:	int3
+   2ef7d:	int3
+   2ef7e:	int3
+   2ef7f:	int3
+
+
+0000000000039360 <<fastest_bloom_filter::byte_split::ByteSplitBloomFilter>::contains_scalar>:
+   39360:	mov    %rdi,%rax
+   39363:	mov    %rsi,%rdx
+   39366:	shr    $0x20,%rdx
+   3936a:	and    0x18(%rdi),%edx
+   3936d:	mov    %edx,%edi
+   3936f:	shr    $0x2,%edi
+   39372:	mov    0x10(%rax),%rcx
+   39376:	cmp    %rcx,%rdi
+   39379:	jae    394b8 <<fastest_bloom_filter::byte_split::ByteSplitBloomFilter>::contains_scalar+0x158>
+   3937f:	shl    $0x6,%rdi
+   39383:	add    0x8(%rax),%rdi
+   39387:	shl    $0x4,%edx
+   3938a:	vmovd  %esi,%xmm0
+   3938e:	shl    $0x10,%esi
+   39391:	vpinsrd $0x1,%esi,%xmm0,%xmm0
+   39397:	and    $0x30,%edx
+   3939a:	vpsrad $0x10,%xmm0,%xmm0
+   3939f:	vpbroadcastq %xmm0,%ymm1
+   393a4:	vmovd  %xmm0,%ecx
+   393a8:	vpextrd $0x1,%xmm0,%eax
+   393ae:	test   %eax,%eax
+   393b0:	setg   %al
+   393b3:	sets   %sil
+   393b7:	test   %ecx,%ecx
+   393b9:	sets   %r8b
+   393bd:	vpmaddwd -0x31625(%rip),%ymm1,%ymm0        # 7da0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xd0>
+   393c5:	vmovdqa64 -0x2efcf(%rip),%zmm1        # a400 <core::unicode::unicode_data::white_space::WHITESPACE_MAP+0x1d6>
+   393cf:	vpermd %zmm0,%zmm1,%zmm0
+   393d5:	vpsrlvd -0x2ef9f(%rip),%zmm0,%zmm0        # a440 <core::unicode::unicode_data::white_space::WHITESPACE_MAP+0x216>
+   393df:	vpmovdb %zmm0,%xmm0
+   393e5:	setg   %cl
+   393e8:	vpandd -0x3185a(%rip){1to4},%xmm0,%xmm1        # 7b98 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x144>
+   393f2:	vmovq  -0x3137a(%rip),%xmm2        # 8080 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x80>
+   393fa:	vpxor  %xmm3,%xmm3,%xmm3
+   393fe:	mov    $0xfffd,%r9w
+   39403:	kmovd  %r9d,%k1
+   39408:	vpcmpgtb %xmm0,%xmm3,%k0{%k1}
+   3940e:	kmovd  %esi,%k1
+   39412:	kshiftlw $0xf,%k1,%k1
+   39418:	kshiftrw $0xe,%k1,%k1
+   3941e:	korw   %k1,%k0,%k0
+   39422:	mov    $0xfff7,%si
+   39426:	kmovd  %esi,%k1
+   3942a:	kandw  %k1,%k0,%k0
+   3942e:	kmovd  %r8d,%k1
+   39433:	kshiftlw $0xf,%k1,%k1
+   39439:	kshiftrw $0xc,%k1,%k1
+   3943f:	korw   %k1,%k0,%k0
+   39443:	mov    $0xffdf,%si
+   39447:	kmovd  %esi,%k1
+   3944b:	kandw  %k1,%k0,%k0
+   3944f:	kmovd  %eax,%k1
+   39453:	kshiftlw $0xf,%k1,%k1
+   39459:	kshiftrw $0xa,%k1,%k1
+   3945f:	korw   %k1,%k0,%k0
+   39463:	mov    $0xff7f,%ax
+   39467:	kmovd  %eax,%k1
+   3946b:	kandw  %k1,%k0,%k0
+   3946f:	kmovd  %ecx,%k1
+   39473:	kshiftlw $0xf,%k1,%k1
+   39479:	kshiftrw $0x8,%k1,%k1
+   3947f:	korw   %k1,%k0,%k0
+   39483:	vpmovm2w %k0,%ymm0
+   39489:	vmovdqa -0x31711(%rip),%ymm3        # 7d80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xb0>
+   39491:	vpermw %ymm0,%ymm3,%ymm0
+   39497:	vpmovw2m %ymm0,%k0
+   3949d:	knotw  %k0,%k1
+   394a1:	vpshufb %xmm1,%xmm2,%xmm0{%k1}{z}
+   394a7:	vmovdqu (%rdx,%rdi,1),%xmm1
+   394ac:	vptest %xmm0,%xmm1
+   394b1:	setb   %al
+   394b4:	vzeroupper
+   394b7:	ret
+   394b8:	push   %rax
+   394b9:	lea    0x3fcc0(%rip),%rdx        # 79180 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x1f0>
+   394c0:	mov    %rcx,%rsi
+   394c3:	call   *0x41fb7(%rip)        # 7b480 <_DYNAMIC+0x250>
+   394c9:	int3
+   394ca:	int3
+   394cb:	int3
+   394cc:	int3
+   394cd:	int3
+   394ce:	int3
+   394cf:	int3
+
+
+0000000000039c00 <<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter>::contains_scalar>:
+   39c00:	mov    %rdi,%rax
+   39c03:	mov    %rsi,%rdx
+   39c06:	shr    $0x20,%rdx
+   39c0a:	and    0x18(%rdi),%edx
+   39c0d:	mov    %edx,%edi
+   39c0f:	shr    $0x2,%edi
+   39c12:	mov    0x10(%rax),%rcx
+   39c16:	cmp    %rcx,%rdi
+   39c19:	jae    39d58 <<fastest_bloom_filter_byte_inline_only::byte_split::ByteSplitBloomFilter>::contains_scalar+0x158>
+   39c1f:	shl    $0x6,%rdi
+   39c23:	add    0x8(%rax),%rdi
+   39c27:	shl    $0x4,%edx
+   39c2a:	vmovd  %esi,%xmm0
+   39c2e:	shl    $0x10,%esi
+   39c31:	vpinsrd $0x1,%esi,%xmm0,%xmm0
+   39c37:	and    $0x30,%edx
+   39c3a:	vpsrad $0x10,%xmm0,%xmm0
+   39c3f:	vpbroadcastq %xmm0,%ymm1
+   39c44:	vmovd  %xmm0,%ecx
+   39c48:	vpextrd $0x1,%xmm0,%eax
+   39c4e:	test   %eax,%eax
+   39c50:	setg   %al
+   39c53:	sets   %sil
+   39c57:	test   %ecx,%ecx
+   39c59:	sets   %r8b
+   39c5d:	vpmaddwd -0x31ec5(%rip),%ymm1,%ymm0        # 7da0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xd0>
+   39c65:	vmovdqa64 -0x2f72f(%rip),%zmm1        # a540 <core::unicode::unicode_data::white_space::WHITESPACE_MAP+0x316>
+   39c6f:	vpermd %zmm0,%zmm1,%zmm0
+   39c75:	vpsrlvd -0x2f6ff(%rip),%zmm0,%zmm0        # a580 <core::unicode::unicode_data::white_space::WHITESPACE_MAP+0x356>
+   39c7f:	vpmovdb %zmm0,%xmm0
+   39c85:	setg   %cl
+   39c88:	vpandd -0x320fa(%rip){1to4},%xmm0,%xmm1        # 7b98 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x144>
+   39c92:	vmovq  -0x31c1a(%rip),%xmm2        # 8080 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x80>
+   39c9a:	vpxor  %xmm3,%xmm3,%xmm3
+   39c9e:	mov    $0xfffd,%r9w
+   39ca3:	kmovd  %r9d,%k1
+   39ca8:	vpcmpgtb %xmm0,%xmm3,%k0{%k1}
+   39cae:	kmovd  %esi,%k1
+   39cb2:	kshiftlw $0xf,%k1,%k1
+   39cb8:	kshiftrw $0xe,%k1,%k1
+   39cbe:	korw   %k1,%k0,%k0
+   39cc2:	mov    $0xfff7,%si
+   39cc6:	kmovd  %esi,%k1
+   39cca:	kandw  %k1,%k0,%k0
+   39cce:	kmovd  %r8d,%k1
+   39cd3:	kshiftlw $0xf,%k1,%k1
+   39cd9:	kshiftrw $0xc,%k1,%k1
+   39cdf:	korw   %k1,%k0,%k0
+   39ce3:	mov    $0xffdf,%si
+   39ce7:	kmovd  %esi,%k1
+   39ceb:	kandw  %k1,%k0,%k0
+   39cef:	kmovd  %eax,%k1
+   39cf3:	kshiftlw $0xf,%k1,%k1
+   39cf9:	kshiftrw $0xa,%k1,%k1
+   39cff:	korw   %k1,%k0,%k0
+   39d03:	mov    $0xff7f,%ax
+   39d07:	kmovd  %eax,%k1
+   39d0b:	kandw  %k1,%k0,%k0
+   39d0f:	kmovd  %ecx,%k1
+   39d13:	kshiftlw $0xf,%k1,%k1
+   39d19:	kshiftrw $0x8,%k1,%k1
+   39d1f:	korw   %k1,%k0,%k0
+   39d23:	vpmovm2w %k0,%ymm0
+   39d29:	vmovdqa -0x31fb1(%rip),%ymm3        # 7d80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xb0>
+   39d31:	vpermw %ymm0,%ymm3,%ymm0
+   39d37:	vpmovw2m %ymm0,%k0
+   39d3d:	knotw  %k0,%k1
+   39d41:	vpshufb %xmm1,%xmm2,%xmm0{%k1}{z}
+   39d47:	vmovdqu (%rdx,%rdi,1),%xmm1
+   39d4c:	vptest %xmm0,%xmm1
+   39d51:	setb   %al
+   39d54:	vzeroupper
+   39d57:	ret
+   39d58:	push   %rax
+   39d59:	lea    0x3f478(%rip),%rdx        # 791d8 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x248>
+   39d60:	mov    %rcx,%rsi
+   39d63:	call   *0x41717(%rip)        # 7b480 <_DYNAMIC+0x250>
+   39d69:	int3
+   39d6a:	int3
+   39d6b:	int3
+   39d6c:	int3
+   39d6d:	int3
+   39d6e:	int3
+   39d6f:	int3
+
+
+000000000003a4a0 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::contains_scalar>:
+   3a4a0:	mov    %rdi,%rax
+   3a4a3:	mov    %rsi,%rdx
+   3a4a6:	shr    $0x20,%rdx
+   3a4aa:	and    0x18(%rdi),%edx
+   3a4ad:	mov    %edx,%edi
+   3a4af:	shr    $0x2,%edi
+   3a4b2:	mov    0x10(%rax),%rcx
+   3a4b6:	cmp    %rcx,%rdi
+   3a4b9:	jae    3a5f8 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::contains_scalar+0x158>
+   3a4bf:	shl    $0x6,%rdi
+   3a4c3:	add    0x8(%rax),%rdi
+   3a4c7:	shl    $0x4,%edx
+   3a4ca:	vmovd  %esi,%xmm0
+   3a4ce:	shl    $0x10,%esi
+   3a4d1:	vpinsrd $0x1,%esi,%xmm0,%xmm0
+   3a4d7:	and    $0x30,%edx
+   3a4da:	vpsrad $0x10,%xmm0,%xmm0
+   3a4df:	vpbroadcastq %xmm0,%ymm1
+   3a4e4:	vmovd  %xmm0,%ecx
+   3a4e8:	vpextrd $0x1,%xmm0,%eax
+   3a4ee:	test   %eax,%eax
+   3a4f0:	setg   %al
+   3a4f3:	sets   %sil
+   3a4f7:	test   %ecx,%ecx
+   3a4f9:	sets   %r8b
+   3a4fd:	vpmaddwd -0x32765(%rip),%ymm1,%ymm0        # 7da0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xd0>
+   3a505:	vmovdqa64 -0x2fe8f(%rip),%zmm1        # a680 <core::unicode::unicode_data::white_space::WHITESPACE_MAP+0x456>
+   3a50f:	vpermd %zmm0,%zmm1,%zmm0
+   3a515:	vpsrlvd -0x2fe5f(%rip),%zmm0,%zmm0        # a6c0 <core::unicode::unicode_data::white_space::WHITESPACE_MAP+0x496>
+   3a51f:	vpmovdb %zmm0,%xmm0
+   3a525:	setg   %cl
+   3a528:	vpandd -0x3299a(%rip){1to4},%xmm0,%xmm1        # 7b98 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x144>
+   3a532:	vmovq  -0x324ba(%rip),%xmm2        # 8080 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x80>
+   3a53a:	vpxor  %xmm3,%xmm3,%xmm3
+   3a53e:	mov    $0xfffd,%r9w
+   3a543:	kmovd  %r9d,%k1
+   3a548:	vpcmpgtb %xmm0,%xmm3,%k0{%k1}
+   3a54e:	kmovd  %esi,%k1
+   3a552:	kshiftlw $0xf,%k1,%k1
+   3a558:	kshiftrw $0xe,%k1,%k1
+   3a55e:	korw   %k1,%k0,%k0
+   3a562:	mov    $0xfff7,%si
+   3a566:	kmovd  %esi,%k1
+   3a56a:	kandw  %k1,%k0,%k0
+   3a56e:	kmovd  %r8d,%k1
+   3a573:	kshiftlw $0xf,%k1,%k1
+   3a579:	kshiftrw $0xc,%k1,%k1
+   3a57f:	korw   %k1,%k0,%k0
+   3a583:	mov    $0xffdf,%si
+   3a587:	kmovd  %esi,%k1
+   3a58b:	kandw  %k1,%k0,%k0
+   3a58f:	kmovd  %eax,%k1
+   3a593:	kshiftlw $0xf,%k1,%k1
+   3a599:	kshiftrw $0xa,%k1,%k1
+   3a59f:	korw   %k1,%k0,%k0
+   3a5a3:	mov    $0xff7f,%ax
+   3a5a7:	kmovd  %eax,%k1
+   3a5ab:	kandw  %k1,%k0,%k0
+   3a5af:	kmovd  %ecx,%k1
+   3a5b3:	kshiftlw $0xf,%k1,%k1
+   3a5b9:	kshiftrw $0x8,%k1,%k1
+   3a5bf:	korw   %k1,%k0,%k0
+   3a5c3:	vpmovm2w %k0,%ymm0
+   3a5c9:	vmovdqa -0x32851(%rip),%ymm3        # 7d80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xb0>
+   3a5d1:	vpermw %ymm0,%ymm3,%ymm0
+   3a5d7:	vpmovw2m %ymm0,%k0
+   3a5dd:	knotw  %k0,%k1
+   3a5e1:	vpshufb %xmm1,%xmm2,%xmm0{%k1}{z}
+   3a5e7:	vmovdqu (%rdx,%rdi,1),%xmm1
+   3a5ec:	vptest %xmm0,%xmm1
+   3a5f1:	setb   %al
+   3a5f4:	vzeroupper
+   3a5f7:	ret
+   3a5f8:	push   %rax
+   3a5f9:	lea    0x3ec30(%rip),%rdx        # 79230 <anon.35274091df3394f4211c680a8c77ed4a.292.llvm.9036914972901821666+0x2a0>
+   3a600:	mov    %rcx,%rsi
+   3a603:	call   *0x40e77(%rip)        # 7b480 <_DYNAMIC+0x250>
+   3a609:	int3
+   3a60a:	int3
+   3a60b:	int3
+   3a60c:	int3
+   3a60d:	int3
+   3a60e:	int3
+   3a60f:	int3
+

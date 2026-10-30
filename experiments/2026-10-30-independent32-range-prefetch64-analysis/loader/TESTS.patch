@@ -1,0 +1,40 @@
+--- experiments/2026-10-30-independent32-range-analysis/loader/test_loader.py@f692681654ea68c31870d9684c8c90c839a629f6
++++ prefetch64-analysis/loader/test_loader.py
+@@ -56,7 +56,7 @@
+         self.assertEqual(len(run.expected_log().splitlines()),25)
+         for log in (run.expected_log().split(b'\n',1)[1],run.expected_log()+b'extra\n',
+                     run.expected_log().replace(b'24/24 processes complete\n',b''),
+-                    run.expected_log().replace(b'216 rows',b'215 rows')):
++                    run.expected_log().replace(b'192 rows',b'191 rows')):
+             with self.assertRaises(ValueError):run.validate_terminal(self.outcome(),self.anchor(),self.binding(),log)
+         for mutate in (lambda o:o.update(exit_code=1),lambda o:o.update(complete=False),
+                        lambda o:o.update(session_id=987),lambda o:o.update(screen_log_sha256='0'*64),
+@@ -75,11 +75,11 @@
+         fields=dict(mapping_id='m',keys=65536,actual_bytes=131072,calibration_negatives=1<<26,
+             calibration_fp=123,calibration_digest=999,source_case_index=0,source_row_index=0,
+             reuse_case_indices=[24],key_base=1,inserted_digest=2,inserted_hash_digest=3,bitmap_available=False,bitmap_digest=None)
+-        entries=[dict(fields,point_id='p'+str(i),seed=982451653)for i in range(36)]
++        entries=[dict(fields,point_id='p'+str(i),seed=982451653)for i in range(32)]
+         result=dict(quality=[dict(e,insertion_identity={k:e[k]for k in
+             ('keys','actual_bytes','key_base','inserted_digest','inserted_hash_digest','bitmap_available','bitmap_digest')})for e in entries])
+-        links=dict(api_records=entries,api_record_count=36,known_mapping_record_count=34,
+-            calibration_rows=36,reuse_rows=180,pooling=False)
++        links=dict(api_records=entries,api_record_count=32,known_mapping_record_count=26,
++            calibration_rows=32,reuse_rows=160,pooling=False)
+         run.validate_quality_agreement(result,links)
+         for mutate in (lambda r:r['quality'][0].update(source_row_index=1),
+                        lambda r:r['quality'][0].update(calibration_fp=124),
+@@ -94,11 +94,11 @@
+                    compiler_consumed_input_sha256={'source':'c'*64},tools_sha256={'tool':'d'*64},
+                    normal_executable={'path':'normal','sha256':'a'*64})
+         metadata=dict(complete=True,source_commit=self.binding()['producer_commit'],cases=[{}]*24,
+-            counts=dict(processes=24,rows=216),initial_freeze=copy.deepcopy(proof),
++            counts=dict(processes=24,rows=192),initial_freeze=copy.deepcopy(proof),
+             final_freeze=copy.deepcopy(proof),placement={'node':1},final_placement={'node':1})
+         run.validate_audit_metadata(metadata,self.binding(),proof)
+         for mutate in (lambda m:m.update(complete=False),lambda m:m['cases'].pop(),
+-                       lambda m:m['counts'].update(rows=215),lambda m:m['final_placement'].update(node=0),
++                       lambda m:m['counts'].update(rows=191),lambda m:m['final_placement'].update(node=0),
+                        lambda m:m['final_freeze']['all_binary_sha256'].update(normal='e'*64)):
+             changed=copy.deepcopy(metadata);mutate(changed)
+             with self.assertRaises(ValueError):run.validate_audit_metadata(changed,self.binding(),proof)

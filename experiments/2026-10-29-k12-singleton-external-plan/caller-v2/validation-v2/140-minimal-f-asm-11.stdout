@@ -1,0 +1,59 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004f2b0 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj>:
+   4f2b0:	mov    %rcx,%rax
+   4f2b3:	cmp    $0x1,%esi
+   4f2b6:	jne    4f308 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj+0x58>
+   4f2b8:	mov    (%rdx),%rdx
+   4f2bb:	mov    0x4(%rdi),%esi
+   4f2be:	and    %edx,%esi
+   4f2c0:	movzbl (%rdi),%ecx
+   4f2c3:	shr    %cl,%rdx
+   4f2c6:	vmovd  %edx,%xmm0
+   4f2ca:	vpbroadcastd %xmm0,%ymm0
+   4f2cf:	vpmulld -0x4ab58(%rip),%ymm0,%ymm0        # 4780 <_IO_stdin_used+0x2888>
+   4f2d8:	vpsrld $0x1b,%ymm0,%ymm0
+   4f2dd:	vpbroadcastd -0x4d3fe(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   4f2e6:	vpsllvd %ymm0,%ymm1,%ymm0
+   4f2eb:	mov    0x8(%rdi),%rcx
+   4f2ef:	shl    $0x5,%rsi
+   4f2f3:	vmovdqa (%rcx,%rsi,1),%ymm1
+   4f2f8:	xor    %ecx,%ecx
+   4f2fa:	vptest %ymm0,%ymm1
+   4f2ff:	setb   %cl
+   4f302:	mov    %ecx,(%rax)
+   4f304:	vzeroupper
+   4f307:	ret
+   4f308:	test   %esi,%esi
+   4f30a:	je     4f37e <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj+0xce>
+   4f30c:	mov    %esi,%esi
+   4f30e:	xor    %r8d,%r8d
+   4f311:	vmovdqa -0x4ab99(%rip),%ymm0        # 4780 <_IO_stdin_used+0x2888>
+   4f319:	vpbroadcastd -0x4d43a(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   4f322:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   4f330:	mov    (%rdx,%r8,8),%r9
+   4f334:	mov    0x4(%rdi),%r10d
+   4f338:	and    %r9d,%r10d
+   4f33b:	movzbl (%rdi),%ecx
+   4f33e:	shr    %cl,%r9
+   4f341:	vmovd  %r9d,%xmm2
+   4f346:	vpbroadcastd %xmm2,%ymm2
+   4f34b:	vpmulld %ymm0,%ymm2,%ymm2
+   4f350:	vpsrld $0x1b,%ymm2,%ymm2
+   4f355:	vpsllvd %ymm2,%ymm1,%ymm2
+   4f35a:	mov    0x8(%rdi),%rcx
+   4f35e:	shl    $0x5,%r10
+   4f362:	vmovdqa (%rcx,%r10,1),%ymm3
+   4f368:	xor    %ecx,%ecx
+   4f36a:	vptest %ymm2,%ymm3
+   4f36f:	setb   %cl
+   4f372:	mov    %ecx,(%rax,%r8,4)
+   4f376:	inc    %r8
+   4f379:	cmp    %r8,%rsi
+   4f37c:	jne    4f330 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj+0x80>
+   4f37e:	vzeroupper
+   4f381:	ret

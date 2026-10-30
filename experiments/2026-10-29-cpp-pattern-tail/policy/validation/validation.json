@@ -1,0 +1,156 @@
+{
+  "commands": [
+    {
+      "name": "configure",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "cmake",
+        "-S",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cpp-pattern-tail/policy",
+        "-B",
+        "/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-policy",
+        "-DCMAKE_CXX_COMPILER=clang++"
+      ],
+      "returncode": 0,
+      "seconds": 0.3828149475157261
+    },
+    {
+      "name": "build",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "cmake",
+        "--build",
+        "/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-policy",
+        "--parallel",
+        "1"
+      ],
+      "returncode": 0,
+      "seconds": 4.502544963732362
+    },
+    {
+      "name": "ctest",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "ctest",
+        "--test-dir",
+        "/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-policy",
+        "--output-on-failure"
+      ],
+      "returncode": 0,
+      "seconds": 0.26103408820927143
+    },
+    {
+      "name": "minimal-build",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "clang++",
+        "-std=c++17",
+        "-O3",
+        "-mavx2",
+        "-mavx512f",
+        "-mno-avx512vl",
+        "-mno-avx512bw",
+        "-mno-avx512dq",
+        "-I",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cpp-pattern-tail/policy/snapshot/include",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cpp-pattern-tail/policy/check.cpp",
+        "-o",
+        "/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-policy/check_minimal"
+      ],
+      "returncode": 0,
+      "seconds": 1.1004301495850086
+    },
+    {
+      "name": "minimal-check",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-policy/check_minimal"
+      ],
+      "returncode": 0,
+      "seconds": 0.09738149121403694
+    },
+    {
+      "name": "asan-build",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-march=native",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-I",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cpp-pattern-tail/policy/snapshot/include",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-cpp-pattern-tail/policy/check.cpp",
+        "-o",
+        "/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-policy/check_asan"
+      ],
+      "returncode": 0,
+      "seconds": 1.7370441053062677
+    },
+    {
+      "name": "asan-check",
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-policy/check_asan"
+      ],
+      "returncode": 0,
+      "seconds": 0.697779318317771
+    }
+  ],
+  "source_sha256": {
+    "CMakeLists.txt": "634e4cedc88f4aa3f28850507e7a658c8e7a6e430e7aced540ec0e6b96955298",
+    "README.md": "c31d6b3fdeea5f83bb1b0a18de8d5db64c3b26f121232feed076648e328ad9ab",
+    "adapters.hpp": "50d14c8f19155a4d6ba4a62938c444187b62358080f33963c23940bbe9ab9428",
+    "after_grouped.h": "fa045a4ea1664f27d5ad94ed61f5cb7e94211eb46af7eba8c7e320368ac61ebd",
+    "after_policy.h": "5d1302c22890b0032bdcf40b975337bbfb61fb28bec01224976c0a41db44d848",
+    "before.h": "f27334f153ab482e605f9a4049c3c18075d232315736bd0b4edff9c56a599184",
+    "check.cpp": "28aaa96a22a1fb6ca02e0b94c222803ac0b4e99de5bab781b52e2844b1031d02",
+    "protocol.json": "06c31e07259d083df62d6ef7c19f7a3614aaccdfc5dacabe7d41cd3ed614a9f9",
+    "run.py": "aec791ffe5cc5cf5cbcc04d23917e687a51288a665c4e40c136dbfd1871f2248",
+    "snapshot/compare_benchmark.cpp": "95b54e3735404ed2e6b289a05b5aac10af17dd15aa129dd135351bf5535dba95",
+    "snapshot/include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+    "snapshot/include/byte_split_bloom.h": "46d285a1676b0613a0759d9786d2d8afe67d75b5fc64ca839305922627fa332f",
+    "snapshot/include/cache_sectorized_BF_32bit.h": "ee48aab598e0369fe92163dba420f42a51520a1e4792d61867c71dd52012a10a",
+    "snapshot/include/fast_pattern_BF.h": "d10bb646c6fd40ecdda02a0d6b51304ae62cbd978b0dc9e058601c13c6d2b87b",
+    "snapshot/include/four_sector_bloom.h": "127b46a8f065a34ce2028873a41476baccd5e68cfe2957ab3d0f5ef2d8900304",
+    "snapshot/include/impala_blocked_BF_64bit.h": "7c20f4f15155477b9865d91ce01723e6f1f9f6378c4973741ede7f56fd885d02",
+    "snapshot/include/impala_blocked_BF_64bit_avx512.h": "b088dcad98f5d9b18a010f5daf5e9b5d5fddacc744d17e8e0313fa71552ee452",
+    "snapshot/include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c",
+    "snapshot/include/new_cache_sectorized_BF_32bit.h": "cffa2fb61b1e38afb4c1bdc646219da3eb930a11ef1790dd8f4888de247bc769",
+    "snapshot/include/parallel_bloom.h": "7a1744d8689a344bcb8d0161f52e7d8999db52fca11bcc45953c9e4c4f0327cf",
+    "snapshot/include/parallel_layout_bloom.h": "7116b26a9d09f78be0a66daa990d3593a120ac5ce8c485eba89c8a06f82ba6e6",
+    "snapshot/include/register_blocked_BF_2x32bit.h": "2ce6e2bba2342a2e2f6964aa5fda8fe6c3bdd090e759d91ae46b18878566ddde",
+    "snapshot/include/register_blocked_BF_32bit.h": "aad3b10e1220d41ca06f818c4ded6b3b405a5c6f9cf7a31887cea58afeeaadd9",
+    "snapshot/include/register_blocked_BF_32bit_Masks.h": "595b0d5ad008ef3f2eb7008684b4e5ba4ef038dd8334fab938504da06559754c",
+    "snapshot/include/register_blocked_BF_64bit.h": "c64816638a58537ad3318e3707ec9ac3cd64732c1bd27f4347acbc70e6cad0c3",
+    "snapshot/include/register_blocked_BF_64bit_Masks.h": "d63ffa01485942d886bd22b883a637929683f20d3c5e20e31cb5130e3bab2ecd",
+    "snapshot/include/split64_bloom.h": "9b548e880b927ade57ef27c946f0105e9abe9c2b2436eecdbbbff0a22d30f429",
+    "snapshot.json": "1118d2b6c83c0318dd9ecf2a2dd4489d865db542615fccd25cc042da0ec7f157",
+    "summarize.py": "766fa6b672ee49e9fbf403263e80c2354415e2e3bff1f509820b66c476daebfb",
+    "validate.py": "0cbf155490496803bc8b2d905ddb90f3d9100b65014ca2aa98c1ab38cbdc5341"
+  },
+  "checksum": "14935109807921651589",
+  "binaries": {
+    "build/cpp-pattern-tail-policy/compare_benchmark": "33c642a4807755d4fa47bf408518aa1d840ec779dee072f4e1f3312aaa068add",
+    "build/cpp-pattern-tail-policy/check": "210d7e88eedc303296c3ff675df77dde91c8944819aa4c17ce7ee3802c03609a",
+    "build/cpp-pattern-tail-policy/check_scalar": "3214e067ada454e150a5ea7472b1faaa32e187230a81a459cb7b62fc24ad9395",
+    "build/cpp-pattern-tail-policy/check_minimal": "1e85a2b5f4f0eb3c0efcbd930e55c003e90fde0374276077d18d0340329a958a",
+    "build/cpp-pattern-tail-policy/check_asan": "89a20be3edda3681cc2aacdf66a273bc1d812b84748fdcb8f0c6e7b0d5bba3ae"
+  }
+}

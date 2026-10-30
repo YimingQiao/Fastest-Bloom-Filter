@@ -1,0 +1,78 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000050ef0 <_Z13lookup_kernelIN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRT_mPKT0_Pj>:
+   50ef0:	mov    $0xffffffff,%eax
+   50ef5:	and    %rsi,%rax
+   50ef8:	je     5101f <_Z13lookup_kernelIN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRT_mPKT0_Pj+0x12f>
+   50efe:	push   %r15
+   50f00:	push   %r14
+   50f02:	push   %r12
+   50f04:	push   %rbx
+   50f05:	sub    $0x80,%rsp
+   50f0c:	xor    %esi,%esi
+   50f0e:	mov    $0x20,%r8d
+   50f14:	vmovdqa -0x4c4dc(%rip),%ymm0        # 4a40 <_IO_stdin_used+0x2b48>
+   50f1c:	vmovdqa -0x4c6e4(%rip),%ymm1        # 4840 <_IO_stdin_used+0x2948>
+   50f24:	vpbroadcastd -0x4f045(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   50f2d:	mov    %rax,%r9
+   50f30:	cmp    $0x1,%r9
+   50f34:	mov    %r9,%r10
+   50f37:	adc    $0x0,%r10
+   50f3b:	cmp    $0x20,%r10
+   50f3f:	cmovae %r8,%r10
+   50f43:	mov    0x18(%rdi),%r11d
+   50f47:	mov    (%rdi),%rbx
+   50f4a:	shr    $0x6,%r11d
+   50f4e:	xor    %r14d,%r14d
+   50f51:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   50f60:	mov    (%rdx,%r14,8),%r15
+   50f64:	mov    %r15d,%r12d
+   50f67:	imul   %r11,%r12
+   50f6b:	shr    $0x1a,%r12
+   50f6f:	and    $0xffffffc0,%r12d
+   50f73:	prefetcht2 (%rbx,%r12,1)
+   50f78:	prefetcht2 0x3f(%rbx,%r12,1)
+   50f7e:	mov    %r12d,-0x80(%rsp,%r14,4)
+   50f83:	shr    $0x20,%r15
+   50f87:	mov    %r15d,(%rsp,%r14,4)
+   50f8b:	inc    %r14
+   50f8e:	cmp    %r14,%r10
+   50f91:	jne    50f60 <_Z13lookup_kernelIN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRT_mPKT0_Pj+0x70>
+   50f93:	xor    %r11d,%r11d
+   50f96:	cs nopw 0x0(%rax,%rax,1)
+   50fa0:	mov    (%rdi),%rbx
+   50fa3:	mov    -0x80(%rsp,%r11,4),%r14d
+   50fa8:	vpbroadcastd (%rsp,%r11,4),%ymm3
+   50fae:	vpmulld %ymm0,%ymm3,%ymm4
+   50fb3:	vpsrld $0x1c,%ymm4,%ymm5
+   50fb8:	vpermd (%rbx,%r14,1),%ymm5,%ymm6
+   50fbe:	vpermd 0x20(%rbx,%r14,1),%ymm5,%ymm5
+   50fc5:	vpsrad $0x1f,%ymm4,%ymm4
+   50fca:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   50fd0:	vpmulld %ymm1,%ymm3,%ymm3
+   50fd5:	vpsrld $0x1b,%ymm3,%ymm3
+   50fda:	vpsllvd %ymm3,%ymm2,%ymm3
+   50fdf:	xor    %ebx,%ebx
+   50fe1:	vptest %ymm3,%ymm4
+   50fe6:	setb   %bl
+   50fe9:	mov    %ebx,(%rcx,%r11,4)
+   50fed:	inc    %r11
+   50ff0:	cmp    %r11,%r10
+   50ff3:	jne    50fa0 <_Z13lookup_kernelIN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRT_mPKT0_Pj+0xb0>
+   50ff5:	add    $0x20,%rsi
+   50ff9:	add    $0xffffffffffffffe0,%r9
+   50ffd:	add    $0x100,%rdx
+   51004:	sub    $0xffffffffffffff80,%rcx
+   51008:	cmp    %rax,%rsi
+   5100b:	jb     50f30 <_Z13lookup_kernelIN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRT_mPKT0_Pj+0x40>
+   51011:	add    $0x80,%rsp
+   51018:	pop    %rbx
+   51019:	pop    %r12
+   5101b:	pop    %r14
+   5101d:	pop    %r15
+   5101f:	vzeroupper
+   51022:	ret

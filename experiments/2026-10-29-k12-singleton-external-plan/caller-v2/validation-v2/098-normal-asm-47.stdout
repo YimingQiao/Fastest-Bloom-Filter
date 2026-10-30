@@ -1,0 +1,59 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000053060 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRKT0_mPKmPj>:
+   53060:	test   %rsi,%rsi
+   53063:	je     53146 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRKT0_mPKmPj+0xe6>
+   53069:	push   %rbx
+   5306a:	mov    %rdx,%rax
+   5306d:	movabs $0xd6e8feb86659fd93,%r8
+   53077:	xor    %r9d,%r9d
+   5307a:	movabs $0xf1357aea2e62a9c5,%r10
+   53084:	vmovdqa -0x4ebac(%rip),%ymm0        # 44e0 <_IO_stdin_used+0x25e8>
+   5308c:	vpbroadcastq -0x51115(%rip),%ymm1        # 1f80 <_IO_stdin_used+0x88>
+   53095:	data16 cs nopw 0x0(%rax,%rax,1)
+   530a0:	mov    (%rax,%r9,8),%rdx
+   530a4:	mov    %rdx,%r11
+   530a7:	shr    $0x20,%r11
+   530ab:	xor    %rdx,%r11
+   530ae:	imul   %r8,%r11
+   530b2:	mov    %r11,%rbx
+   530b5:	shr    $0x20,%rbx
+   530b9:	xor    %r11,%rbx
+   530bc:	imul   %r8,%rbx
+   530c0:	mov    %rbx,%rdx
+   530c3:	shr    $0x20,%rdx
+   530c7:	xor    %rbx,%rdx
+   530ca:	or     $0x1,%rdx
+   530ce:	mov    0x20(%rdi),%r11
+   530d2:	mulx   0x10(%rdi),%rbx,%rbx
+   530d8:	imul   %r10,%rdx
+   530dc:	shl    $0x6,%rbx
+   530e0:	prefetcht0 (%r11,%rbx,1)
+   530e5:	vmovdqa (%r11,%rbx,1),%ymm2
+   530eb:	vmovdqa 0x20(%r11,%rbx,1),%ymm3
+   530f2:	vpbroadcastq %rdx,%ymm4
+   530f8:	vpsllvq %ymm0,%ymm4,%ymm4
+   530fd:	vpsrld $0x1a,%ymm4,%ymm4
+   53102:	vpmovzxdq %xmm4,%ymm5
+   53107:	vpsllvq %ymm5,%ymm1,%ymm5
+   5310c:	vextracti128 $0x1,%ymm4,%xmm4
+   53112:	vpmovzxdq %xmm4,%ymm4
+   53117:	vptest %ymm5,%ymm2
+   5311c:	setb   %dl
+   5311f:	vpsllvq %ymm4,%ymm1,%ymm2
+   53124:	vptest %ymm2,%ymm3
+   53129:	setb   %r11b
+   5312d:	xor    %ebx,%ebx
+   5312f:	test   %dl,%r11b
+   53132:	setne  %bl
+   53135:	mov    %ebx,(%rcx,%r9,4)
+   53139:	inc    %r9
+   5313c:	cmp    %r9,%rsi
+   5313f:	jne    530a0 <_Z20inline_single_kernelILb1EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRKT0_mPKmPj+0x40>
+   53145:	pop    %rbx
+   53146:	vzeroupper
+   53149:	ret

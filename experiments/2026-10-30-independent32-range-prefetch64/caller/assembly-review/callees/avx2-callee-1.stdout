@@ -1,0 +1,268 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/avx2/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000029830 <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj>:
+   29830:	push   %rbx
+   29831:	sub    $0x40,%rsp
+   29835:	mov    %esi,%ebx
+   29837:	test   %esi,%esi
+   29839:	je     29d53 <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0x523>
+   2983f:	mov    0x8(%rdi),%rsi
+   29843:	sub    (%rdi),%rsi
+   29846:	mov    %ebx,%eax
+   29848:	cmp    $0x200001,%rsi
+   2984f:	jb     29b18 <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0x2e8>
+   29855:	cmp    $0x8,%ebx
+   29858:	jb     29b1d <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0x2ed>
+   2985e:	xor    %esi,%esi
+   29860:	vpbroadcastd -0x28195(%rip),%ymm0        # 16d4 <__abi_tag+0x1410>
+   29869:	vbroadcastss -0x281ae(%rip),%ymm1        # 16c4 <__abi_tag+0x1400>
+   29872:	vmovups %ymm1,0x20(%rsp)
+   29878:	vpbroadcastd -0x28195(%rip),%ymm1        # 16ec <__abi_tag+0x1428>
+   29881:	vmovdqu %ymm1,(%rsp)
+   29886:	vpbroadcastd -0x281c7(%rip),%ymm3        # 16c8 <__abi_tag+0x1404>
+   2988f:	vbroadcastss -0x281cc(%rip),%ymm5        # 16cc <__abi_tag+0x1408>
+   29898:	vpbroadcastd -0x281d1(%rip),%ymm6        # 16d0 <__abi_tag+0x140c>
+   298a1:	vpbroadcastd -0x281ca(%rip),%ymm7        # 16e0 <__abi_tag+0x141c>
+   298aa:	vpbroadcastd -0x281d7(%rip),%ymm8        # 16dc <__abi_tag+0x1418>
+   298b3:	vpbroadcastd -0x281d8(%rip),%ymm9        # 16e4 <__abi_tag+0x1420>
+   298bc:	jmp    29a7f <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0x24f>
+   298c1:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   298d0:	vmovups (%rdx,%rsi,8),%ymm1
+   298d5:	vmovups 0x20(%rdx,%rsi,8),%ymm4
+   298db:	vshufps $0x88,%ymm4,%ymm1,%ymm10
+   298e0:	vpermpd $0xd8,%ymm10,%ymm10
+   298e6:	vshufps $0xdd,%ymm4,%ymm1,%ymm1
+   298eb:	vpermpd $0xd8,%ymm1,%ymm11
+   298f1:	vmovd  %r9d,%xmm1
+   298f6:	vpbroadcastd %xmm1,%ymm1
+   298fb:	vandps %ymm1,%ymm11,%ymm12
+   298ff:	vpsrld $0x1a,%ymm11,%ymm1
+   29905:	vpand  %ymm0,%ymm1,%ymm1
+   29909:	vpor   0x20(%rsp),%ymm1,%ymm1
+   2990f:	vpxor  %ymm1,%ymm12,%ymm1
+   29913:	vpsrld $0x1c,%ymm11,%ymm4
+   29919:	vpand  %ymm0,%ymm4,%ymm4
+   2991d:	vpor   (%rsp),%ymm4,%ymm4
+   29922:	vpxor  %ymm4,%ymm12,%ymm4
+   29926:	vpsrld $0x1e,%ymm11,%ymm11
+   2992c:	vandps %ymm5,%ymm10,%ymm13
+   29930:	vpsllvd %ymm13,%ymm6,%ymm13
+   29935:	vpor   %ymm3,%ymm11,%ymm11
+   29939:	vpxor  %ymm12,%ymm11,%ymm11
+   2993e:	vpsrld $0x4,%ymm10,%ymm14
+   29944:	vpor   %ymm7,%ymm13,%ymm15
+   29948:	vpand  %ymm8,%ymm14,%ymm14
+   2994d:	vpsllvd %ymm14,%ymm15,%ymm13
+   29952:	vpsubd %ymm14,%ymm9,%ymm14
+   29957:	vpsrlvd %ymm14,%ymm15,%ymm14
+   2995c:	vpcmpeqd %ymm2,%ymm2,%ymm2
+   29960:	vpxor  %xmm15,%xmm15,%xmm15
+   29965:	vpgatherdd %ymm2,(%r8,%ymm12,4),%ymm15
+   2996b:	vpcmpeqd %ymm2,%ymm2,%ymm2
+   2996f:	vpxor  %xmm12,%xmm12,%xmm12
+   29974:	vpgatherdd %ymm2,(%r8,%ymm1,4),%ymm12
+   2997a:	vpcmpeqd %ymm2,%ymm2,%ymm2
+   2997e:	vpxor  %xmm1,%xmm1,%xmm1
+   29982:	vpgatherdd %ymm2,(%r8,%ymm4,4),%ymm1
+   29988:	vpcmpeqd %ymm2,%ymm2,%ymm2
+   2998c:	vpxor  %xmm4,%xmm4,%xmm4
+   29990:	vpgatherdd %ymm2,(%r8,%ymm11,4),%ymm4
+   29996:	vpsrld $0x8,%ymm10,%ymm2
+   2999c:	vpsrld $0x10,%ymm10,%ymm11
+   299a2:	vpor   %ymm14,%ymm13,%ymm13
+   299a7:	vpand  %ymm5,%ymm2,%ymm2
+   299ab:	vpsllvd %ymm2,%ymm6,%ymm2
+   299b0:	vpand  %ymm15,%ymm13,%ymm14
+   299b5:	vpcmpeqd %ymm13,%ymm14,%ymm13
+   299ba:	vpsrld $0xc,%ymm10,%ymm14
+   299c0:	vpor   %ymm7,%ymm2,%ymm2
+   299c4:	vpand  %ymm8,%ymm14,%ymm14
+   299c9:	vpsllvd %ymm14,%ymm2,%ymm15
+   299ce:	vpsubd %ymm14,%ymm9,%ymm14
+   299d3:	vpsrlvd %ymm14,%ymm2,%ymm2
+   299d8:	vpand  %ymm5,%ymm11,%ymm11
+   299dc:	vpsllvd %ymm11,%ymm6,%ymm11
+   299e1:	vpor   %ymm2,%ymm15,%ymm2
+   299e5:	vpsrld $0x14,%ymm10,%ymm14
+   299eb:	vpor   %ymm7,%ymm11,%ymm11
+   299ef:	vpand  %ymm8,%ymm14,%ymm14
+   299f4:	vpsllvd %ymm14,%ymm11,%ymm15
+   299f9:	vpsubd %ymm14,%ymm9,%ymm14
+   299fe:	vpsrlvd %ymm14,%ymm11,%ymm11
+   29a03:	vpand  %ymm2,%ymm12,%ymm12
+   29a07:	vpcmpeqd %ymm2,%ymm12,%ymm2
+   29a0b:	vpand  %ymm2,%ymm13,%ymm2
+   29a0f:	vpshufb -0x280f8(%rip),%ymm10,%ymm10        # 1920 <_IO_stdin_used+0x230>
+   29a18:	vpor   %ymm11,%ymm15,%ymm11
+   29a1d:	vpand  %ymm5,%ymm10,%ymm12
+   29a21:	vpsllvd %ymm12,%ymm6,%ymm12
+   29a26:	vpand  %ymm1,%ymm11,%ymm1
+   29a2a:	vpcmpeqd %ymm1,%ymm11,%ymm1
+   29a2e:	vpsrld $0x4,%ymm10,%ymm10
+   29a34:	vpor   %ymm7,%ymm12,%ymm11
+   29a38:	vpand  %ymm8,%ymm10,%ymm10
+   29a3d:	vpsllvd %ymm10,%ymm11,%ymm12
+   29a42:	vpsubd %ymm10,%ymm9,%ymm10
+   29a47:	vpsrlvd %ymm10,%ymm11,%ymm10
+   29a4c:	vpor   %ymm10,%ymm12,%ymm10
+   29a51:	vpand  %ymm4,%ymm10,%ymm4
+   29a55:	vpcmpeqd %ymm4,%ymm10,%ymm4
+   29a59:	vpand  %ymm4,%ymm1,%ymm1
+   29a5d:	vpand  %ymm1,%ymm2,%ymm1
+   29a61:	vpsrld $0x1f,%ymm1,%ymm1
+   29a66:	vmovdqu %ymm1,(%rcx,%rsi,4)
+   29a6b:	lea    0x8(%rsi),%r8
+   29a6f:	add    $0x10,%rsi
+   29a73:	cmp    %rax,%rsi
+   29a76:	mov    %r8,%rsi
+   29a79:	ja     29d3e <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0x50e>
+   29a7f:	lea    0x48(%rsi),%r10
+   29a83:	mov    0x18(%rdi),%r9d
+   29a87:	mov    (%rdi),%r8
+   29a8a:	cmp    %rax,%r10
+   29a8d:	ja     298d0 <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0xa0>
+   29a93:	mov    0x204(%rdx,%rsi,8),%r10d
+   29a9b:	and    %r9d,%r10d
+   29a9e:	prefetcht0 (%r8,%r10,4)
+   29aa3:	mov    0x20c(%rdx,%rsi,8),%r10d
+   29aab:	and    %r9d,%r10d
+   29aae:	prefetcht0 (%r8,%r10,4)
+   29ab3:	mov    0x214(%rdx,%rsi,8),%r10d
+   29abb:	and    %r9d,%r10d
+   29abe:	prefetcht0 (%r8,%r10,4)
+   29ac3:	mov    0x21c(%rdx,%rsi,8),%r10d
+   29acb:	and    %r9d,%r10d
+   29ace:	prefetcht0 (%r8,%r10,4)
+   29ad3:	mov    0x224(%rdx,%rsi,8),%r10d
+   29adb:	and    %r9d,%r10d
+   29ade:	prefetcht0 (%r8,%r10,4)
+   29ae3:	mov    0x22c(%rdx,%rsi,8),%r10d
+   29aeb:	and    %r9d,%r10d
+   29aee:	prefetcht0 (%r8,%r10,4)
+   29af3:	mov    0x234(%rdx,%rsi,8),%r10d
+   29afb:	and    %r9d,%r10d
+   29afe:	prefetcht0 (%r8,%r10,4)
+   29b03:	mov    0x23c(%rdx,%rsi,8),%r10d
+   29b0b:	and    %r9d,%r10d
+   29b0e:	prefetcht0 (%r8,%r10,4)
+   29b13:	jmp    298d0 <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0xa0>
+   29b18:	cmp    $0x8,%ebx
+   29b1b:	jae    29b25 <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0x2f5>
+   29b1d:	xor    %r8d,%r8d
+   29b20:	jmp    29d3e <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0x50e>
+   29b25:	xor    %esi,%esi
+   29b27:	vpbroadcastd -0x2845c(%rip),%ymm0        # 16d4 <__abi_tag+0x1410>
+   29b30:	vbroadcastss -0x28475(%rip),%ymm1        # 16c4 <__abi_tag+0x1400>
+   29b39:	vmovups %ymm1,0x20(%rsp)
+   29b3f:	vpbroadcastd -0x2845c(%rip),%ymm1        # 16ec <__abi_tag+0x1428>
+   29b48:	vmovdqu %ymm1,(%rsp)
+   29b4d:	vpbroadcastd -0x2848e(%rip),%ymm3        # 16c8 <__abi_tag+0x1404>
+   29b56:	vbroadcastss -0x28493(%rip),%ymm5        # 16cc <__abi_tag+0x1408>
+   29b5f:	vpbroadcastd -0x28498(%rip),%ymm6        # 16d0 <__abi_tag+0x140c>
+   29b68:	vpbroadcastd -0x28491(%rip),%ymm7        # 16e0 <__abi_tag+0x141c>
+   29b71:	vpbroadcastd -0x2849e(%rip),%ymm8        # 16dc <__abi_tag+0x1418>
+   29b7a:	vpbroadcastd -0x2849f(%rip),%ymm9        # 16e4 <__abi_tag+0x1420>
+   29b83:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   29b90:	vmovups (%rdx,%rsi,8),%ymm1
+   29b95:	vmovups 0x20(%rdx,%rsi,8),%ymm4
+   29b9b:	vshufps $0x88,%ymm4,%ymm1,%ymm10
+   29ba0:	vpermpd $0xd8,%ymm10,%ymm10
+   29ba6:	vshufps $0xdd,%ymm4,%ymm1,%ymm1
+   29bab:	vpermpd $0xd8,%ymm1,%ymm11
+   29bb1:	vbroadcastss 0x18(%rdi),%ymm1
+   29bb7:	vandps %ymm1,%ymm11,%ymm13
+   29bbb:	vpsrld $0x1a,%ymm11,%ymm1
+   29bc1:	vpand  %ymm0,%ymm1,%ymm1
+   29bc5:	vpor   0x20(%rsp),%ymm1,%ymm1
+   29bcb:	vpxor  %ymm1,%ymm13,%ymm1
+   29bcf:	vpsrld $0x1c,%ymm11,%ymm4
+   29bd5:	vpand  %ymm0,%ymm4,%ymm4
+   29bd9:	vpor   (%rsp),%ymm4,%ymm4
+   29bde:	vpxor  %ymm4,%ymm13,%ymm4
+   29be2:	vpsrld $0x1e,%ymm11,%ymm11
+   29be8:	vpor   %ymm3,%ymm11,%ymm11
+   29bec:	vandps %ymm5,%ymm10,%ymm12
+   29bf0:	vpsllvd %ymm12,%ymm6,%ymm12
+   29bf5:	vpxor  %ymm13,%ymm11,%ymm11
+   29bfa:	vpsrld $0x4,%ymm10,%ymm14
+   29c00:	vpor   %ymm7,%ymm12,%ymm15
+   29c04:	vpand  %ymm8,%ymm14,%ymm14
+   29c09:	vpsllvd %ymm14,%ymm15,%ymm12
+   29c0e:	vpsubd %ymm14,%ymm9,%ymm14
+   29c13:	vpsrlvd %ymm14,%ymm15,%ymm14
+   29c18:	mov    (%rdi),%r8
+   29c1b:	vpcmpeqd %ymm2,%ymm2,%ymm2
+   29c1f:	vpxor  %xmm15,%xmm15,%xmm15
+   29c24:	vpgatherdd %ymm2,(%r8,%ymm13,4),%ymm15
+   29c2a:	vpcmpeqd %ymm2,%ymm2,%ymm2
+   29c2e:	vpxor  %xmm13,%xmm13,%xmm13
+   29c33:	vpgatherdd %ymm2,(%r8,%ymm1,4),%ymm13
+   29c39:	vpcmpeqd %ymm2,%ymm2,%ymm2
+   29c3d:	vpxor  %xmm1,%xmm1,%xmm1
+   29c41:	vpgatherdd %ymm2,(%r8,%ymm4,4),%ymm1
+   29c47:	vpcmpeqd %ymm2,%ymm2,%ymm2
+   29c4b:	vpxor  %xmm4,%xmm4,%xmm4
+   29c4f:	vpgatherdd %ymm2,(%r8,%ymm11,4),%ymm4
+   29c55:	vpsrld $0x8,%ymm10,%ymm2
+   29c5b:	vpsrld $0x10,%ymm10,%ymm11
+   29c61:	vpor   %ymm14,%ymm12,%ymm12
+   29c66:	vpand  %ymm5,%ymm2,%ymm2
+   29c6a:	vpsllvd %ymm2,%ymm6,%ymm2
+   29c6f:	vpand  %ymm15,%ymm12,%ymm14
+   29c74:	vpcmpeqd %ymm12,%ymm14,%ymm12
+   29c79:	vpsrld $0xc,%ymm10,%ymm14
+   29c7f:	vpor   %ymm7,%ymm2,%ymm2
+   29c83:	vpand  %ymm8,%ymm14,%ymm14
+   29c88:	vpsllvd %ymm14,%ymm2,%ymm15
+   29c8d:	vpsubd %ymm14,%ymm9,%ymm14
+   29c92:	vpsrlvd %ymm14,%ymm2,%ymm2
+   29c97:	vpand  %ymm5,%ymm11,%ymm11
+   29c9b:	vpsllvd %ymm11,%ymm6,%ymm11
+   29ca0:	vpor   %ymm2,%ymm15,%ymm2
+   29ca4:	vpsrld $0x14,%ymm10,%ymm14
+   29caa:	vpor   %ymm7,%ymm11,%ymm11
+   29cae:	vpand  %ymm8,%ymm14,%ymm14
+   29cb3:	vpsllvd %ymm14,%ymm11,%ymm15
+   29cb8:	vpsubd %ymm14,%ymm9,%ymm14
+   29cbd:	vpsrlvd %ymm14,%ymm11,%ymm11
+   29cc2:	vpand  %ymm2,%ymm13,%ymm13
+   29cc6:	vpcmpeqd %ymm2,%ymm13,%ymm2
+   29cca:	vpand  %ymm2,%ymm12,%ymm2
+   29cce:	vpshufb -0x283b7(%rip),%ymm10,%ymm10        # 1920 <_IO_stdin_used+0x230>
+   29cd7:	vpor   %ymm11,%ymm15,%ymm11
+   29cdc:	vpand  %ymm5,%ymm10,%ymm12
+   29ce0:	vpsllvd %ymm12,%ymm6,%ymm12
+   29ce5:	vpand  %ymm1,%ymm11,%ymm1
+   29ce9:	vpcmpeqd %ymm1,%ymm11,%ymm1
+   29ced:	vpsrld $0x4,%ymm10,%ymm10
+   29cf3:	vpor   %ymm7,%ymm12,%ymm11
+   29cf7:	vpand  %ymm8,%ymm10,%ymm10
+   29cfc:	vpsllvd %ymm10,%ymm11,%ymm12
+   29d01:	vpsubd %ymm10,%ymm9,%ymm10
+   29d06:	vpsrlvd %ymm10,%ymm11,%ymm10
+   29d0b:	vpor   %ymm12,%ymm10,%ymm10
+   29d10:	vpand  %ymm4,%ymm10,%ymm4
+   29d14:	vpcmpeqd %ymm4,%ymm10,%ymm4
+   29d18:	vpand  %ymm4,%ymm1,%ymm1
+   29d1c:	vpand  %ymm1,%ymm2,%ymm1
+   29d20:	vpsrld $0x1f,%ymm1,%ymm1
+   29d25:	vmovdqu %ymm1,(%rcx,%rsi,4)
+   29d2a:	lea    0x8(%rsi),%r8
+   29d2e:	add    $0x10,%rsi
+   29d32:	cmp    %rax,%rsi
+   29d35:	mov    %r8,%rsi
+   29d38:	jbe    29b90 <_ZNK13bloom_filters21FourSectorBloomFilter6LookupEjPKmPj+0x360>
+   29d3e:	mov    %ebx,%esi
+   29d40:	sub    %r8d,%esi
+   29d43:	lea    (%rdx,%r8,8),%rdx
+   29d47:	lea    (%rcx,%r8,4),%rcx
+   29d4b:	vzeroupper
+   29d4e:	call   29150 <_ZNK13bloom_filters21FourSectorBloomFilter12LookupScalarEjPKmPj>
+   29d53:	mov    %ebx,%eax
+   29d55:	add    $0x40,%rsp
+   29d59:	pop    %rbx
+   29d5a:	ret

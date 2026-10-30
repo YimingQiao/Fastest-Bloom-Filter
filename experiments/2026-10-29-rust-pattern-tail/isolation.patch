@@ -1,0 +1,20 @@
+--- native-lib-before.rs
++++ benchmark/src/before.rs
+@@ -3,16 +3,7 @@
+ //! Each filter layout has its own bitmap mapping; layouts are not interchangeable.
+ use std::fmt;
+ 
+-mod byte_split;
+-mod four_sector;
+-mod layout_parallel;
+-mod parallel;
+-mod patterns;
+-mod split64;
+-pub use byte_split::ByteSplitBloomFilter;
+-pub use four_sector::FourSectorBloomFilter;
+-pub use parallel::AtomicFastPatternBloomFilter;
+-pub use split64::Split64BloomFilter;
++use crate::patterns;
+ 
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub enum SizeError {

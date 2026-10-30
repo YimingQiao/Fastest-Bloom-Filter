@@ -1,0 +1,225 @@
+{
+  "status": "Additive focused correctness source only; no compilation, BF execution or performance authority",
+  "initial_wrapper_commit": "07746e17f82e3fa48adf3bbd1f6fed00daf71514",
+  "native_source_commit": "5fd487fe3381ce05be2ba823a6137107f4108854",
+  "languages": [
+    "cpp",
+    "rust"
+  ],
+  "modes": [
+    "normal",
+    "asan"
+  ],
+  "real_case_ledger": [
+    {
+      "family": "Split64",
+      "case": 0,
+      "bytes": 262144,
+      "batch_n": 65536,
+      "requested": 1,
+      "history_n": 0,
+      "hotspot": false
+    },
+    {
+      "family": "Split64",
+      "case": 1,
+      "bytes": 262144,
+      "batch_n": 65537,
+      "requested": 4,
+      "history_n": 0,
+      "hotspot": false
+    },
+    {
+      "family": "Split64",
+      "case": 2,
+      "bytes": 262144,
+      "batch_n": 65536,
+      "requested": 4,
+      "history_n": 131072,
+      "hotspot": true
+    },
+    {
+      "family": "Split64",
+      "case": 3,
+      "bytes": 524288,
+      "batch_n": 65536,
+      "requested": 8,
+      "history_n": 0,
+      "hotspot": false
+    },
+    {
+      "family": "Split64",
+      "case": 4,
+      "bytes": 67108864,
+      "batch_n": 65536,
+      "requested": 0,
+      "history_n": 0,
+      "hotspot": false
+    },
+    {
+      "family": "Split64",
+      "case": 5,
+      "bytes": 67108864,
+      "batch_n": 65536,
+      "requested": 8,
+      "history_n": 33554432,
+      "hotspot": true
+    },
+    {
+      "family": "Split64Range",
+      "case": 0,
+      "bytes": 262144,
+      "batch_n": 65536,
+      "requested": 1,
+      "history_n": 0,
+      "hotspot": false
+    },
+    {
+      "family": "Split64Range",
+      "case": 1,
+      "bytes": 262144,
+      "batch_n": 65537,
+      "requested": 4,
+      "history_n": 0,
+      "hotspot": false
+    },
+    {
+      "family": "Split64Range",
+      "case": 2,
+      "bytes": 262144,
+      "batch_n": 65536,
+      "requested": 4,
+      "history_n": 131072,
+      "hotspot": true
+    },
+    {
+      "family": "Split64Range",
+      "case": 3,
+      "bytes": 262208,
+      "batch_n": 65536,
+      "requested": 8,
+      "history_n": 0,
+      "hotspot": false
+    },
+    {
+      "family": "Split64Range",
+      "case": 4,
+      "bytes": 100663296,
+      "batch_n": 65536,
+      "requested": 0,
+      "history_n": 0,
+      "hotspot": false
+    },
+    {
+      "family": "Split64Range",
+      "case": 5,
+      "bytes": 100663296,
+      "batch_n": 65536,
+      "requested": 8,
+      "history_n": 50331648,
+      "hotspot": true
+    }
+  ],
+  "expected_real_rows": 48,
+  "expected_native_filter_lifetimes": 144,
+  "expected_semantic_geometries": 12,
+  "spy": {
+    "enabled_variants": [
+      false,
+      true
+    ],
+    "batch_lengths": [
+      0,
+      1,
+      16383,
+      16384,
+      65535,
+      65536,
+      65537
+    ],
+    "actual_bytes": [
+      131072,
+      262144,
+      262208,
+      524288,
+      67108864,
+      100663296
+    ],
+    "requested_threads": [
+      0,
+      1,
+      4,
+      8
+    ],
+    "cases_per_executable": 336,
+    "forwarded_calls_per_case": 6,
+    "total_spy_cases": 1344
+  },
+  "history": {
+    "block_size": 4096,
+    "stream_seed": "0x243f6a8885a308d3",
+    "increment": "0x9e3779b97f4a7c15",
+    "old_index_base": 0,
+    "new_index_base": 1099511627776,
+    "negative_index_base": 2199023255552,
+    "new_hotspot": "high32 zero; preserve independently generated low32",
+    "history_n_from_case": true,
+    "full_old_and_new_presence_check_per_variant": true
+  },
+  "query": {
+    "count": 32771,
+    "mixed": "i%3=0 new present, i%3=1 old present or another new present when empty history, otherwise negative stream",
+    "full_dense_reference_and_guard_checks_per_variant": 2,
+    "original_requested_T": true
+  },
+  "scheduler": {
+    "automatic_cpp": "Unchanged std::thread::hardware_concurrency",
+    "automatic_rust": "Unchanged std::thread::available_parallelism",
+    "actual_auto_workers": "Observe disabled public wrapper getter under the same allowed mask as insertion; bounded candidate auto is1, outside must equal original",
+    "cross_language": "Full semantic equality; automatic W/scratch may differ. Same-language normal/ASan accounting must agree.",
+    "requested_T_cases": [
+      1,
+      4,
+      4,
+      8,
+      0,
+      8
+    ]
+  },
+  "lease_choices": [
+    {
+      "cpu": 2,
+      "socket": 0,
+      "node": 0,
+      "child_cpus": [
+        2,
+        4,
+        6
+      ],
+      "lock": "/tmp/fastest-bf-socket0.lock",
+      "environment": "BF_SOCKET_LEASE=socket0-cpu2"
+    },
+    {
+      "cpu": 3,
+      "socket": 1,
+      "node": 1,
+      "child_cpus": [
+        3,
+        5,
+        7
+      ],
+      "lock": "/tmp/fastest-bf-socket1.lock",
+      "environment": "BF_SOCKET_LEASE=socket1-cpu3"
+    }
+  ],
+  "placement": "Explicit root-granted whole-operation inherited WRITE flock; parent pinned to selectedCPU; taskset child expansion occurs before numactl physcpubind/membind. Child affinity never changes during auto getter/insert/query.",
+  "builds": {
+    "cpp": "Clang C++17 -O3 -march=native -fno-strict-aliasing, pthreads; ASan+UBSan with halt-on-error",
+    "rust": "Cargo --locked --offline --release x86_64-unknown-linux-gnu; target-cpu=native; nightly ASan for sanitizer mode",
+    "actual_dependency_proof": "All C++ *.o.d and all fresh Rust *.d; every repository input committed and hashed; every outside compiler header hashed; representative wrapper/native modules mandatory",
+    "existing_kernel_proofs_reused": true
+  },
+  "failure_policy": "Preserve logs/output/build paths; do not alter initial or committed source silently. Versioned additive repair requires new reviewed commit.",
+  "performance_run": false,
+  "quality_calibration_run": false
+}

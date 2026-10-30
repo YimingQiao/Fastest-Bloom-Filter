@@ -1,0 +1,22 @@
+--- experiments/2026-10-29-split64-range-parallel-screen/adapters.hpp
++++ experiments/2026-10-29-four-sector-range12-screen/adapters.hpp
+@@ -1,9 +1,10 @@
+ #pragma once
+ #include "exact-adapters.hpp"
++#include "four_sector_range12.h"
++using FourSectorRange12Experiment = bloom_filters::FourSectorRange12;
+ #include "native-range/split64_bloom.h"
+ using Split64RangeNative = bloom_filters::Split64RangeNative;
+-// Fixed union of the prior MT shortlist, native Range, and the
+-// already-known ClassicK11 exact-capacity rival. No timing selection.
++// Retain the complete prior shortlist; append only the qualified K12 candidate.
+ #undef BF_REGISTER_EXTERNAL_FILTERS
+ #define BF_REGISTER_EXTERNAL_FILTERS(ADD) \
+     ADD(Boost192Multi32K7, uint64_t); \
+@@ -29,4 +30,5 @@
+     ADD(RocksDBFastLocalBloom64K9Batch32, uint64_t); \
+     ADD(Split64BloomFilter, uint64_t); \
+     ADD(Boost192ClassicK11, uint64_t); \
+-    ADD(Split64RangeNative, uint64_t)
++    ADD(Split64RangeNative, uint64_t); \
++    ADD(FourSectorRange12Experiment, uint64_t)

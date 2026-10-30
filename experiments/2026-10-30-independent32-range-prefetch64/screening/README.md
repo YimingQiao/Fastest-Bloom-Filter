@@ -1,0 +1,25 @@
+# Fixed192 query screen — source preparation
+
+This entry will run the frozen24 processes/192 rows once, only after a separate root grant. It reuses the proved native caller SHA `27668c987456fe9ad3ca1c87313309035e96a6f7b7a600bdf530357bd8096f75`, sourceac71d43 and completed proof9563af24. There is no compile, retry, adaptive extension or partial-ranking operation.
+
+The16 public points, exact24-case ledger and analysis rules are copied from the immutable caller and pre-data analysis8d672c5. Each n16/n25 and seen seed982451653/961748941 runs hit50/q22/batches1,31,4096/eight trials. The second launch round reverses the complete first12 cases and each source-shuffled API order, without another RNG draw. Batch1 exposes four contracts; other batches expose two. This yields512 vectors/4096 values, all retained.
+
+First-round batch1 supplies32 API/construction cal26 records;160 rows reuse them after exact construction, raw/hash input, complete-output fingerprint, actual-byte and available-bitmap identity checks. Pipeline/control have the same mapping and must agree within every process, including cal0 processes; fresh calibration must also agree. The equal-byte Fixed16 alias remains. There are26 known mapping groups, with no pairwise-independence claim and no denominator pooling. Historical observations provide no formal quality or latency. Current both-seed Wilson eligibility and all losses remain in the frozen analysis.
+
+The primary target is the24 large-table batch4096 comparisons: eight observations per rival group (exact range control, strongest qualified external, strongest qualified production), across two generic contracts, two seeds and two rounds. A loss, tie or absent qualifier fails that group's target. All64 unconditional pipeline/control pairs and all small/b1/b31 losses remain visible; no default promotion follows. The actual new generic prologue precedes its threshold branch, so b1/b31 also pay the measured-code frame cost. Visible loops bypass the queue. Internal256-byte stack storage is separate from the caller common-hash scratch field; no total-resident-memory claim is made.
+
+`derive.py` narrowly derives the established producer796bd636: run changes only its terminal row count; audit and placement are byte-identical; pins update the completed proof/counts; contract/tests update the fixed panel counts and add a same-case pipeline-output mutation guard. The row parser comes from the proved caller with only formal fields/schedule and proof-only-point removal. Its module-level tiny-proof constants remain untouched. All parent blobs and generated outputs are recorded in DERIVATION.json and exact patches.
+
+The initial/final freeze binds43 caller source members,13 analysis source members,272 proof members, all three live binaries,572 consumed input paths, prepared dependencies and tool hashes. Every child inherits the existing exclusive socket1 lock; parent CPU3 and child CPU3/NUMA1 are explicit. The forbidden environment includes allocator and loader overrides. Binary and placement checks run before each case; the full source/tool/input/raw closure is replayed at completion. No unused old kernel matrix runs.
+
+`results-v1` and the full outer `screen-run.log` must both be absent. Metadata records argv, inherited descriptors and stream paths before launch, then actual status/hashes before parsing. Any failure is retained with complete=false and no automatic retry. Success seals51 members (48 stdout/stderr streams plus metadata, ordered records and quality links), then prints24 progress lines plus exactly `Complete24 processes/192 rows; all final source/raw/semantic guards passed.` After the real tool handle finishes exit0, save the exact terminal result (empty redirected output, no live session) and actual session ID in execution-outcome.json. Commit all raw members, manifest, full log and outcome before analysis.
+
+The interface remains `audit.load_complete(raw_commit, raw_manifest_sha256) -> (metadata, records)`, returning24 ordered `{case, rows}` records only after exact committed raw/producer/proof/placement and row replay. The separate analysis loader additionally binds the outer log and actual terminal artifact. It verifies the completed proof before admitting the exact proof-pinned additive caller seal.py; no broader source allowance is implied.
+
+After producer/loader source freezes and an explicit one-run grant, run from the repository root:
+
+```sh
+flock /tmp/fastest-bf-socket1.lock taskset -c 3 env BF_SOCKET_LEASE=socket1-cpu3 bash -c 'set -Ce; test ! -e experiments/2026-10-30-independent32-range-prefetch64/screening/results-v1; exec python3 -u experiments/2026-10-30-independent32-range-prefetch64/screening/run.py --source-commit FULL_PRODUCER_COMMIT --execute-frozen > experiments/2026-10-30-independent32-range-prefetch64/screening/screen-run.log 2>&1'
+```
+
+Source checks and bounded correctness timings are not this formal screen. No new build, Rust, multithread, isolated-prefetch-causality or universal-superiority claim is part of this producer.

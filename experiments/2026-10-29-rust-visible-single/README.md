@@ -1,0 +1,30 @@
+# Rust optimizer-visible public singleton track
+
+Status: correctness and generated-code preflight completed on CPU2/socket0; no throughput matrix has run. Normal, disable-avx512 and AddressSanitizer runs each passed 10 tests; Clippy passed. Six workloads / 42 rows match the frozen SBBF baseline exactly, and six invalid CLI cases are rejected. No native production files or previous SBBF14 sources/binaries are changed.
+
+This experiment copies the validated SBBF harness at commit `9c5820f0529efeaa37f896f6f8ce269a2e940afb`, retaining the seven original native/external implementations. It adds a separate compiler-visible whole-array loop that calls each implementation's actual public singleton query API. SBBF continues through the public safe API and its runtime-selected trait object; no private upstream kernel is called or copied. Native ByteSplit uses its existing public SIMD method; Split64 and FourSector use their public scalar-source methods, which may be auto-vectorized by the compiler.
+
+Four independently reported query modes run on the same filter and inputs:
+
+1. Original non-inlined batch-size-one wrapper over prehashed values.
+2. Original batch-size-one wrapper with the common hash staged through scratch.
+3. One non-inlined whole-array loop, with the public singleton API visible inside it, over prehashed values.
+4. The same whole-array loop with the common hash fused immediately before the public singleton query.
+
+Every mode writes all answers to the same dense `u32` output. The visible loop has no per-key black box and permits cross-key compiler optimization, as in the separate C++ visible-singleton track. It is throughput over independent keys, not serial dependent latency. The original columns remain present, and wins in the new contract cannot replace losses in the original contract.
+
+The four-mode Williams schedule balances each phase position and every ordered within-trial predecessor pair over four repetitions. A seed-permuted label order is repeated twice for eight repetitions. All four per-trial vectors and actual phase orders are emitted. All timed repetitions validate complete checksum, exact dense output equality and guards outside their timers; the two visible modes are warmed and checked before timing. Independent calibration additionally compares every original API answer against the public singleton API. One bitmap is alive during each construction phase, as in the original harness.
+
+Completed correctness checks include seven-family full-output parity over tails/offsets, invalid-length guards, duplicate/no-false-negative checks, SBBF independent bitmap and allocation-padding tests, balanced phase-order checks, and deliberate corruption of the last answer in each of the four actual timed modes. The fault hook is test-only and absent from the benchmark executable. The final typed-symbol executable and all compiled inputs are frozen in `validation/freeze.json`; `manifest.json` covers the archived evidence. The executable remains unchanged while the proposed protocol, runner and offline guards are prepared. Small validation runs emit timings, but those values are not performance evidence.
+
+The intended first screen is four workloads / 28 rows: key powers16/25, requested8/16(actual16/32), batch1, query power22, eight repetitions, seed42, hit50, whole-input insertion and calibration power24. This protocol remains a proposal: parent review, a committed final protocol and an explicit CPU lease are required before throughput execution. No held-out seed is used by this preparation. This experiment takes priority over speculative V4 changes to native public bulk APIs.
+
+The generated code has meaningful API differences. FastPattern, Fastbloom and Bloomsday contain probe logic inside their visible loops. ByteSplit still calls its public `contains_hash` once per key; FourSector and Split64 reach their existing out-of-line scalar helpers once per key. SBBF retains its public runtime-selected trait-object call. These are the actual compiler decisions with the unchanged public libraries; the track does not force every implementation to inline. See `assembly/README.md` for instruction addresses and complete bodies.
+
+The final build uses `-C target-cpu=native -C symbol-mangling-version=v0`, uniformly across dependencies. The symbol spelling was selected before throughput measurements so all 14 monomorphized loops can be audited. The earlier legacy-symbol binary and successful preflight remain preserved with separate hashes. `copy-source.json` is the initial pre-format preparation inventory, not the final compiled-source manifest.
+
+To reproduce correctness after obtaining a socket lease, run `flock /tmp/fastest-bf-socket0.lock taskset -c 2 env BF_SOCKET_LEASE=socket0-cpu2 python3 experiments/2026-10-29-rust-visible-single/validate.py --cpu 2`. Existing archive logs are evidence from the original run; use a separate copy to avoid replacing them. `validation/commands.json` records the original legacy-symbol build, and `validation/v0-final-commands.json` records the final rebuild and exact parity check.
+
+`protocol.json` freezes the proposed four-workload, 28-row initial screen on CPU2. `run.py` requires a full committed source revision, verifies each recorded source and binary before/after execution, rejects mismatched registry/workload/byte counts, and checks all four emitted trial vectors and the balanced schedule. Eight offline corruption tests cover these guards. Root review and an explicit lease are still required; the runner has not been invoked. Preserve all four query modes and every native/external loss in any report.
+
+Before any throughput run, a review found that balance checks alone accepted a different seed permutation. The corrected Python guard additionally checks the exact seed-derived schedule; eight offline guards pass. The original freeze at `9270e294575f01710d4683644d4e5f89efe6d88a` and the previous guard log are retained. Rust code and both preflight binaries are unchanged.

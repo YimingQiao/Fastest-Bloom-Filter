@@ -1,0 +1,36 @@
+   31380:	mov    %rdi,%rax
+   31383:	mov    0x18(%rdi),%ecx
+   31386:	mov    %rsi,%rdi
+   31389:	shr    $0x28,%rdi
+   3138d:	imul   %rcx,%rdi
+   31391:	shr    $0x18,%rdi
+   31395:	and    $0xfffffff,%edi
+   3139b:	mov    0x10(%rax),%rcx
+   3139f:	cmp    %rcx,%rdi
+   313a2:	jae    3142a <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::contains_single_avx512+0xaa>
+   313a8:	mov    %rsi,%rcx
+   313ab:	shr    $0x20,%rcx
+   313af:	mov    0x8(%rax),%rax
+   313b3:	vpbroadcastd %ecx,%zmm0
+   313b9:	vpsrlvd -0x270c3(%rip),%zmm0,%zmm1        # a300 <panic_unwind::imp::CANARY+0x4c>
+   313c3:	vpxord %zmm0,%zmm1,%zmm0
+   313c9:	vmovdqa64 -0x27093(%rip),%zmm1        # a340 <panic_unwind::imp::CANARY+0x8c>
+   313d3:	vpternlogd $0xf8,-0x296aa(%rip){1to16},%zmm0,%zmm1        # 7d34 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x864>
+   313de:	shl    $0x6,%rdi
+   313e2:	vpermd (%rax,%rdi,1),%zmm1,%zmm0
+   313e9:	vpbroadcastd %esi,%zmm1
+   313ef:	vprorvd -0x27079(%rip),%zmm1,%zmm1        # a380 <panic_unwind::imp::CANARY+0xcc>
+   313f9:	vpermd -0x26dc3(%rip),%zmm1,%zmm2        # a640 <panic_unwind::imp::CANARY+0x38c>
+   31403:	vpsrld $0x4,%zmm1,%zmm1
+   3140a:	vprolvd %zmm1,%zmm2,%zmm1
+   31410:	vpandd %zmm0,%zmm1,%zmm0
+   31416:	vpcmpneqd %zmm1,%zmm0,%k0
+   3141d:	kmovw  %k0,%eax
+   31421:	test   $0xf,%al
+   31423:	sete   %al
+   31426:	vzeroupper
+   31429:	ret
+   3142a:	push   %rax
+   3142b:	lea    0x3b29e(%rip),%rdx        # 6c6d0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.1797.llvm.15448142832521594973+0x760>
+   31432:	mov    %rcx,%rsi
+   31435:	call   *0x3cffd(%rip)        # 6e438 <_DYNAMIC+0x220>

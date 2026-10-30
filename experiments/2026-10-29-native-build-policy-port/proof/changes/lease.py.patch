@@ -1,0 +1,21 @@
+--- frozen-wrapper/lease.py
++++ actual-native/lease.py
+@@ -12,7 +12,10 @@
+     lock = f"/tmp/fastest-bf-socket{node}.lock"
+     need(os.environ.get("BF_SOCKET_LEASE") == f"socket{node}-cpu{cpu}", "Wrong lease environment")
+     need(os.sched_getaffinity(0) == {cpu}, "Parent must remain pinned to the primary CPU")
+-    need(not any(os.environ.get(name) for name in ("LD_PRELOAD", "LD_LIBRARY_PATH", "MALLOC_CONF", "GLIBC_TUNABLES")), "Unrecorded loader/allocator override")
++    forbidden = ("LD_PRELOAD", "LD_LIBRARY_PATH", "MALLOC_CONF", "GLIBC_TUNABLES", "MALLOC_ARENA_MAX",
++                 "CFLAGS", "CXXFLAGS", "CPPFLAGS", "LDFLAGS", "CARGO_ENCODED_RUSTFLAGS",
++                 "RUSTC_WRAPPER", "RUSTC_WORKSPACE_WRAPPER", "CC", "CXX")
++    need(not any(os.environ.get(name) for name in forbidden), "Unrecorded compiler/loader/allocator override")
+     descriptors = []
+     for entry in os.listdir("/proc/self/fd"):
+         try:
+@@ -36,4 +39,5 @@
+         topology.append(row)
+     need(len({row["core"] for row in topology}) == 8, "Eight physical cores required")
+     return dict(cpu=cpu, socket=node, node=node, lock_path=lock,
+-                inherited_lock_descriptors=descriptors, child_cpus=cpus, topology=topology)
++                inherited_lock_descriptors=descriptors, child_cpus=cpus, topology=topology,
++                environment={name: os.environ.get(name) for name in forbidden})

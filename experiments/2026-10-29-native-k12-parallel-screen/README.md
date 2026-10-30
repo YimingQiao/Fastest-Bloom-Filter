@@ -1,0 +1,27 @@
+# Fixed195 native K12 multithread execution preparation
+
+This stage executes the unchanged [finite plan](../2026-10-29-native-k12-parallel-plan/README.md) at `295ff839e4f3199f05992add42f85ff54861e45c`, using only the two already-built normal executables from [the actual-caller proof](../2026-10-29-native-k12-parallel-caller/RESULTS.md), committed at `a03a3766ac43871b13cc5fb63bbaad8e28280e0a`. There is no compiler, new layout, caller patch, geometry search or automatic performance authorization here.
+
+`ledger.json` fixes all195 single-row processes before data:147 shared-executor query rows (49 exact size/API geometries ×three seen construction seeds), followed by48 actual native public T1/T8 rows (16 geometries ×three seeds). Within each track the original seed order is retained, and each seed's original sorted point list is shuffled with the explicit SplitMix64/Fisher-Yates rule and fixed track salt in `contract.py`. This changes launch order only; the actual construction/query/calibration streams remain those of the frozen caller. APIs/geometries run in separate fresh processes, not in one combined across-geometry process.
+
+The 21 external geometry points remain the deterministic union of the strongest committed exact-capacity and earlier T8 confirmation controls. All four production native layouts and accepted Range/K12 controls remain. Actual byte geometry, including smaller14/20/28 points and Boost's approximately12-bpk allocation/padding, is checked field by field. Real n and FastPattern mask density are preserved. A newly failed quality gate cannot trigger a replacement filter, geometry or seed.
+
+Track A builds once outside timing, then runs eight repetitions of each serial pure, serial common-hash, parallel pure and parallel common-hash phase using the exact balanced four-phase schedule. The common executor individually pins eight physical cores, with caller worker0. Query output is checked completely after every phase; every inserted key and all input/output guards/fingerprints remain checked in the actual binary. Independent calibration uses2^26 absent queries after timing. Build times remain NaN and `build_repeats=0`.
+
+Track B uses the actual public native `InsertParallel`/`LookupParallel` implementations, requested T1/T8, six alternating pairs and whole-array prehashed input. Requested construction scratch and effective workers are checked. The public implementation inherits the eight-core mask without a new private pinning policy. All output elements and inserted-key noFN checks occur in the binary; cross-process input/output fingerprints, FP counts and actual bytes must match Track A before its quality record can be reused. Track B adds no calibration evidence. Range/K12 retain a full serial bitmap copy for validation while Split64 has no public bitmap copy; those auxiliary bytes stay disclosed. No one-bitmap-residency or cross-track normalization is claimed.
+
+`ANALYSIS_RULES.json` fixes eligibility, ownership, directions and retained counts before timing. It preserves216 per-seed nested query views and3636 cap-admitted alternatives,72 all-three-seed-gated conditions,147 API quality records/126 known mapping identities without pooling, and all588 same-row query scaling observations. The separate actual-public track retains144 T8/T1 ratios and252 named same-byte family comparisons. Every quality failure, loss, tie and missing comparator remains. An optional/native composite winner does not become a production-only winner, and serial external construction is never entered into a native parallel-build victory panel.
+
+After source review, an exact committed preparation and an explicit performance lease, use the one operation below from the repository root:
+
+```sh
+flock /tmp/fastest-bf-socket0.lock taskset -c 2 \
+  python3 experiments/2026-10-29-native-k12-parallel-screen/run.py \
+  --source-commit FULL_REVIEWED_40_HEX_COMMIT --execute-frozen
+```
+
+The runner requires an actual inherited exclusive FLOCK, a CPU2-only parent and the declared eight distinct physical cores on socket0/NUMA0. Each child first expands its affinity with taskset, then applies numactl to `2,4,6,8,10,12,14,16` and memory node0. It verifies the exact committed166-artifact caller proof, the complete source preparation and all eight retained proof binaries/615 consumed compiler inputs before launch and after completion. Only the fixed normal query/public binaries are executed. Existing output is rejected; every command, stdout/stderr and failed attempt is preserved.
+
+The runner validates every returned row immediately, including exact sample summaries, seeded schedules, actual geometry, effective workers, nested insertion intervals and output identity. A successful empty output fails immediately. It records progress only; there is no partial timing or quality ranking. After all195 cases pass, the raw streams are replayed to reconstruct both CSVs and the full rows ledger, then a raw archive is written. Complete raw artifacts must be sealed and committed before numerical analysis. `results-v1/` is the only declared fresh output path; no retry, truncation or resume policy is implicit.
+
+Seven synthetic tests cover the complete195 mock, missing/empty outputs, altered order/geometry/hit counts, timing summaries and schedules, public identity/auxiliary memory, known calibration aliases and nested intervals. These tests do not execute any filter. The source is ready for review; no formal195 run has occurred.

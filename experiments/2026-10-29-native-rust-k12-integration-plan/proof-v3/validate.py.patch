@@ -1,0 +1,69 @@
+--- proof-v2/validate.py
++++ proof-v3/validate.py
+@@ -7,15 +7,18 @@
+ from checks import CPUS,artifact,fixture,topology
+ from dependencies import collect
+ from source_guard import require_lease
++CALLER=PLAN/'proof-v2/caller'
++REUSE=PLAN/'proof-v2/validation-v1'
++NORMAL_TARGET=Path('/tmp/fastest-bf-native-rust-k12-port-v2-cpu3/normal')
+ REJECT=['RUSTFLAGS','RUSTDOCFLAGS','CARGO_ENCODED_RUSTFLAGS','CARGO_ENCODED_RUSTDOCFLAGS','RUSTC_WRAPPER','RUSTC_WORKSPACE_WRAPPER','CARGO_TARGET_DIR','RUSTC','RUSTDOC','RUSTUP_TOOLCHAIN','CARGO_BUILD_RUSTFLAGS','CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS','CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER','LD_PRELOAD','LD_LIBRARY_PATH','MALLOC_CONF','MALLOC_ARENA_MAX','ASAN_OPTIONS','UBSAN_OPTIONS','GLIBC_TUNABLES']
+ def main():
+  parser=argparse.ArgumentParser();parser.add_argument('--source-commit',required=True);args=parser.parse_args()
+  lease=require_lease(3);prepared=verify(args.source_commit);topology();need(not any(os.environ.get(k)for k in REJECT),'Unfrozen compiler/loader overrides')
+  cargo_home=Path(os.environ.get('CARGO_HOME',Path.home()/'.cargo'))
+- for directory in {ROOT,HERE,HERE/'caller',WORK,WORK/'rust',*ROOT.parents,*HERE.parents,*WORK.parents,cargo_home.parent}:
++ for directory in {ROOT,HERE,CALLER,WORK,WORK/'rust',*ROOT.parents,*HERE.parents,*WORK.parents,cargo_home.parent}:
+   for name in ['config','config.toml']:need(not(directory/'.cargo'/name).exists(),'Unfrozen Cargo configuration')
+  for name in ['config','config.toml']:need(not(cargo_home/name).exists(),'Unfrozen Cargo home configuration')
+- target=Path('/tmp/fastest-bf-native-rust-k12-port-v2-cpu3');output=HERE/'validation-v1'
++ target=Path('/tmp/fastest-bf-native-rust-k12-port-v3-cpu3');output=HERE/'validation-v1'
+  need(not target.exists()and not target.is_symlink()and not output.exists()and not output.is_symlink(),'Preserve prior attempts with fresh reviewed paths')
+  output.mkdir();known=dict(prepared['inherited_sources']);known.update({str((HERE/n).resolve()):r['sha256']for n,r in prepared['local'].items()})
+  repo_sources={str(Path(p).relative_to(ROOT)):digest for p,digest in known.items()if Path(p).is_relative_to(ROOT)}
+@@ -41,23 +44,33 @@
+   for mode in ['normal','disable-avx512','asan']:
+    cargo=['cargo']+(['+nightly']if mode=='asan'else[]);rustc=['rustc']+(['+nightly']if mode=='asan'else[])
+    flags='-Zsanitizer=address'if mode=='asan'else'-C target-cpu=native -C symbol-mangling-version=v0'
+-   env=dict(CARGO_TARGET_DIR=str(target/mode),RUSTFLAGS=flags);extra=['--target','x86_64-unknown-linux-gnu']if mode=='asan'else[];features=['--features','disable-avx512']if mode=='disable-avx512'else[]
+-   run(mode+'-compiler',rustc+['-Vv'],env)
+-   package_text=run(mode+'-metadata',cargo+['metadata','--locked','--offline','--format-version=1','--manifest-path',HERE/'caller/Cargo.toml',*features],env);packages=metadata(package_text,known)
++   mode_target=NORMAL_TARGET if mode=='normal'else target/mode
++   env=dict(CARGO_TARGET_DIR=str(mode_target),RUSTFLAGS=flags);extra=['--target','x86_64-unknown-linux-gnu']if mode=='asan'else[];features=['--features','disable-avx512']if mode=='disable-avx512'else[]
++   if mode=='normal':
++    # Reuse only the exact completed builds/Clippy from preserved V2. All
++    # actual dependencies are resolved by the repaired collector before execution.
++    package_text=(REUSE/'normal-metadata.stdout').read_text()
++    tests=(REUSE/'normal-native-test-build.stdout').read_text()
++    caller=(REUSE/'normal-caller-build.stdout').read_text()
++    texts=[tests,caller,(REUSE/'normal-clippy.stdout').read_text()]
++    meta['normal_build_reuse']=dict(source_commit='2dd44627f85081dd8ba4f123992234f2dc09ac8f',failure_archive_commit='f4fcd112c6ac205442ee1927d2bcbf47a6da2e03',target=str(mode_target),clippy_returncode=0,original_tests_executed=0)
++   else:
++    run(mode+'-compiler',rustc+['-Vv'],env)
++    package_text=run(mode+'-metadata',cargo+['metadata','--locked','--offline','--format-version=1','--manifest-path',CALLER/'Cargo.toml',*features],env)
++    common=['--locked','--offline','--release',*extra,*features,'--message-format=json']
++    tests=run(mode+'-native-test-build',cargo+['test',*common,'--manifest-path',WORK/'rust/Cargo.toml','--lib','--no-run'],env)
++    caller=run(mode+'-caller-build',cargo+['build',*common,'--manifest-path',CALLER/'Cargo.toml','--bin','native-rust-k12-port-proof'],env)
++    texts=[tests,caller]
++   packages=metadata(package_text,known)
+    need({p['name']for p in packages.values()}=={'fastest-bloom-filter','four-sector-range12-single-line-isolated','native-rust-k12-port-proof'},'Unexpected package graph')
+-   common=['--locked','--offline','--release',*extra,*features,'--message-format=json']
+-   tests=run(mode+'-native-test-build',cargo+['test',*common,'--manifest-path',WORK/'rust/Cargo.toml','--lib','--no-run'],env)
+-   caller=run(mode+'-caller-build',cargo+['build',*common,'--manifest-path',HERE/'caller/Cargo.toml','--bin','native-rust-k12-port-proof'],env)
+-   texts=[tests,caller]
+-   if mode=='normal':texts.append(run('normal-clippy',cargo+['clippy',*common,'--manifest-path',WORK/'rust/Cargo.toml','--all-targets','--','-D','warnings'],env))
+-   testbin=artifact(tests,'fastest-bloom-filter',True,target/mode,packages);binary=artifact(caller,'native-rust-k12-port-proof',False,target/mode,packages)
++   testbin=artifact(tests,'fastest-bloom-filter',True,mode_target,packages);binary=artifact(caller,'native-rust-k12-port-proof',False,mode_target,packages)
+    for p in [testbin,binary]:meta['binaries'][str(p)]=sha(p)
+-   consumed,rules=collect(target/mode,target/mode,texts,repo_sources,ROOT,packages)
++   consumed,rules=collect(mode_target,mode_target,texts,repo_sources,ROOT,packages)
+    for p,digest in consumed.items():need(known.get(p)==digest,'Unbound actual compiler input '+p)
+-   for p in [WORK/'rust/src/lib.rs',WORK/'rust/src/four_sector_range12.rs',WORK/'rust/src/k12_parallel.rs',WORK/'rust/src/four_sector_range12_tests.rs',REF/'src/four_sector_range12.rs',HERE/'caller/src/main.rs']:
++   for p in [WORK/'rust/src/lib.rs',WORK/'rust/src/four_sector_range12.rs',WORK/'rust/src/k12_parallel.rs',WORK/'rust/src/four_sector_range12_tests.rs',REF/'src/four_sector_range12.rs',CALLER/'src/main.rs']:
+     need(str(p.resolve())in consumed,'Missing actual package/module consumer '+str(p))
+    for i,rule in enumerate(rules):(output/f'{mode}-dependencies-{i}.d').write_text(rule['text'])
+-   save(output/(mode+'-compiler-closure.json'),dict(inputs_sha256=consumed,rules=rules,package_metadata_sha256=sha(output/(mode+'-metadata.stdout'))))
++   save(output/(mode+'-compiler-closure.json'),dict(inputs_sha256=consumed,rules=rules,package_metadata_sha256=__import__('hashlib').sha256(package_text.encode()).hexdigest()))
+    meta['compiler_inputs'][mode]=consumed;meta.setdefault('mode_binaries',{})[mode]=dict(test=str(testbin),caller=str(binary));persist()
+    # Tests/BF execute only after every emitted dependency rule is bound.
+    test_args=['--test-threads=1']if mode=='normal'else['four_sector_range12::tests::','--test-threads=1']

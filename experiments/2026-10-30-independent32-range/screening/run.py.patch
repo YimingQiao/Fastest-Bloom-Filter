@@ -1,0 +1,28 @@
+--- frozen-parent/run.py
++++ fixed216/run.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""The only formal execution entry: exact48 processes, no adaptive extensions."""
++"""The only formal execution entry: exact24 processes, no adaptive extensions."""
+ import argparse
+ import datetime
+ import json
+@@ -34,15 +34,15 @@
+             need(completed.returncode==0 and stderr.read_bytes()==b'','formal process failed or unexpected diagnostic')
+             actual=parse(stdout.read_text(),case);records.append(dict(case=case,rows=actual));save(RESULTS/'records.json',records)
+             validate_records(records,complete=False)
+-            print(f'{index+1}/48 processes complete',flush=True)
++            print(f'{index+1}/24 processes complete',flush=True)
+         counts,quality=validate_records(records);save(RESULTS/'quality.json',quality)
+         final_freeze=verify(args.source_commit);final_placement=placement.require()
+         need(freeze==final_freeze and lease==final_placement,'final execution identity changed')
+         metadata.update(complete=True,finished=now(),counts=counts,final_freeze=final_freeze,final_placement=final_placement)
+         save(RESULTS/'metadata.json',metadata);validate_directory(args.source_commit)
+         files={p.name:dict(sha256=sha(p),bytes=p.stat().st_size)for p in sorted(RESULTS.iterdir())if p.is_file()}
+-        need(len(files)==99,'wrong raw artifact inventory');save(RESULTS/'RAW_ARCHIVE.json',dict(files=files,files_count=99))
+-        print('Complete48 processes/616 rows; all final source/raw/semantic guards passed.',flush=True)
++        need(len(files)==51,'wrong raw artifact inventory');save(RESULTS/'RAW_ARCHIVE.json',dict(files=files,files_count=51))
++        print('Complete24 processes/216 rows; all final source/raw/semantic guards passed.',flush=True)
+     except BaseException as exc:
+         metadata.update(complete=False,error=repr(exc),finished=now());save(RESULTS/'metadata.json',metadata);raise
+ if __name__=='__main__':main()

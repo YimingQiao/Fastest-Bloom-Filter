@@ -1,0 +1,101 @@
+[
+  {
+    "label": "native",
+    "step": "configure",
+    "argv": [
+      "taskset",
+      "-c",
+      "3",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-bitshuffle",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-native",
+      "-DCMAKE_CXX_COMPILER=clang++"
+    ],
+    "returncode": 0,
+    "seconds": 0.2012990079820156
+  },
+  {
+    "label": "native",
+    "step": "build",
+    "argv": [
+      "taskset",
+      "-c",
+      "3",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-native",
+      "--parallel",
+      "1"
+    ],
+    "returncode": 0,
+    "seconds": 8.237236579880118
+  },
+  {
+    "label": "native",
+    "step": "ctest",
+    "argv": [
+      "taskset",
+      "-c",
+      "3",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-native",
+      "--output-on-failure",
+      "-V"
+    ],
+    "returncode": 0,
+    "seconds": 0.4913042616099119
+  },
+  {
+    "label": "asan",
+    "step": "configure",
+    "argv": [
+      "taskset",
+      "-c",
+      "3",
+      "cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-bitshuffle",
+      "-B",
+      "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-asan",
+      "-DCMAKE_CXX_COMPILER=clang++",
+      "-DBF_SANITIZERS=ON"
+    ],
+    "returncode": 0,
+    "seconds": 0.19082925654947758
+  },
+  {
+    "label": "asan",
+    "step": "build",
+    "argv": [
+      "taskset",
+      "-c",
+      "3",
+      "cmake",
+      "--build",
+      "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-asan",
+      "--parallel",
+      "1"
+    ],
+    "returncode": 0,
+    "seconds": 10.82017158716917
+  },
+  {
+    "label": "asan",
+    "step": "ctest",
+    "argv": [
+      "taskset",
+      "-c",
+      "3",
+      "ctest",
+      "--test-dir",
+      "/home/yiming/projects/fastest-bf-lab/build/split64-bitshuffle-asan",
+      "--output-on-failure",
+      "-V"
+    ],
+    "returncode": 0,
+    "seconds": 2.144377624616027
+  }
+]

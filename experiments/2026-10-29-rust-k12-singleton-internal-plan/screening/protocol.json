@@ -1,0 +1,52 @@
+{
+  "stage": "source-only finite internal proposal; no build or measurement authorization",
+  "proposal_commit": "5ac4b63414d94f63b7f61304c09b7eb8d0459f0e",
+  "caller_source_commit": "1f409288eb288bae109cd9bcfce99977631efd99",
+  "complete_proof_commit": "d5049cdc15661bccbfbc875e21b3c8696be46036",
+  "proof_manifest_sha256": "4f3b4a5d504c16241fec769c0e606f9ab7fd66e024c6bc4691d1cc80ed055e78",
+  "arms": ["Control", "Candidate"],
+  "profiles": [
+    {"name": "native", "rustflags": "-C target-cpu=native -C symbol-mangling-version=v0"},
+    {"name": "portable", "rustflags": "-C target-cpu=x86-64 -C symbol-mangling-version=v0"}
+  ],
+  "key_powers": [16, 25],
+  "query_power": 22,
+  "actual_bits_per_key": 24,
+  "cases": [
+    {"hit": 50, "batch": 1},
+    {"hit": 50, "batch": 3},
+    {"hit": 50, "batch": 31},
+    {"hit": 50, "batch": 4096},
+    {"hit": 0, "batch": 1},
+    {"hit": 100, "batch": 1}
+  ],
+  "seeds": [6812364731, 9517218469],
+  "query_repeats": 8,
+  "build_repeats": 0,
+  "calibration_queries": 0,
+  "phase_order_four": [[0, 1, 3, 2], [1, 2, 0, 3], [2, 3, 1, 0], [3, 0, 2, 1]],
+  "phase_order_two": [[0, 1], [1, 0], [1, 0], [0, 1]],
+  "metrics_four": ["generic_pure", "generic_hash_query", "visible_pure", "visible_hash_query"],
+  "metrics_two": ["generic_pure", "generic_hash_query"],
+  "round_order": "round1 lexicographic profiles,key_powers,seeds,cases with Control,Candidate; round2 reverse entire 48-process ledger and reverse each API order; no RNG",
+  "selection": "all fixed cells retained; no adaptation, quality filtering, external ranking or old latency reuse",
+  "placement": {
+    "cpu": 3,
+    "numa_node": 1,
+    "socket": 1,
+    "lock": "/tmp/fastest-bf-socket1.lock",
+    "lease_environment": "BF_SOCKET_LEASE=socket1-cpu3",
+    "policy": "Whole operation inherits an already-held exclusive flock; parent CPU3 affinity and per-child CPU3/NUMA1 placement are verified and recorded. Both profiles use the identical placement, without performance overlap."
+  },
+  "expected_counts": {
+    "processes": 96,
+    "rows": 192,
+    "paired_metric_contrasts": 288,
+    "trial_vectors": 576,
+    "trial_values": 4608,
+    "opposite_round_sensitivities": 144,
+    "four_point_seed_round_ranges": 72,
+    "tiny_contract_contrasts": 224,
+    "bulk_control_contrasts": 64
+  }
+}

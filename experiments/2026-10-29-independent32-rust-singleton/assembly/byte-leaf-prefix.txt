@@ -1,0 +1,144 @@
+
+/tmp/fastest-bf-independent32-rust-screen/release/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000006c2a0 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes>:
+   6c2a0:	push   %rbp
+   6c2a1:	push   %r15
+   6c2a3:	push   %r14
+   6c2a5:	push   %r13
+   6c2a7:	push   %r12
+   6c2a9:	push   %rbx
+   6c2aa:	sub    $0x48,%rsp
+   6c2ae:	mov    %rdx,0x8(%rsp)
+   6c2b3:	mov    %r8,0x10(%rsp)
+   6c2b8:	cmp    %r8,%rdx
+   6c2bb:	jne    6c44e <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x1ae>
+   6c2c1:	mov    %rcx,%rbx
+   6c2c4:	mov    %rdx,%r15
+   6c2c7:	mov    %rsi,%r14
+   6c2ca:	mov    %rdi,%r12
+   6c2cd:	cmp    $0x1,%rdx
+   6c2d1:	jne    6c325 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x85>
+   6c2d3:	mov    (%r14),%rsi
+   6c2d6:	cmpb   $0x0,0x1c(%r12)
+   6c2dc:	je     6c406 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x166>
+   6c2e2:	mov    %rsi,%rax
+   6c2e5:	shr    $0x20,%rax
+   6c2e9:	and    0x18(%r12),%eax
+   6c2ee:	mov    0x8(%r12),%rcx
+   6c2f3:	shl    $0x4,%rax
+   6c2f7:	vmovdqa (%rcx,%rax,1),%xmm0
+   6c2fc:	vpbroadcastd %esi,%xmm1
+   6c302:	vpmulhw -0x6314a(%rip),%xmm1,%xmm1        # 91c0 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x170>
+   6c30a:	vpbroadcastq -0x638c3(%rip),%xmm2        # 8a50 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2ba>
+   6c313:	vpshufb %xmm1,%xmm2,%xmm1
+   6c318:	vptest %xmm1,%xmm0
+   6c31d:	setb   %al
+   6c320:	jmp    6c40e <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x16e>
+   6c325:	cmpb   $0x0,0x1c(%r12)
+   6c32b:	je     6c415 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x175>
+   6c331:	test   %r15,%r15
+   6c334:	je     6c43f <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x19f>
+   6c33a:	mov    0x18(%r12),%eax
+   6c33f:	mov    0x8(%r12),%rcx
+   6c344:	mov    %r15,%rdx
+   6c347:	and    $0xfffffffffffffffe,%rdx
+   6c34b:	xor    %esi,%esi
+   6c34d:	vmovdqa -0x63195(%rip),%xmm1        # 91c0 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x170>
+   6c355:	vpbroadcastq -0x6390e(%rip),%xmm0        # 8a50 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2ba>
+   6c35e:	xchg   %ax,%ax
+   6c360:	mov    (%r14,%rsi,8),%rdi
+   6c364:	vpbroadcastd %edi,%xmm2
+   6c36a:	shr    $0x20,%rdi
+   6c36e:	and    %eax,%edi
+   6c370:	shl    $0x4,%rdi
+   6c374:	vmovdqa (%rcx,%rdi,1),%xmm3
+   6c379:	vpmulhw %xmm1,%xmm2,%xmm2
+   6c37d:	vpshufb %xmm2,%xmm0,%xmm2
+   6c382:	xor    %edi,%edi
+   6c384:	vptest %xmm2,%xmm3
+   6c389:	setb   %dil
+   6c38d:	mov    %edi,(%rbx,%rsi,4)
+   6c390:	mov    0x8(%r14,%rsi,8),%rdi
+   6c395:	vpbroadcastd %edi,%xmm2
+   6c39b:	shr    $0x20,%rdi
+   6c39f:	and    %eax,%edi
+   6c3a1:	shl    $0x4,%rdi
+   6c3a5:	vmovdqa (%rcx,%rdi,1),%xmm3
+   6c3aa:	vpmulhw %xmm1,%xmm2,%xmm2
+   6c3ae:	vpshufb %xmm2,%xmm0,%xmm2
+   6c3b3:	xor    %edi,%edi
+   6c3b5:	vptest %xmm2,%xmm3
+   6c3ba:	setb   %dil
+   6c3be:	mov    %edi,0x4(%rbx,%rsi,4)
+   6c3c2:	add    $0x2,%rsi
+   6c3c6:	cmp    %rsi,%rdx
+   6c3c9:	jne    6c360 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0xc0>
+   6c3cb:	test   $0x1,%r15b
+   6c3cf:	je     6c43f <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x19f>
+   6c3d1:	mov    (%r14,%rsi,8),%rdx
+   6c3d5:	vpbroadcastd %edx,%xmm1
+   6c3db:	shr    $0x20,%rdx
+   6c3df:	and    %edx,%eax
+   6c3e1:	shl    $0x4,%rax
+   6c3e5:	vmovdqa (%rcx,%rax,1),%xmm2
+   6c3ea:	vpmulhw -0x63232(%rip),%xmm1,%xmm1        # 91c0 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x170>
+   6c3f2:	vpshufb %xmm1,%xmm0,%xmm0
+   6c3f7:	xor    %eax,%eax
+   6c3f9:	vptest %xmm0,%xmm2
+   6c3fe:	setb   %al
+   6c401:	mov    %eax,(%rbx,%rsi,4)
+   6c404:	jmp    6c43f <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x19f>
+   6c406:	mov    %r12,%rdi
+   6c409:	call   6c4a0 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::contains_scalar>
+   6c40e:	movzbl %al,%eax
+   6c411:	mov    %eax,(%rbx)
+   6c413:	jmp    6c43f <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x19f>
+   6c415:	test   %r15,%r15
+   6c418:	je     6c43f <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x19f>
+   6c41a:	xor    %r13d,%r13d
+   6c41d:	nopl   (%rax)
+   6c420:	lea    0x1(%r13),%rbp
+   6c424:	mov    (%r14,%r13,8),%rsi
+   6c428:	mov    %r12,%rdi
+   6c42b:	call   6c4a0 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::contains_scalar>
+   6c430:	movzbl %al,%eax
+   6c433:	mov    %eax,(%rbx,%r13,4)
+   6c437:	mov    %rbp,%r13
+   6c43a:	cmp    %rbp,%r15
+   6c43d:	jne    6c420 <<fastest_bloom_filter_leaf_inline::byte_split::ByteSplitBloomFilter>::lookup_hashes+0x180>
+   6c43f:	add    $0x48,%rsp
+   6c443:	pop    %rbx
+   6c444:	pop    %r12
+   6c446:	pop    %r13
+   6c448:	pop    %r14
+   6c44a:	pop    %r15
+   6c44c:	pop    %rbp
+   6c44d:	ret
+   6c44e:	lea    0x4267b(%rip),%rax        # aead0 <anon.663c38bb301f18615f4d3110a8e62152.2.llvm.1231715614483663210+0x2b0>
+   6c455:	mov    %rax,0x18(%rsp)
+   6c45a:	movq   $0x1,0x20(%rsp)
+   6c463:	movq   $0x8,0x28(%rsp)
+   6c46c:	vxorps %xmm0,%xmm0,%xmm0
+   6c470:	vmovups %xmm0,0x30(%rsp)
+   6c476:	lea    0x426db(%rip),%r8        # aeb58 <anon.663c38bb301f18615f4d3110a8e62152.2.llvm.1231715614483663210+0x338>
+   6c47d:	lea    0x8(%rsp),%rsi
+   6c482:	lea    0x10(%rsp),%rdx
+   6c487:	lea    0x18(%rsp),%rcx
+   6c48c:	xor    %edi,%edi
+   6c48e:	call   *0x44ad4(%rip)        # b0f68 <_DYNAMIC+0x2f8>
+   6c494:	int3
+   6c495:	int3
+   6c496:	int3
+   6c497:	int3
+   6c498:	int3
+   6c499:	int3
+   6c49a:	int3
+   6c49b:	int3
+   6c49c:	int3
+   6c49d:	int3
+   6c49e:	int3
+   6c49f:	int3

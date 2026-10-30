@@ -1,0 +1,383 @@
+
+/home/yiming/projects/fastest-bf-lab/build/cpp-pattern-tail-alias/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000017560 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const>:
+   17560:	push   %rbp
+   17561:	push   %r15
+   17563:	push   %r14
+   17565:	push   %r12
+   17567:	push   %rbx
+   17568:	mov    %rcx,%r8
+   1756b:	mov    %esi,%eax
+   1756d:	cmp    $0x3,%esi
+   17570:	ja     176be <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x15e>
+   17576:	test   %eax,%eax
+   17578:	je     17c13 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x6b3>
+   1757e:	mov    (%rdx),%rsi
+   17581:	mov    %rsi,%r9
+   17584:	shr    $0x20,%r9
+   17588:	and    0x8(%rdi),%r9d
+   1758c:	mov    %esi,%ecx
+   1758e:	and    $0x1f,%ecx
+   17591:	mov    (%rdi),%r11
+   17594:	mov    0x10(%rdi),%r10
+   17598:	mov    (%r11,%rcx,4),%ebx
+   1759c:	mov    %esi,%ecx
+   1759e:	shr    $0x5,%ecx
+   175a1:	rol    %cl,%ebx
+   175a3:	mov    %esi,%ecx
+   175a5:	shr    $0x8,%ecx
+   175a8:	and    $0x7c,%ecx
+   175ab:	mov    (%r11,%rcx,1),%r11d
+   175af:	mov    %esi,%ecx
+   175b1:	shr    $0xf,%ecx
+   175b4:	rol    %cl,%r11d
+   175b7:	mov    (%r10,%r9,4),%ecx
+   175bb:	andn   %ebx,%ecx,%ecx
+   175c0:	shr    $0x14,%esi
+   175c3:	and    $0x7,%esi
+   175c6:	or     $0x8,%esi
+   175c9:	xor    %r9d,%esi
+   175cc:	mov    (%r10,%rsi,4),%esi
+   175d0:	andn   %r11d,%esi,%esi
+   175d5:	xor    %r9d,%r9d
+   175d8:	or     %ecx,%esi
+   175da:	sete   %r9b
+   175de:	mov    %r9d,(%r8)
+   175e1:	cmp    $0x1,%eax
+   175e4:	je     17c13 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x6b3>
+   175ea:	mov    0x8(%rdx),%rsi
+   175ee:	mov    %rsi,%r9
+   175f1:	shr    $0x20,%r9
+   175f5:	and    0x8(%rdi),%r9d
+   175f9:	mov    %esi,%ecx
+   175fb:	and    $0x1f,%ecx
+   175fe:	mov    (%rdi),%r11
+   17601:	mov    0x10(%rdi),%r10
+   17605:	mov    (%r11,%rcx,4),%ebx
+   17609:	mov    %esi,%ecx
+   1760b:	shr    $0x5,%ecx
+   1760e:	rol    %cl,%ebx
+   17610:	mov    %esi,%ecx
+   17612:	shr    $0x8,%ecx
+   17615:	and    $0x7c,%ecx
+   17618:	mov    (%r11,%rcx,1),%r11d
+   1761c:	mov    %esi,%ecx
+   1761e:	shr    $0xf,%ecx
+   17621:	rol    %cl,%r11d
+   17624:	mov    (%r10,%r9,4),%ecx
+   17628:	andn   %ebx,%ecx,%ecx
+   1762d:	shr    $0x14,%esi
+   17630:	and    $0x7,%esi
+   17633:	or     $0x8,%esi
+   17636:	xor    %r9d,%esi
+   17639:	mov    (%r10,%rsi,4),%esi
+   1763d:	andn   %r11d,%esi,%esi
+   17642:	xor    %r9d,%r9d
+   17645:	or     %ecx,%esi
+   17647:	sete   %r9b
+   1764b:	mov    %r9d,0x4(%r8)
+   1764f:	cmp    $0x2,%eax
+   17652:	je     17c13 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x6b3>
+   17658:	mov    0x10(%rdx),%rdx
+   1765c:	mov    %rdx,%rsi
+   1765f:	shr    $0x20,%rsi
+   17663:	and    0x8(%rdi),%esi
+   17666:	mov    %edx,%ecx
+   17668:	and    $0x1f,%ecx
+   1766b:	mov    (%rdi),%r9
+   1766e:	mov    0x10(%rdi),%rdi
+   17672:	mov    (%r9,%rcx,4),%r10d
+   17676:	mov    %edx,%ecx
+   17678:	shr    $0x5,%ecx
+   1767b:	rol    %cl,%r10d
+   1767e:	mov    %edx,%ecx
+   17680:	shr    $0x8,%ecx
+   17683:	and    $0x7c,%ecx
+   17686:	mov    (%r9,%rcx,1),%r9d
+   1768a:	mov    %edx,%ecx
+   1768c:	shr    $0xf,%ecx
+   1768f:	rol    %cl,%r9d
+   17692:	mov    (%rdi,%rsi,4),%ecx
+   17695:	andn   %r10d,%ecx,%ecx
+   1769a:	shr    $0x14,%edx
+   1769d:	and    $0x7,%edx
+   176a0:	or     $0x8,%edx
+   176a3:	xor    %esi,%edx
+   176a5:	mov    (%rdi,%rdx,4),%edx
+   176a8:	andn   %r9d,%edx,%edx
+   176ad:	xor    %esi,%esi
+   176af:	or     %ecx,%edx
+   176b1:	sete   %sil
+   176b5:	mov    %esi,0x8(%r8)
+   176b9:	jmp    17c13 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x6b3>
+   176be:	mov    0x10(%rdi),%rsi
+   176c2:	mov    0x18(%rdi),%rcx
+   176c6:	sub    %rsi,%rcx
+   176c9:	cmp    $0x200001,%rcx
+   176d0:	jb     176e5 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x185>
+   176d2:	mov    %eax,%ebx
+   176d4:	mov    %eax,%esi
+   176d6:	mov    %r8,%rcx
+   176d9:	call   17c20 <void bloom_filters::FastPatternBeforeTailBF::LookupImpl<true>(unsigned int, unsigned long const*, unsigned int*) const>
+   176de:	mov    %ebx,%eax
+   176e0:	jmp    17c13 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x6b3>
+   176e5:	mov    (%rdi),%r9
+   176e8:	vmovdqu64 (%r9),%zmm0
+   176ee:	vmovdqu64 0x40(%r9),%zmm1
+   176f5:	mov    %eax,%r10d
+   176f8:	cmp    $0x10,%eax
+   176fb:	jae    17712 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x1b2>
+   176fd:	xor    %r14d,%r14d
+   17700:	lea    0x8(%r14),%r15
+   17704:	cmp    %r10,%r15
+   17707:	ja     17908 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x3a8>
+   1770d:	jmp    17a02 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x4a2>
+   17712:	vpbroadcastd 0x8(%rdi),%zmm2
+   17719:	mov    0x10(%rdi),%r11
+   1771d:	lea    -0x10(%r10),%rbx
+   17721:	mov    %rbx,%r14
+   17724:	shr    $0x4,%r14
+   17728:	je     1791c <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x3bc>
+   1772e:	inc    %r14
+   17731:	and    $0xfffffffffffffffe,%r14
+   17735:	mov    $0x10,%ecx
+   1773a:	vmovdqa64 -0x14f04(%rip),%zmm3        # 2840 <_IO_stdin_used+0x838>
+   17744:	vmovdqa64 -0x14ece(%rip),%zmm4        # 2880 <_IO_stdin_used+0x878>
+   1774e:	vpbroadcastd -0x15758(%rip),%zmm5        # 2000 <__abi_tag+0x1d3c>
+   17758:	vpbroadcastd -0x1575e(%rip),%zmm6        # 2004 <__abi_tag+0x1d40>
+   17762:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   17770:	vmovdqu64 -0x80(%rdx,%rcx,8),%zmm7
+   17778:	vmovdqu64 -0x40(%rdx,%rcx,8),%zmm8
+   17780:	vmovdqa64 %zmm7,%zmm9
+   17786:	vpermt2d %zmm8,%zmm3,%zmm9
+   1778c:	vpermt2d %zmm8,%zmm4,%zmm7
+   17792:	vpandd %zmm2,%zmm7,%zmm7
+   17798:	kxnorw %k0,%k0,%k1
+   1779c:	vpxor  %xmm8,%xmm8,%xmm8
+   177a1:	vpgatherdd (%r11,%zmm7,4),%zmm8{%k1}
+   177a8:	vpsrld $0x14,%zmm9,%zmm10
+   177af:	vpandd %zmm5,%zmm10,%zmm10
+   177b5:	vpternlogd $0x36,%zmm6,%zmm7,%zmm10
+   177bc:	kxnorw %k0,%k0,%k1
+   177c0:	vpxor  %xmm7,%xmm7,%xmm7
+   177c4:	vpgatherdd (%r11,%zmm10,4),%zmm7{%k1}
+   177cb:	vmovdqa64 %zmm0,%zmm10
+   177d1:	vpermt2d %zmm1,%zmm9,%zmm10
+   177d7:	vpsrld $0x5,%zmm9,%zmm11
+   177de:	vprolvd %zmm11,%zmm10,%zmm10
+   177e4:	vpsrld $0xa,%zmm9,%zmm11
+   177eb:	vpermi2d %zmm1,%zmm0,%zmm11
+   177f1:	vpsrld $0xf,%zmm9,%zmm9
+   177f8:	vprolvd %zmm9,%zmm11,%zmm9
+   177fe:	vpandd %zmm10,%zmm8,%zmm8
+   17804:	vpcmpeqd %zmm10,%zmm8,%k1
+   1780a:	vpandd %zmm9,%zmm7,%zmm7
+   17810:	vpcmpeqd %zmm9,%zmm7,%k0{%k1}
+   17816:	vpmovm2d %k0,%zmm7
+   1781c:	vpsrld $0x1f,%zmm7,%zmm7
+   17823:	vmovdqu64 %zmm7,-0x40(%r8,%rcx,4)
+   1782b:	vmovdqu64 (%rdx,%rcx,8),%zmm7
+   17832:	vmovdqu64 0x40(%rdx,%rcx,8),%zmm8
+   1783a:	vmovdqa64 %zmm7,%zmm9
+   17840:	vpermt2d %zmm8,%zmm3,%zmm9
+   17846:	vpermt2d %zmm8,%zmm4,%zmm7
+   1784c:	vpandd %zmm2,%zmm7,%zmm7
+   17852:	kxnorw %k0,%k0,%k1
+   17856:	vpxor  %xmm8,%xmm8,%xmm8
+   1785b:	vpgatherdd (%r11,%zmm7,4),%zmm8{%k1}
+   17862:	vpsrld $0x14,%zmm9,%zmm10
+   17869:	vpandd %zmm5,%zmm10,%zmm10
+   1786f:	vpternlogd $0x36,%zmm6,%zmm7,%zmm10
+   17876:	kxnorw %k0,%k0,%k1
+   1787a:	vpxor  %xmm7,%xmm7,%xmm7
+   1787e:	vpgatherdd (%r11,%zmm10,4),%zmm7{%k1}
+   17885:	vmovdqa64 %zmm0,%zmm10
+   1788b:	vpermt2d %zmm1,%zmm9,%zmm10
+   17891:	vpsrld $0x5,%zmm9,%zmm11
+   17898:	vprolvd %zmm11,%zmm10,%zmm10
+   1789e:	vpsrld $0xa,%zmm9,%zmm11
+   178a5:	vpermi2d %zmm1,%zmm0,%zmm11
+   178ab:	vpsrld $0xf,%zmm9,%zmm9
+   178b2:	vprolvd %zmm9,%zmm11,%zmm9
+   178b8:	vpandd %zmm10,%zmm8,%zmm8
+   178be:	vpcmpeqd %zmm10,%zmm8,%k1
+   178c4:	vpandd %zmm9,%zmm7,%zmm7
+   178ca:	vpcmpeqd %zmm9,%zmm7,%k0{%k1}
+   178d0:	vpmovm2d %k0,%zmm7
+   178d6:	vpsrld $0x1f,%zmm7,%zmm7
+   178dd:	vmovdqu64 %zmm7,(%r8,%rcx,4)
+   178e4:	add    $0x20,%rcx
+   178e8:	add    $0xfffffffffffffffe,%r14
+   178ec:	jne    17770 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x210>
+   178f2:	lea    -0x10(%rcx),%r14
+   178f6:	test   $0x10,%bl
+   178f9:	je     17924 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x3c4>
+   178fb:	lea    0x8(%r14),%r15
+   178ff:	cmp    %r10,%r15
+   17902:	jbe    17a02 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x4a2>
+   17908:	mov    %r14,%r15
+   1790b:	mov    %r10,%rcx
+   1790e:	sub    %r15,%rcx
+   17911:	ja     17a97 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x537>
+   17917:	jmp    17c13 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x6b3>
+   1791c:	mov    $0x10,%ecx
+   17921:	xor    %r14d,%r14d
+   17924:	vmovdqu64 (%rdx,%r14,8),%zmm3
+   1792b:	vmovdqu64 0x40(%rdx,%r14,8),%zmm4
+   17933:	vmovdqa64 -0x150fd(%rip),%zmm5        # 2840 <_IO_stdin_used+0x838>
+   1793d:	vpermi2d %zmm4,%zmm3,%zmm5
+   17943:	vmovdqa64 -0x150cd(%rip),%zmm6        # 2880 <_IO_stdin_used+0x878>
+   1794d:	vpermi2d %zmm4,%zmm3,%zmm6
+   17953:	vpandd %zmm2,%zmm6,%zmm2
+   17959:	vpsrld $0x14,%zmm5,%zmm3
+   17960:	vmovdqa64 %zmm0,%zmm4
+   17966:	vpermt2d %zmm1,%zmm5,%zmm4
+   1796c:	vpsrld $0x5,%zmm5,%zmm6
+   17973:	vprolvd %zmm6,%zmm4,%zmm4
+   17979:	kxnorw %k0,%k0,%k1
+   1797d:	kxnorw %k0,%k0,%k2
+   17981:	vpxor  %xmm6,%xmm6,%xmm6
+   17985:	vpgatherdd (%r11,%zmm2,4),%zmm6{%k2}
+   1798c:	vpxor  %xmm7,%xmm7,%xmm7
+   17990:	vpandd -0x1599a(%rip){1to16},%zmm3,%zmm3        # 2000 <__abi_tag+0x1d3c>
+   1799a:	vpternlogd $0x36,-0x159a1(%rip){1to16},%zmm2,%zmm3        # 2004 <__abi_tag+0x1d40>
+   179a5:	vpgatherdd (%r11,%zmm3,4),%zmm7{%k1}
+   179ac:	vpsrld $0xa,%zmm5,%zmm2
+   179b3:	vpermi2d %zmm1,%zmm0,%zmm2
+   179b9:	vpsrld $0xf,%zmm5,%zmm3
+   179c0:	vprolvd %zmm3,%zmm2,%zmm2
+   179c6:	vpandd %zmm4,%zmm6,%zmm3
+   179cc:	vpcmpeqd %zmm4,%zmm3,%k1
+   179d2:	vpandd %zmm2,%zmm7,%zmm3
+   179d8:	vpcmpeqd %zmm2,%zmm3,%k0{%k1}
+   179de:	vpmovm2d %k0,%zmm2
+   179e4:	vpsrld $0x1f,%zmm2,%zmm2
+   179eb:	vmovdqu64 %zmm2,(%r8,%r14,4)
+   179f2:	mov    %rcx,%r14
+   179f5:	lea    0x8(%r14),%r15
+   179f9:	cmp    %r10,%r15
+   179fc:	ja     17908 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x3a8>
+   17a02:	vmovdqu64 (%rdx,%r14,8),%zmm2
+   17a09:	vpshufd $0xf5,%zmm2,%zmm3
+   17a10:	vpsllq $0xc,%zmm2,%zmm4
+   17a17:	vpshufd $0xa0,%zmm2,%zmm2
+   17a1e:	vpsrlvd -0x15168(%rip),%zmm2,%zmm5        # 28c0 <_IO_stdin_used+0x8b8>
+   17a28:	vpermt2d %zmm1,%zmm5,%zmm0
+   17a2e:	vpsrlvd -0x15138(%rip),%zmm2,%zmm1        # 2900 <_IO_stdin_used+0x8f8>
+   17a38:	vprolvd %zmm1,%zmm0,%zmm0
+   17a3e:	vpbroadcastq -0x159a8(%rip),%zmm1        # 20a0 <_IO_stdin_used+0x98>
+   17a48:	vpternlogq $0xf8,-0x159eb(%rip){1to8},%zmm4,%zmm1        # 2068 <_IO_stdin_used+0x60>
+   17a53:	mov    0x10(%rdi),%rcx
+   17a57:	vpternlogd $0x78,0x8(%rdi){1to16},%zmm3,%zmm1
+   17a5f:	kxnorw %k0,%k0,%k1
+   17a63:	vpxor  %xmm2,%xmm2,%xmm2
+   17a67:	vpgatherdd (%rcx,%zmm1,4),%zmm2{%k1}
+   17a6e:	vpandd %zmm2,%zmm0,%zmm1
+   17a74:	vpcmpeqq %zmm0,%zmm1,%k0
+   17a7a:	vpmovm2d %k0,%zmm0
+   17a80:	vpsrld $0x1f,%ymm0,%ymm0
+   17a85:	vmovdqu %ymm0,(%r8,%r14,4)
+   17a8b:	mov    %r10,%rcx
+   17a8e:	sub    %r15,%rcx
+   17a91:	jbe    17c13 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x6b3>
+   17a97:	mov    0x8(%rdi),%edi
+   17a9a:	cmp    $0x4,%rcx
+   17a9e:	jae    17aa8 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x548>
+   17aa0:	mov    %r15,%r11
+   17aa3:	jmp    17bb0 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x650>
+   17aa8:	mov    %ecx,%ebx
+   17aaa:	and    $0xfffffffc,%ebx
+   17aad:	lea    (%r15,%rbx,1),%r11
+   17ab1:	vpbroadcastd %edi,%xmm0
+   17ab7:	lea    (%r8,%r15,4),%r14
+   17abb:	lea    (%rdx,%r15,8),%r15
+   17abf:	xor    %r12d,%r12d
+   17ac2:	vpbroadcastq -0x15a33(%rip),%ymm1        # 2098 <_IO_stdin_used+0x90>
+   17acb:	vpbroadcastd -0x15ad4(%rip),%xmm2        # 2000 <__abi_tag+0x1d3c>
+   17ad4:	vpbroadcastd -0x15ad9(%rip),%xmm3        # 2004 <__abi_tag+0x1d40>
+   17add:	nopl   (%rax)
+   17ae0:	vmovdqu (%r15,%r12,8),%ymm4
+   17ae6:	vpand  %ymm1,%ymm4,%ymm5
+   17aea:	kxnorw %k0,%k0,%k1
+   17aee:	vpxor  %xmm6,%xmm6,%xmm6
+   17af2:	vpgatherqd (%r9,%ymm5,4),%xmm6{%k1}
+   17af9:	vpsrlq $0x20,%ymm4,%ymm5
+   17afe:	vpsrlq $0xa,%ymm4,%ymm7
+   17b03:	vpand  %ymm1,%ymm7,%ymm7
+   17b07:	kxnorw %k0,%k0,%k1
+   17b0b:	vpxor  %xmm8,%xmm8,%xmm8
+   17b10:	vpgatherqd (%r9,%ymm7,4),%xmm8{%k1}
+   17b17:	vpmovqd %ymm5,%xmm5
+   17b1d:	vpand  %xmm5,%xmm0,%xmm5
+   17b21:	vpmovzxdq %xmm5,%ymm7
+   17b26:	kxnorw %k0,%k0,%k1
+   17b2a:	vpxor  %xmm9,%xmm9,%xmm9
+   17b2f:	vpgatherqd (%rsi,%ymm7,4),%xmm9{%k1}
+   17b36:	vpmovqd %ymm4,%xmm4
+   17b3c:	vpsrld $0x5,%xmm4,%xmm7
+   17b41:	vprolvd %xmm7,%xmm6,%xmm6
+   17b47:	vpsrld $0x14,%xmm4,%xmm7
+   17b4c:	vpand  %xmm2,%xmm7,%xmm7
+   17b50:	vpternlogd $0x36,%xmm3,%xmm5,%xmm7
+   17b57:	vpmovzxdq %xmm7,%ymm5
+   17b5c:	kxnorw %k0,%k0,%k1
+   17b60:	vpxor  %xmm7,%xmm7,%xmm7
+   17b64:	vpgatherqd (%rsi,%ymm5,4),%xmm7{%k1}
+   17b6b:	vpsrld $0xf,%xmm4,%xmm4
+   17b70:	vprolvd %xmm4,%xmm8,%xmm4
+   17b76:	vpand  %xmm6,%xmm9,%xmm5
+   17b7a:	vpcmpeqd %xmm6,%xmm5,%k1
+   17b80:	vpand  %xmm4,%xmm7,%xmm5
+   17b84:	vpcmpeqd %xmm4,%xmm5,%k0{%k1}
+   17b8a:	vpmovm2d %k0,%xmm4
+   17b90:	vpsrld $0x1f,%xmm4,%xmm4
+   17b95:	vmovdqu %xmm4,(%r14,%r12,4)
+   17b9b:	add    $0x4,%r12
+   17b9f:	cmp    %r12,%rbx
+   17ba2:	jne    17ae0 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x580>
+   17ba8:	cmp    %ebx,%ecx
+   17baa:	je     17c13 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x6b3>
+   17bac:	nopl   0x0(%rax)
+   17bb0:	mov    (%rdx,%r11,8),%rbx
+   17bb4:	mov    %rbx,%r14
+   17bb7:	shr    $0x20,%r14
+   17bbb:	and    %edi,%r14d
+   17bbe:	mov    %ebx,%ecx
+   17bc0:	and    $0x1f,%ecx
+   17bc3:	mov    (%r9,%rcx,4),%ebp
+   17bc7:	mov    %ebx,%ecx
+   17bc9:	shr    $0x5,%ecx
+   17bcc:	rol    %cl,%ebp
+   17bce:	mov    %ebx,%ecx
+   17bd0:	shr    $0x8,%ecx
+   17bd3:	and    $0x7c,%ecx
+   17bd6:	mov    (%r9,%rcx,1),%r15d
+   17bda:	mov    %ebx,%ecx
+   17bdc:	shr    $0xf,%ecx
+   17bdf:	rol    %cl,%r15d
+   17be2:	mov    (%rsi,%r14,4),%ecx
+   17be6:	andn   %ebp,%ecx,%ecx
+   17beb:	shr    $0x14,%ebx
+   17bee:	and    $0x7,%ebx
+   17bf1:	or     $0x8,%ebx
+   17bf4:	xor    %r14d,%ebx
+   17bf7:	mov    (%rsi,%rbx,4),%ebx
+   17bfa:	andn   %r15d,%ebx,%ebx
+   17bff:	xor    %ebp,%ebp
+   17c01:	or     %ecx,%ebx
+   17c03:	sete   %bpl
+   17c07:	mov    %ebp,(%r8,%r11,4)
+   17c0b:	inc    %r11
+   17c0e:	cmp    %r11,%r10
+   17c11:	jne    17bb0 <bloom_filters::FastPatternBeforeTailBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const+0x650>
+   17c13:	pop    %rbx
+   17c14:	pop    %r12
+   17c16:	pop    %r14
+   17c18:	pop    %r15
+   17c1a:	pop    %rbp
+   17c1b:	vzeroupper
+   17c1e:	ret

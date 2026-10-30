@@ -1,0 +1,34 @@
+    abcb:	c5 f8 77             	vzeroupper
+    abce:	e8 2d e3 01 00       	call   28f00 <sched_setaffinity@plt>
+    abd3:	85 c0                	test   %eax,%eax
+    abd5:	0f 85 eb 33 00 00    	jne    dfc6 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x46e6>
+    abdb:	e8 30 e3 01 00       	call   28f10 <std::chrono::_V2::steady_clock::now()@plt>
+    abe0:	48 89 c3             	mov    %rax,%rbx
+    abe3:	49 8b 76 08          	mov    0x8(%r14),%rsi
+    abe7:	48 8d 7c 24 20       	lea    0x20(%rsp),%rdi
+    abec:	e8 8f 04 01 00       	call   1b080 <native_before::Split64RangeBloomFilter::Split64RangeBloomFilter(native_before::RangeBytes)>
+    abf1:	49 8b 76 10          	mov    0x10(%r14),%rsi
+    abf5:	48 8b 94 24 80 00 00 	mov    0x80(%rsp),%rdx
+    abfc:	00 
+    abfd:	48 83 7c 24 70 00    	cmpq   $0x0,0x70(%rsp)
+    ac03:	0f 84 fb 12 00 00    	je     bf04 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2624>
+    ac09:	49 8b 4e 18          	mov    0x18(%r14),%rcx
+    ac0d:	48 8d 7c 24 20       	lea    0x20(%rsp),%rdi
+    ac12:	e8 89 45 01 00       	call   1f1a0 <native_before::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    ac17:	e9 f4 1c 00 00       	jmp    c910 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x3030>
+    ac1c:	0f 1f 40 00          	nopl   0x0(%rax)
+    ac20:	48 83 c0 04          	add    $0x4,%rax
+    ac24:	48 39 c8             	cmp    %rcx,%rax
+    ac27:	74 93                	je     abbc <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x12dc>
+
+SHARED STOP-CLOCK TARGET
+    c901:	48 39 c8             	cmp    %rcx,%rax
+    c904:	75 ba                	jne    c8c0 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2fe0>
+    c906:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+    c90d:	00 00 00 
+    c910:	c5 f8 77             	vzeroupper
+    c913:	e8 f8 c5 01 00       	call   28f10 <std::chrono::_V2::steady_clock::now()@plt>
+    c918:	49 8b 4e 40          	mov    0x40(%r14),%rcx
+    c91c:	8b 09                	mov    (%rcx),%ecx
+    c91e:	c5 f9 ef c0          	vpxor  %xmm0,%xmm0,%xmm0
+    c922:	c5 fe 7f 84 24 60 03 	vmovdqu %ymm0,0x360(%rsp)

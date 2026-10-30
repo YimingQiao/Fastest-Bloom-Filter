@@ -1,0 +1,28 @@
+{
+  "utc": "2026-10-28T17:34:32.134212+00:00",
+  "native": "taskset -c 3 ctest --test-dir build/parallel-partitions --output-on-failure: 1/1 passed",
+  "asan_ubsan": "taskset -c 3 ctest --test-dir build/parallel-partitions-asan --output-on-failure: 1/1 passed",
+  "tsan": "taskset -c 3 ctest --test-dir build/parallel-partitions-tsan --output-on-failure: 1/1 passed (GCC12.2)",
+  "harness": "python3 experiments/2026-10-29-parallel-partitions/check_benchmark.py build/parallel-partitions/benchmark: six scenarios passed",
+  "numa_binding_check": "numactl --physcpubind=3 --membind=1 true: exit0",
+  "sources": {
+    "partitioned_build.hpp": "7b1e1bf0ea968b9b2d89a142ee95eb3b83d87112abc6cba0a9aac0754584f5f0",
+    "benchmark.cpp": "d5d565c83de2382e44b1ed85a9f15ff0d5df151175cfcd408f70a1b14e0a808c",
+    "check.cpp": "42634d91d2e6ddcfcee6350addb4a7efcbdb365032b28494ba7a8f55f16ef2cf",
+    "check_benchmark.py": "0146f9bb878e97bd1575e34ab49f4c20aa2d7f04a4f957daaff8206e909745a9"
+  },
+  "binaries": {
+    "build/parallel-partitions/benchmark": "f952e88b515e8d0a8dd0850a2823346007b3a02196c5612a5d20564a9d90dac6",
+    "build/parallel-partitions/check": "23947afcf67838353f7bddeb1c5faabc94a9af6e08b1a133d2623e9e689c0411",
+    "build/parallel-partitions-asan/check": "328331dea00b0afe8ee55360b41dc949412cf3efa8c17158be40cfdcffd41c45",
+    "build/parallel-partitions-tsan/check": "bed48129fc2f8205fd6e769ba7b2ad30c9dc1848e2711f0c1d51f0f02a810d6d"
+  },
+  "performance_checks": {
+    "screen_rows": 108,
+    "large_rows": 36,
+    "source_changes": [],
+    "semantic_equality": "All six implementations per native family agree on every full query output, all-inserted validation, checksum, bytes and FP count in both runs.",
+    "large_screen_socket_lock": "flock /tmp/fastest-bf-socket1.lock held for whole run",
+    "hardware_counters": "not collected; cache effects described as inference"
+  }
+}

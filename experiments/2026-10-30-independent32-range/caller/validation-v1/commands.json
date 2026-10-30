@@ -1,0 +1,1302 @@
+[
+  {
+    "label": "derive-source",
+    "argv": [
+      "/usr/bin/python3",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-30-independent32-range/caller/derive.py"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/000-derive-source.stdout",
+    "stderr": "validation-v1/000-derive-source.stderr",
+    "stdout_sha256": "9ced42431c079ecbd0175d810ebfc8197eaba23ae093461eb7374107a595d726",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "compiler-version",
+    "argv": [
+      "/usr/bin/clang++",
+      "--version"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/001-compiler-version.stdout",
+    "stderr": "validation-v1/001-compiler-version.stderr",
+    "stdout_sha256": "a6552fa81dddd84c51cfe609282aee41acd279a764d24f83c1811dece3f88719",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "native-backend-macros",
+    "argv": [
+      "/usr/bin/clang++",
+      "-march=native",
+      "-dM",
+      "-E",
+      "-x",
+      "c++",
+      "/dev/null"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/002-native-backend-macros.stdout",
+    "stderr": "validation-v1/002-native-backend-macros.stderr",
+    "stdout_sha256": "a1c57eb45a2e6b5f870988dbc751569f75f48f5cd1d656a0cc2b579f7bfedce1",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "numa-policy",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "--show"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/003-numa-policy.stdout",
+    "stderr": "validation-v1/003-numa-policy.stderr",
+    "stdout_sha256": "30e77347a0054bacedde473850b49ab1fa1d80d84ae7cb9587098ebbe4d16b98",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-configure",
+    "argv": [
+      "/usr/bin/cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-30-independent32-range/caller",
+      "-B",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++",
+      "-DBF_SANITIZERS=OFF"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/004-normal-configure.stdout",
+    "stderr": "validation-v1/004-normal-configure.stderr",
+    "stdout_sha256": "7b19177e6a6e3764171649ee0ad3286a7d3047b04008487a25f3a134e471605b",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-build",
+    "argv": [
+      "/usr/bin/cmake",
+      "--build",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal",
+      "--target",
+      "main",
+      "-j",
+      "1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/005-normal-build.stdout",
+    "stderr": "validation-v1/005-normal-build.stderr",
+    "stdout_sha256": "f2311b91b1abf72d24dafb61b8671c8da6a8bdf2ac1fc61a625ea5ba32b0f9cc",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-allocation-0",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--geometry",
+      "16",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/006-normal-allocation-0.stdout",
+    "stderr": "validation-v1/006-normal-allocation-0.stderr",
+    "stdout_sha256": "9c6b0f26c7e4d51eb2c4f3ee8144df132940d2d67b7d95017b72d3240b95fb94",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-allocation-1",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--geometry",
+      "25",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/007-normal-allocation-1.stdout",
+    "stderr": "validation-v1/007-normal-allocation-1.stderr",
+    "stdout_sha256": "ab38849af78f73a899ecca754c2b0eb208ae07c72e01fa9d1b3a6cfea47da769",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-case-0",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "10"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/008-normal-case-0.stdout",
+    "stderr": "validation-v1/008-normal-case-0.stderr",
+    "stdout_sha256": "cf26fb68848c3e8da3988d2b2cdf1896a82005bf2b355f21e6a19fa8302d319a",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-case-1",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "31",
+      "4",
+      "74381",
+      "1",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/009-normal-case-1.stdout",
+    "stderr": "validation-v1/009-normal-case-1.stderr",
+    "stdout_sha256": "bf1d5521bf174fcbb8c12e2da239e68797d76855ee73a9f9657e414a308cbe89",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-case-2",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "4096",
+      "4",
+      "74381",
+      "0",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/010-normal-case-2.stdout",
+    "stderr": "validation-v1/010-normal-case-2.stderr",
+    "stdout_sha256": "9d9f225c447e053bf13f85e8b472bf2cd8e4bff367e282072cb2ddea8061229e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "asan-configure",
+    "argv": [
+      "/usr/bin/cmake",
+      "-S",
+      "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-30-independent32-range/caller",
+      "-B",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/asan",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++",
+      "-DBF_SANITIZERS=ON"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/011-asan-configure.stdout",
+    "stderr": "validation-v1/011-asan-configure.stderr",
+    "stdout_sha256": "f7dd36ad7c0b6c8942a9d8052aedd9657b6ddc09f68343aa227f3c821ec81b37",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "asan-build",
+    "argv": [
+      "/usr/bin/cmake",
+      "--build",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/asan",
+      "--target",
+      "main",
+      "-j",
+      "1"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/012-asan-build.stdout",
+    "stderr": "validation-v1/012-asan-build.stderr",
+    "stdout_sha256": "f2311b91b1abf72d24dafb61b8671c8da6a8bdf2ac1fc61a625ea5ba32b0f9cc",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "asan-allocation-0",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/asan/main",
+      "--geometry",
+      "16",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/013-asan-allocation-0.stdout",
+    "stderr": "validation-v1/013-asan-allocation-0.stderr",
+    "stdout_sha256": "9c6b0f26c7e4d51eb2c4f3ee8144df132940d2d67b7d95017b72d3240b95fb94",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "asan-allocation-1",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/asan/main",
+      "--geometry",
+      "25",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/014-asan-allocation-1.stdout",
+    "stderr": "validation-v1/014-asan-allocation-1.stderr",
+    "stdout_sha256": "ab38849af78f73a899ecca754c2b0eb208ae07c72e01fa9d1b3a6cfea47da769",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "asan-case-0",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/asan/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "10"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/015-asan-case-0.stdout",
+    "stderr": "validation-v1/015-asan-case-0.stderr",
+    "stdout_sha256": "001185c94082b51f1040e684f0125f1ca608725dc7172c4a974827a1baf1bb8f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "asan-case-1",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/asan/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "31",
+      "4",
+      "74381",
+      "1",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/016-asan-case-1.stdout",
+    "stderr": "validation-v1/016-asan-case-1.stderr",
+    "stdout_sha256": "c386407f53219d03850b4df9e84eacb94481b8694a482e4aed80085d49f8604d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "asan-case-2",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/asan/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "4096",
+      "4",
+      "74381",
+      "0",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/017-asan-case-2.stdout",
+    "stderr": "validation-v1/017-asan-case-2.stderr",
+    "stdout_sha256": "d1d9ec021c6cec390ff199b12f795fadea914c66776c7b2d4e56e8bfcbe5ba02",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "fault-0",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--fault",
+      "16",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "10"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 1,
+    "expected_success": false,
+    "stdout": "validation-v1/018-fault-0.stdout",
+    "stderr": "validation-v1/018-fault-0.stderr",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "4ca3129f813179413cf479cc9a0be54e83abbc544be9b182181b82bdb66d9cfe"
+  },
+  {
+    "label": "fault-1",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--fault",
+      "16",
+      "50",
+      "12",
+      "31",
+      "4",
+      "74381",
+      "1",
+      "0"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 1,
+    "expected_success": false,
+    "stdout": "validation-v1/019-fault-1.stdout",
+    "stderr": "validation-v1/019-fault-1.stderr",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "4ca3129f813179413cf479cc9a0be54e83abbc544be9b182181b82bdb66d9cfe"
+  },
+  {
+    "label": "invalid-0",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--bad",
+      "16",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "10"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 1,
+    "expected_success": false,
+    "stdout": "validation-v1/020-invalid-0.stdout",
+    "stderr": "validation-v1/020-invalid-0.stderr",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "61266b0d76f09fe9e9a80b812322eaa0e85c5fd67bfc0c2c65d0dbe8ef8cf0ba"
+  },
+  {
+    "label": "invalid-1",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--check",
+      "25",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "10"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 1,
+    "expected_success": false,
+    "stdout": "validation-v1/021-invalid-1.stdout",
+    "stderr": "validation-v1/021-invalid-1.stderr",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "81bc6d3fcc3d24fbac926ed9e63dcccdccdefbd2ae89f83649c02f3020ba8c84"
+  },
+  {
+    "label": "invalid-2",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--check",
+      "16",
+      "50",
+      "22",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "10"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 1,
+    "expected_success": false,
+    "stdout": "validation-v1/022-invalid-2.stdout",
+    "stderr": "validation-v1/022-invalid-2.stderr",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "81bc6d3fcc3d24fbac926ed9e63dcccdccdefbd2ae89f83649c02f3020ba8c84"
+  },
+  {
+    "label": "invalid-3",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "2",
+      "4",
+      "74381",
+      "0",
+      "10"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 1,
+    "expected_success": false,
+    "stdout": "validation-v1/023-invalid-3.stdout",
+    "stderr": "validation-v1/023-invalid-3.stderr",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "1b9e2dc34dbb2ce62c9ea67b22904d27cdad7c93275ca4bf594d588912225971"
+  },
+  {
+    "label": "invalid-4",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "1",
+      "4",
+      "-1",
+      "0",
+      "10"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 1,
+    "expected_success": false,
+    "stdout": "validation-v1/024-invalid-4.stdout",
+    "stderr": "validation-v1/024-invalid-4.stderr",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e4dcc1b09e98cae83f347135a550cdcdddc7446062d59178e57549aa3cbf7d9c"
+  },
+  {
+    "label": "invalid-5",
+    "argv": [
+      "/usr/bin/numactl",
+      "--physcpubind=3",
+      "--membind=1",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main",
+      "--check",
+      "16",
+      "50",
+      "12",
+      "1",
+      "4",
+      "74381",
+      "0",
+      "26"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 1,
+    "expected_success": false,
+    "stdout": "validation-v1/025-invalid-5.stdout",
+    "stderr": "validation-v1/025-invalid-5.stderr",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "81bc6d3fcc3d24fbac926ed9e63dcccdccdefbd2ae89f83649c02f3020ba8c84"
+  },
+  {
+    "label": "normal-elf",
+    "argv": [
+      "/usr/bin/readelf",
+      "-Ws",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/026-normal-elf.stdout",
+    "stderr": "validation-v1/026-normal-elf.stderr",
+    "stdout_sha256": "b41e7de2422070f76c1170789fb2345ebbff4c958ec3d38822d2a6f689ec68ae",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-nm",
+    "argv": [
+      "/usr/bin/nm",
+      "-S",
+      "--defined-only",
+      "--format=posix",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/027-normal-nm.stdout",
+    "stderr": "validation-v1/027-normal-nm.stderr",
+    "stdout_sha256": "a7f77d47b3081416e54ac8b8a9d8be1b8bbd911b499269ce054b2cd8529a89ca",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-demangle",
+    "argv": [
+      "/usr/bin/c++filt"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/028-normal-demangle.stdout",
+    "stderr": "validation-v1/028-normal-demangle.stderr",
+    "stdout_sha256": "8f9cc89b380784fb01caceb0d15998f5eab18b08f985d935c80dc261b184191c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "input_sha256": "1c619ef4e6cacd312c1bcd78f5e4dc91b1e4b8fa6d489a7a27f64e5777abc5d8"
+  },
+  {
+    "label": "normal-asm-0",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=163824",
+      "--stop-address=163829",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/029-normal-asm-0.stdout",
+    "stderr": "validation-v1/029-normal-asm-0.stderr",
+    "stdout_sha256": "25d819bbcf9a5ad83eddc70fc63af9698199d61941843b7b8c149c5ece7903f1",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-1",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=179936",
+      "--stop-address=180870",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/030-normal-asm-1.stdout",
+    "stderr": "validation-v1/030-normal-asm-1.stderr",
+    "stdout_sha256": "a75d382593c2d39aa191fec75959b159f8114c8293a339024601947e8eeaad60",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-2",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=177328",
+      "--stop-address=177809",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/031-normal-asm-2.stdout",
+    "stderr": "validation-v1/031-normal-asm-2.stderr",
+    "stdout_sha256": "9b75de2a84d2b8ad20a7ea8c9a3842903269e06a9e7c3cdced0fa387aa84d4dd",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-3",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=170928",
+      "--stop-address=170933",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/032-normal-asm-3.stdout",
+    "stderr": "validation-v1/032-normal-asm-3.stderr",
+    "stdout_sha256": "6bf5ced9860acb679487d5cc45bff7d00c6e76c9ba74552d3506aee13aacf57c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-4",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=160768",
+      "--stop-address=161228",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/033-normal-asm-4.stdout",
+    "stderr": "validation-v1/033-normal-asm-4.stderr",
+    "stdout_sha256": "2397919416c98414db6c89238ee99c0643f60bf643a721d2ecd072c83fd80c12",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-5",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=157232",
+      "--stop-address=157732",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/034-normal-asm-5.stdout",
+    "stderr": "validation-v1/034-normal-asm-5.stderr",
+    "stdout_sha256": "8c5a3d3157c254f90e449a8cff41c29ac70e30530d0cf61b13ceb780ce8ed4d3",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-6",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=186488",
+      "--stop-address=186493",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/035-normal-asm-6.stdout",
+    "stderr": "validation-v1/035-normal-asm-6.stderr",
+    "stdout_sha256": "484edc03a707edf3a8a7c95dacf76b508fb5f48fbede6e1db5b6699692956cad",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-7",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=185040",
+      "--stop-address=185390",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/036-normal-asm-7.stdout",
+    "stderr": "validation-v1/036-normal-asm-7.stderr",
+    "stdout_sha256": "f7c483fea20d28b5393828ad43405997e18c0e7777ff816252e27f6fb047c6cc",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-8",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=182960",
+      "--stop-address=183246",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/037-normal-asm-8.stdout",
+    "stderr": "validation-v1/037-normal-asm-8.stderr",
+    "stdout_sha256": "5277faa93752a1c0be6cf2b47ffef481566da003846dcf463aeb8c215f4e70d0",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-9",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=163840",
+      "--stop-address=164229",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/038-normal-asm-9.stdout",
+    "stderr": "validation-v1/038-normal-asm-9.stderr",
+    "stdout_sha256": "6b90932806cdd53fe58248067c77d15adf05929fbec7aa70582eee21e788779f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-10",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=180880",
+      "--stop-address=181204",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/039-normal-asm-10.stdout",
+    "stderr": "validation-v1/039-normal-asm-10.stderr",
+    "stdout_sha256": "2e8ac52ac34a8111bd57b29bb161a958cdb6c379a11711436a356de6a247c505",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-11",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=177824",
+      "--stop-address=178241",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/040-normal-asm-11.stdout",
+    "stderr": "validation-v1/040-normal-asm-11.stderr",
+    "stdout_sha256": "e943cba14d8d039b7a488b88868ed6a8f130c560e2a9f2ea0038335852670d3e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-12",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=171216",
+      "--stop-address=171484",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/041-normal-asm-12.stdout",
+    "stderr": "validation-v1/041-normal-asm-12.stderr",
+    "stdout_sha256": "4f77c635f0822ec2ded7cf16190c73df6d0be51f1bf5d5eb9fd110cc64b5b7fc",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-13",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=161232",
+      "--stop-address=161692",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/042-normal-asm-13.stdout",
+    "stderr": "validation-v1/042-normal-asm-13.stderr",
+    "stdout_sha256": "708eda74940989a15e14f0bc80581fa0abd71e24467776903e8b3d92f9fe9873",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-14",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=158576",
+      "--stop-address=158894",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/043-normal-asm-14.stdout",
+    "stderr": "validation-v1/043-normal-asm-14.stderr",
+    "stdout_sha256": "1ebdf8e1a20cb756f3b8d228181a2c0fbb3ebb398859913eb24e06002010860a",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-15",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=186496",
+      "--stop-address=186813",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/044-normal-asm-15.stdout",
+    "stderr": "validation-v1/044-normal-asm-15.stderr",
+    "stdout_sha256": "be7e29a4b0f59295fe12dc9987aef14ca8cf2ac4226d03ef7bd20532b0ddc5cd",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-16",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=185392",
+      "--stop-address=185662",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/045-normal-asm-16.stdout",
+    "stderr": "validation-v1/045-normal-asm-16.stderr",
+    "stdout_sha256": "dea2b7ce38898a0c2a39e664c7b5f086cb3025e0634466e10d59802b7f100541",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-17",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=183248",
+      "--stop-address=183518",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/046-normal-asm-17.stdout",
+    "stderr": "validation-v1/046-normal-asm-17.stderr",
+    "stdout_sha256": "808f0eca62e19fbb5899c27e8e3829d760a61a53f709bbc2e3662ee144389eb6",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-18",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=164240",
+      "--stop-address=164429",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/047-normal-asm-18.stdout",
+    "stderr": "validation-v1/047-normal-asm-18.stderr",
+    "stdout_sha256": "a4f5e176ce6bcbbdef39931f157ee1b30cc5dcc733482aced58357730de24941",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-19",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=181216",
+      "--stop-address=181636",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/048-normal-asm-19.stdout",
+    "stderr": "validation-v1/048-normal-asm-19.stderr",
+    "stdout_sha256": "ac64138938980f19547e4d6a7ddc559cdfdf0df8f33b60f32446f5ff50da45bb",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-20",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=178256",
+      "--stop-address=178620",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/049-normal-asm-20.stdout",
+    "stderr": "validation-v1/049-normal-asm-20.stderr",
+    "stdout_sha256": "e7dd948e32e6b5c3f2a1df41208c7e8bf1abc6c42a6dade3888a733d96650909",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-21",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=171488",
+      "--stop-address=171806",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/050-normal-asm-21.stdout",
+    "stderr": "validation-v1/050-normal-asm-21.stderr",
+    "stdout_sha256": "05bb33cec4e144b6b8fd8b0bd0bbd6e57e48e9dd5e8358f25087d8912913adea",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-22",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=161696",
+      "--stop-address=162104",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/051-normal-asm-22.stdout",
+    "stderr": "validation-v1/051-normal-asm-22.stderr",
+    "stdout_sha256": "875884f3a7cf3e3f9046577f2e731f6797e7969bd5f44726dedaf08bf34623cb",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-23",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=158896",
+      "--stop-address=159329",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/052-normal-asm-23.stdout",
+    "stderr": "validation-v1/052-normal-asm-23.stderr",
+    "stdout_sha256": "da33c8a754569cadf6fd296fee0ef1eb31ffe35bae99da364ff581744e1b110e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-24",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=186816",
+      "--stop-address=187265",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/053-normal-asm-24.stdout",
+    "stderr": "validation-v1/053-normal-asm-24.stderr",
+    "stdout_sha256": "65012f174b593c556e602c8a6699565c7863ffb133c2d8948b32c705d666189f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-25",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=185664",
+      "--stop-address=186052",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/054-normal-asm-25.stdout",
+    "stderr": "validation-v1/054-normal-asm-25.stderr",
+    "stdout_sha256": "cd7c70f57290887139dbc44d660d28658ae1121e1551f75f6ec55972ede75454",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-26",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=183520",
+      "--stop-address=183908",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/055-normal-asm-26.stdout",
+    "stderr": "validation-v1/055-normal-asm-26.stderr",
+    "stdout_sha256": "00d1d9e25666bcfd38a110903a16879e16f7ead340aeff7664c76465e238ce64",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-27",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=67776",
+      "--stop-address=80033",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/056-normal-asm-27.stdout",
+    "stderr": "validation-v1/056-normal-asm-27.stderr",
+    "stdout_sha256": "43e435e23dde7438fc302b22902a87b6c0c4c2f8d5a886c74d89e7c237f436f6",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-28",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=105664",
+      "--stop-address=118230",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/057-normal-asm-28.stdout",
+    "stderr": "validation-v1/057-normal-asm-28.stderr",
+    "stdout_sha256": "3bd7d9a7a520b1449b4829afe9a5b780624d1f9cf62e35a4fbb2eb1ffe6f64f9",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-29",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=92928",
+      "--stop-address=105362",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/058-normal-asm-29.stdout",
+    "stderr": "validation-v1/058-normal-asm-29.stderr",
+    "stdout_sha256": "2fe277d9278008b15296bb6b037d677a32239d1a4ed0a8007dc036126ea850d1",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-30",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=80432",
+      "--stop-address=92640",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/059-normal-asm-30.stdout",
+    "stderr": "validation-v1/059-normal-asm-30.stderr",
+    "stdout_sha256": "d4be985da90941eef3933cc10e51919d04f75b8e38fc0d8ea7c17410691cc807",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-31",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=54304",
+      "--stop-address=67486",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/060-normal-asm-31.stdout",
+    "stderr": "validation-v1/060-normal-asm-31.stderr",
+    "stdout_sha256": "60c6eca61dbdca225f59f7427d5a33bb5521a87d7d8f06f86093e204191d3f98",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-32",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=40608",
+      "--stop-address=54030",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/061-normal-asm-32.stdout",
+    "stderr": "validation-v1/061-normal-asm-32.stderr",
+    "stdout_sha256": "cfb09c81598dab80abdb1261a42554613c3c33477e6fe9f4cbbc77798344887c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-33",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=143872",
+      "--stop-address=156188",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/062-normal-asm-33.stdout",
+    "stderr": "validation-v1/062-normal-asm-33.stderr",
+    "stdout_sha256": "b67d2a989a45b1c540cf1753db7cc2666c066805443f83ad435d99164d255371",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-34",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=131200",
+      "--stop-address=143597",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/063-normal-asm-34.stdout",
+    "stderr": "validation-v1/063-normal-asm-34.stderr",
+    "stdout_sha256": "a1246778fe8a55447c3f5ecf1827709359912a66fcfb602a7daf0683747cff23",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-asm-35",
+    "argv": [
+      "/usr/bin/objdump",
+      "-d",
+      "--no-show-raw-insn",
+      "--start-address=118528",
+      "--stop-address=130925",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/064-normal-asm-35.stdout",
+    "stderr": "validation-v1/064-normal-asm-35.stderr",
+    "stdout_sha256": "4f3534cb1dff5aa91ed89614de8dba5b710344197d3a734578f2b5227cf269a8",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "label": "normal-relocations",
+    "argv": [
+      "/usr/bin/readelf",
+      "-rW",
+      "/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main"
+    ],
+    "cwd": "/home/yiming/projects/fastest-bf-lab",
+    "returncode": 0,
+    "expected_success": true,
+    "stdout": "validation-v1/065-normal-relocations.stdout",
+    "stderr": "validation-v1/065-normal-relocations.stderr",
+    "stdout_sha256": "7ea01a716681c1b9e666b07425973ac0ed8eaf7b2b39cf5c800392fab19a942d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

@@ -1,0 +1,259 @@
+--- initial-proposal/proposed/raw_contract.rs
++++ corrected-proposal/proposed/raw_contract.rs
+@@ -5,6 +5,8 @@
+ pub trait RawFilter: Sized {
+     fn new(real_n: usize, bpk: u32) -> Result<Self, Box<dyn std::error::Error>>;
+     fn size_in_bytes(&self) -> usize;
++    /// Required temporary hash words for this raw operation; no filter backing.
++    fn scratch_words(input_len: usize) -> usize;
+     fn contains_raw(&self, raw: u64) -> bool;
+     fn insert_raw(&mut self, raw: &[u64], scratch: &mut [u64]);
+     fn lookup_raw(&self, raw: &[u64], out: &mut [u32], scratch: &mut [u64]);
+@@ -18,6 +20,7 @@
+         Ok(Self(F::new(real_n, bpk)?))
+     }
+     fn size_in_bytes(&self) -> usize { self.0.size_in_bytes() }
++    fn scratch_words(input_len: usize) -> usize { input_len }
+     #[inline(always)]
+     fn contains_raw(&self, raw: u64) -> bool { self.0.contains_hash(hash64(raw)) }
+     fn insert_raw(&mut self, raw: &[u64], scratch: &mut [u64]) {
+--- initial-proposal/proposed/fastbloom_rs_adapter.rs
++++ corrected-proposal/proposed/fastbloom_rs_adapter.rs
+@@ -26,6 +26,7 @@
+         // proof must establish equality to actual live backing bytes before run.
+         self.0.get_u8_array().len()
+     }
++    fn scratch_words(_input_len: usize) -> usize { 0 }
+     #[inline(always)]
+     fn contains_raw(&self, raw: u64) -> bool {
+         self.0.contains(&raw.to_le_bytes())
+--- initial-proposal/proposed/reporter.rs
++++ corrected-proposal/proposed/reporter.rs
+@@ -9,15 +9,30 @@
+     pub raw_batched_trials: Vec<f64>,
+     pub raw_visible_trials: Vec<f64>,
+     pub raw_insert_trials: Vec<f64>,
+-    pub allocate_raw_insert_trials: Vec<f64>,
++    pub allocate_filter_and_scratch_raw_insert_trials: Vec<f64>,
+     pub query_phase_order: Vec<[usize; 2]>,
+     pub actual_bytes: usize,
++    pub insert_batch: usize,
++    pub query_batch: usize,
++    pub build_scratch_bytes: usize,
++    pub query_scratch_bytes: usize,
+     pub present: usize,
+     pub absent: usize,
+     pub false_positives: usize,
+     pub checksum: u64,
+     pub calibration_absent: usize,
+     pub calibration_false_positives: usize,
++}
++
++/// A zero requirement allocates nothing (Aligned::new(0) would allocate one byte).
++struct Scratch(Option<Aligned<u64>>);
++impl Scratch {
++    fn new(words: usize) -> Self {
++        Self(if words == 0 { None } else { Some(Aligned::<u64>::new(words)) })
++    }
++    fn as_mut_slice(&mut self) -> &mut [u64] {
++        match self.0.as_mut() { Some(buffer) => &mut buffer[..], None => &mut [] }
++    }
+ }
+ 
+ pub fn phase_orders(seed: u64, repeats: usize) -> Vec<[usize; 2]> {
+@@ -33,7 +48,13 @@
+ pub fn run_raw<F: RawFilter>(raw_insert_keys: &[u64], raw_query: &[u64], c: &Config) -> Measurements {
+     assert_eq!(raw_insert_keys.len(), c.n);
+     assert_eq!(raw_query.len(), c.q);
+-    let mut scratch = Aligned::<u64>::new(c.batch.max(c.insert_batch));
++    assert!(c.n > 0 && c.batch > 0 && c.insert_batch > 0);
++    let build_words = F::scratch_words(c.insert_batch.min(c.n));
++    let query_words = F::scratch_words(c.batch);
++    let build_scratch_bytes = build_words.checked_mul(std::mem::size_of::<u64>()).unwrap();
++    let query_scratch_bytes = query_words.checked_mul(std::mem::size_of::<u64>()).unwrap();
++    // insert_batch is independent of query batch; its protocol is fixed later.
++    let validation_batch = c.batch.min(c.insert_batch).min(c.n);
+     let mut output_storage = Aligned::<u32>::new(c.q.max(c.batch) + 32);
+     let (before, rest) = output_storage.split_at_mut(16);
+     let (output, after) = rest.split_at_mut(c.q.max(c.batch));
+@@ -41,26 +62,38 @@
+     let mut insertion = Vec::new(); let mut construction = Vec::new();
+     for _ in 0..c.repeats {
+         let a = Instant::now();
++        // Both necessary hash workspace and filter allocation/initialization
++        // belong to the complete raw-build interval. DirectRaw8 allocates none.
++        let mut build_scratch = Scratch::new(build_words);
+         let mut fresh = F::new(c.n, c.bpk).unwrap();
+         let ready = Instant::now();
+-        for chunk in raw_insert_keys.chunks(c.insert_batch) { raw_insert(&mut fresh, chunk, &mut scratch); }
++        for chunk in raw_insert_keys.chunks(c.insert_batch) { raw_insert(&mut fresh, chunk, build_scratch.as_mut_slice()); }
+         let done = Instant::now();
+         insertion.push((done-ready).as_secs_f64()*1e9/c.n as f64);
+         construction.push((done-a).as_secs_f64()*1e9/c.n as f64);
+         // Every inserted raw key is checked after every timed build. No second
+         // reference bitmap lives across a timed construction interval.
+-        for chunk in raw_insert_keys.chunks(c.batch) {
+-            raw_batched(&fresh, chunk, &mut output[..chunk.len()], &mut scratch);
++        for chunk in raw_insert_keys.chunks(validation_batch) {
++            raw_batched(&fresh, chunk, &mut output[..chunk.len()], build_scratch.as_mut_slice());
+             assert!(output[..chunk.len()].iter().all(|&x|x==1));
+             consume(&output[..chunk.len()]);
+         }
+         assert!(before.iter().chain(after.iter()).all(|&x|x==0xfeed));
++        // Validation and destruction are outside clocks. No build workspace
++        // from this lifetime survives to the next build or query phase.
++        drop(fresh);
++        drop(build_scratch);
+     }
+     let mut filter=F::new(c.n,c.bpk).unwrap();
+-    for chunk in raw_insert_keys.chunks(c.insert_batch) { raw_insert(&mut filter,chunk,&mut scratch); }
++    {
++        let mut canonical_build_scratch=Scratch::new(build_words);
++        for chunk in raw_insert_keys.chunks(c.insert_batch) { raw_insert(&mut filter,chunk,canonical_build_scratch.as_mut_slice()); }
++    }
++    // Only API-required batch workspace lives through the query phase.
++    let mut query_scratch=Scratch::new(query_words);
+     for &raw in raw_insert_keys { assert!(filter.contains_raw(raw), "raw public false negative"); }
+     for (input,out) in raw_query.chunks(c.batch).zip(output[..c.q].chunks_mut(c.batch)) {
+-        raw_batched(&filter,input,out,&mut scratch);
++        raw_batched(&filter,input,out,query_scratch.as_mut_slice());
+     }
+     let (mut present,mut absent,mut fp,mut checksum)=(0usize,0usize,0usize,14695981039346656037u64);
+     for (&raw,&answer) in raw_query.iter().zip(output.iter()) {
+@@ -76,7 +109,7 @@
+         for &mode in order {
+             let start=Instant::now();
+             match mode {
+-                0=>for(input,out)in raw_query.chunks(c.batch).zip(output[..c.q].chunks_mut(c.batch)){raw_batched(&filter,input,out,&mut scratch);},
++                0=>for(input,out)in raw_query.chunks(c.batch).zip(output[..c.q].chunks_mut(c.batch)){raw_batched(&filter,input,out,query_scratch.as_mut_slice());},
+                 1=>raw_visible(&filter,raw_query,&mut output[..c.q]),
+                 _=>unreachable!(),
+             }
+@@ -90,12 +123,12 @@
+     for i in(0..count).step_by(c.batch){
+         let len=c.batch.min(count-i);
+         for(j,raw)in calibration_raw[..len].iter_mut().enumerate(){*raw=c.key_base+c.n as u64+c.q as u64+(i+j)as u64;}
+-        raw_batched(&filter,&calibration_raw[..len],&mut output[..len],&mut scratch);
++        raw_batched(&filter,&calibration_raw[..len],&mut output[..len],query_scratch.as_mut_slice());
+         for(&raw,&answer)in calibration_raw[..len].iter().zip(output.iter()){
+             assert!(answer<=1);assert_eq!(answer,filter.contains_raw(raw)as u32);calibration_fp+=answer as usize;
+         }
+         assert!(before.iter().chain(after.iter()).all(|&x|x==0xfeed));
+     }
+     let [batched,visible]=times;
+-    Measurements{raw_batched_trials:batched,raw_visible_trials:visible,raw_insert_trials:insertion,allocate_raw_insert_trials:construction,query_phase_order:orders,actual_bytes:filter.size_in_bytes(),present,absent,false_positives:fp,checksum,calibration_absent:count,calibration_false_positives:calibration_fp}
++    Measurements{raw_batched_trials:batched,raw_visible_trials:visible,raw_insert_trials:insertion,allocate_filter_and_scratch_raw_insert_trials:construction,query_phase_order:orders,actual_bytes:filter.size_in_bytes(),insert_batch:c.insert_batch,query_batch:c.batch,build_scratch_bytes,query_scratch_bytes,present,absent,false_positives:fp,checksum,calibration_absent:count,calibration_false_positives:calibration_fp}
+ }
+--- initial-proposal/README.md
++++ corrected-proposal/README.md
+@@ -4,7 +4,7 @@
+ 
+ ## Chosen raw-only contracts
+ 
+-Reuse the immutable Rust caller at`72625673e6b5bb57874a5fa53e04d23ffb8c6ab2`. Its raw paths and workload/helpers are also byte-identical within the pre-data Poppy caller`235090460f5bc063109c1cb3d40357673f36d50e`; no Poppy result participates. `derive.py` extracts the exact aligned-buffer, SplitMix/shuffle, median, full dense-output/checksum/guard, consumption and Config helpers. Future CLI derivation retains the same unique raw-u64 insertion stream, hit generation, shuffled mixed-query stream, selection validation and disjoint absent-counter interval. Old clocks, lifetime boundaries and output-consumption pattern are reused, but the reporter dispatch is explicitly changed; this is not a claim of whole-function or machine-code identity.
++Reuse the immutable Rust caller at`72625673e6b5bb57874a5fa53e04d23ffb8c6ab2`. Its raw paths and workload/helpers are also byte-identical within the pre-data Poppy caller`235090460f5bc063109c1cb3d40357673f36d50e`; no Poppy result participates. `derive.py` extracts the exact aligned-buffer, SplitMix/shuffle, median, full dense-output/checksum/guard, consumption and Config helpers. Future CLI derivation retains the same unique raw-u64 insertion stream, hit generation, shuffled mixed-query stream, selection validation and disjoint absent-counter interval. The existing clock mechanism, output-consumption pattern and data helpers are reused, but raw dispatch and the complete construction boundary are explicitly changed. This is not a claim of old raw whole-body or machine-code identity.
+ 
+ There are exactly two query contracts and two construction metrics:
+ 
+@@ -12,8 +12,12 @@
+ |---|---|---|
+ | `raw_batched_public` | Within each batch, common`hash64` preparation then the unchanged public bulk method. | Direct public`contains(&raw.to_le_bytes())` loop over that batch; no artificial identity-copy pass. |
+ | `raw_visible_public` | One non-inlined whole-array loop with common hash plus actual public singleton, visible to the optimizer. | The same loop boundary, with eight-byte preparation and actual public`contains` visible to the optimizer. |
+-| `raw_insert` | Common hash preparation plus public insertion, after one filter's constructor. | Direct public`add(&raw.to_le_bytes())`, after its constructor. |
+-| `allocate_raw_insert` | Constructor plus that same raw-insertion interval. | Constructor plus that same raw-insertion interval. |
++| `raw_insert` | Common hash preparation plus public insertion, once the filter and required scratch are ready. | Direct public`add(&raw.to_le_bytes())`, once its filter is ready. |
++| `allocate_filter_and_scratch_raw_insert` | Required hash-scratch allocation/initialization, filter constructor and raw insertion. | Filter constructor and raw insertion; required scratch is zero and no buffer is allocated. |
++
++`RawFilter::scratch_words(len)` declares required workspace: CommonHash returns len, and DirectRaw8 returns0. Zero uses `None`, not an `Aligned::new(0)` one-byte allocation. Each timed build starts its complete clock before required scratch and filter allocation/initialization; the insertion-only clock starts after both are ready. That build's scratch is released after its untimed validation. The canonical filter's build scratch is likewise dropped before queries. Query storage is only the API-required batch workspace, and `build_scratch_bytes`/`query_scratch_bytes` are reported separately from actual filter bytes. The old uniform maximum scratch allocation is removed, so whole-input CommonHash cannot hide256MiB outside the complete clock and DirectRaw8 pays for no unused buffer.
++
++Insertion batch size remains independent of query batch. The source supports full-input or bounded insertion chunks such as4096; a later fixed protocol must choose its insertion workload before data. No whole-input optimum is assumed, and no extra algorithm variant is introduced. Filter-byte quality caps do not silently include or erase caller scratch: construction reports expose the necessary extra space explicitly.
+ 
+ Every library's required hashing is inside these clocks. The upstream two seeded XXH3 computations remain in the unmodified public implementation; they are not precomputed by the adapter. Normal compiler elimination/lazy evaluation remains allowed and will be reported by the actual caller's ASM. This is an end-to-end raw-key comparison, so different public hash functions are part of each implementation. There is no `prehashed`, `pure`, artificial identity-copy leader, or index-vector query column. A smaller measured raw cost may result from hashing, addressing, probe count or the whole public implementation; it is not an isolated bitmap-kernel conclusion.
+ 
+@@ -39,4 +43,6 @@
+ 
+ The calibration raw interval is exactly `[key_base+n+q, key_base+n+q+2^c)`, disjoint from insertion and timed-negative counters. It uses the same raw API as insertion/warmup/hits, then checks each dense answer against the public raw singleton. Common-hash and direct-raw data must never be mixed for one filter. Actual native/raw-visible and fastbloom-rs public call paths must be inspected in the new executable; old latency or old assembly is not imported.
+ 
++The initial source draft preallocated `max(query_batch,insert_batch)` scratch outside construction clocks for every API. Root identified that unfair boundary before source commit/build/data. [scratch-accounting.patch](scratch-accounting.patch) records the exact pre-data correction; constructor catalog and upstream algorithms do not change.
++
+ No dependency resolver or compiler has run for this proposal. The upstream package also declares fastmurmur3, cuckoofilter and xorfilter-rs dependencies even though this adapter uses only BloomFilter; they must not be stripped or silently replaced. Exact upstream source/license, Cargo lock and all transitive package trees must be frozen before the focused actual-caller build. Shared dependency changes are reported and all controls use the same new binary/graph. Compiler inputs are collected by structured package/manifest/target identity, with exact literal/normalized Cargo dep-info aliases and ambiguity rejection; failed attempts remain immutable.
+--- initial-proposal/protocol.json
++++ corrected-proposal/protocol.json
+@@ -4,26 +4,68 @@
+   "upstream_commit": "ea18d38eca9cb3a48f395f28ab67004b6f1ab83e",
+   "upstream_package": "fastbloom-rs",
+   "upstream_version": "0.5.10",
+-  "new_keys": [65536, 33554432],
+-  "new_actual_bpk": [16, 24, 32],
+-  "new_public_k_inclusive": [1, 24],
++  "new_keys": [
++    65536,
++    33554432
++  ],
++  "new_actual_bpk": [
++    16,
++    24,
++    32
++  ],
++  "new_public_k_inclusive": [
++    1,
++    24
++  ],
+   "new_geometries": 144,
+   "retained_geometries": 118,
+   "all_geometry_records": 262,
+-  "quality_caps_bpk": [16, 24, 32],
+-  "quality_upper_fraction": [0.01, 0.001, 0.0001],
++  "quality_caps_bpk": [
++    16,
++    24,
++    32
++  ],
++  "quality_upper_fraction": [
++    0.01,
++    0.001,
++    0.0001
++  ],
+   "quality_policy": "two-sided95% Wilson upper on each construction separately; no pooling; every failed geometry retained",
+-  "query_contracts": ["raw_batched_public", "raw_visible_public"],
+-  "build_contracts": ["raw_insert", "allocate_raw_insert"],
++  "query_contracts": [
++    "raw_batched_public",
++    "raw_visible_public"
++  ],
++  "build_contracts": [
++    "raw_insert",
++    "allocate_filter_and_scratch_raw_insert"
++  ],
+   "input_contract": "Original raw u64 stream; DirectRaw8 sends to_le_bytes directly to upstream public add/contains, CommonHash applies native hash64 inside each raw operation",
+   "identity_copy_control": false,
+   "prehash_column": false,
+   "query_phase_schedule": "seeded label permutation of two phases; AB,BA,BA,AB cycles with eight samples per phase",
+   "retained_geometry_choice": "all112 committed constructor records plus six actual native K12 geometries; no timing or quality based pruning",
+   "all_k_retention": "All24 counts remain, including failures; optimal real-n K12/K17/K23 already included as ordinary fixed-K entries, no duplicate sample",
+-  "possible_future_batches": [1, 31, 4096],
++  "possible_future_batches": [
++    1,
++    31,
++    4096
++  ],
+   "possible_full_future_rows": 786,
+   "future_execution_status": "Not frozen or authorized. Exact commands, seed/domain ledger, complete dependency lock and CPU placement require a later reviewed caller protocol after source/semantic/ASM proof.",
+   "poppy_status": "No Poppy measurements are read. Poppy is not included in this initial full old-public-family panel; any completed-evidence addition must be prespecified before execution. No strongest-of-all-external claim.",
+-  "native_status": "Actual public current native library snapshot at ba5530a4fc38930a9da4593f2a8af7d1de3c853a, including proved optional K12 SingleLine; no private kernel bypass"
++  "native_status": "Actual public current native library snapshot at ba5530a4fc38930a9da4593f2a8af7d1de3c853a, including proved optional K12 SingleLine; no private kernel bypass",
++  "scratch_policy": {
++    "CommonHash": "input_len u64 words; query batch and insertion batch computed independently",
++    "DirectRaw8": "zero words and zero allocation; no identity copy",
++    "complete_build_clock": "starts before required scratch allocation/initialization and F::new; ends after raw insertion",
++    "raw_insert_clock": "starts when scratch and filter are ready; retains all required hashing and public insertion",
++    "lifetime": "each build scratch is released after that build validation, before next build/query; canonical build scratch also dropped before query",
++    "reported_bytes": [
++      "actual_filter_bytes",
++      "build_scratch_bytes",
++      "query_scratch_bytes"
++    ],
++    "query": "only scratch_words(query_batch), allocated outside query timers and reported separately"
++  },
++  "insert_batch_policy": "Independent configurable parameter; neither whole-input nor4096 is selected as the sole optimum. The later finite execution protocol must fix it before data."
+ }

@@ -1,0 +1,22 @@
+{
+  "binary_sha256": "db221b2fea6029cf2fdb35912ae3f52055f8084cdde2fe0a8bdf9f26d752f2a1",
+  "disassembly": "sbbf-and-query-disassembly.txt",
+  "runtime_backend": "Avx2Filter",
+  "observed_sbbf_single_wrapper": "0x4ee10",
+  "observed_sbbf_original_wrapper": "0x4ef10",
+  "mapping_basis": "The two wrappers load the stored SBBF trait-object data/vtable, bucket count and bitmap. The first has the explicit length-one branch; the second is the original loop. Other baseline wrappers do not call this stored trait object.",
+  "single_query_call": "call *0x18(%r8) at 0x4ee57",
+  "bulk_query_calls": [
+    "call *%rbx at 0x4eea7",
+    "call *%rbx at 0x4ef77"
+  ],
+  "wrapper_prologue": "Both retain six callee-saved pushes and 0x58 stack bytes; no zero-prologue speed claim.",
+  "upstream_avx2_contains_symbol": "<sbbf_rs::arch::x86::Avx2Filter as sbbf_rs::FilterImpl>::contains at 0x6b5a0",
+  "mask_instructions": [
+    "vpmulld",
+    "vpsrld",
+    "vpsllvd",
+    "vptest"
+  ],
+  "conclusion": "Public upstream dynamic dispatch remains in both paths; singleton control changes branch/loop structure but does not bypass private kernels. No measured performance conclusion."
+}

@@ -1,0 +1,21 @@
+[package]
+name = "fastest-bloom-filter-byte-inline-only"
+version = "0.1.0"
+edition = "2021"
+autobins = false
+publish = false
+rust-version = "1.89"
+license = "MIT AND Apache-2.0"
+description = "Native Rust cache-sectorized Bloom filter experiments"
+repository = "https://github.com/YimingQiao/Fastest-Bloom-Filter"
+
+[features]
+# Keep runtime AVX2 detection, but omit AVX-512 dispatch for comparison/deployment.
+disable-avx512 = []
+
+[lib]
+name = "fastest_bloom_filter_byte_inline_only"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

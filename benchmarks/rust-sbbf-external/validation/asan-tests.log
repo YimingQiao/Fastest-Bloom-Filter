@@ -1,0 +1,33 @@
+warning: binary `compare_benchmark` should have a kebab-case name
+  |
+1 | /tmp/fastest-bf-rust-sbbf-external-asan/.../compare_benchmark
+  |                                             ^^^^^^^^^^^^^^^^^
+  |
+  = note: `cargo::non_kebab_case_bins` is set to `warn` by default
+help: to change the binary name to `compare-benchmark`, convert `bin.name`
+ --> Cargo.toml:8:8
+  |
+8 - name = "compare_benchmark"
+8 + name = "compare-benchmark"
+  |
+warning: `fastest-bloom-filter-sbbf-external` (manifest) generated 1 warning
+   Compiling fastest-bloom-filter-sbbf-external v0.1.0 (/home/yiming/projects/fastest-bf-lab/benchmarks/rust-sbbf-external)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+     Running unittests src/main.rs (/tmp/fastest-bf-rust-sbbf-external-asan/x86_64-unknown-linux-gnu/debug/build/fastest-bloom-filter-sbbf-external/9c9ea0a93c5d9d18/out/compare_benchmark-9c9ea0a93c5d9d18)
+
+running 12 tests
+test filter_selection::tests::empty_selects_all_and_subsets_preserve_registration_order ... ok
+test filter_selection::tests::invalid_subsets_are_rejected_in_full ... ok
+test query_validation::tests::actual_harness_rejects_first_timed_hash_query_corruption - should panic ... ok
+test query_validation::tests::actual_harness_rejects_first_timed_prehash_corruption - should panic ... ok
+test query_validation::tests::detects_a_changed_tail_beyond_sampled_consumption ... ok
+test query_validation::tests::rejects_non_boolean_results ... ok
+test sbbf::tests::actual_allocation_includes_padding_and_only_one_bitmap ... ok
+test sbbf::tests::common_budget_matches_native_and_rejects_overflow ... ok
+test sbbf::tests::independent_bitmap_oracle_collisions_and_all_query_tails ... ok
+test tests::all_fourteen_paths_reject_mismatched_lengths_before_writing ... ok
+test tests::external_single_controls_exact_outputs_and_guards ... ok
+test tests::native_single_controls_exact_outputs_and_guards ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.14s
+

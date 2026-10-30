@@ -1,0 +1,10 @@
+/tmp/fastest-bf-native-rust-k12-port-v3-cpu3/disable-avx512/release/deps/four_sector_range12_single_line_isolated-7677008c1286bfbf.d: /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/lib.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/four_sector_range12.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/layout_parallel.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/parallel.rs
+
+/tmp/fastest-bf-native-rust-k12-port-v3-cpu3/disable-avx512/release/deps/libfour_sector_range12_single_line_isolated-7677008c1286bfbf.rlib: /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/lib.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/four_sector_range12.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/layout_parallel.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/parallel.rs
+
+/tmp/fastest-bf-native-rust-k12-port-v3-cpu3/disable-avx512/release/deps/libfour_sector_range12_single_line_isolated-7677008c1286bfbf.rmeta: /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/lib.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/four_sector_range12.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/layout_parallel.rs /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/parallel.rs
+
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/lib.rs:
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/four_sector_range12.rs:
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/layout_parallel.rs:
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-rust-k12-single-line/native/src/parallel.rs:

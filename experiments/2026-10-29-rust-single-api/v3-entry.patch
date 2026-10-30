@@ -1,0 +1,59 @@
+--- native-short/src/byte_split.rs
++++ native-short-v3/src/byte_split.rs
+@@ -146,16 +146,12 @@
+             self.lookup_hashes_bulk(hashes, out);
+         }
+     }
+-    // Experimental production-shaped split: retain the entire original body.
+-    // Its assertion/singleton branch are redundant through the public entry,
+-    // but preserving them isolates entry shape from bulk-kernel changes.
++    // The public entry checks equal lengths and handles every singleton.
++    // Keep those preconditions in debug builds; the bulk kernels are unchanged.
+     #[inline(never)]
+     fn lookup_hashes_bulk(&self, hashes: &[u64], out: &mut [u32]) {
+-        assert_eq!(hashes.len(), out.len(), "one output is required per input");
+-        if hashes.len() == 1 {
+-            out[0] = self.contains_hash(hashes[0]) as u32;
+-            return;
+-        }
++        debug_assert_eq!(hashes.len(), out.len());
++        debug_assert_ne!(hashes.len(), 1);
+         #[cfg(target_arch = "x86_64")]
+         if self.avx2 {
+             // SAFETY: runtime-detected backend, checked output length and bounded loads.
+--- native-short/src/split64.rs
++++ native-short-v3/src/split64.rs
+@@ -128,29 +128,12 @@
+             self.lookup_hashes_bulk(hashes, out);
+         }
+     }
+-    // Experimental production-shaped split: retain the entire original body.
+-    // Its assertion/singleton branch are redundant through the public entry,
+-    // but preserving them isolates entry shape from bulk-kernel changes.
++    // The public entry checks equal lengths and handles every singleton.
++    // Keep those preconditions in debug builds; the bulk kernels are unchanged.
+     #[inline(never)]
+     fn lookup_hashes_bulk(&self, hashes: &[u64], out: &mut [u32]) {
+-        assert_eq!(hashes.len(), out.len(), "one output is required per input");
+-        if hashes.len() == 1 {
+-            #[cfg(target_arch = "x86_64")]
+-            {
+-                if self.avx512 {
+-                    // SAFETY: detected AVX2/AVX512F and exactly one checked input/output.
+-                    out[0] = unsafe { self.lookup_one_avx512(hashes[0]) };
+-                    return;
+-                }
+-                if self.avx2 {
+-                    // SAFETY: detected AVX2 and exactly one checked input/output.
+-                    out[0] = unsafe { self.lookup_one_avx2(hashes[0]) };
+-                    return;
+-                }
+-            }
+-            out[0] = self.contains_scalar(hashes[0]) as u32;
+-            return;
+-        }
++        debug_assert_eq!(hashes.len(), out.len());
++        debug_assert_ne!(hashes.len(), 1);
+ 
+         #[cfg(target_arch = "x86_64")]
+         {

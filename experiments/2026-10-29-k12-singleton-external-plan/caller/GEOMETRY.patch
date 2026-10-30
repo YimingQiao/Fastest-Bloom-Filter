@@ -1,0 +1,23 @@
+--- frozen-exact-geometry
++++ same-exact-recipes-native-range-types
+@@ -126,8 +126,18 @@
+         return g;
+     }
+ };
+-template<> struct Traits<ByteSplitRangeExperiment> : RangeTraits<ByteSplitRangeExperiment, 16, -1> {};
+-template<> struct Traits<Split64RangeExperiment> : RangeTraits<Split64RangeExperiment, 64, 8> {};
++template<class BF, int K> struct NativeRangeTraits : RangeTraits<BF, 64, K> {
++    static Geometry Plan(size_t n, uint32_t bpk) {
++        auto g = RangeTraits<BF, 64, K>::Plan(n, bpk);
++        // Public BF(real_n,bpk) constructor argument, not the derived byte budget.
++        g.constructor_argument = bpk;
++        g.kind = "native_range_lines";
++        return g;
++    }
++};
++template<> struct Traits<Split64Range> : NativeRangeTraits<Split64Range, 8> {};
++template<> struct Traits<K12Control> : NativeRangeTraits<K12Control, 12> {};
++template<> struct Traits<K12SingletonVector> : NativeRangeTraits<K12SingletonVector, 12> {};
+ inline const char *GeometryHeader() {
+     return "budget_bytes,logical_bytes,geometry_kind,unit_bytes,unit_count,effective_probes,probe_policy,constructor_argument,page_level,native_constructor_bpk,implementation_origin";
+ }

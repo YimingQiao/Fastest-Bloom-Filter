@@ -1,0 +1,262 @@
+{
+  "utc": "2026-10-28T17:21:49.715333+00:00",
+  "purpose": "Production ByteSplit correctness and frozen bitmap/output parity only; no performance claims.",
+  "cpu": 3,
+  "runs": [
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "build/byte-split-native/test_byte_split"
+      ],
+      "exit_code": 0,
+      "seconds": 0.32358396612107754,
+      "stdout": "ByteSplit exact frozen/scalar bitmap and output parity, exhaustive signed masks, tails, copies and parallel ownership passed: 907593547723554833\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "build/byte-split-native/test_byte_split_portable"
+      ],
+      "exit_code": 0,
+      "seconds": 0.6862471681088209,
+      "stdout": "ByteSplit exact frozen/scalar bitmap and output parity, exhaustive signed masks, tails, copies and parallel ownership passed: 907593547723554833\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "g++",
+        "-O2",
+        "-march=x86-64",
+        "-mssse3",
+        "-msse4.1",
+        "-mno-avx",
+        "-std=c++17",
+        "-pthread",
+        "-Iinclude",
+        "tests/test_byte_split.cpp",
+        "-o",
+        "/tmp/bf-byte-gcc-sse41"
+      ],
+      "exit_code": 0,
+      "seconds": 1.6281280778348446,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/bf-byte-gcc-sse41"
+      ],
+      "exit_code": 0,
+      "seconds": 0.37825462594628334,
+      "stdout": "ByteSplit exact frozen/scalar bitmap and output parity, exhaustive signed masks, tails, copies and parallel ownership passed: 907593547723554833\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "clang++",
+        "-O1",
+        "-g",
+        "-march=x86-64",
+        "-mssse3",
+        "-msse4.1",
+        "-mno-avx",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-std=c++17",
+        "-pthread",
+        "-Iinclude",
+        "tests/test_byte_split.cpp",
+        "-o",
+        "/tmp/bf-byte-clang-sse41-asan"
+      ],
+      "exit_code": 0,
+      "seconds": 1.7504683565348387,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/bf-byte-clang-sse41-asan"
+      ],
+      "exit_code": 0,
+      "seconds": 0.8986780419945717,
+      "stdout": "ByteSplit exact frozen/scalar bitmap and output parity, exhaustive signed masks, tails, copies and parallel ownership passed: 907593547723554833\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "g++",
+        "-O1",
+        "-g",
+        "-march=x86-64",
+        "-mno-ssse3",
+        "-mno-sse4.1",
+        "-mno-avx",
+        "-fsanitize=thread",
+        "-std=c++17",
+        "-pthread",
+        "-Iinclude",
+        "tests/test_byte_split.cpp",
+        "-o",
+        "/tmp/bf-byte-gcc-scalar-tsan"
+      ],
+      "exit_code": 0,
+      "seconds": 1.4902058765292168,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "/tmp/bf-byte-gcc-scalar-tsan"
+      ],
+      "exit_code": 0,
+      "seconds": 10.241796547546983,
+      "stdout": "ByteSplit exact frozen/scalar bitmap and output parity, exhaustive signed masks, tails, copies and parallel ownership passed: 907593547723554833\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "cmake",
+        "--build",
+        "build/cpp-external",
+        "--parallel",
+        "1"
+      ],
+      "exit_code": 0,
+      "seconds": 0.05143148452043533,
+      "stdout": "[100%] Built target compare_benchmark\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "taskset",
+        "-c",
+        "3",
+        "ctest",
+        "--test-dir",
+        "build/cpp-external",
+        "--output-on-failure"
+      ],
+      "exit_code": 0,
+      "seconds": 0.1996327806264162,
+      "stdout": "Internal ctest changing into directory: /home/yiming/projects/fastest-bf-lab/build/cpp-external\nTest project /home/yiming/projects/fastest-bf-lab/build/cpp-external\n    Start 1: external_contract\n1/1 Test #1: external_contract ................   Passed    0.19 sec\n\n100% tests passed, 0 tests failed out of 1\n\nTotal Test time (real) =   0.19 sec\n",
+      "stderr": ""
+    }
+  ],
+  "source_sha256": {
+    "include/byte_split_bloom.h": "46d285a1676b0613a0759d9786d2d8afe67d75b5fc64ca839305922627fa332f",
+    "include/parallel_layout_bloom.h": "7116b26a9d09f78be0a66daa990d3593a120ac5ce8c485eba89c8a06f82ba6e6",
+    "include/layout_detail.h": "cee4e01f822ff9e59eca9d94013255221b75eaaa3140d4a5681c9a1959f3537c",
+    "include/base.h": "c65e97e851c5381fba74fe035fe2022e21d764367ba412ac1be7295cf9bf75a0",
+    "tests/test_byte_split.cpp": "b406736dc50972241ef0ce394fb5b53577baf5ebc7f523e79bfd272d08b756b7",
+    "benchmarks/cpp-external/adapters.hpp": "3c192e4a73312bd3015ba1f3b53f1f9a5cb098ba0c240ee91e757d00f177a603",
+    "benchmarks/cpp-external/test_contract.py": "738997ea0ee772453caae7979fad3729c3a086cd63930e8f01023f29e42df66c",
+    "experiments/2026-10-29-direct-split/direct_split.hpp": "16335440fb9c71ea076b317f96caf26da374a615c3677d0348f9746ce1bfbf58",
+    "third_party/FastFilter/LICENSE": "3f1c443ccd7c4e45549fb7f32e499fe63eab4a5876cf9772c185e087808f4957",
+    "third_party/FastFilter/NOTICE": "0d0b4b56f3233314c0cc3309155dc83eea42960804f6ca1aa48b33d2fc103560"
+  },
+  "identical_output": "ByteSplit exact frozen/scalar bitmap and output parity, exhaustive signed masks, tails, copies and parallel ownership passed: 907593547723554833\n",
+  "sources_changed_during_validation": [],
+  "compile_commands": [
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/main_benchmark.dir/src/main_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/main_benchmark.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/src/main_benchmark.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/compare_benchmark.dir/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/parallel_benchmark.dir/src/parallel_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/parallel_benchmark.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/src/parallel_benchmark.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/test_fast_pattern_portable.dir/tests/test_fast_pattern_portable.cpp.o -c /home/yiming/projects/fastest-bf-lab/tests/test_fast_pattern_portable.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/tests/test_fast_pattern_portable.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/test_layouts.dir/tests/test_layouts.cpp.o -c /home/yiming/projects/fastest-bf-lab/tests/test_layouts.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/tests/test_layouts.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/test_layouts_portable.dir/tests/test_layouts.cpp.o -c /home/yiming/projects/fastest-bf-lab/tests/test_layouts.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/tests/test_layouts.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/test_byte_split.dir/tests/test_byte_split.cpp.o -c /home/yiming/projects/fastest-bf-lab/tests/test_byte_split.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/tests/test_byte_split.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles/test_byte_split_portable.dir/tests/test_byte_split.cpp.o -c /home/yiming/projects/fastest-bf-lab/tests/test_byte_split.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/tests/test_byte_split.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/test_parallel.dir/tests/test_parallel.cpp.o -c /home/yiming/projects/fastest-bf-lab/tests/test_parallel.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/tests/test_parallel.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++  -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/test_filters.dir/tests/test_filters.cpp.o -c /home/yiming/projects/fastest-bf-lab/tests/test_filters.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/tests/test_filters.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"raw_benchmark_adapter.h\\\" -DBF_EXTERNAL_ONLY -I/home/yiming/projects/fastest-bf-lab/tests -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/benchmark_api_test.dir/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+    },
+    {
+      "directory": "/home/yiming/projects/fastest-bf-lab/build/byte-split-native",
+      "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"query_validation_adapter.h\\\" -DBF_EXTERNAL_ONLY -I/home/yiming/projects/fastest-bf-lab/tests -I/home/yiming/projects/fastest-bf-lab/include -O3 -DNDEBUG -fno-strict-aliasing -march=native -std=gnu++17 -o CMakeFiles/benchmark_query_validation_test.dir/src/compare_benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp",
+      "file": "/home/yiming/projects/fastest-bf-lab/src/compare_benchmark.cpp"
+    }
+  ],
+  "checks": [
+    "Native and portable exact bitmap/output parity with frozen ByteSplit128SingleExperiment",
+    "Exhaustive signed16 lane masks match independent division-floor/byte-table oracle",
+    "GCC minimal SSE4.1 + SSSE3, Clang ASan/UBSan, GCC portable TSan checks pass",
+    "Parallel builds/queries, duplicate and same-line writes, concurrent immutable readers pass",
+    "26-row optional FastFilter/Page adapter contract including both versioned single controls passes"
+  ],
+  "binary_sha256": {
+    "build/byte-split-native/compare_benchmark": "4a7fd65768e5e3dccb00816729ee2a62174ea09c8294a07f0856561167e2119b",
+    "build/byte-split-native/test_byte_split": "67b1ff346816a9e9bc19d022b8c82fb92a4ceea5d0b00b70bd0b0624d96fee96",
+    "build/byte-split-native/test_byte_split_portable": "b0d7bdd69444e6a3bbe9a39eafd11390482e2f3bf630f7c59d461d591594f22d",
+    "build/cpp-external/compare_benchmark": "1ef88a8734684ac40e4c5a6883fda72d8a7743b32f6d477ec6493e806edd3153"
+  },
+  "native_lookup_assembly": "native-lookup-assembly.txt"
+}

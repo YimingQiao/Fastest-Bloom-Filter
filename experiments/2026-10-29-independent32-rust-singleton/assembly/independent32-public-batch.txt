@@ -1,0 +1,291 @@
+
+/tmp/fastest-bf-independent32-rust-screen/release/compare_benchmark:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000709e0 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes>:
+   709e0:	push   %rbx
+   709e1:	sub    $0x40,%rsp
+   709e5:	mov    %rdx,(%rsp)
+   709e9:	mov    %r8,0x8(%rsp)
+   709ee:	cmp    %r8,%rdx
+   709f1:	jne    70eb4 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x4d4>
+   709f7:	cmpb   $0x0,0x1d(%rdi)
+   709fb:	je     70a26 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x46>
+   709fd:	test   %rdx,%rdx
+   70a00:	je     70eab <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x4cb>
+   70a06:	mov    0x8(%rdi),%rax
+   70a0a:	mov    0x18(%rdi),%edi
+   70a0d:	mov    %edx,%r8d
+   70a10:	and    $0x3,%r8d
+   70a14:	cmp    $0x4,%rdx
+   70a18:	jae    70b2d <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x14d>
+   70a1e:	xor    %r10d,%r10d
+   70a21:	jmp    70c56 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x276>
+   70a26:	cmpb   $0x0,0x1c(%rdi)
+   70a2a:	je     70a55 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x75>
+   70a2c:	test   %rdx,%rdx
+   70a2f:	je     70eab <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x4cb>
+   70a35:	mov    0x8(%rdi),%rax
+   70a39:	mov    0x18(%rdi),%edi
+   70a3c:	mov    %edx,%r8d
+   70a3f:	and    $0x3,%r8d
+   70a43:	cmp    $0x4,%rdx
+   70a47:	jae    70cc9 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x2e9>
+   70a4d:	xor    %r10d,%r10d
+   70a50:	jmp    70e22 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x442>
+   70a55:	test   %rdx,%rdx
+   70a58:	je     70eab <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x4cb>
+   70a5e:	mov    0x18(%rdi),%r8d
+   70a62:	mov    0x8(%rdi),%r9
+   70a66:	mov    0x10(%rdi),%rax
+   70a6a:	xor    %r10d,%r10d
+   70a6d:	vmovdqa -0x678a5(%rip),%xmm0        # 91d0 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x180>
+   70a75:	vbroadcasti128 -0x67a9e(%rip),%ymm1        # 8fe0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0xa0>
+   70a7e:	vbroadcasti128 -0x67ad7(%rip),%ymm2        # 8fb0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x70>
+   70a87:	vmovdqa -0x67d8f(%rip),%ymm3        # 8d00 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x228>
+   70a8f:	vpbroadcastd -0x6811c(%rip),%ymm4        # 897c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1e6>
+   70a98:	vpbroadcastd -0x68121(%rip),%ymm5        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   70aa1:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   70ab0:	mov    (%rsi,%r10,8),%r11
+   70ab4:	mov    %r11,%rbx
+   70ab7:	shr    $0x29,%rbx
+   70abb:	and    %r8d,%ebx
+   70abe:	mov    %ebx,%edi
+   70ac0:	shr    %edi
+   70ac2:	cmp    %rax,%rdi
+   70ac5:	jae    70ef8 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x518>
+   70acb:	and    $0x1,%ebx
+   70ace:	shl    $0x6,%edi
+   70ad1:	add    %r9,%rdi
+   70ad4:	shl    $0x5,%ebx
+   70ad7:	vpbroadcastq %r11,%xmm6
+   70add:	vpsrlvq %xmm0,%xmm6,%xmm6
+   70ae2:	vmovdqu (%rbx,%rdi,1),%ymm7
+   70ae7:	vpbroadcastd %r11d,%xmm8
+   70aed:	shr    $0x5,%r11d
+   70af1:	vpinsrd $0x1,%r11d,%xmm8,%xmm9
+   70af7:	vpermt2d %ymm6,%ymm1,%ymm9
+   70afd:	vpsrlvd %ymm2,%ymm8,%ymm6
+   70b02:	vpermt2q %ymm9,%ymm3,%ymm6
+   70b08:	vpand  %ymm4,%ymm6,%ymm6
+   70b0c:	vpsllvd %ymm6,%ymm5,%ymm6
+   70b11:	xor    %edi,%edi
+   70b13:	vptest %ymm6,%ymm7
+   70b18:	setb   %dil
+   70b1c:	mov    %edi,(%rcx,%r10,4)
+   70b20:	inc    %r10
+   70b23:	cmp    %r10,%rdx
+   70b26:	jne    70ab0 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0xd0>
+   70b28:	jmp    70eab <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x4cb>
+   70b2d:	and    $0xfffffffffffffffc,%rdx
+   70b31:	xor    %r9d,%r9d
+   70b34:	vpbroadcastq -0x680f5(%rip),%xmm0        # 8a48 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2b2>
+   70b3d:	vpbroadcastd -0x681c6(%rip),%ymm1        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   70b46:	cs nopw 0x0(%rax,%rax,1)
+   70b50:	mov    (%rsi,%r9,8),%r10
+   70b54:	vpbroadcastq %r10,%xmm2
+   70b5a:	shr    $0x29,%r10
+   70b5e:	and    %edi,%r10d
+   70b61:	shl    $0x5,%r10d
+   70b65:	vmovdqa (%rax,%r10,1),%ymm3
+   70b6b:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   70b71:	vpmovzxbd %xmm2,%ymm2
+   70b76:	vprolvd %ymm2,%ymm1,%ymm2
+   70b7c:	xor    %r10d,%r10d
+   70b7f:	vptest %ymm2,%ymm3
+   70b84:	setb   %r10b
+   70b88:	mov    %r10d,(%rcx,%r9,4)
+   70b8c:	mov    0x8(%rsi,%r9,8),%r10
+   70b91:	vpbroadcastq %r10,%xmm2
+   70b97:	shr    $0x29,%r10
+   70b9b:	and    %edi,%r10d
+   70b9e:	shl    $0x5,%r10d
+   70ba2:	vmovdqa (%rax,%r10,1),%ymm3
+   70ba8:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   70bae:	vpmovzxbd %xmm2,%ymm2
+   70bb3:	vprolvd %ymm2,%ymm1,%ymm2
+   70bb9:	xor    %r10d,%r10d
+   70bbc:	vptest %ymm2,%ymm3
+   70bc1:	setb   %r10b
+   70bc5:	mov    %r10d,0x4(%rcx,%r9,4)
+   70bca:	mov    0x10(%rsi,%r9,8),%r10
+   70bcf:	vpbroadcastq %r10,%xmm2
+   70bd5:	shr    $0x29,%r10
+   70bd9:	and    %edi,%r10d
+   70bdc:	shl    $0x5,%r10d
+   70be0:	vmovdqa (%rax,%r10,1),%ymm3
+   70be6:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   70bec:	vpmovzxbd %xmm2,%ymm2
+   70bf1:	vprolvd %ymm2,%ymm1,%ymm2
+   70bf7:	xor    %r10d,%r10d
+   70bfa:	vptest %ymm2,%ymm3
+   70bff:	setb   %r10b
+   70c03:	mov    %r10d,0x8(%rcx,%r9,4)
+   70c08:	mov    0x18(%rsi,%r9,8),%r10
+   70c0d:	vpbroadcastq %r10,%xmm2
+   70c13:	shr    $0x29,%r10
+   70c17:	and    %edi,%r10d
+   70c1a:	shl    $0x5,%r10d
+   70c1e:	vmovdqa (%rax,%r10,1),%ymm3
+   70c24:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   70c2a:	vpmovzxbd %xmm2,%ymm2
+   70c2f:	vprolvd %ymm2,%ymm1,%ymm2
+   70c35:	xor    %r11d,%r11d
+   70c38:	vptest %ymm2,%ymm3
+   70c3d:	lea    0x4(%r9),%r10
+   70c41:	setb   %r11b
+   70c45:	mov    %r11d,0xc(%rcx,%r9,4)
+   70c4a:	mov    %r10,%r9
+   70c4d:	cmp    %r10,%rdx
+   70c50:	jne    70b50 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x170>
+   70c56:	test   %r8,%r8
+   70c59:	je     70eab <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x4cb>
+   70c5f:	lea    (%rcx,%r10,4),%rcx
+   70c63:	lea    (%rsi,%r10,8),%rdx
+   70c67:	xor    %esi,%esi
+   70c69:	vpbroadcastq -0x6822a(%rip),%xmm0        # 8a48 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x2b2>
+   70c72:	vpbroadcastd -0x682fb(%rip),%ymm1        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   70c7b:	nopl   0x0(%rax,%rax,1)
+   70c80:	mov    (%rdx,%rsi,8),%r9
+   70c84:	vpbroadcastq %r9,%xmm2
+   70c8a:	shr    $0x29,%r9
+   70c8e:	and    %edi,%r9d
+   70c91:	shl    $0x5,%r9d
+   70c95:	vmovdqa (%rax,%r9,1),%ymm3
+   70c9b:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   70ca1:	vpmovzxbd %xmm2,%ymm2
+   70ca6:	vprolvd %ymm2,%ymm1,%ymm2
+   70cac:	xor    %r9d,%r9d
+   70caf:	vptest %ymm2,%ymm3
+   70cb4:	setb   %r9b
+   70cb8:	mov    %r9d,(%rcx,%rsi,4)
+   70cbc:	inc    %rsi
+   70cbf:	cmp    %rsi,%r8
+   70cc2:	jne    70c80 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x2a0>
+   70cc4:	jmp    70eab <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x4cb>
+   70cc9:	and    $0xfffffffffffffffc,%rdx
+   70ccd:	xor    %r9d,%r9d
+   70cd0:	vmovdqa -0x67d78(%rip),%ymm0        # 8f60 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x20>
+   70cd8:	vpbroadcastq -0x68161(%rip),%ymm1        # 8b80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xa8>
+   70ce1:	vpbroadcastd -0x6836e(%rip),%ymm2        # 897c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1e6>
+   70cea:	vpbroadcastd -0x68373(%rip),%ymm3        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   70cf3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   70d00:	mov    (%rsi,%r9,8),%r10
+   70d04:	vpbroadcastq %r10,%ymm4
+   70d0a:	shr    $0x29,%r10
+   70d0e:	and    %edi,%r10d
+   70d11:	shl    $0x5,%r10d
+   70d15:	vmovdqa (%rax,%r10,1),%ymm5
+   70d1b:	vpsrlvq %ymm0,%ymm4,%ymm4
+   70d20:	vpshufd $0xa0,%ymm4,%ymm4
+   70d25:	vpsrlvd %ymm1,%ymm4,%ymm4
+   70d2a:	vpand  %ymm2,%ymm4,%ymm4
+   70d2e:	vpsllvd %ymm4,%ymm3,%ymm4
+   70d33:	xor    %r10d,%r10d
+   70d36:	vptest %ymm4,%ymm5
+   70d3b:	setb   %r10b
+   70d3f:	mov    %r10d,(%rcx,%r9,4)
+   70d43:	mov    0x8(%rsi,%r9,8),%r10
+   70d48:	vpbroadcastq %r10,%ymm4
+   70d4e:	shr    $0x29,%r10
+   70d52:	and    %edi,%r10d
+   70d55:	shl    $0x5,%r10d
+   70d59:	vmovdqa (%rax,%r10,1),%ymm5
+   70d5f:	vpsrlvq %ymm0,%ymm4,%ymm4
+   70d64:	vpshufd $0xa0,%ymm4,%ymm4
+   70d69:	vpsrlvd %ymm1,%ymm4,%ymm4
+   70d6e:	vpand  %ymm2,%ymm4,%ymm4
+   70d72:	vpsllvd %ymm4,%ymm3,%ymm4
+   70d77:	xor    %r10d,%r10d
+   70d7a:	vptest %ymm4,%ymm5
+   70d7f:	setb   %r10b
+   70d83:	mov    %r10d,0x4(%rcx,%r9,4)
+   70d88:	mov    0x10(%rsi,%r9,8),%r10
+   70d8d:	vpbroadcastq %r10,%ymm4
+   70d93:	shr    $0x29,%r10
+   70d97:	and    %edi,%r10d
+   70d9a:	shl    $0x5,%r10d
+   70d9e:	vmovdqa (%rax,%r10,1),%ymm5
+   70da4:	vpsrlvq %ymm0,%ymm4,%ymm4
+   70da9:	vpshufd $0xa0,%ymm4,%ymm4
+   70dae:	vpsrlvd %ymm1,%ymm4,%ymm4
+   70db3:	vpand  %ymm2,%ymm4,%ymm4
+   70db7:	vpsllvd %ymm4,%ymm3,%ymm4
+   70dbc:	xor    %r10d,%r10d
+   70dbf:	vptest %ymm4,%ymm5
+   70dc4:	setb   %r10b
+   70dc8:	mov    %r10d,0x8(%rcx,%r9,4)
+   70dcd:	mov    0x18(%rsi,%r9,8),%r10
+   70dd2:	vpbroadcastq %r10,%ymm4
+   70dd8:	shr    $0x29,%r10
+   70ddc:	and    %edi,%r10d
+   70ddf:	shl    $0x5,%r10d
+   70de3:	vmovdqa (%rax,%r10,1),%ymm5
+   70de9:	vpsrlvq %ymm0,%ymm4,%ymm4
+   70dee:	vpshufd $0xa0,%ymm4,%ymm4
+   70df3:	vpsrlvd %ymm1,%ymm4,%ymm4
+   70df8:	vpand  %ymm2,%ymm4,%ymm4
+   70dfc:	vpsllvd %ymm4,%ymm3,%ymm4
+   70e01:	xor    %r11d,%r11d
+   70e04:	vptest %ymm4,%ymm5
+   70e09:	lea    0x4(%r9),%r10
+   70e0d:	setb   %r11b
+   70e11:	mov    %r11d,0xc(%rcx,%r9,4)
+   70e16:	mov    %r10,%r9
+   70e19:	cmp    %r10,%rdx
+   70e1c:	jne    70d00 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x320>
+   70e22:	test   %r8,%r8
+   70e25:	je     70eab <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x4cb>
+   70e2b:	lea    (%rcx,%r10,4),%rcx
+   70e2f:	lea    (%rsi,%r10,8),%rdx
+   70e33:	xor    %esi,%esi
+   70e35:	vmovdqa -0x67edd(%rip),%ymm0        # 8f60 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x20>
+   70e3d:	vpbroadcastq -0x682c6(%rip),%ymm1        # 8b80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xa8>
+   70e46:	vpbroadcastd -0x684d3(%rip),%ymm2        # 897c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1e6>
+   70e4f:	vpbroadcastd -0x684d8(%rip),%ymm3        # 8980 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1ea>
+   70e58:	nopl   0x0(%rax,%rax,1)
+   70e60:	mov    (%rdx,%rsi,8),%r9
+   70e64:	vpbroadcastq %r9,%ymm4
+   70e6a:	shr    $0x29,%r9
+   70e6e:	and    %edi,%r9d
+   70e71:	shl    $0x5,%r9d
+   70e75:	vmovdqa (%rax,%r9,1),%ymm5
+   70e7b:	vpsrlvq %ymm0,%ymm4,%ymm4
+   70e80:	vpshufd $0xa0,%ymm4,%ymm4
+   70e85:	vpsrlvd %ymm1,%ymm4,%ymm4
+   70e8a:	vpand  %ymm2,%ymm4,%ymm4
+   70e8e:	vpsllvd %ymm4,%ymm3,%ymm4
+   70e93:	xor    %r9d,%r9d
+   70e96:	vptest %ymm4,%ymm5
+   70e9b:	setb   %r9b
+   70e9f:	mov    %r9d,(%rcx,%rsi,4)
+   70ea3:	inc    %rsi
+   70ea6:	cmp    %rsi,%r8
+   70ea9:	jne    70e60 <<independent32_native_experiment::independent32::Independent32BloomFilter>::lookup_hashes+0x480>
+   70eab:	add    $0x40,%rsp
+   70eaf:	pop    %rbx
+   70eb0:	vzeroupper
+   70eb3:	ret
+   70eb4:	lea    0x3de7d(%rip),%rax        # aed38 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.1797.llvm.15448142832521594973+0x18>
+   70ebb:	mov    %rax,0x10(%rsp)
+   70ec0:	movq   $0x1,0x18(%rsp)
+   70ec9:	movq   $0x8,0x20(%rsp)
+   70ed2:	vxorps %xmm0,%xmm0,%xmm0
+   70ed6:	vmovups %xmm0,0x28(%rsp)
+   70edc:	lea    0x3de7d(%rip),%r8        # aed60 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.1797.llvm.15448142832521594973+0x40>
+   70ee3:	mov    %rsp,%rsi
+   70ee6:	lea    0x8(%rsp),%rdx
+   70eeb:	lea    0x10(%rsp),%rcx
+   70ef0:	xor    %edi,%edi
+   70ef2:	call   *0x40070(%rip)        # b0f68 <_DYNAMIC+0x2f8>
+   70ef8:	lea    0x3de79(%rip),%rdx        # aed78 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.1797.llvm.15448142832521594973+0x58>
+   70eff:	mov    %rax,%rsi
+   70f02:	vzeroupper
+   70f05:	call   *0x3ffc5(%rip)        # b0ed0 <_DYNAMIC+0x260>
+   70f0b:	int3
+   70f0c:	int3
+   70f0d:	int3
+   70f0e:	int3
+   70f0f:	int3

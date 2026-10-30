@@ -1,0 +1,19 @@
+# Minimal actual caller derivative and bounded proof
+
+This stage prepares two caller builds for proposal `9e7fb401ccd6bd55a151eb8cc32395a06375862a`. It does not authorize the formal96-process/192-row experiment. No compiler or filter has been executed during source preparation.
+
+`derive.py` copies both complete native module closures, Cargo files and `query.rs` from proved caller `1f409288eb288bae109cd9bcfce99977631efd99`. The native modules, common hash, trait forwarding and query helpers are byte-identical. `MAIN.patch` changes only CLI, runtime workload bounds, emitted metadata, repeated balanced schedule indexing and whole-process API order. Local uppercase runtime N/Q/REPEATS are an explicit naming allowance to keep the literal poison/start/work/stop/full-validation/sample-push block unchanged; no unsafe code is introduced. `DERIVED.json` records its exact hash. This is a new build with potentially different code generation, not a claim that the original machine code is preserved.
+
+The formal CLI is closed to `--measure POWER HIT BATCH SEED ROUND` with exactly the proposal's sizes, hit/batch tuples, seeds and two rounds; it rejects malformed values before constructing Data or a filter. The bounded proof never invokes a valid formal command. `--check 50 BATCH 74381` uses the original n256/q4096/reps4 fixture, and only batch1 admits `--reverse` or either deliberate fault. Both arms complete before any stdout. The original caller's eight native/portable reference stdout files are bound to complete proof commit `d5049cdc15661bccbfbc875e21b3c8696be46036`; all semantic fields must match, while incidental timing values are never compared.
+
+The driver builds only the native-host and portable-runtime caller executables, then runs five two-arm cases each (b1/3/31/4096 plus reversed b1): **20 rows**, **8 invalid CLI cases**, **4 existing post-warmup skip/wrong-output faults**. Both profiles must report actual AVX512 on this fixed host. Kernel, required-bit, tail and ASan matrices already passed for the unchanged source and are not repeated. New native/portable ELF address+size captures include public trait facades when outlined, along with target methods, whole-query helpers and clock callers. Manual target/clock review remains mandatory, including any missing recursive callee; old symbol addresses are not reused.
+
+The workspace-aware collector is byte-identical to recovery `4a31f93725212e08be1bc127e956c53c94f588e9`. Before any runtime it binds structured Cargo package/manifest/workspace/target identities, exact actual `.d` rules, prepared modules, compiler flags, toolchain files and new binary hashes. Zero or multiple dependency-base identities fail closed; no existence fallback is added. Sources/tools/actual inputs are checked again before each caller case and at exit. Fresh target/output paths preserve failures. Only compile the normal caller; there is no cargo test/old-kernel execution path.
+
+After source approval and exact commit, the bounded proof command is:
+
+```sh
+flock /tmp/fastest-bf-socket1.lock env BF_SOCKET_LEASE=socket1-cpu3 taskset -c 3 python3 experiments/2026-10-29-rust-k12-singleton-internal-plan/caller/validate.py --source-commit FULL_COMMITTED_SOURCE
+```
+
+The driver requires the actual inherited exclusive flock and CPU3 parent affinity. Every caller, invalid CLI and injected fault runs through explicit `taskset -c 3 numactl --physcpubind=3 --membind=1`, with socket1/node1 topology and tool hashes recorded; both profiles have identical placement. All subprocesses inherit the verified lock descriptor. The fresh build path is `/tmp/fastest-bf-rust-k12-simd-internal-v1-cpu3`; evidence goes to `validation-v1/`. No formal process is launched by this driver, no calibration is collected, and check timings cannot support performance claims.

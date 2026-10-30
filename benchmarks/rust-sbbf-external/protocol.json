@@ -1,0 +1,68 @@
+{
+  "stage": "correctness validated; source/binary freeze prepared; throughput not run",
+  "date": "2026-10-29",
+  "registry_rows": 14,
+  "public_api_only": true,
+  "source_hash_contract": "same common prehashed u64 values; upstream SBBF applies no extra source hash",
+  "allocation_contract": "one upstream bitmap, report align_up(logical bytes,64), test requested allocation count and bytes",
+  "query_contract": "existing Rust shared-harness non-inlined batch boundary with separately named public singleton controls",
+  "source_freeze_required_before_performance": true,
+  "binary_freeze_required_before_performance": true,
+  "production_changes": false,
+  "validation_plan": {
+    "normal_unit_tests": true,
+    "native_disable_avx512_unit_tests": true,
+    "asan_unit_tests": true,
+    "fmt_clippy": true,
+    "cli_cases": 31,
+    "semantic_smoke_workloads": 12,
+    "semantic_smoke_rows": 168,
+    "semantic_smoke_key_power": 12,
+    "semantic_smoke_query_power": 12,
+    "semantic_smoke_requested_bpk": [
+      8,
+      16
+    ],
+    "semantic_smoke_batches": [
+      1,
+      3,
+      4,
+      8,
+      31,
+      4096
+    ],
+    "semantic_smoke_insert_batch": 17,
+    "semantic_smoke_seed": 42,
+    "semantic_smoke_calibration_power": 12,
+    "timings_claimed": false,
+    "assembly": "confirm public upstream runtime backend and retained singleton/original controls; no private-kernel bypass"
+  },
+  "performance_plan": "Pending correctness and parent-approved frozen protocol; no held-out seeds consumed by preparation.",
+  "validation_completed": {
+    "normal_tests": 12,
+    "disable_avx512_tests": 12,
+    "asan_tests": 12,
+    "clippy": "pass",
+    "cli_cases": 31,
+    "semantic_smoke_workloads": 12,
+    "semantic_smoke_rows": 168,
+    "upstream_runtime_backend": "Avx2Filter",
+    "timings_claimed": false
+  },
+  "configurations": [
+    "SbbfSafePinned",
+    "SbbfSafeSingleApiV1",
+    "FastbloomSingleApiV1",
+    "BloomsdaySingleApiV1",
+    "ByteNativeSingleApiV1",
+    "SplitNativeSingleApiV1",
+    "FastPatternSingleApiV1",
+    "FourSectorNativeSingleApiV1",
+    "Fastbloom017",
+    "FastPatternBF",
+    "BloomsdayPinned",
+    "ByteSplitBloomFilter",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter"
+  ]
+}

@@ -1,0 +1,276 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000031400 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj>:
+   31400:	mov    %esi,%eax
+   31402:	test   %esi,%esi
+   31404:	je     318fe <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x4fe>
+   3140a:	mov    %rdx,%r8
+   3140d:	cmp    $0x1,%eax
+   31410:	jne    31470 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x70>
+   31412:	mov    (%r8),%rdx
+   31415:	or     $0x1,%rdx
+   31419:	mov    0x20(%rdi),%rsi
+   3141d:	mulx   0x10(%rdi),%rdi,%rdi
+   31423:	movabs $0xf1357aea2e62a9c5,%r8
+   3142d:	imul   %rdx,%r8
+   31431:	shl    $0x5,%rdi
+   31435:	prefetcht0 (%rsi,%rdi,1)
+   31439:	vmovdqa (%rsi,%rdi,1),%ymm0
+   3143e:	vpbroadcastq %r8,%ymm1
+   31444:	vpsllvq -0x2f84d(%rip),%ymm1,%ymm1        # 1c00 <_IO_stdin_used+0x518>
+   3144d:	vpsrld $0x1b,%ymm1,%ymm1
+   31452:	vpbroadcastd -0x2fd7f(%rip),%ymm2        # 16dc <__abi_tag+0x1418>
+   3145b:	vpsllvd %ymm1,%ymm2,%ymm1
+   31460:	xor    %edx,%edx
+   31462:	vptest %ymm1,%ymm0
+   31467:	setb   %dl
+   3146a:	mov    %edx,(%rcx)
+   3146c:	vzeroupper
+   3146f:	ret
+   31470:	push   %rbp
+   31471:	push   %r15
+   31473:	push   %r14
+   31475:	push   %r12
+   31477:	push   %rbx
+   31478:	sub    $0x380,%rsp
+   3147f:	movabs $0xf1357aea2e62a9c5,%rsi
+   31489:	mov    %eax,%r9d
+   3148c:	cmp    $0x80,%eax
+   31491:	jb     317b2 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x3b2>
+   31497:	mov    0x10(%rdi),%r10
+   3149b:	mov    0x20(%rdi),%r11
+   3149f:	mov    $0x3c,%ebx
+   314a4:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   314b0:	mov    (%r8),%rdx
+   314b3:	or     $0x1,%rdx
+   314b7:	mulx   %r10,%r14,%r14
+   314bc:	imul   %rsi,%rdx
+   314c0:	mov    %rdx,0x198(%rsp,%rbx,8)
+   314c8:	shl    $0x5,%r14
+   314cc:	lea    (%r11,%r14,1),%rdx
+   314d0:	prefetcht0 (%r11,%r14,1)
+   314d5:	mov    %rdx,-0x68(%rsp,%rbx,8)
+   314da:	mov    0x8(%r8),%rdx
+   314de:	or     $0x1,%rdx
+   314e2:	mulx   %r10,%r14,%r14
+   314e7:	imul   %rsi,%rdx
+   314eb:	mov    %rdx,0x190(%rsp,%rbx,8)
+   314f3:	shl    $0x5,%r14
+   314f7:	lea    (%r11,%r14,1),%rdx
+   314fb:	prefetcht0 (%r11,%r14,1)
+   31500:	mov    %rdx,-0x70(%rsp,%rbx,8)
+   31505:	mov    0x10(%r8),%rdx
+   31509:	or     $0x1,%rdx
+   3150d:	mulx   %r10,%r14,%r14
+   31512:	imul   %rsi,%rdx
+   31516:	mov    %rdx,0x188(%rsp,%rbx,8)
+   3151e:	shl    $0x5,%r14
+   31522:	lea    (%r11,%r14,1),%rdx
+   31526:	prefetcht0 (%r11,%r14,1)
+   3152b:	mov    %rdx,-0x78(%rsp,%rbx,8)
+   31530:	mov    0x18(%r8),%rdx
+   31534:	add    $0x20,%r8
+   31538:	or     $0x1,%rdx
+   3153c:	mulx   %r10,%r14,%r14
+   31541:	imul   %rsi,%rdx
+   31545:	mov    %rdx,0x180(%rsp,%rbx,8)
+   3154d:	shl    $0x5,%r14
+   31551:	lea    (%r11,%r14,1),%rdx
+   31555:	prefetcht0 (%r11,%r14,1)
+   3155a:	mov    %rdx,-0x80(%rsp,%rbx,8)
+   3155f:	add    $0xfffffffffffffffc,%rbx
+   31563:	cmp    $0xfffffffffffffffc,%rbx
+   31567:	jne    314b0 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0xb0>
+   3156d:	vmovdqa -0x2f975(%rip),%ymm0        # 1c00 <_IO_stdin_used+0x518>
+   31575:	vpbroadcastd -0x2fea2(%rip),%ymm1        # 16dc <__abi_tag+0x1418>
+   3157e:	mov    %r8,%rdx
+   31581:	mov    %r9,%rbx
+   31584:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   31590:	mov    %rdx,%r8
+   31593:	mov    %rcx,%r10
+   31596:	xor    %r14d,%r14d
+   31599:	xor    %r11d,%r11d
+   3159c:	nopl   0x0(%rax)
+   315a0:	mov    0x178(%rsp,%r14,1),%rcx
+   315a8:	mov    (%r8,%r11,2),%rdx
+   315ac:	or     $0x1,%rdx
+   315b0:	mov    0x20(%rdi),%r15
+   315b4:	mulx   0x10(%rdi),%r12,%r12
+   315ba:	imul   %rsi,%rdx
+   315be:	vpbroadcastq 0x378(%rsp,%r14,1),%ymm2
+   315c8:	mov    %rdx,0x378(%rsp,%r14,1)
+   315d0:	shl    $0x5,%r12
+   315d4:	lea    (%r15,%r12,1),%rdx
+   315d8:	prefetcht0 (%r15,%r12,1)
+   315dd:	mov    %rdx,0x178(%rsp,%r14,1)
+   315e5:	vmovdqa (%rcx),%ymm3
+   315e9:	vpsllvq %ymm0,%ymm2,%ymm2
+   315ee:	vpsrld $0x1b,%ymm2,%ymm2
+   315f3:	vpsllvd %ymm2,%ymm1,%ymm2
+   315f8:	xor    %ecx,%ecx
+   315fa:	vptest %ymm2,%ymm3
+   315ff:	setb   %cl
+   31602:	mov    %ecx,(%r10,%r11,1)
+   31606:	mov    0x170(%rsp,%r14,1),%rcx
+   3160e:	mov    0x8(%r8,%r11,2),%rdx
+   31613:	or     $0x1,%rdx
+   31617:	mov    0x20(%rdi),%r15
+   3161b:	mulx   0x10(%rdi),%r12,%r12
+   31621:	imul   %rsi,%rdx
+   31625:	vpbroadcastq 0x370(%rsp,%r14,1),%ymm2
+   3162f:	mov    %rdx,0x370(%rsp,%r14,1)
+   31637:	shl    $0x5,%r12
+   3163b:	lea    (%r15,%r12,1),%rdx
+   3163f:	prefetcht0 (%r15,%r12,1)
+   31644:	mov    %rdx,0x170(%rsp,%r14,1)
+   3164c:	vmovdqa (%rcx),%ymm3
+   31650:	vpsllvq %ymm0,%ymm2,%ymm2
+   31655:	vpsrld $0x1b,%ymm2,%ymm2
+   3165a:	vpsllvd %ymm2,%ymm1,%ymm2
+   3165f:	xor    %ecx,%ecx
+   31661:	vptest %ymm2,%ymm3
+   31666:	setb   %cl
+   31669:	mov    %ecx,0x4(%r10,%r11,1)
+   3166e:	add    $0x8,%r11
+   31672:	add    $0xfffffffffffffff0,%r14
+   31676:	cmp    $0x100,%r11
+   3167d:	jne    315a0 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x1a0>
+   31683:	add    $0xffffffffffffffc0,%rbx
+   31687:	lea    (%r10,%r11,1),%rcx
+   3168b:	mov    %r8,%rdx
+   3168e:	sub    %r14,%rdx
+   31691:	cmp    $0x7f,%rbx
+   31695:	ja     31590 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x190>
+   3169b:	sub    %r14,%r8
+   3169e:	xor    %ecx,%ecx
+   316a0:	xor    %edx,%edx
+   316a2:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   316b0:	mov    0x178(%rsp,%rdx,2),%rbx
+   316b8:	vmovdqa (%rbx),%ymm2
+   316bc:	vpbroadcastq 0x378(%rsp,%rdx,2),%ymm3
+   316c6:	vpsllvq %ymm0,%ymm3,%ymm3
+   316cb:	vpsrld $0x1b,%ymm3,%ymm3
+   316d0:	vpsllvd %ymm3,%ymm1,%ymm3
+   316d5:	xor    %ebp,%ebp
+   316d7:	vptest %ymm3,%ymm2
+   316dc:	setb   %bpl
+   316e0:	lea    (%r10,%rcx,1),%rbx
+   316e4:	mov    %ebp,(%r11,%rbx,1)
+   316e8:	mov    0x170(%rsp,%rdx,2),%r14
+   316f0:	vmovdqa (%r14),%ymm2
+   316f5:	vpbroadcastq 0x370(%rsp,%rdx,2),%ymm3
+   316ff:	vpsllvq %ymm0,%ymm3,%ymm3
+   31704:	vpsrld $0x1b,%ymm3,%ymm3
+   31709:	vpsllvd %ymm3,%ymm1,%ymm3
+   3170e:	xor    %ebp,%ebp
+   31710:	vptest %ymm3,%ymm2
+   31715:	setb   %bpl
+   31719:	mov    %ebp,0x4(%r11,%rbx,1)
+   3171e:	mov    0x168(%rsp,%rdx,2),%r14
+   31726:	vmovdqa (%r14),%ymm2
+   3172b:	vpbroadcastq 0x368(%rsp,%rdx,2),%ymm3
+   31735:	vpsllvq %ymm0,%ymm3,%ymm3
+   3173a:	vpsrld $0x1b,%ymm3,%ymm3
+   3173f:	vpsllvd %ymm3,%ymm1,%ymm3
+   31744:	xor    %ebp,%ebp
+   31746:	vptest %ymm3,%ymm2
+   3174b:	setb   %bpl
+   3174f:	mov    %ebp,0x8(%r11,%rbx,1)
+   31754:	mov    0x160(%rsp,%rdx,2),%r14
+   3175c:	vmovdqa (%r14),%ymm2
+   31761:	vpbroadcastq 0x360(%rsp,%rdx,2),%ymm3
+   3176b:	vpsllvq %ymm0,%ymm3,%ymm3
+   31770:	vpsrld $0x1b,%ymm3,%ymm3
+   31775:	vpsllvd %ymm3,%ymm1,%ymm3
+   3177a:	xor    %ebp,%ebp
+   3177c:	vptest %ymm3,%ymm2
+   31781:	setb   %bpl
+   31785:	mov    %ebp,0xc(%r11,%rbx,1)
+   3178a:	add    $0xfffffffffffffff0,%rdx
+   3178e:	add    $0x10,%rcx
+   31792:	cmp    $0xffffffffffffff00,%rdx
+   31799:	jne    316b0 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x2b0>
+   3179f:	and    $0x3f,%r9
+   317a3:	je     318ef <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x4ef>
+   317a9:	add    %r11,%r10
+   317ac:	add    %rcx,%r10
+   317af:	mov    %r10,%rcx
+   317b2:	test   $0x1,%r9b
+   317b6:	jne    317c6 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x3c6>
+   317b8:	mov    %r9,%r10
+   317bb:	cmp    $0x1,%r9d
+   317bf:	jne    3182e <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x42e>
+   317c1:	jmp    318ef <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x4ef>
+   317c6:	lea    -0x1(%r9),%r10
+   317ca:	mov    (%r8),%rdx
+   317cd:	add    $0x8,%r8
+   317d1:	or     $0x1,%rdx
+   317d5:	mov    0x20(%rdi),%r11
+   317d9:	mulx   0x10(%rdi),%rbx,%rbx
+   317df:	imul   %rsi,%rdx
+   317e3:	shl    $0x5,%rbx
+   317e7:	vmovdqa (%r11,%rbx,1),%ymm0
+   317ed:	vpbroadcastq %rdx,%ymm1
+   317f3:	vpsllvq -0x2fbfc(%rip),%ymm1,%ymm1        # 1c00 <_IO_stdin_used+0x518>
+   317fc:	vpsrld $0x1b,%ymm1,%ymm1
+   31801:	vpbroadcastd -0x3012e(%rip),%ymm2        # 16dc <__abi_tag+0x1418>
+   3180a:	vpsllvd %ymm1,%ymm2,%ymm1
+   3180f:	xor    %edx,%edx
+   31811:	vptest %ymm1,%ymm0
+   31816:	prefetcht0 (%r11,%rbx,1)
+   3181b:	setb   %dl
+   3181e:	mov    %edx,(%rcx)
+   31820:	add    $0x4,%rcx
+   31824:	cmp    $0x1,%r9d
+   31828:	je     318ef <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x4ef>
+   3182e:	xor    %r9d,%r9d
+   31831:	vmovdqa -0x2fc39(%rip),%ymm0        # 1c00 <_IO_stdin_used+0x518>
+   31839:	vpbroadcastd -0x30166(%rip),%ymm1        # 16dc <__abi_tag+0x1418>
+   31842:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   31850:	mov    (%r8,%r9,8),%rdx
+   31854:	or     $0x1,%rdx
+   31858:	mov    0x20(%rdi),%r11
+   3185c:	mulx   0x10(%rdi),%rbx,%rbx
+   31862:	imul   %rsi,%rdx
+   31866:	shl    $0x5,%rbx
+   3186a:	prefetcht0 (%r11,%rbx,1)
+   3186f:	vmovdqa (%r11,%rbx,1),%ymm2
+   31875:	vpbroadcastq %rdx,%ymm3
+   3187b:	vpsllvq %ymm0,%ymm3,%ymm3
+   31880:	vpsrld $0x1b,%ymm3,%ymm3
+   31885:	vpsllvd %ymm3,%ymm1,%ymm3
+   3188a:	xor    %edx,%edx
+   3188c:	vptest %ymm3,%ymm2
+   31891:	setb   %dl
+   31894:	mov    %edx,(%rcx,%r9,4)
+   31898:	mov    0x8(%r8,%r9,8),%rdx
+   3189d:	or     $0x1,%rdx
+   318a1:	mov    0x20(%rdi),%r11
+   318a5:	mulx   0x10(%rdi),%rbx,%rbx
+   318ab:	imul   %rsi,%rdx
+   318af:	shl    $0x5,%rbx
+   318b3:	prefetcht0 (%r11,%rbx,1)
+   318b8:	vmovdqa (%r11,%rbx,1),%ymm2
+   318be:	vpbroadcastq %rdx,%ymm3
+   318c4:	vpsllvq %ymm0,%ymm3,%ymm3
+   318c9:	vpsrld $0x1b,%ymm3,%ymm3
+   318ce:	vpsllvd %ymm3,%ymm1,%ymm3
+   318d3:	xor    %edx,%edx
+   318d5:	vptest %ymm3,%ymm2
+   318da:	setb   %dl
+   318dd:	mov    %edx,0x4(%rcx,%r9,4)
+   318e2:	add    $0x2,%r9
+   318e6:	cmp    %r9,%r10
+   318e9:	jne    31850 <_ZNK14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EE6LookupEjPKmPj+0x450>
+   318ef:	add    $0x380,%rsp
+   318f6:	pop    %rbx
+   318f7:	pop    %r12
+   318f9:	pop    %r14
+   318fb:	pop    %r15
+   318fd:	pop    %rbp
+   318fe:	vzeroupper
+   31901:	ret

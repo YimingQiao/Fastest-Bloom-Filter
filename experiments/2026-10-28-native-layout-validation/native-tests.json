@@ -1,0 +1,103 @@
+[
+  {
+    "name": "gcc-scalar",
+    "build_command": [
+      "taskset",
+      "-c",
+      "3",
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-pthread",
+      "-march=x86-64",
+      "-mno-avx",
+      "-mno-avx2",
+      "-mno-avx512f",
+      "-Iinclude",
+      "tests/test_layouts.cpp",
+      "-o",
+      "/tmp/bf-native-review-gcc-scalar"
+    ],
+    "compile_status": 0,
+    "compile_stderr": "",
+    "run_status": 0,
+    "stdout": "Native layout scalar references, tails, collisions and parallel ownership passed\n",
+    "stderr": ""
+  },
+  {
+    "name": "gcc-avx2",
+    "build_command": [
+      "taskset",
+      "-c",
+      "3",
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-pthread",
+      "-march=x86-64",
+      "-mavx2",
+      "-mno-avx512f",
+      "-Iinclude",
+      "tests/test_layouts.cpp",
+      "-o",
+      "/tmp/bf-native-review-gcc-avx2"
+    ],
+    "compile_status": 0,
+    "compile_stderr": "",
+    "run_status": 0,
+    "stdout": "Native layout scalar references, tails, collisions and parallel ownership passed\n",
+    "stderr": ""
+  },
+  {
+    "name": "clang-asan-avx512",
+    "build_command": [
+      "taskset",
+      "-c",
+      "3",
+      "clang++",
+      "-std=c++17",
+      "-O1",
+      "-g",
+      "-pthread",
+      "-march=x86-64",
+      "-mavx512f",
+      "-mavx2",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-Iinclude",
+      "tests/test_layouts.cpp",
+      "-o",
+      "/tmp/bf-native-review-clang-asan-avx512"
+    ],
+    "compile_status": 0,
+    "compile_stderr": "",
+    "run_status": 0,
+    "stdout": "Native layout scalar references, tails, collisions and parallel ownership passed\n",
+    "stderr": ""
+  },
+  {
+    "name": "gcc-tsan-scalar",
+    "build_command": [
+      "taskset",
+      "-c",
+      "3",
+      "g++",
+      "-std=c++17",
+      "-O1",
+      "-g",
+      "-pthread",
+      "-march=x86-64",
+      "-fsanitize=thread",
+      "-fno-omit-frame-pointer",
+      "-Iinclude",
+      "tests/test_layouts.cpp",
+      "-o",
+      "/tmp/bf-native-review-gcc-tsan-scalar"
+    ],
+    "compile_status": 0,
+    "compile_stderr": "",
+    "run_status": 0,
+    "stdout": "Native layout scalar references, tails, collisions and parallel ownership passed\n",
+    "stderr": ""
+  }
+]

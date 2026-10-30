@@ -1,0 +1,46 @@
+{
+  "purpose": "Initial performance screen after independent accuracy qualification; training seed only, no universal fastest claim.",
+  "binary": "build/word16-native/compare_benchmark",
+  "binary_sha256": "5e2ba92fa8d105832a7af469b78c10c7e9f8dcee612d4ccf78e77f8f5c9d2175",
+  "accuracy_freeze_sha256": "84b71c61d24f3238494e65169ce8fac48eccf842a02448a55e26354847a6d147",
+  "filters": [
+    "FastPatternBF",
+    "Word16Split256Experiment",
+    "ByteSplitBloomFilter",
+    "Split64BloomFilter",
+    "FastFilterFixed16",
+    "FastFilterFixed16SingleV1",
+    "FastFilterSimdBlock",
+    "FastFilterSimdBlockSingleV1",
+    "FastFilterFixed32"
+  ],
+  "key_powers": [
+    16,
+    25
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "actual_memory_ceiling_bpk": [
+    16,
+    32
+  ],
+  "batches": [
+    1,
+    31,
+    4096
+  ],
+  "seed": 42,
+  "query_power": 22,
+  "repeats": 5,
+  "calibration_power": 24,
+  "hit_percent": 50,
+  "insert_batch": "all",
+  "cpu": 3,
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "workloads": 12,
+  "rows": 108,
+  "analysis": "Retain all rows and both pure/hash+query metrics; qualify each filter at equal actual bitmap ceiling using one-sided95 Wilson upper <= ceiling. Focus strict0.01% at actual32bpk, retain1% and0.1% bands too. Ratios are candidate/external latency, lower is faster. No tuning/salt edits or discarded controls. These batch API results are separate from the optimizer-visible inline track.",
+  "eligibility_prerequisite": "Initial and independent accuracy gates passed before launch. Native/scalar/ASan checks passed, all frozen hashes must match before and after."
+}

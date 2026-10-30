@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""Extract manually reviewed actual-native clock/policy windows, without execution."""
+import hashlib,json,re
+from pathlib import Path
+HERE=Path(__file__).resolve().parent
+CAPTURE=HERE/'capture-v1/cpp.txt'
+AFTER=[
+ dict(family='Split64Range',contract='allocate_insert',start='a9f6',request='aa18',call='aa21',end='aa26',callee='1bd50'),
+ dict(family='Split64Range',contract='insert',start='bce8',request='bcfc',call='bd05',end='bd0a',callee='1bd50'),
+ dict(family='Split64',contract='allocate_insert',start='f578',request='f5a1',call='f5ab',end='f5b0',callee='22d00'),
+ dict(family='Split64',contract='insert',start='1085f',request='10874',call='1087d',end='10882',callee='22d00')]
+BEFORE=[
+ dict(family='Split64Range',contract='allocate_insert',start='abdb',request='ac09',call='ac12',jump='ac17',stop_target='c910',end='c913',callee='1f1a0'),
+ dict(family='Split64Range',contract='insert',start='be60',request='be74',call='be7d',jump='be82',stop_target='c4d0',end='c4d3',callee='1f1a0'),
+ dict(family='Split64',contract='allocate_insert',start='f790',request='f7c3',call='f7cc',jump='f7d1',stop_target='115d0',end='115d3',callee='266c0'),
+ dict(family='Split64',contract='insert',start='109d0',request='109e0',call='109e9',jump='109ee',stop_target='111c0',end='111c3',callee='266c0')]
+
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def main():
+ lines=CAPTURE.read_text().splitlines();table={}
+ for i,line in enumerate(lines):
+  match=re.match(r'\s*([0-9a-f]+):',line)
+  if match:table[int(match[1],16)]=(i,line)
+ def line(address):return table[int(address,16)][1]
+ def span(first,last):
+  a=table[int(first,16)][0];b=table[int(last,16)][0]
+  return '\n'.join(lines[max(0,a-4):b+5])+'\n'
+ output=HERE/'cpp-review-v2';output.mkdir(exist_ok=False)
+ for arm,rows in [('candidate',AFTER),('control',BEFORE)]:
+  for row in rows:
+   assert 'steady_clock::now' in line(row['start']) and 'steady_clock::now' in line(row['end'])
+   assert 'call' in line(row['call'])and row['callee'] in line(row['call'])and 'InsertParallel' in line(row['call'])
+   assert '0x18(' in line(row['request'])and '%rcx' in line(row['request'])
+   assert int(row['start'],16)<int(row['request'],16)<int(row['call'],16)
+   text=span(row['start'],row.get('jump',row['end']))
+   if 'jump'in row:
+    assert 'jmp' in line(row['jump'])and row['stop_target'] in line(row['jump']);text+='\nSHARED STOP-CLOCK TARGET\n'+span(row['stop_target'],row['end'])
+   path=output/(arm+'-'+row['family']+'-'+row['contract']+'.txt');path.write_text(text)
+   row.update(path=str(path.relative_to(HERE.parent)),sha256=sha(path),original_requested_T_inside_clock=True)
+ for family,first,last,checks in [('Split64Range','1bd50','1be09',['1bda1','1bdb1']),('Split64','22d00','22db1',['22d4a','22d59'])]:
+  assert '$0x40001' in line(checks[0])and '$0x10001' in line(checks[1])
+  (output/(family+'-native-callee.txt')).write_text(span(first,last))
+ proof=json.loads((HERE.parent/'provenance-v3/combined-proof.json').read_text())
+ record=dict(binary_sha256=proof['selected_normal_executables']['cpp']['sha256'],capture_sha256=sha(CAPTURE),
+  candidate_paths=AFTER,control_paths=BEFORE,all_four_candidate_paths_inside_clocks=True,
+  dispatch_location='Real public native callee, entered after start clock; both inclusive policy comparisons execute there for fixed n>=16384.',
+  source_guard_not_a_timing_proof='Observe metadata outside timers is not used as proof; actual arguments and native callee are inspected.',
+  caveats=['This proves only these exact frozen normal binaries, not every compiler or API consumer.',
+   'Actual public calls retain call/prologue and native worker selection costs. No opaque wrapper or new inline hint was introduced.',
+   'Code layout and outside-gate instruction changes remain measured outcomes; equal worker counts do not imply equal latency.'])
+ (output/'REVIEW.json').write_text(json.dumps(record,indent=2)+'\n')
+ print('PASS C++ four candidate and four control clock windows; native policy inside callee')
+if __name__=='__main__':main()

@@ -1,0 +1,11 @@
+--- frozen/selector.py
++++ repair-v2/selector.py
+@@ -33,7 +33,7 @@
+ def construction(point):
+     value = point['canonical_constructor']
+     need(value['n'] == point['keys'] and value['backing_bytes'] == point['actual_bytes'], 'Constructor size/accounting drift')
+-    need(point['source_mapping'] == [point['keys'], value['buckets'], value['cache_bits'], value['probes']], 'Constructor mapping drift')
++    need(point['source_mapping'] == [point['keys'], value['buckets'], value['cache_bytes'], value['probes']], 'Constructor mapping drift')
+     need(value['cache_bytes'] >= 0 and value['backing_bytes'] >= value['cache_bytes'], 'Negative backing allocation')
+     need(value['buckets'] > 0 and value['probes'] > 0 and len(value['fpp_bits']) == 16, 'Invalid constructor parameters')
+     need(value['id'] in point['source_alias_ids'], 'Canonical constructor missing from aliases')

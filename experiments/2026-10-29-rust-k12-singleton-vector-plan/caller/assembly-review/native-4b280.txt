@@ -1,0 +1,26 @@
+   4b280:	push   %rbp
+   4b281:	mov    %rsp,%rbp
+   4b284:	push   %rbx
+   4b285:	sub    $0x38,%rsp
+   4b289:	mov    %rdi,%rbx
+   4b28c:	mov    $0x1,%edi
+   4b291:	call   489a0 <std::sys::pal::unix::time::Timespec::now>
+   4b296:	mov    (%rbx),%rcx
+   4b299:	mov    0x8(%rbx),%esi
+   4b29c:	mov    %rax,-0x18(%rbp)
+   4b2a0:	mov    %edx,-0x10(%rbp)
+   4b2a3:	mov    %rcx,-0x28(%rbp)
+   4b2a7:	mov    %esi,-0x20(%rbp)
+   4b2aa:	lea    -0x40(%rbp),%rdi
+   4b2ae:	lea    -0x18(%rbp),%rsi
+   4b2b2:	lea    -0x28(%rbp),%rdx
+   4b2b6:	call   488d0 <std::sys::pal::unix::time::Timespec::sub_timespec>
+   4b2bb:	xor    %eax,%eax
+   4b2bd:	cmpb   $0x0,-0x40(%rbp)
+   4b2c1:	mov    -0x30(%rbp),%edx
+   4b2c4:	cmovne %eax,%edx
+   4b2c7:	cmove  -0x38(%rbp),%rax
+   4b2cc:	add    $0x38,%rsp
+   4b2d0:	pop    %rbx
+   4b2d1:	pop    %rbp
+   4b2d2:	ret

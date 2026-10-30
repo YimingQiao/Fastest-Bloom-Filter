@@ -1,0 +1,74 @@
+[
+  {
+    "name": "gcc-avx2",
+    "command": [
+      "taskset",
+      "-c",
+      "3",
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-pthread",
+      "-march=x86-64",
+      "-mavx2",
+      "-mno-avx512f",
+      "-Iinclude",
+      "-Iexperiments/2026-10-28-four-sector",
+      "-Iexperiments/2026-10-28-split64",
+      "/tmp/bf-native-frozen-parity.cpp",
+      "-o",
+      "/tmp/bf-native-frozen-gcc-avx2"
+    ],
+    "status": 0,
+    "stdout": "2018356366237207559\n7874112049163596729\n",
+    "stderr": ""
+  },
+  {
+    "name": "clang-avx512",
+    "command": [
+      "taskset",
+      "-c",
+      "3",
+      "clang++",
+      "-std=c++17",
+      "-O2",
+      "-pthread",
+      "-march=x86-64",
+      "-mavx512f",
+      "-mavx2",
+      "-Iinclude",
+      "-Iexperiments/2026-10-28-four-sector",
+      "-Iexperiments/2026-10-28-split64",
+      "/tmp/bf-native-frozen-parity.cpp",
+      "-o",
+      "/tmp/bf-native-frozen-clang-avx512"
+    ],
+    "status": 0,
+    "stdout": "2018356366237207559\n7874112049163596729\n",
+    "stderr": ""
+  },
+  {
+    "name": "gcc-tsan",
+    "command": [
+      "taskset",
+      "-c",
+      "3",
+      "g++",
+      "-std=c++17",
+      "-O1",
+      "-g",
+      "-pthread",
+      "-march=x86-64",
+      "-fsanitize=thread",
+      "-Iinclude",
+      "-Iexperiments/2026-10-28-four-sector",
+      "-Iexperiments/2026-10-28-split64",
+      "/tmp/bf-native-frozen-parity.cpp",
+      "-o",
+      "/tmp/bf-native-frozen-gcc-tsan"
+    ],
+    "status": 0,
+    "stdout": "2018356366237207559\n7874112049163596729\n",
+    "stderr": ""
+  }
+]

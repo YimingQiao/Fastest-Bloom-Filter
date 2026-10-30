@@ -1,0 +1,7 @@
+# Pre-data correction of the predicted row order
+
+Initial proposal87300b66 used q/2 positive-query RNG draws when predicting the final two-API shuffle. The unchanged producer actually uses `i % 100 < hit`, which yields `q // 100 * hit + min(q % 100, hit)`. At q2^22 and requested50% this is2,097,154 positive queries, two more than q/2. This affects the source-derived RNG state and some predicted row orders. It does not change any filter, query or timer.
+
+No held-out filter outputs were generated before discovery. All initial proposal source, seed choices, training selection and ledger bytes remain untouched at87300b66. The additive `corrected-selection.json` changes only the predicted API order and its proof, adding explicit correction metadata. Both original seeds still give opposite API orders at both sizes and all three batch tags, so there is no seed replacement, case extension or workload change. All12 commands,24 rows and the48-metric/60-quality training evidence stay the same.
+
+The corrected calculation independently counts the producer's exact positive draws and agrees with the inherited `expected_order` guard for every case. The subset guard already used the correct original formula. Regression tests compare it with a direct loop count for small query powers, preserve the initial artifact, and reject the old incorrect small-size order. This correction is frozen before any new CLI fixture or confirmation execution.

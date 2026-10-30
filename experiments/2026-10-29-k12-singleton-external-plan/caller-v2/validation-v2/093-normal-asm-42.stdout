@@ -1,0 +1,113 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000063490 <_Z20inline_single_kernelILb1EN13bloom_filters23Split64RangeBloomFilterEmEvRKT0_mPKmPj>:
+   63490:	test   %rsi,%rsi
+   63493:	je     63647 <_Z20inline_single_kernelILb1EN13bloom_filters23Split64RangeBloomFilterEmEvRKT0_mPKmPj+0x1b7>
+   63499:	push   %rbx
+   6349a:	movabs $0xd6e8feb86659fd93,%r8
+   634a4:	cmp    $0x1,%rsi
+   634a8:	jne    634b1 <_Z20inline_single_kernelILb1EN13bloom_filters23Split64RangeBloomFilterEmEvRKT0_mPKmPj+0x21>
+   634aa:	xor    %eax,%eax
+   634ac:	jmp    635cd <_Z20inline_single_kernelILb1EN13bloom_filters23Split64RangeBloomFilterEmEvRKT0_mPKmPj+0x13d>
+   634b1:	mov    %rsi,%r9
+   634b4:	and    $0xfffffffffffffffe,%r9
+   634b8:	xor    %eax,%eax
+   634ba:	vmovdqa -0x5f282(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   634c2:	vpbroadcastq -0x6154c(%rip),%zmm1        # 1f80 <_IO_stdin_used+0x88>
+   634cc:	nopl   0x0(%rax)
+   634d0:	mov    (%rdx,%rax,8),%r10
+   634d4:	mov    %r10,%r11
+   634d7:	shr    $0x20,%r11
+   634db:	xor    %r10,%r11
+   634de:	imul   %r8,%r11
+   634e2:	mov    %r11,%r10
+   634e5:	shr    $0x20,%r10
+   634e9:	xor    %r11,%r10
+   634ec:	imul   %r8,%r10
+   634f0:	mov    %r10,%r11
+   634f3:	shr    $0x20,%r11
+   634f7:	xor    %r11d,%r10d
+   634fa:	mov    0x18(%rdi),%ebx
+   634fd:	imul   %r11,%rbx
+   63501:	mov    (%rdi),%r11
+   63504:	shr    $0x1a,%rbx
+   63508:	and    $0xffffffffffffffc0,%rbx
+   6350c:	vmovdqa64 (%r11,%rbx,1),%zmm2
+   63513:	vpbroadcastd %r10d,%ymm3
+   63519:	vpmulld %ymm0,%ymm3,%ymm3
+   6351e:	vpsrld $0x1a,%ymm3,%ymm3
+   63523:	vpmovzxdq %ymm3,%zmm3
+   63529:	vpsrlvq %zmm3,%zmm2,%zmm2
+   6352f:	vptestnmq %zmm1,%zmm2,%k0
+   63535:	xor    %r10d,%r10d
+   63538:	kortestb %k0,%k0
+   6353c:	sete   %r10b
+   63540:	mov    %r10d,(%rcx,%rax,4)
+   63544:	mov    0x8(%rdx,%rax,8),%r10
+   63549:	mov    %r10,%r11
+   6354c:	shr    $0x20,%r11
+   63550:	xor    %r10,%r11
+   63553:	imul   %r8,%r11
+   63557:	mov    %r11,%r10
+   6355a:	shr    $0x20,%r10
+   6355e:	xor    %r11,%r10
+   63561:	imul   %r8,%r10
+   63565:	mov    %r10,%r11
+   63568:	shr    $0x20,%r11
+   6356c:	xor    %r11d,%r10d
+   6356f:	mov    0x18(%rdi),%ebx
+   63572:	imul   %r11,%rbx
+   63576:	mov    (%rdi),%r11
+   63579:	shr    $0x1a,%rbx
+   6357d:	and    $0xffffffffffffffc0,%rbx
+   63581:	vmovdqa64 (%r11,%rbx,1),%zmm2
+   63588:	vpbroadcastd %r10d,%ymm3
+   6358e:	vpmulld %ymm0,%ymm3,%ymm3
+   63593:	vpsrld $0x1a,%ymm3,%ymm3
+   63598:	vpmovzxdq %ymm3,%zmm3
+   6359e:	vpsrlvq %zmm3,%zmm2,%zmm2
+   635a4:	vptestnmq %zmm1,%zmm2,%k0
+   635aa:	xor    %r10d,%r10d
+   635ad:	kortestb %k0,%k0
+   635b1:	sete   %r10b
+   635b5:	mov    %r10d,0x4(%rcx,%rax,4)
+   635ba:	add    $0x2,%rax
+   635be:	cmp    %rax,%r9
+   635c1:	jne    634d0 <_Z20inline_single_kernelILb1EN13bloom_filters23Split64RangeBloomFilterEmEvRKT0_mPKmPj+0x40>
+   635c7:	test   $0x1,%sil
+   635cb:	je     63646 <_Z20inline_single_kernelILb1EN13bloom_filters23Split64RangeBloomFilterEmEvRKT0_mPKmPj+0x1b6>
+   635cd:	mov    (%rdx,%rax,8),%rdx
+   635d1:	mov    %rdx,%rsi
+   635d4:	shr    $0x20,%rsi
+   635d8:	xor    %rdx,%rsi
+   635db:	imul   %r8,%rsi
+   635df:	mov    %rsi,%rdx
+   635e2:	shr    $0x20,%rdx
+   635e6:	xor    %rsi,%rdx
+   635e9:	imul   %r8,%rdx
+   635ed:	mov    %rdx,%rsi
+   635f0:	shr    $0x20,%rsi
+   635f4:	xor    %esi,%edx
+   635f6:	mov    0x18(%rdi),%r8d
+   635fa:	imul   %rsi,%r8
+   635fe:	mov    (%rdi),%rsi
+   63601:	shr    $0x1a,%r8
+   63605:	and    $0xffffffffffffffc0,%r8
+   63609:	vpbroadcastd %edx,%ymm0
+   6360f:	vpmulld -0x5f3d8(%rip),%ymm0,%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   63618:	vmovdqa64 (%rsi,%r8,1),%zmm1
+   6361f:	vpsrld $0x1a,%ymm0,%ymm0
+   63624:	vpmovzxdq %ymm0,%zmm0
+   6362a:	vpsrlvq %zmm0,%zmm1,%zmm0
+   63630:	vptestnmq -0x616ba(%rip){1to8},%zmm0,%k0        # 1f80 <_IO_stdin_used+0x88>
+   6363a:	xor    %edx,%edx
+   6363c:	kortestb %k0,%k0
+   63640:	sete   %dl
+   63643:	mov    %edx,(%rcx,%rax,4)
+   63646:	pop    %rbx
+   63647:	vzeroupper
+   6364a:	ret

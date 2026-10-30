@@ -1,0 +1,130 @@
+{
+  "status": "Reviewed source-only fixed plan; no compilation or filter execution authorized",
+  "before_native_commit": "e8b89cd3c7c090287d1d4222db981ec7f8fb86ab",
+  "after_native_commit": "2b3469f02c8dafc2219a132c681c14529e79995d",
+  "motivation_only_raw_commit": "df0d132515d63f141d5de2b47dbabfcf0f7fb845",
+  "policy": {
+    "maximum_batch_inclusive": 65536,
+    "maximum_actual_bytes_inclusive": 262144,
+    "inside_request": 1,
+    "outside_and_query_request": "unchanged"
+  },
+  "arms": [
+    "A0",
+    "A1",
+    "Clone",
+    "Policy"
+  ],
+  "schedule": [
+    [
+      "A0",
+      "A1",
+      "Policy",
+      "Clone"
+    ],
+    [
+      "A1",
+      "Clone",
+      "A0",
+      "Policy"
+    ],
+    [
+      "Clone",
+      "Policy",
+      "A1",
+      "A0"
+    ],
+    [
+      "Policy",
+      "A0",
+      "Clone",
+      "A1"
+    ]
+  ],
+  "cycles": 8,
+  "repeats": 32,
+  "counts": {
+    "process_cases": 40,
+    "unique_cells": 20,
+    "seed_cases": 2,
+    "empty_cases": 32,
+    "populated_cases": 8,
+    "contracts": 72,
+    "arm_records": 160,
+    "arm_metric_vectors": 288,
+    "repeats": 32,
+    "cycles": 8,
+    "timed_fresh_bitmap_lifetimes": 9216,
+    "untimed_oracle_lifetimes": 40
+  },
+  "seeds": [
+    2694173,
+    3819257
+  ],
+  "requested_T_by_language": {
+    "cpp": 4,
+    "rust": 8
+  },
+  "scenario_ids": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "omitted_scenarios": [
+    5
+  ],
+  "primary_targets": [
+    {
+      "language": "cpp",
+      "family": "Split64",
+      "scenario": 1,
+      "requested": 4,
+      "contract": "insert"
+    },
+    {
+      "language": "rust",
+      "family": "Split64",
+      "scenario": 1,
+      "requested": 8,
+      "contract": "allocate_insert"
+    }
+  ],
+  "proposed_practical_latency_band": [
+    0.97,
+    1.03
+  ],
+  "uncertainty": {
+    "method": "descriptive complete-cycle block bootstrap",
+    "cycles_per_seed": 8,
+    "draws": 10000,
+    "seed": 20261029,
+    "interval": 0.95,
+    "pool_cells_or_seeds": false,
+    "familywise_or_causal_guarantee": false
+  },
+  "stopping": "Exactly ledger; no outcome-dependent sample extension or threshold changes",
+  "ledger_sha256": "9c201b66e7430857ae63d53fa0a122a368ec16f75af84b7485bbd15dab25f175",
+  "compiler_filter_or_timing_execution": false,
+  "primary_contrasts": [
+    "A1/A0",
+    "Policy/A0",
+    "Policy/A1",
+    "Clone/A0",
+    "Clone/A1"
+  ],
+  "additional_retained_contrast": "Policy/Clone",
+  "optional_summary": "Within-block geometric A0/A1 reference; shared samples remain dependent, no independent-observation inflation",
+  "typed_path": "A0/A1 share the exact same noinline typed measurement specialization and code address; all three type specializations have the same noinline rule; native inline attributes unchanged",
+  "balance_scope": "Every four-row block: each arm once per position, each distinct directed predecessor once inside rows. Across-row/process carryover not claimed balanced.",
+  "ratio_direction": "Every named ratio is numerator latency / denominator latency; >1 means numerator slower. These are not old control/candidate speedup ratios.",
+  "analysis_definition": {
+    "per_arm": "All32 absolute-ns trials; median/min/max and ns per new hash retained separately.",
+    "pair_estimator": "For each fixed cell/contract/seed, take mean of four per-repeat log latency ratios within each complete Williams cycle, then exponentiate the mean across eight cycle means.",
+    "bootstrap": "Draw eight complete cycles with replacement10000 times; identical index draws used for every contrast in the same cell/contract/seed, retaining shared-sample dependence. Percentile endpoints at0.025/0.975 use linear interpolation of sorted replicates with rank(B-1)*p.",
+    "all_comparisons": "Retain all six individual contrasts and every cycle/trial. Aref is secondary only. Never pool cells, contracts, languages or input seeds.",
+    "classification": "Negative controls inside means every full pointwise95% block interval for A1/A0,Clone/A0,Clone/A1 falls within[0.97,1.03] at both seeds. Only then label policy consistently slower/faster when both Policy/A0 and Policy/A1 intervals fall wholly above1.03/below0.97 at both seeds. Wholly inside for all policy intervals is practically within band, not no effect. Everything else unresolved; no optional extension.",
+    "limitations": "Eight blocks and bootstrap independence/representativeness assumptions do not prove absence of impact or generalize beyond measured cases; no familywise causal guarantee."
+  }
+}

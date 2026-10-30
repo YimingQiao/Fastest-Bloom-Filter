@@ -1,0 +1,2703 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000013670 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input>:
+   13670:	push   %rbp
+   13671:	push   %r15
+   13673:	push   %r14
+   13675:	push   %r13
+   13677:	push   %r12
+   13679:	push   %rbx
+   1367a:	sub    $0x10168,%rsp
+   13681:	mov    %rdx,%rbp
+   13684:	mov    %rsi,%r14
+   13687:	mov    %rdi,%r15
+   1368a:	mov    0x30(%rdx),%rax
+   1368e:	mov    0x38(%rdx),%rbx
+   13692:	mov    %rbx,0xf0(%rsp)
+   1369a:	mov    %rax,0xf8(%rsp)
+   136a2:	sub    %rax,%rbx
+   136a5:	sar    $0x3,%rbx
+   136a9:	mov    0x50(%rdx),%rax
+   136ad:	mov    %rax,0x28(%rsp)
+   136b2:	mov    0x48(%rdx),%rax
+   136b6:	mov    %rax,0x20(%rsp)
+   136bb:	mov    0x20(%rdi),%edx
+   136be:	lea    0x160(%rsp),%rdi
+   136c6:	mov    %rbx,%rsi
+   136c9:	call   2b050 <_ZN12exact_budget12NativeTraitsIN13bloom_filters13FastPatternBFELi0EE4PlanEmj>
+   136ce:	mov    0x1ac(%rsp),%esi
+   136d5:	vpxor  %xmm0,%xmm0,%xmm0
+   136d9:	vmovdqu %xmm0,0x88(%rsp)
+   136e2:	movq   $0x0,0x98(%rsp)
+   136ee:	mov    %rbx,0x18(%rsp)
+   136f3:	mov    %rbx,%rdi
+   136f6:	call   2b3d0 <_ZN13bloom_filters13FastPatternBF9WordCountEmj>
+   136fb:	mov    %rax,%rbx
+   136fe:	test   %rax,%rax
+   13701:	je     13713 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xa3>
+   13703:	lea    0x88(%rsp),%rdi
+   1370b:	mov    %rbx,%rsi
+   1370e:	call   2b4a0 <_ZNSt6vectorIjN13bloom_filters16AlignedAllocatorIjLm64EEEE17_M_default_appendEm>
+   13713:	lea    -0x1(%rbx),%eax
+   13716:	mov    %eax,0x80(%rsp)
+   1371d:	shl    $0x5,%rbx
+   13721:	movabs $0xaaaaaaaaaaaaaaab,%rax
+   1372b:	mov    %rbx,%rdx
+   1372e:	mulx   %rax,%rax,%rax
+   13733:	shr    $0x3,%rax
+   13737:	cmp    %rax,0x18(%rsp)
+   1373c:	lea    -0xfe43(%rip),%rax        # 3900 <_ZN13bloom_filters13FastPatternBF16sparse_patterns_E>
+   13743:	lea    -0xfdca(%rip),%rcx        # 3980 <_ZN13bloom_filters13FastPatternBF15dense_patterns_E>
+   1374a:	cmova  %rax,%rcx
+   1374e:	mov    %rcx,0x78(%rsp)
+   13753:	lea    0x78(%rsp),%rdi
+   13758:	mov    %r15,%rsi
+   1375b:	call   2ac40 <_Z13GeometryCheckIN13bloom_filters13FastPatternBFEEvRKT_RK5Point>
+   13760:	mov    0x30(%rbp),%rdx
+   13764:	mov    0x90(%rsp),%rax
+   1376c:	sub    0x88(%rsp),%rax
+   13774:	cmp    $0x200001,%rax
+   1377a:	jb     1378d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x11d>
+   1377c:	lea    0x78(%rsp),%rdi
+   13781:	mov    0x18(%rsp),%rsi
+   13786:	call   2b6e0 <_ZN13bloom_filters13FastPatternBF10InsertImplILb1EEEvjPKm>
+   1378b:	jmp    1379c <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x12c>
+   1378d:	lea    0x78(%rsp),%rdi
+   13792:	mov    0x18(%rsp),%rsi
+   13797:	call   2bad0 <_ZN13bloom_filters13FastPatternBF10InsertImplILb0EEEvjPKm>
+   1379c:	mov    %r15,0x120(%rsp)
+   137a4:	mov    0x28(%rsp),%rax
+   137a9:	sub    0x20(%rsp),%rax
+   137ae:	mov    %rax,0x10(%rsp)
+   137b3:	sar    $0x3,%rax
+   137b7:	movabs $0x1ffffffffffffff8,%rcx
+   137c1:	mov    %r14,(%rsp)
+   137c5:	mov    0xc(%r14),%r15d
+   137c9:	cmp    %r15,%rax
+   137cc:	mov    %r15,%r14
+   137cf:	mov    %rax,0x8(%rsp)
+   137d4:	cmova  %rax,%r14
+   137d8:	lea    0x20(%r14),%r13
+   137dc:	lea    0x7(%rcx),%rax
+   137e0:	cmp    %rax,%r13
+   137e3:	ja     16349 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2cd9>
+   137e9:	vpxor  %xmm0,%xmm0,%xmm0
+   137ed:	vmovdqa %xmm0,0x40(%rsp)
+   137f3:	movq   $0x0,0x50(%rsp)
+   137fc:	test   %r13,%r13
+   137ff:	je     1383b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1cb>
+   13801:	lea    0x0(,%r13,4),%rbx
+   13809:	mov    %rbx,%rdi
+   1380c:	call   319e0 <_Znwm@plt>
+   13811:	mov    %rax,0x40(%rsp)
+   13816:	lea    (%rax,%r13,4),%rcx
+   1381a:	mov    %rcx,0x50(%rsp)
+   1381f:	add    %rax,%rbx
+   13822:	lea    0x1f(%r14),%rcx
+   13826:	mov    $0x3e,%dl
+   13828:	bzhi   %rdx,%rcx,%rdx
+   1382d:	cmp    $0x7,%rdx
+   13831:	jae    13842 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1d2>
+   13833:	mov    %rax,%rdx
+   13836:	jmp    138e0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x270>
+   1383b:	xor    %ebx,%ebx
+   1383d:	jmp    138ef <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x27f>
+   13842:	lea    0x1(%rdx),%rcx
+   13846:	cmp    $0x1f,%rdx
+   1384a:	jae    13850 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1e0>
+   1384c:	xor    %esi,%esi
+   1384e:	jmp    1389a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x22a>
+   13850:	movabs $0x7ffffffffffffff8,%rdx
+   1385a:	lea    -0x18(%rdx),%rsi
+   1385e:	and    %rcx,%rsi
+   13861:	lea    (%rax,%rsi,4),%rdx
+   13865:	xor    %edi,%edi
+   13867:	vpbroadcastd -0x12190(%rip),%ymm0        # 16e0 <__abi_tag+0x141c>
+   13870:	vmovdqu %ymm0,(%rax,%rdi,4)
+   13875:	vmovdqu %ymm0,0x20(%rax,%rdi,4)
+   1387b:	vmovdqu %ymm0,0x40(%rax,%rdi,4)
+   13881:	vmovdqu %ymm0,0x60(%rax,%rdi,4)
+   13887:	add    $0x20,%rdi
+   1388b:	cmp    %rdi,%rsi
+   1388e:	jne    13870 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x200>
+   13890:	cmp    %rsi,%rcx
+   13893:	je     138ef <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x27f>
+   13895:	test   $0x18,%cl
+   13898:	je     138e0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x270>
+   1389a:	mov    %rcx,%rdi
+   1389d:	movabs $0x7ffffffffffffff8,%rdx
+   138a7:	and    %rdx,%rdi
+   138aa:	lea    (%rax,%rdi,4),%rdx
+   138ae:	vpbroadcastd -0x121d7(%rip),%ymm0        # 16e0 <__abi_tag+0x141c>
+   138b7:	nopw   0x0(%rax,%rax,1)
+   138c0:	vmovdqu %ymm0,(%rax,%rsi,4)
+   138c5:	add    $0x8,%rsi
+   138c9:	cmp    %rsi,%rdi
+   138cc:	jne    138c0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x250>
+   138ce:	cmp    %rdi,%rcx
+   138d1:	je     138ef <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x27f>
+   138d3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   138e0:	movl   $0xfeed1234,(%rdx)
+   138e6:	add    $0x4,%rdx
+   138ea:	cmp    %rbx,%rdx
+   138ed:	jne    138e0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x270>
+   138ef:	mov    %rbx,0x48(%rsp)
+   138f4:	mov    %r14,0x58(%rsp)
+   138f9:	test   %r15d,%r15d
+   138fc:	je     13953 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e3>
+   138fe:	lea    0x0(,%r15,8),%rdi
+   13906:	vzeroupper
+   13909:	call   319e0 <_Znwm@plt>
+   1390e:	mov    %rax,%r14
+   13911:	lea    (%rax,%r15,8),%rax
+   13915:	mov    %rax,0xe0(%rsp)
+   1391d:	movq   $0x0,(%r14)
+   13924:	mov    %r14,%r12
+   13927:	add    $0x8,%r12
+   1392b:	mov    %r15,%rbx
+   1392e:	dec    %rbx
+   13931:	je     13949 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2d9>
+   13933:	lea    0x0(,%rbx,8),%rdx
+   1393b:	mov    %r12,%rdi
+   1393e:	xor    %esi,%esi
+   13940:	call   31a30 <memset@plt>
+   13945:	lea    (%r12,%rbx,8),%r12
+   13949:	mov    %r12,0xe8(%rsp)
+   13951:	jmp    1396e <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2fe>
+   13953:	movq   $0x0,0xe0(%rsp)
+   1395f:	xor    %r14d,%r14d
+   13962:	movq   $0x0,0xe8(%rsp)
+   1396e:	mov    0xf0(%rsp),%rax
+   13976:	cmp    0xf8(%rsp),%rax
+   1397e:	mov    %rbp,0x38(%rsp)
+   13983:	mov    0x18(%rsp),%rcx
+   13988:	je     13baf <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x53f>
+   1398e:	xor    %r13d,%r13d
+   13991:	lea    0x78(%rsp),%rbx
+   13996:	vpbroadcastd -0x122d3(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   1399f:	jmp    139ce <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x35e>
+   139a1:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   139b0:	mov    (%rsp),%rax
+   139b4:	mov    0xc(%rax),%r15d
+   139b8:	add    %r15,%r13
+   139bb:	mov    0x18(%rsp),%rcx
+   139c0:	cmp    %rcx,%r13
+   139c3:	mov    0x38(%rsp),%rbp
+   139c8:	jae    13baf <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x53f>
+   139ce:	mov    %r15d,%eax
+   139d1:	mov    %rcx,%r15
+   139d4:	sub    %r13,%r15
+   139d7:	cmp    %rax,%r15
+   139da:	cmovae %rax,%r15
+   139de:	mov    0x40(%rsp),%rcx
+   139e3:	test   %r15,%r15
+   139e6:	je     13ac4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x454>
+   139ec:	lea    0x40(%rcx),%rax
+   139f0:	lea    -0x4(,%r15,4),%rdx
+   139f8:	cmp    $0x1c,%rdx
+   139fc:	jae    13a10 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x3a0>
+   139fe:	mov    %rax,%rdx
+   13a01:	jmp    13aa3 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x433>
+   13a06:	cs nopw 0x0(%rax,%rax,1)
+   13a10:	mov    %rdx,%rsi
+   13a13:	shr    $0x2,%rsi
+   13a17:	inc    %rsi
+   13a1a:	cmp    $0x7c,%rdx
+   13a1e:	jae    13a24 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x3b4>
+   13a20:	xor    %edi,%edi
+   13a22:	jmp    13a76 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x406>
+   13a24:	movabs $0x7ffffffffffffff8,%rdx
+   13a2e:	lea    -0x18(%rdx),%rdi
+   13a32:	and    %rsi,%rdi
+   13a35:	lea    (%rax,%rdi,4),%rdx
+   13a39:	xor    %r8d,%r8d
+   13a3c:	nopl   0x0(%rax)
+   13a40:	vmovdqu %ymm0,0x40(%rcx,%r8,4)
+   13a47:	vmovdqu %ymm0,0x60(%rcx,%r8,4)
+   13a4e:	vmovdqu %ymm0,0x80(%rcx,%r8,4)
+   13a58:	vmovdqu %ymm0,0xa0(%rcx,%r8,4)
+   13a62:	add    $0x20,%r8
+   13a66:	cmp    %r8,%rdi
+   13a69:	jne    13a40 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x3d0>
+   13a6b:	cmp    %rdi,%rsi
+   13a6e:	je     13abf <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x44f>
+   13a70:	test   $0x18,%sil
+   13a74:	je     13aa3 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x433>
+   13a76:	mov    %rsi,%r8
+   13a79:	movabs $0x7ffffffffffffff8,%rdx
+   13a83:	and    %rdx,%r8
+   13a86:	lea    (%rax,%r8,4),%rdx
+   13a8a:	nopw   0x0(%rax,%rax,1)
+   13a90:	vmovdqu %ymm0,(%rax,%rdi,4)
+   13a95:	add    $0x8,%rdi
+   13a99:	cmp    %rdi,%r8
+   13a9c:	jne    13a90 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x420>
+   13a9e:	cmp    %r8,%rsi
+   13aa1:	je     13abf <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x44f>
+   13aa3:	lea    0x40(%rcx,%r15,4),%rax
+   13aa8:	nopl   0x0(%rax,%rax,1)
+   13ab0:	movl   $0x2,(%rdx)
+   13ab6:	add    $0x4,%rdx
+   13aba:	cmp    %rax,%rdx
+   13abd:	jne    13ab0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x440>
+   13abf:	mov    0x40(%rsp),%rcx
+   13ac4:	lea    0x0(,%r13,8),%rbp
+   13acc:	mov    0x38(%rsp),%rax
+   13ad1:	mov    0x30(%rax),%rdx
+   13ad5:	add    %rbp,%rdx
+   13ad8:	add    $0x40,%rcx
+   13adc:	mov    %rbx,%rdi
+   13adf:	mov    %r15,%rsi
+   13ae2:	vzeroupper
+   13ae5:	call   2adf0 <_Z13lookup_kernelIN13bloom_filters13FastPatternBFEmEvRT_mPKT0_Pj>
+   13aea:	test   %r15,%r15
+   13aed:	vpbroadcastd -0x1242a(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   13af6:	je     139b0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x340>
+   13afc:	mov    0x40(%rsp),%rax
+   13b01:	mov    0x38(%rsp),%rcx
+   13b06:	add    0x30(%rcx),%rbp
+   13b0a:	mov    0x80(%rsp),%edx
+   13b11:	mov    0x78(%rsp),%rsi
+   13b16:	mov    0x88(%rsp),%rdi
+   13b1e:	xor    %r8d,%r8d
+   13b21:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   13b30:	cmpl   $0x1,0x40(%rax,%r8,4)
+   13b36:	jne    16238 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2bc8>
+   13b3c:	mov    0x0(%rbp,%r8,8),%r9
+   13b41:	mov    %r9,%r10
+   13b44:	shr    $0x20,%r10
+   13b48:	and    %edx,%r10d
+   13b4b:	mov    %r9d,%ecx
+   13b4e:	and    $0x1f,%ecx
+   13b51:	mov    (%rsi,%rcx,4),%r12d
+   13b55:	mov    %r9d,%ecx
+   13b58:	shr    $0x5,%ecx
+   13b5b:	rol    %cl,%r12d
+   13b5e:	mov    %r9d,%ecx
+   13b61:	shr    $0x8,%ecx
+   13b64:	and    $0x7c,%ecx
+   13b67:	mov    (%rsi,%rcx,1),%r11d
+   13b6b:	mov    %r9d,%ecx
+   13b6e:	shr    $0xf,%ecx
+   13b71:	rol    %cl,%r11d
+   13b74:	mov    (%rdi,%r10,4),%ecx
+   13b78:	andn   %r12d,%ecx,%ecx
+   13b7d:	jne    16238 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2bc8>
+   13b83:	shr    $0x14,%r9d
+   13b87:	and    $0x7,%r9d
+   13b8b:	or     $0x8,%r9d
+   13b8f:	xor    %r10d,%r9d
+   13b92:	mov    (%rdi,%r9,4),%ecx
+   13b96:	and    %r11d,%ecx
+   13b99:	cmp    %r11d,%ecx
+   13b9c:	jne    16238 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2bc8>
+   13ba2:	inc    %r8
+   13ba5:	cmp    %r8,%r15
+   13ba8:	jne    13b30 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x4c0>
+   13baa:	jmp    139b0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x340>
+   13baf:	movabs $0x1ffffffffffffff8,%rax
+   13bb9:	add    $0x7,%rax
+   13bbd:	mov    %rax,0x138(%rsp)
+   13bc5:	cmp    %rax,0x8(%rsp)
+   13bca:	ja     16355 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ce5>
+   13bd0:	mov    0x20(%rsp),%rax
+   13bd5:	cmp    %rax,0x28(%rsp)
+   13bda:	mov    0x10(%rsp),%r12
+   13bdf:	je     13d6a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x6fa>
+   13be5:	mov    %r12,%rdi
+   13be8:	sar    %rdi
+   13beb:	vzeroupper
+   13bee:	call   319e0 <_Znwm@plt>
+   13bf3:	mov    %rax,%rbx
+   13bf6:	mov    %rax,0xb0(%rsp)
+   13bfe:	mov    0x8(%rsp),%r15
+   13c03:	lea    (%rax,%r15,4),%rax
+   13c07:	mov    %rax,0xc0(%rsp)
+   13c0f:	movl   $0x0,(%rbx)
+   13c15:	add    $0x4,%rbx
+   13c19:	dec    %r15
+   13c1c:	je     13c34 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x5c4>
+   13c1e:	lea    0x0(,%r15,4),%rdx
+   13c26:	mov    %rbx,%rdi
+   13c29:	xor    %esi,%esi
+   13c2b:	call   31a30 <memset@plt>
+   13c30:	lea    (%rbx,%r15,4),%rbx
+   13c34:	mov    %rbx,0xb8(%rsp)
+   13c3c:	test   %r15,%r15
+   13c3f:	je     13d90 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x720>
+   13c45:	movabs $0x1ffffffffffffff8,%rax
+   13c4f:	lea    0x6(%rax),%rdx
+   13c53:	and    0x8(%rsp),%rdx
+   13c58:	xor    %eax,%eax
+   13c5a:	nopw   0x0(%rax,%rax,1)
+   13c60:	mov    0x48(%rbp),%rcx
+   13c64:	mov    (%rcx,%rax,8),%rsi
+   13c68:	mov    %rsi,%rdi
+   13c6b:	shr    $0x20,%rdi
+   13c6f:	and    0x80(%rsp),%edi
+   13c76:	mov    %esi,%ecx
+   13c78:	and    $0x1f,%ecx
+   13c7b:	mov    0x78(%rsp),%r9
+   13c80:	mov    0x88(%rsp),%r8
+   13c88:	mov    (%r9,%rcx,4),%r10d
+   13c8c:	mov    %esi,%ecx
+   13c8e:	shr    $0x5,%ecx
+   13c91:	rol    %cl,%r10d
+   13c94:	mov    %esi,%ecx
+   13c96:	shr    $0x8,%ecx
+   13c99:	and    $0x7c,%ecx
+   13c9c:	mov    (%r9,%rcx,1),%r9d
+   13ca0:	mov    %esi,%ecx
+   13ca2:	shr    $0xf,%ecx
+   13ca5:	rol    %cl,%r9d
+   13ca8:	mov    (%r8,%rdi,4),%ecx
+   13cac:	andn   %r10d,%ecx,%ecx
+   13cb1:	shr    $0x14,%esi
+   13cb4:	and    $0x7,%esi
+   13cb7:	or     $0x8,%esi
+   13cba:	xor    %edi,%esi
+   13cbc:	mov    (%r8,%rsi,4),%esi
+   13cc0:	andn   %r9d,%esi,%esi
+   13cc5:	xor    %edi,%edi
+   13cc7:	or     %ecx,%esi
+   13cc9:	sete   %dil
+   13ccd:	mov    0xb0(%rsp),%rcx
+   13cd5:	mov    %edi,(%rcx,%rax,4)
+   13cd8:	mov    0x48(%rbp),%rcx
+   13cdc:	mov    0x8(%rcx,%rax,8),%rsi
+   13ce1:	mov    %rsi,%rdi
+   13ce4:	shr    $0x20,%rdi
+   13ce8:	and    0x80(%rsp),%edi
+   13cef:	mov    %esi,%ecx
+   13cf1:	and    $0x1f,%ecx
+   13cf4:	mov    0x78(%rsp),%r9
+   13cf9:	mov    0x88(%rsp),%r8
+   13d01:	mov    (%r9,%rcx,4),%r10d
+   13d05:	mov    %esi,%ecx
+   13d07:	shr    $0x5,%ecx
+   13d0a:	rol    %cl,%r10d
+   13d0d:	mov    %esi,%ecx
+   13d0f:	shr    $0x8,%ecx
+   13d12:	and    $0x7c,%ecx
+   13d15:	mov    (%r9,%rcx,1),%r9d
+   13d19:	mov    %esi,%ecx
+   13d1b:	shr    $0xf,%ecx
+   13d1e:	rol    %cl,%r9d
+   13d21:	mov    (%r8,%rdi,4),%ecx
+   13d25:	andn   %r10d,%ecx,%ecx
+   13d2a:	shr    $0x14,%esi
+   13d2d:	and    $0x7,%esi
+   13d30:	or     $0x8,%esi
+   13d33:	xor    %edi,%esi
+   13d35:	mov    (%r8,%rsi,4),%esi
+   13d39:	andn   %r9d,%esi,%esi
+   13d3e:	xor    %edi,%edi
+   13d40:	or     %ecx,%esi
+   13d42:	sete   %dil
+   13d46:	mov    0xb0(%rsp),%rcx
+   13d4e:	mov    %edi,0x4(%rcx,%rax,4)
+   13d52:	add    $0x2,%rax
+   13d56:	cmp    %rax,%rdx
+   13d59:	jne    13c60 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x5f0>
+   13d5f:	test   $0x8,%r12b
+   13d63:	jne    13d92 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x722>
+   13d65:	jmp    13e08 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x798>
+   13d6a:	vpxor  %xmm0,%xmm0,%xmm0
+   13d6e:	vmovdqa %xmm0,0xb0(%rsp)
+   13d77:	movq   $0x0,0xc0(%rsp)
+   13d83:	xor    %ebx,%ebx
+   13d85:	xor    %r11d,%r11d
+   13d88:	xor    %r10d,%r10d
+   13d8b:	jmp    13e72 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x802>
+   13d90:	xor    %eax,%eax
+   13d92:	mov    0x48(%rbp),%rcx
+   13d96:	mov    (%rcx,%rax,8),%rdx
+   13d9a:	mov    %rdx,%rsi
+   13d9d:	shr    $0x20,%rsi
+   13da1:	and    0x80(%rsp),%esi
+   13da8:	mov    %edx,%ecx
+   13daa:	and    $0x1f,%ecx
+   13dad:	mov    0x78(%rsp),%r8
+   13db2:	mov    0x88(%rsp),%rdi
+   13dba:	mov    (%r8,%rcx,4),%r9d
+   13dbe:	mov    %edx,%ecx
+   13dc0:	shr    $0x5,%ecx
+   13dc3:	rol    %cl,%r9d
+   13dc6:	mov    %edx,%ecx
+   13dc8:	shr    $0x8,%ecx
+   13dcb:	and    $0x7c,%ecx
+   13dce:	mov    (%r8,%rcx,1),%r8d
+   13dd2:	mov    %edx,%ecx
+   13dd4:	shr    $0xf,%ecx
+   13dd7:	rol    %cl,%r8d
+   13dda:	mov    (%rdi,%rsi,4),%ecx
+   13ddd:	andn   %r9d,%ecx,%ecx
+   13de2:	shr    $0x14,%edx
+   13de5:	and    $0x7,%edx
+   13de8:	or     $0x8,%edx
+   13deb:	xor    %esi,%edx
+   13ded:	mov    (%rdi,%rdx,4),%edx
+   13df0:	andn   %r8d,%edx,%edx
+   13df5:	xor    %esi,%esi
+   13df7:	or     %ecx,%edx
+   13df9:	sete   %sil
+   13dfd:	mov    0xb0(%rsp),%rcx
+   13e05:	mov    %esi,(%rcx,%rax,4)
+   13e08:	mov    0xb0(%rsp),%rax
+   13e10:	mov    0x18(%rbp),%rcx
+   13e14:	mov    0x60(%rbp),%rdx
+   13e18:	mov    0x18(%rsp),%rsi
+   13e1d:	add    %rdx,%rsi
+   13e20:	xor    %r10d,%r10d
+   13e23:	xor    %edi,%edi
+   13e25:	xor    %r11d,%r11d
+   13e28:	xor    %ebx,%ebx
+   13e2a:	jmp    13e40 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x7d0>
+   13e2c:	nopl   0x0(%rax)
+   13e30:	inc    %r11
+   13e33:	add    %r8,%r10
+   13e36:	inc    %rdi
+   13e39:	cmp    %rdi,0x8(%rsp)
+   13e3e:	je     13e72 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x802>
+   13e40:	mov    (%rax,%rdi,4),%r8d
+   13e44:	cmp    $0x2,%r8
+   13e48:	jae    162c4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2c54>
+   13e4e:	mov    (%rcx,%rdi,8),%r9
+   13e52:	cmp    %rdx,%r9
+   13e55:	jb     13e30 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x7c0>
+   13e57:	cmp    %rsi,%r9
+   13e5a:	jae    13e30 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x7c0>
+   13e5c:	test   %r8,%r8
+   13e5f:	je     162e2 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2c72>
+   13e65:	inc    %rbx
+   13e68:	inc    %rdi
+   13e6b:	cmp    %rdi,0x8(%rsp)
+   13e70:	jne    13e40 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x7d0>
+   13e72:	mov    %rbx,0x118(%rsp)
+   13e7a:	mov    %r11,0x110(%rsp)
+   13e82:	mov    %r10,0x108(%rsp)
+   13e8a:	movabs $0xd6e8feb86659fd93,%r13
+   13e94:	movabs $0xcbf29ce484222325,%r15
+   13e9e:	mov    (%rsp),%rax
+   13ea2:	mov    0x18(%rax),%eax
+   13ea5:	test   %rax,%rax
+   13ea8:	je     144e4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xe74>
+   13eae:	mov    $0x1,%ecx
+   13eb3:	shlx   %rax,%rcx,%rbx
+   13eb8:	lea    0x160(%rsp),%rdi
+   13ec0:	movq   $0x0,0xd0(%rsp)
+   13ecc:	mov    $0x8000,%edx
+   13ed1:	xor    %esi,%esi
+   13ed3:	vzeroupper
+   13ed6:	call   31a30 <memset@plt>
+   13edb:	lea    0x8168(%rsp),%rdi
+   13ee3:	mov    $0x8000,%edx
+   13ee8:	xor    %esi,%esi
+   13eea:	call   31a30 <memset@plt>
+   13eef:	mov    0x8(%rsp),%rax
+   13ef4:	mov    0x18(%rsp),%rcx
+   13ef9:	add    %rax,%rcx
+   13efc:	add    0x60(%rbp),%rcx
+   13f00:	mov    0x80(%rsp),%edx
+   13f07:	mov    0x78(%rsp),%r8
+   13f0c:	mov    0x88(%rsp),%r9
+   13f14:	mov    $0x1000,%esi
+   13f19:	vpbroadcastq -0x122d2(%rip),%ymm0        # 1c50 <_IO_stdin_used+0x568>
+   13f22:	vmovdqa -0x1240a(%rip),%ymm1        # 1b20 <_IO_stdin_used+0x438>
+   13f2a:	vpbroadcastq -0x12283(%rip),%ymm2        # 1cb0 <_IO_stdin_used+0x5c8>
+   13f33:	vpbroadcastq -0x122fc(%rip),%ymm3        # 1c40 <_IO_stdin_used+0x558>
+   13f3c:	vpbroadcastq -0x122fd(%rip),%ymm4        # 1c48 <_IO_stdin_used+0x560>
+   13f45:	vmovdqa -0x1242d(%rip),%ymm5        # 1b20 <_IO_stdin_used+0x438>
+   13f4d:	vpbroadcastq -0x1229e(%rip),%ymm6        # 1cb8 <_IO_stdin_used+0x5d0>
+   13f56:	mov    %rcx,0x30(%rsp)
+   13f5b:	mov    %rcx,%rdi
+   13f5e:	mov    %rbx,%r10
+   13f61:	xor    %r11d,%r11d
+   13f64:	mov    %r15,0xa0(%rsp)
+   13f6c:	mov    %edx,%r15d
+   13f6f:	mov    %rbx,0xd8(%rsp)
+   13f77:	jmp    14031 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x9c1>
+   13f7c:	nopl   0x0(%rax)
+   13f80:	xor    %ebp,%ebp
+   13f82:	mov    0x8168(%rsp,%rbp,8),%rax
+   13f8a:	mov    %rax,%rdx
+   13f8d:	shr    $0x20,%rdx
+   13f91:	and    %r15d,%edx
+   13f94:	mov    (%r9,%rdx,4),%ebx
+   13f98:	mov    %eax,%ecx
+   13f9a:	and    $0x1f,%ecx
+   13f9d:	mov    (%r8,%rcx,4),%ebp
+   13fa1:	mov    %eax,%ecx
+   13fa3:	shr    $0x5,%ecx
+   13fa6:	rol    %cl,%ebp
+   13fa8:	andn   %ebp,%ebx,%ebx
+   13fad:	mov    %eax,%ecx
+   13faf:	shr    $0x14,%ecx
+   13fb2:	and    $0x7,%ecx
+   13fb5:	or     $0x8,%ecx
+   13fb8:	xor    %edx,%ecx
+   13fba:	mov    (%r9,%rcx,4),%edx
+   13fbe:	mov    %eax,%ecx
+   13fc0:	shr    $0x8,%ecx
+   13fc3:	and    $0x7c,%ecx
+   13fc6:	mov    (%r8,%rcx,1),%ebp
+   13fca:	shr    $0xf,%eax
+   13fcd:	mov    %eax,%ecx
+   13fcf:	rol    %cl,%ebp
+   13fd1:	andn   %ebp,%edx,%eax
+   13fd6:	xor    %ecx,%ecx
+   13fd8:	or     %ebx,%eax
+   13fda:	sete   %cl
+   13fdd:	add    %rcx,0xd0(%rsp)
+   13fe5:	mov    0xa0(%rsp),%rax
+   13fed:	xor    %rcx,%rax
+   13ff0:	movabs $0x100000001b3,%rcx
+   13ffa:	imul   %rcx,%rax
+   13ffe:	mov    %rax,0xa0(%rsp)
+   14006:	add    $0x1000,%r11
+   1400d:	add    $0xfffffffffffff000,%r10
+   14014:	add    $0x1000,%rdi
+   1401b:	mov    0xd8(%rsp),%rbx
+   14023:	cmp    %rbx,%r11
+   14026:	mov    0x38(%rsp),%rbp
+   1402b:	jae    144fa <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xe8a>
+   14031:	cmp    $0x1,%r10
+   14035:	mov    %rbx,%rcx
+   14038:	mov    %r10,%rbx
+   1403b:	adc    $0x0,%rbx
+   1403f:	cmp    $0x1000,%rbx
+   14046:	cmovae %rsi,%rbx
+   1404a:	cmp    $0x1000,%r10
+   14051:	mov    $0x1000,%eax
+   14056:	cmovb  %r10,%rax
+   1405a:	cmp    %r11,%rcx
+   1405d:	je     14164 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xaf4>
+   14063:	cmp    $0x4,%r10
+   14067:	jae    14070 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xa00>
+   14069:	xor    %ecx,%ecx
+   1406b:	jmp    14150 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xae0>
+   14070:	mov    0x30(%rsp),%rcx
+   14075:	add    %r11,%rcx
+   14078:	vpbroadcastq %rcx,%ymm7
+   1407e:	cmp    $0x10,%r10
+   14082:	jae    14088 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xa18>
+   14084:	xor    %ecx,%ecx
+   14086:	jmp    14102 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xa92>
+   14088:	mov    %ebx,%edx
+   1408a:	and    $0x1ff0,%edx
+   14090:	mov    %ebx,%ecx
+   14092:	and    $0x1ff0,%ecx
+   14098:	vpaddq %ymm2,%ymm7,%ymm8
+   1409c:	vpaddq %ymm3,%ymm7,%ymm9
+   140a0:	vpaddq %ymm4,%ymm7,%ymm10
+   140a4:	xor    %r12d,%r12d
+   140a7:	vmovdqa %ymm5,%ymm11
+   140ab:	nopl   0x0(%rax,%rax,1)
+   140b0:	vpaddq %ymm7,%ymm11,%ymm12
+   140b4:	vpaddq %ymm8,%ymm11,%ymm13
+   140b9:	vpaddq %ymm9,%ymm11,%ymm14
+   140be:	vmovdqu %ymm12,0x160(%rsp,%r12,8)
+   140c8:	vmovdqu %ymm13,0x180(%rsp,%r12,8)
+   140d2:	vmovdqu %ymm14,0x1a0(%rsp,%r12,8)
+   140dc:	vpaddq %ymm10,%ymm11,%ymm12
+   140e1:	vmovdqu %ymm12,0x1c0(%rsp,%r12,8)
+   140eb:	add    $0x10,%r12
+   140ef:	vpaddq %ymm6,%ymm11,%ymm11
+   140f3:	cmp    %r12,%rdx
+   140f6:	jne    140b0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xa40>
+   140f8:	cmp    %rcx,%rbx
+   140fb:	je     14164 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xaf4>
+   140fd:	test   $0xc,%bl
+   14100:	je     14150 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xae0>
+   14102:	mov    %rcx,%rdx
+   14105:	mov    %ebx,%r12d
+   14108:	and    $0x1ffc,%r12d
+   1410f:	mov    %ebx,%ecx
+   14111:	and    $0x1ffc,%ecx
+   14117:	vpbroadcastq %rdx,%ymm8
+   1411d:	vpor   %ymm1,%ymm8,%ymm8
+   14121:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   14130:	vpaddq %ymm7,%ymm8,%ymm9
+   14134:	vmovdqu %ymm9,0x160(%rsp,%rdx,8)
+   1413d:	add    $0x4,%rdx
+   14141:	vpaddq %ymm2,%ymm8,%ymm8
+   14145:	cmp    %rdx,%r12
+   14148:	jne    14130 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xac0>
+   1414a:	jmp    1415f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xaef>
+   1414c:	nopl   0x0(%rax)
+   14150:	lea    (%rdi,%rcx,1),%rdx
+   14154:	mov    %rdx,0x160(%rsp,%rcx,8)
+   1415c:	inc    %rcx
+   1415f:	cmp    %rcx,%rbx
+   14162:	jne    14150 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xae0>
+   14164:	cmp    $0x4,%r10
+   14168:	jae    14180 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xb10>
+   1416a:	xor    %ecx,%ecx
+   1416c:	jmp    144a9 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xe39>
+   14171:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   14180:	cmp    $0x10,%r10
+   14184:	jae    14190 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xb20>
+   14186:	xor    %ecx,%ecx
+   14188:	jmp    142c8 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xc58>
+   1418d:	nopl   (%rax)
+   14190:	mov    %eax,%edx
+   14192:	and    $0x1ff0,%edx
+   14198:	mov    %eax,%ecx
+   1419a:	and    $0x1ff0,%ecx
+   141a0:	xor    %r12d,%r12d
+   141a3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   141b0:	vmovdqu 0x160(%rsp,%r12,8),%ymm7
+   141ba:	vmovdqu 0x180(%rsp,%r12,8),%ymm8
+   141c4:	vmovdqu 0x1a0(%rsp,%r12,8),%ymm9
+   141ce:	vmovdqu 0x1c0(%rsp,%r12,8),%ymm10
+   141d8:	vpsrlq $0x20,%ymm7,%ymm11
+   141dd:	vpsrlq $0x20,%ymm8,%ymm12
+   141e3:	vpsrlq $0x20,%ymm9,%ymm13
+   141e9:	vpsrlq $0x20,%ymm10,%ymm14
+   141ef:	vpxor  %ymm7,%ymm11,%ymm7
+   141f3:	vpxor  %ymm8,%ymm12,%ymm8
+   141f8:	vpxor  %ymm9,%ymm13,%ymm9
+   141fd:	vpmullq %ymm0,%ymm7,%ymm7
+   14203:	vpmullq %ymm0,%ymm8,%ymm8
+   14209:	vpmullq %ymm0,%ymm9,%ymm9
+   1420f:	vpxor  %ymm10,%ymm14,%ymm10
+   14214:	vpmullq %ymm0,%ymm10,%ymm10
+   1421a:	vpsrlq $0x20,%ymm7,%ymm11
+   1421f:	vpsrlq $0x20,%ymm8,%ymm12
+   14225:	vpsrlq $0x20,%ymm9,%ymm13
+   1422b:	vpsrlq $0x20,%ymm10,%ymm14
+   14231:	vpxor  %ymm7,%ymm11,%ymm7
+   14235:	vpxor  %ymm8,%ymm12,%ymm8
+   1423a:	vpxor  %ymm9,%ymm13,%ymm9
+   1423f:	vpxor  %ymm10,%ymm14,%ymm10
+   14244:	vpmullq %ymm0,%ymm7,%ymm7
+   1424a:	vpmullq %ymm0,%ymm8,%ymm8
+   14250:	vpmullq %ymm0,%ymm9,%ymm9
+   14256:	vpmullq %ymm0,%ymm10,%ymm10
+   1425c:	vpsrlq $0x20,%ymm7,%ymm11
+   14261:	vpsrlq $0x20,%ymm8,%ymm12
+   14267:	vpsrlq $0x20,%ymm9,%ymm13
+   1426d:	vpsrlq $0x20,%ymm10,%ymm14
+   14273:	vpxor  %ymm7,%ymm11,%ymm7
+   14277:	vpxor  %ymm8,%ymm12,%ymm8
+   1427c:	vpxor  %ymm9,%ymm13,%ymm9
+   14281:	vpxor  %ymm10,%ymm14,%ymm10
+   14286:	vmovdqu %ymm7,0x8168(%rsp,%r12,8)
+   14290:	vmovdqu %ymm8,0x8188(%rsp,%r12,8)
+   1429a:	vmovdqu %ymm9,0x81a8(%rsp,%r12,8)
+   142a4:	vmovdqu %ymm10,0x81c8(%rsp,%r12,8)
+   142ae:	add    $0x10,%r12
+   142b2:	cmp    %r12,%rdx
+   142b5:	jne    141b0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xb40>
+   142bb:	cmp    %rcx,%rax
+   142be:	je     14330 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xcc0>
+   142c0:	test   $0xc,%al
+   142c2:	je     144a9 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xe39>
+   142c8:	mov    %rcx,%rdx
+   142cb:	mov    %eax,%r12d
+   142ce:	and    $0x1ffc,%r12d
+   142d5:	mov    %eax,%ecx
+   142d7:	and    $0x1ffc,%ecx
+   142dd:	nopl   (%rax)
+   142e0:	vmovdqu 0x160(%rsp,%rdx,8),%ymm7
+   142e9:	vpsrlq $0x20,%ymm7,%ymm8
+   142ee:	vpxor  %ymm7,%ymm8,%ymm7
+   142f2:	vpmullq %ymm0,%ymm7,%ymm7
+   142f8:	vpsrlq $0x20,%ymm7,%ymm8
+   142fd:	vpxor  %ymm7,%ymm8,%ymm7
+   14301:	vpmullq %ymm0,%ymm7,%ymm7
+   14307:	vpsrlq $0x20,%ymm7,%ymm8
+   1430c:	vpxor  %ymm7,%ymm8,%ymm7
+   14310:	vmovdqu %ymm7,0x8168(%rsp,%rdx,8)
+   14319:	add    $0x4,%rdx
+   1431d:	cmp    %rdx,%r12
+   14320:	jne    142e0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xc70>
+   14322:	jmp    144a0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xe30>
+   14327:	nopw   0x0(%rax,%rax,1)
+   14330:	cmp    $0x2,%r10
+   14334:	jb     13f80 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x910>
+   1433a:	mov    %r11,0x68(%rsp)
+   1433f:	mov    %r10,0xa8(%rsp)
+   14347:	mov    %rdi,0x10(%rsp)
+   1434c:	mov    %rbx,0x100(%rsp)
+   14354:	mov    %ebx,%r12d
+   14357:	and    $0x1ffe,%r12d
+   1435e:	xor    %ebp,%ebp
+   14360:	mov    0xd0(%rsp),%r11
+   14368:	mov    0xa0(%rsp),%rbx
+   14370:	mov    0x8168(%rsp,%rbp,8),%rdx
+   14378:	mov    0x8170(%rsp,%rbp,8),%rax
+   14380:	mov    %rdx,%r10
+   14383:	shr    $0x20,%r10
+   14387:	and    %r15d,%r10d
+   1438a:	mov    %r15d,%edi
+   1438d:	mov    (%r9,%r10,4),%r15d
+   14391:	mov    %edx,%ecx
+   14393:	and    $0x1f,%ecx
+   14396:	mov    (%r8,%rcx,4),%esi
+   1439a:	mov    %edx,%ecx
+   1439c:	shr    $0x5,%ecx
+   1439f:	rol    %cl,%esi
+   143a1:	andn   %esi,%r15d,%esi
+   143a6:	mov    %edx,%ecx
+   143a8:	shr    $0x14,%ecx
+   143ab:	and    $0x7,%ecx
+   143ae:	or     $0x8,%ecx
+   143b1:	xor    %r10d,%ecx
+   143b4:	mov    (%r9,%rcx,4),%r10d
+   143b8:	mov    %edx,%ecx
+   143ba:	shr    $0x8,%ecx
+   143bd:	and    $0x7c,%ecx
+   143c0:	mov    (%r8,%rcx,1),%r15d
+   143c4:	shr    $0xf,%edx
+   143c7:	mov    %edx,%ecx
+   143c9:	rol    %cl,%r15d
+   143cc:	andn   %r15d,%r10d,%ecx
+   143d1:	mov    %edi,%r15d
+   143d4:	xor    %edx,%edx
+   143d6:	or     %esi,%ecx
+   143d8:	sete   %dl
+   143db:	add    %rdx,%r11
+   143de:	xor    %rdx,%rbx
+   143e1:	movabs $0x100000001b3,%rdi
+   143eb:	imul   %rdi,%rbx
+   143ef:	mov    %rax,%rdx
+   143f2:	shr    $0x20,%rdx
+   143f6:	and    %r15d,%edx
+   143f9:	mov    %eax,%ecx
+   143fb:	and    $0x1f,%ecx
+   143fe:	mov    (%r8,%rcx,4),%esi
+   14402:	mov    %eax,%ecx
+   14404:	shr    $0x5,%ecx
+   14407:	rol    %cl,%esi
+   14409:	mov    (%r9,%rdx,4),%ecx
+   1440d:	andn   %esi,%ecx,%esi
+   14412:	mov    %eax,%r10d
+   14415:	shr    $0x14,%r10d
+   14419:	and    $0x7,%r10d
+   1441d:	or     $0x8,%r10d
+   14421:	xor    %edx,%r10d
+   14424:	mov    %eax,%ecx
+   14426:	shr    $0x8,%ecx
+   14429:	and    $0x7c,%ecx
+   1442c:	mov    (%r8,%rcx,1),%edx
+   14430:	shr    $0xf,%eax
+   14433:	mov    %eax,%ecx
+   14435:	rol    %cl,%edx
+   14437:	mov    (%r9,%r10,4),%eax
+   1443b:	andn   %edx,%eax,%eax
+   14440:	xor    %ecx,%ecx
+   14442:	or     %esi,%eax
+   14444:	sete   %cl
+   14447:	add    %rcx,%r11
+   1444a:	xor    %rcx,%rbx
+   1444d:	imul   %rdi,%rbx
+   14451:	add    $0x2,%rbp
+   14455:	cmp    %rbp,%r12
+   14458:	jne    14370 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xd00>
+   1445e:	mov    %rbx,0xa0(%rsp)
+   14466:	mov    %r11,0xd0(%rsp)
+   1446e:	testb  $0x1,0x100(%rsp)
+   14476:	mov    $0x1000,%esi
+   1447b:	mov    0x10(%rsp),%rdi
+   14480:	mov    0xa8(%rsp),%r10
+   14488:	mov    0x68(%rsp),%r11
+   1448d:	jne    13f82 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x912>
+   14493:	jmp    14006 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x996>
+   14498:	nopl   0x0(%rax,%rax,1)
+   144a0:	cmp    %rcx,%rax
+   144a3:	je     14330 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xcc0>
+   144a9:	mov    0x160(%rsp,%rcx,8),%rdx
+   144b1:	mov    %rdx,%r12
+   144b4:	shr    $0x20,%r12
+   144b8:	xor    %rdx,%r12
+   144bb:	imul   %r13,%r12
+   144bf:	mov    %r12,%rdx
+   144c2:	shr    $0x20,%rdx
+   144c6:	xor    %r12,%rdx
+   144c9:	imul   %r13,%rdx
+   144cd:	mov    %rdx,%r12
+   144d0:	shr    $0x20,%r12
+   144d4:	xor    %rdx,%r12
+   144d7:	mov    %r12,0x8168(%rsp,%rcx,8)
+   144df:	inc    %rcx
+   144e2:	jmp    144a0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xe30>
+   144e4:	xor    %ebx,%ebx
+   144e6:	movq   $0x0,0xd0(%rsp)
+   144f2:	mov    %r15,0xa0(%rsp)
+   144fa:	mov    (%rsp),%rax
+   144fe:	cmpb   $0x1,0x29(%rax)
+   14502:	jne    14510 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xea0>
+   14504:	mov    0xb8(%rsp),%rax
+   1450c:	xorl   $0x1,-0x4(%rax)
+   14510:	mov    0x58(%rsp),%rax
+   14515:	test   %rax,%rax
+   14518:	je     1460f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf9f>
+   1451e:	mov    0x40(%rsp),%rcx
+   14523:	lea    0x40(%rcx),%rdx
+   14527:	lea    0x0(,%rax,4),%rdi
+   1452f:	add    $0xfffffffffffffffc,%rdi
+   14533:	cmp    $0x1c,%rdi
+   14537:	jae    14541 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xed1>
+   14539:	mov    %rdx,%rdi
+   1453c:	jmp    145f4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf84>
+   14541:	mov    %rdi,%rsi
+   14544:	shr    $0x2,%rsi
+   14548:	inc    %rsi
+   1454b:	cmp    $0x7c,%rdi
+   1454f:	jae    14556 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xee6>
+   14551:	xor    %r8d,%r8d
+   14554:	jmp    145b6 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf46>
+   14556:	movabs $0x7ffffffffffffff8,%rdi
+   14560:	lea    -0x18(%rdi),%r8
+   14564:	and    %rsi,%r8
+   14567:	lea    (%rdx,%r8,4),%rdi
+   1456b:	xor    %r9d,%r9d
+   1456e:	vpbroadcastd -0x12eab(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   14577:	nopw   0x0(%rax,%rax,1)
+   14580:	vmovdqu %ymm0,0x40(%rcx,%r9,4)
+   14587:	vmovdqu %ymm0,0x60(%rcx,%r9,4)
+   1458e:	vmovdqu %ymm0,0x80(%rcx,%r9,4)
+   14598:	vmovdqu %ymm0,0xa0(%rcx,%r9,4)
+   145a2:	add    $0x20,%r9
+   145a6:	cmp    %r9,%r8
+   145a9:	jne    14580 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf10>
+   145ab:	cmp    %r8,%rsi
+   145ae:	je     1460f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf9f>
+   145b0:	test   $0x18,%sil
+   145b4:	je     145f4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf84>
+   145b6:	mov    %rsi,%r9
+   145b9:	movabs $0x7ffffffffffffff8,%rdi
+   145c3:	and    %rdi,%r9
+   145c6:	lea    (%rdx,%r9,4),%rdi
+   145ca:	vpbroadcastd -0x12f07(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   145d3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   145e0:	vmovdqu %ymm0,(%rdx,%r8,4)
+   145e6:	add    $0x8,%r8
+   145ea:	cmp    %r8,%r9
+   145ed:	jne    145e0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf70>
+   145ef:	cmp    %r9,%rsi
+   145f2:	je     1460f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf9f>
+   145f4:	lea    0x40(%rcx,%rax,4),%rax
+   145f9:	nopl   0x0(%rax)
+   14600:	movl   $0x2,(%rdi)
+   14606:	add    $0x4,%rdi
+   1460a:	cmp    %rax,%rdi
+   1460d:	jne    14600 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xf90>
+   1460f:	mov    %rbx,0xd8(%rsp)
+   14617:	mov    0x20(%rsp),%rax
+   1461c:	cmp    %rax,0x28(%rsp)
+   14621:	mov    0x8(%rsp),%r12
+   14626:	je     1467f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x100f>
+   14628:	mov    (%rsp),%rax
+   1462c:	mov    0xc(%rax),%eax
+   1462f:	xor    %ebx,%ebx
+   14631:	lea    0x78(%rsp),%r15
+   14636:	cs nopw 0x0(%rax,%rax,1)
+   14640:	mov    %eax,%eax
+   14642:	mov    %r12,%rsi
+   14645:	sub    %rbx,%rsi
+   14648:	cmp    %rax,%rsi
+   1464b:	cmovae %rax,%rsi
+   1464f:	lea    0x0(,%rbx,8),%rdx
+   14657:	add    0x48(%rbp),%rdx
+   1465b:	mov    0x40(%rsp),%rax
+   14660:	lea    0x40(%rax,%rbx,4),%rcx
+   14665:	mov    %r15,%rdi
+   14668:	vzeroupper
+   1466b:	call   2adf0 <_Z13lookup_kernelIN13bloom_filters13FastPatternBFEmEvRT_mPKT0_Pj>
+   14670:	mov    (%rsp),%rax
+   14674:	mov    0xc(%rax),%eax
+   14677:	add    %rax,%rbx
+   1467a:	cmp    %r12,%rbx
+   1467d:	jb     14640 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0xfd0>
+   1467f:	lea    0x40(%rsp),%rdi
+   14684:	lea    0xb0(%rsp),%rsi
+   1468c:	vzeroupper
+   1468f:	call   29df0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   14694:	mov    0x58(%rsp),%rax
+   14699:	test   %rax,%rax
+   1469c:	je     1478f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x111f>
+   146a2:	mov    0x40(%rsp),%rcx
+   146a7:	lea    0x40(%rcx),%rdx
+   146ab:	lea    0x0(,%rax,4),%rdi
+   146b3:	add    $0xfffffffffffffffc,%rdi
+   146b7:	cmp    $0x1c,%rdi
+   146bb:	jae    146c5 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1055>
+   146bd:	mov    %rdx,%rdi
+   146c0:	jmp    14774 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1104>
+   146c5:	mov    %rdi,%rsi
+   146c8:	shr    $0x2,%rsi
+   146cc:	inc    %rsi
+   146cf:	cmp    $0x7c,%rdi
+   146d3:	jae    146da <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x106a>
+   146d5:	xor    %r8d,%r8d
+   146d8:	jmp    14736 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x10c6>
+   146da:	movabs $0x7ffffffffffffff8,%rdi
+   146e4:	lea    -0x18(%rdi),%r8
+   146e8:	and    %rsi,%r8
+   146eb:	lea    (%rdx,%r8,4),%rdi
+   146ef:	xor    %r9d,%r9d
+   146f2:	vpbroadcastd -0x1302f(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   146fb:	nopl   0x0(%rax,%rax,1)
+   14700:	vmovdqu %ymm0,0x40(%rcx,%r9,4)
+   14707:	vmovdqu %ymm0,0x60(%rcx,%r9,4)
+   1470e:	vmovdqu %ymm0,0x80(%rcx,%r9,4)
+   14718:	vmovdqu %ymm0,0xa0(%rcx,%r9,4)
+   14722:	add    $0x20,%r9
+   14726:	cmp    %r9,%r8
+   14729:	jne    14700 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1090>
+   1472b:	cmp    %r8,%rsi
+   1472e:	je     1478f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x111f>
+   14730:	test   $0x18,%sil
+   14734:	je     14774 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1104>
+   14736:	mov    %rsi,%r9
+   14739:	movabs $0x7ffffffffffffff8,%rdi
+   14743:	and    %rdi,%r9
+   14746:	lea    (%rdx,%r9,4),%rdi
+   1474a:	vpbroadcastd -0x13087(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   14753:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   14760:	vmovdqu %ymm0,(%rdx,%r8,4)
+   14766:	add    $0x8,%r8
+   1476a:	cmp    %r8,%r9
+   1476d:	jne    14760 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x10f0>
+   1476f:	cmp    %r9,%rsi
+   14772:	je     1478f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x111f>
+   14774:	lea    0x40(%rcx,%rax,4),%rax
+   14779:	nopl   0x0(%rax)
+   14780:	movl   $0x2,(%rdi)
+   14786:	add    $0x4,%rdi
+   1478a:	cmp    %rax,%rdi
+   1478d:	jne    14780 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1110>
+   1478f:	mov    0x20(%rsp),%rax
+   14794:	cmp    %rax,0x28(%rsp)
+   14799:	mov    0x8(%rsp),%rsi
+   1479e:	je     14ae9 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1479>
+   147a4:	mov    (%rsp),%rax
+   147a8:	mov    0xc(%rax),%eax
+   147ab:	xor    %ebx,%ebx
+   147ad:	lea    0x78(%rsp),%r15
+   147b2:	vpbroadcastq -0x12b6b(%rip),%ymm8        # 1c50 <_IO_stdin_used+0x568>
+   147bb:	nopl   0x0(%rax,%rax,1)
+   147c0:	mov    %eax,%eax
+   147c2:	sub    %rbx,%rsi
+   147c5:	cmp    %rax,%rsi
+   147c8:	cmovae %rax,%rsi
+   147cc:	test   %rsi,%rsi
+   147cf:	je     1492b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x12bb>
+   147d5:	mov    0x18(%rbp),%rax
+   147d9:	lea    (%rax,%rbx,8),%rcx
+   147dd:	cmp    $0x4,%rsi
+   147e1:	jb     147f6 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1186>
+   147e3:	mov    %r14,%rdx
+   147e6:	sub    %rcx,%rdx
+   147e9:	cmp    $0x80,%rdx
+   147f0:	jae    14969 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x12f9>
+   147f6:	xor    %edx,%edx
+   147f8:	mov    %rsi,%r8
+   147fb:	mov    %rdx,%rdi
+   147fe:	and    $0x3,%r8
+   14802:	je     14846 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x11d6>
+   14804:	mov    %rdx,%rdi
+   14807:	nopw   0x0(%rax,%rax,1)
+   14810:	mov    (%rcx,%rdi,8),%r9
+   14814:	mov    %r9,%r10
+   14817:	shr    $0x20,%r10
+   1481b:	xor    %r9,%r10
+   1481e:	imul   %r13,%r10
+   14822:	mov    %r10,%r9
+   14825:	shr    $0x20,%r9
+   14829:	xor    %r10,%r9
+   1482c:	imul   %r13,%r9
+   14830:	mov    %r9,%r10
+   14833:	shr    $0x20,%r10
+   14837:	xor    %r9,%r10
+   1483a:	mov    %r10,(%r14,%rdi,8)
+   1483e:	inc    %rdi
+   14841:	dec    %r8
+   14844:	jne    14810 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x11a0>
+   14846:	sub    %rsi,%rdx
+   14849:	cmp    $0xfffffffffffffffc,%rdx
+   1484d:	ja     1492b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x12bb>
+   14853:	lea    0x18(%rax,%rbx,8),%rax
+   14858:	nopl   0x0(%rax,%rax,1)
+   14860:	mov    -0x18(%rax,%rdi,8),%rcx
+   14865:	mov    %rcx,%rdx
+   14868:	shr    $0x20,%rdx
+   1486c:	xor    %rcx,%rdx
+   1486f:	imul   %r13,%rdx
+   14873:	mov    %rdx,%rcx
+   14876:	shr    $0x20,%rcx
+   1487a:	xor    %rdx,%rcx
+   1487d:	imul   %r13,%rcx
+   14881:	mov    %rcx,%rdx
+   14884:	shr    $0x20,%rdx
+   14888:	xor    %rcx,%rdx
+   1488b:	mov    %rdx,(%r14,%rdi,8)
+   1488f:	mov    -0x10(%rax,%rdi,8),%rcx
+   14894:	mov    %rcx,%rdx
+   14897:	shr    $0x20,%rdx
+   1489b:	xor    %rcx,%rdx
+   1489e:	imul   %r13,%rdx
+   148a2:	mov    %rdx,%rcx
+   148a5:	shr    $0x20,%rcx
+   148a9:	xor    %rdx,%rcx
+   148ac:	imul   %r13,%rcx
+   148b0:	mov    %rcx,%rdx
+   148b3:	shr    $0x20,%rdx
+   148b7:	xor    %rcx,%rdx
+   148ba:	mov    %rdx,0x8(%r14,%rdi,8)
+   148bf:	mov    -0x8(%rax,%rdi,8),%rcx
+   148c4:	mov    %rcx,%rdx
+   148c7:	shr    $0x20,%rdx
+   148cb:	xor    %rcx,%rdx
+   148ce:	imul   %r13,%rdx
+   148d2:	mov    %rdx,%rcx
+   148d5:	shr    $0x20,%rcx
+   148d9:	xor    %rdx,%rcx
+   148dc:	imul   %r13,%rcx
+   148e0:	mov    %rcx,%rdx
+   148e3:	shr    $0x20,%rdx
+   148e7:	xor    %rcx,%rdx
+   148ea:	mov    %rdx,0x10(%r14,%rdi,8)
+   148ef:	mov    (%rax,%rdi,8),%rcx
+   148f3:	mov    %rcx,%rdx
+   148f6:	shr    $0x20,%rdx
+   148fa:	xor    %rcx,%rdx
+   148fd:	imul   %r13,%rdx
+   14901:	mov    %rdx,%rcx
+   14904:	shr    $0x20,%rcx
+   14908:	xor    %rdx,%rcx
+   1490b:	imul   %r13,%rcx
+   1490f:	mov    %rcx,%rdx
+   14912:	shr    $0x20,%rdx
+   14916:	xor    %rcx,%rdx
+   14919:	mov    %rdx,0x18(%r14,%rdi,8)
+   1491e:	add    $0x4,%rdi
+   14922:	cmp    %rdi,%rsi
+   14925:	jne    14860 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x11f0>
+   1492b:	mov    0x40(%rsp),%rax
+   14930:	lea    0x40(%rax,%rbx,4),%rcx
+   14935:	mov    %r15,%rdi
+   14938:	mov    %r14,%rdx
+   1493b:	vzeroupper
+   1493e:	call   2adf0 <_Z13lookup_kernelIN13bloom_filters13FastPatternBFEmEvRT_mPKT0_Pj>
+   14943:	mov    (%rsp),%rax
+   14947:	mov    0xc(%rax),%eax
+   1494a:	add    %rax,%rbx
+   1494d:	mov    0x8(%rsp),%rsi
+   14952:	cmp    %rsi,%rbx
+   14955:	vpbroadcastq -0x12d0e(%rip),%ymm8        # 1c50 <_IO_stdin_used+0x568>
+   1495e:	jb     147c0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1150>
+   14964:	jmp    14ae9 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1479>
+   14969:	cmp    $0x10,%rsi
+   1496d:	jae    14976 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1306>
+   1496f:	xor    %edx,%edx
+   14971:	jmp    14a92 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1422>
+   14976:	lea    0x0(,%rbx,8),%r8
+   1497e:	mov    %esi,%edx
+   14980:	and    $0xfffffff0,%edx
+   14983:	lea    0x0(,%rsi,8),%rdi
+   1498b:	and    $0xffffffffffffff80,%rdi
+   1498f:	lea    0x60(%rax,%r8,1),%r8
+   14994:	xor    %r9d,%r9d
+   14997:	nopw   0x0(%rax,%rax,1)
+   149a0:	vmovdqu -0x60(%r8,%r9,1),%ymm0
+   149a7:	vmovdqu -0x40(%r8,%r9,1),%ymm1
+   149ae:	vmovdqu -0x20(%r8,%r9,1),%ymm2
+   149b5:	vmovdqu (%r8,%r9,1),%ymm3
+   149bb:	vpsrlq $0x20,%ymm0,%ymm4
+   149c0:	vpsrlq $0x20,%ymm1,%ymm5
+   149c5:	vpsrlq $0x20,%ymm2,%ymm6
+   149ca:	vpsrlq $0x20,%ymm3,%ymm7
+   149cf:	vpxor  %ymm0,%ymm4,%ymm0
+   149d3:	vpxor  %ymm1,%ymm5,%ymm1
+   149d7:	vpxor  %ymm2,%ymm6,%ymm2
+   149db:	vpmullq %ymm8,%ymm0,%ymm0
+   149e1:	vpmullq %ymm8,%ymm1,%ymm1
+   149e7:	vpmullq %ymm8,%ymm2,%ymm2
+   149ed:	vpxor  %ymm3,%ymm7,%ymm3
+   149f1:	vpmullq %ymm8,%ymm3,%ymm3
+   149f7:	vpsrlq $0x20,%ymm0,%ymm4
+   149fc:	vpsrlq $0x20,%ymm1,%ymm5
+   14a01:	vpsrlq $0x20,%ymm2,%ymm6
+   14a06:	vpsrlq $0x20,%ymm3,%ymm7
+   14a0b:	vpxor  %ymm0,%ymm4,%ymm0
+   14a0f:	vpxor  %ymm1,%ymm5,%ymm1
+   14a13:	vpxor  %ymm2,%ymm6,%ymm2
+   14a17:	vpxor  %ymm3,%ymm7,%ymm3
+   14a1b:	vpmullq %ymm8,%ymm0,%ymm0
+   14a21:	vpmullq %ymm8,%ymm1,%ymm1
+   14a27:	vpmullq %ymm8,%ymm2,%ymm2
+   14a2d:	vpmullq %ymm8,%ymm3,%ymm3
+   14a33:	vpsrlq $0x20,%ymm0,%ymm4
+   14a38:	vpsrlq $0x20,%ymm1,%ymm5
+   14a3d:	vpsrlq $0x20,%ymm2,%ymm6
+   14a42:	vpsrlq $0x20,%ymm3,%ymm7
+   14a47:	vpxor  %ymm0,%ymm4,%ymm0
+   14a4b:	vpxor  %ymm1,%ymm5,%ymm1
+   14a4f:	vpxor  %ymm2,%ymm6,%ymm2
+   14a53:	vpxor  %ymm3,%ymm7,%ymm3
+   14a57:	vmovdqu %ymm0,(%r14,%r9,1)
+   14a5d:	vmovdqu %ymm1,0x20(%r14,%r9,1)
+   14a64:	vmovdqu %ymm2,0x40(%r14,%r9,1)
+   14a6b:	vmovdqu %ymm3,0x60(%r14,%r9,1)
+   14a72:	sub    $0xffffffffffffff80,%r9
+   14a76:	cmp    %r9,%rdi
+   14a79:	jne    149a0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1330>
+   14a7f:	cmp    %rdx,%rsi
+   14a82:	je     1492b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x12bb>
+   14a88:	test   $0xc,%sil
+   14a8c:	je     147f8 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1188>
+   14a92:	mov    %rdx,%rdi
+   14a95:	mov    %esi,%edx
+   14a97:	and    $0xfffffffc,%edx
+   14a9a:	nopw   0x0(%rax,%rax,1)
+   14aa0:	vmovdqu (%rcx,%rdi,8),%ymm0
+   14aa5:	vpsrlq $0x20,%ymm0,%ymm1
+   14aaa:	vpxor  %ymm0,%ymm1,%ymm0
+   14aae:	vpmullq %ymm8,%ymm0,%ymm0
+   14ab4:	vpsrlq $0x20,%ymm0,%ymm1
+   14ab9:	vpxor  %ymm0,%ymm1,%ymm0
+   14abd:	vpmullq %ymm8,%ymm0,%ymm0
+   14ac3:	vpsrlq $0x20,%ymm0,%ymm1
+   14ac8:	vpxor  %ymm0,%ymm1,%ymm0
+   14acc:	vmovdqu %ymm0,(%r14,%rdi,8)
+   14ad2:	add    $0x4,%rdi
+   14ad6:	cmp    %rdi,%rdx
+   14ad9:	jne    14aa0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1430>
+   14adb:	cmp    %rdx,%rsi
+   14ade:	je     1492b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x12bb>
+   14ae4:	jmp    147f8 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1188>
+   14ae9:	lea    0x40(%rsp),%rdi
+   14aee:	lea    0xb0(%rsp),%rsi
+   14af6:	vzeroupper
+   14af9:	call   29df0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   14afe:	mov    (%rsp),%rax
+   14b02:	cmpl   $0x1,0xc(%rax)
+   14b06:	jne    14b39 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x14c9>
+   14b08:	mov    0x40(%rsp),%rcx
+   14b0d:	mov    0x58(%rsp),%rax
+   14b12:	test   %rax,%rax
+   14b15:	je     14c14 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x15a4>
+   14b1b:	lea    0x40(%rcx),%rdx
+   14b1f:	lea    0x0(,%rax,4),%rdi
+   14b27:	add    $0xfffffffffffffffc,%rdi
+   14b2b:	cmp    $0x1c,%rdi
+   14b2f:	jae    14b4a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x14da>
+   14b31:	mov    %rdx,%rdi
+   14b34:	jmp    14bf4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1584>
+   14b39:	movl   $0x0,0x74(%rsp)
+   14b41:	mov    (%rsp),%rax
+   14b45:	jmp    14d7f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x170f>
+   14b4a:	mov    %rdi,%rsi
+   14b4d:	shr    $0x2,%rsi
+   14b51:	inc    %rsi
+   14b54:	cmp    $0x7c,%rdi
+   14b58:	jae    14b5f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x14ef>
+   14b5a:	xor    %r8d,%r8d
+   14b5d:	jmp    14bb6 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1546>
+   14b5f:	movabs $0x7ffffffffffffff8,%rdi
+   14b69:	lea    -0x18(%rdi),%r8
+   14b6d:	and    %rsi,%r8
+   14b70:	lea    (%rdx,%r8,4),%rdi
+   14b74:	xor    %r9d,%r9d
+   14b77:	vpbroadcastd -0x134b4(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   14b80:	vmovdqu %ymm0,0x40(%rcx,%r9,4)
+   14b87:	vmovdqu %ymm0,0x60(%rcx,%r9,4)
+   14b8e:	vmovdqu %ymm0,0x80(%rcx,%r9,4)
+   14b98:	vmovdqu %ymm0,0xa0(%rcx,%r9,4)
+   14ba2:	add    $0x20,%r9
+   14ba6:	cmp    %r9,%r8
+   14ba9:	jne    14b80 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1510>
+   14bab:	cmp    %r8,%rsi
+   14bae:	je     14c0f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x159f>
+   14bb0:	test   $0x18,%sil
+   14bb4:	je     14bf4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1584>
+   14bb6:	mov    %rsi,%r9
+   14bb9:	movabs $0x7ffffffffffffff8,%rdi
+   14bc3:	and    %rdi,%r9
+   14bc6:	lea    (%rdx,%r9,4),%rdi
+   14bca:	vpbroadcastd -0x13507(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   14bd3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   14be0:	vmovdqu %ymm0,(%rdx,%r8,4)
+   14be6:	add    $0x8,%r8
+   14bea:	cmp    %r8,%r9
+   14bed:	jne    14be0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1570>
+   14bef:	cmp    %r9,%rsi
+   14bf2:	je     14c0f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x159f>
+   14bf4:	lea    0x40(%rcx,%rax,4),%rax
+   14bf9:	nopl   0x0(%rax)
+   14c00:	movl   $0x2,(%rdi)
+   14c06:	add    $0x4,%rdi
+   14c0a:	cmp    %rax,%rdi
+   14c0d:	jne    14c00 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1590>
+   14c0f:	mov    0x40(%rsp),%rcx
+   14c14:	mov    0x48(%rbp),%rdx
+   14c18:	add    $0x40,%rcx
+   14c1c:	lea    0x78(%rsp),%rdi
+   14c21:	mov    0x8(%rsp),%rsi
+   14c26:	vzeroupper
+   14c29:	call   2ae00 <_Z20inline_single_kernelILb0EN13bloom_filters13FastPatternBFEmEvRKT0_mPKmPj>
+   14c2e:	lea    0x40(%rsp),%rdi
+   14c33:	lea    0xb0(%rsp),%rsi
+   14c3b:	call   29df0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   14c40:	mov    0x40(%rsp),%rcx
+   14c45:	mov    0x58(%rsp),%rax
+   14c4a:	test   %rax,%rax
+   14c4d:	je     14d44 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x16d4>
+   14c53:	lea    0x40(%rcx),%rdx
+   14c57:	lea    0x0(,%rax,4),%rdi
+   14c5f:	add    $0xfffffffffffffffc,%rdi
+   14c63:	cmp    $0x1c,%rdi
+   14c67:	jae    14c71 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1601>
+   14c69:	mov    %rdx,%rdi
+   14c6c:	jmp    14d24 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x16b4>
+   14c71:	mov    %rdi,%rsi
+   14c74:	shr    $0x2,%rsi
+   14c78:	inc    %rsi
+   14c7b:	cmp    $0x7c,%rdi
+   14c7f:	jae    14c86 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1616>
+   14c81:	xor    %r8d,%r8d
+   14c84:	jmp    14ce6 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1676>
+   14c86:	movabs $0x7ffffffffffffff8,%rdi
+   14c90:	lea    -0x18(%rdi),%r8
+   14c94:	and    %rsi,%r8
+   14c97:	lea    (%rdx,%r8,4),%rdi
+   14c9b:	xor    %r9d,%r9d
+   14c9e:	vpbroadcastd -0x135db(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   14ca7:	nopw   0x0(%rax,%rax,1)
+   14cb0:	vmovdqu %ymm0,0x40(%rcx,%r9,4)
+   14cb7:	vmovdqu %ymm0,0x60(%rcx,%r9,4)
+   14cbe:	vmovdqu %ymm0,0x80(%rcx,%r9,4)
+   14cc8:	vmovdqu %ymm0,0xa0(%rcx,%r9,4)
+   14cd2:	add    $0x20,%r9
+   14cd6:	cmp    %r9,%r8
+   14cd9:	jne    14cb0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1640>
+   14cdb:	cmp    %r8,%rsi
+   14cde:	je     14d3f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x16cf>
+   14ce0:	test   $0x18,%sil
+   14ce4:	je     14d24 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x16b4>
+   14ce6:	mov    %rsi,%r9
+   14ce9:	movabs $0x7ffffffffffffff8,%rdi
+   14cf3:	and    %rdi,%r9
+   14cf6:	lea    (%rdx,%r9,4),%rdi
+   14cfa:	vpbroadcastd -0x13637(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   14d03:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   14d10:	vmovdqu %ymm0,(%rdx,%r8,4)
+   14d16:	add    $0x8,%r8
+   14d1a:	cmp    %r8,%r9
+   14d1d:	jne    14d10 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x16a0>
+   14d1f:	cmp    %r9,%rsi
+   14d22:	je     14d3f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x16cf>
+   14d24:	lea    0x40(%rcx,%rax,4),%rax
+   14d29:	nopl   0x0(%rax)
+   14d30:	movl   $0x2,(%rdi)
+   14d36:	add    $0x4,%rdi
+   14d3a:	cmp    %rax,%rdi
+   14d3d:	jne    14d30 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x16c0>
+   14d3f:	mov    0x40(%rsp),%rcx
+   14d44:	mov    0x18(%rbp),%rdx
+   14d48:	add    $0x40,%rcx
+   14d4c:	lea    0x78(%rsp),%rdi
+   14d51:	mov    0x8(%rsp),%rsi
+   14d56:	vzeroupper
+   14d59:	call   2af90 <_Z20inline_single_kernelILb1EN13bloom_filters13FastPatternBFEmEvRKT0_mPKmPj>
+   14d5e:	lea    0x40(%rsp),%rdi
+   14d63:	lea    0xb0(%rsp),%rsi
+   14d6b:	call   29df0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   14d70:	mov    (%rsp),%rax
+   14d74:	cmpl   $0x1,0xc(%rax)
+   14d78:	sete   %cl
+   14d7b:	mov    %ecx,0x74(%rsp)
+   14d7f:	vpxor  %xmm0,%xmm0,%xmm0
+   14d83:	vmovdqu %ymm0,0x1a0(%rsp)
+   14d8c:	vmovdqu %ymm0,0x180(%rsp)
+   14d95:	vmovdqu %ymm0,0x160(%rsp)
+   14d9e:	xor    %ecx,%ecx
+   14da0:	cmpl   $0x0,0x10(%rax)
+   14da4:	mov    0x8(%rsp),%rax
+   14da9:	je     1561c <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1fac>
+   14daf:	vcvtsi2sd %rax,%xmm15,%xmm0
+   14db4:	vmovsd %xmm0,0x150(%rsp)
+   14dbd:	movzbl 0x74(%rsp),%eax
+   14dc2:	lea    0x2(%rax,%rax,1),%rax
+   14dc7:	mov    %rax,0x148(%rsp)
+   14dcf:	movabs $0x7ffffffffffffff8,%rax
+   14dd9:	add    $0x4,%rax
+   14ddd:	mov    %rax,0x130(%rsp)
+   14de5:	lea    0x78(%rsp),%rbx
+   14dea:	movq   $0x0,0x10(%rsp)
+   14df3:	xor    %ebp,%ebp
+   14df5:	movq   $0x0,0x30(%rsp)
+   14dfe:	xchg   %ax,%ax
+   14e00:	mov    %rcx,0x128(%rsp)
+   14e08:	mov    %ecx,%eax
+   14e0a:	and    $0x3,%eax
+   14e0d:	lea    -0x135f4(%rip),%rcx        # 1820 <_IO_stdin_used+0x138>
+   14e14:	lea    (%rcx,%rax,8),%rdx
+   14e18:	shl    $0x4,%eax
+   14e1b:	lea    -0x12352(%rip),%rcx        # 2ad0 <_IO_stdin_used+0x13e8>
+   14e22:	add    %rcx,%rax
+   14e25:	cmpb   $0x0,0x74(%rsp)
+   14e2a:	cmovne %rax,%rdx
+   14e2e:	mov    %rdx,0x158(%rsp)
+   14e36:	xor    %r10d,%r10d
+   14e39:	mov    0x10(%rsp),%r15
+   14e3e:	xchg   %ax,%ax
+   14e40:	mov    0x158(%rsp),%rax
+   14e48:	mov    (%rax,%r10,4),%r12d
+   14e4c:	cmp    0x30(%rsp),%rbp
+   14e51:	mov    %rbp,0xa8(%rsp)
+   14e59:	mov    %r10,0x100(%rsp)
+   14e61:	je     14e80 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1810>
+   14e63:	mov    %r12d,0x0(%rbp)
+   14e67:	mov    %r15,0x10(%rsp)
+   14e6c:	mov    0x58(%rsp),%rax
+   14e71:	test   %rax,%rax
+   14e74:	jne    14f3d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x18cd>
+   14e7a:	jmp    1502f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x19bf>
+   14e7f:	nop
+   14e80:	sub    %r15,%rbp
+   14e83:	cmp    0x130(%rsp),%rbp
+   14e8b:	je     162a9 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2c39>
+   14e91:	mov    %r12,0x68(%rsp)
+   14e96:	mov    %rbp,%rax
+   14e99:	sar    $0x2,%rax
+   14e9d:	cmp    $0x1,%rax
+   14ea1:	mov    %rax,%rcx
+   14ea4:	adc    $0x0,%rcx
+   14ea8:	lea    (%rcx,%rax,1),%r12
+   14eac:	movabs $0x1fffffffffffffff,%rdx
+   14eb6:	cmp    %rdx,%r12
+   14eb9:	cmovae %rdx,%r12
+   14ebd:	add    %rax,%rcx
+   14ec0:	cmovb  0x138(%rsp),%r12
+   14ec9:	lea    0x0(,%r12,4),%rdi
+   14ed1:	vzeroupper
+   14ed4:	call   319e0 <_Znwm@plt>
+   14ed9:	mov    %rax,%rbx
+   14edc:	mov    0x68(%rsp),%rax
+   14ee1:	mov    %eax,(%rbx,%rbp,1)
+   14ee4:	test   %rbp,%rbp
+   14ee7:	jle    14ef7 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1887>
+   14ee9:	mov    %rbx,%rdi
+   14eec:	mov    %r15,%rsi
+   14eef:	mov    %rbp,%rdx
+   14ef2:	call   31a00 <memmove@plt>
+   14ef7:	mov    %rbx,0x10(%rsp)
+   14efc:	test   %r15,%r15
+   14eff:	je     14f0c <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x189c>
+   14f01:	mov    %r15,%rdi
+   14f04:	mov    %rbp,%rsi
+   14f07:	call   319f0 <_ZdlPvm@plt>
+   14f0c:	mov    0x10(%rsp),%rax
+   14f11:	add    %rax,%rbp
+   14f14:	lea    (%rax,%r12,4),%rax
+   14f18:	mov    %rax,0x30(%rsp)
+   14f1d:	mov    %rbp,0xa8(%rsp)
+   14f25:	lea    0x78(%rsp),%rbx
+   14f2a:	mov    0x68(%rsp),%r12
+   14f2f:	mov    0x58(%rsp),%rax
+   14f34:	test   %rax,%rax
+   14f37:	je     1502f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x19bf>
+   14f3d:	mov    0x40(%rsp),%rcx
+   14f42:	lea    0x40(%rcx),%rdx
+   14f46:	lea    0x0(,%rax,4),%rsi
+   14f4e:	add    $0xfffffffffffffffc,%rsi
+   14f52:	cmp    $0x1c,%rsi
+   14f56:	jae    14f60 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x18f0>
+   14f58:	mov    %rdx,%rsi
+   14f5b:	jmp    15014 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x19a4>
+   14f60:	mov    %rsi,%rdi
+   14f63:	shr    $0x2,%rdi
+   14f67:	inc    %rdi
+   14f6a:	cmp    $0x7c,%rsi
+   14f6e:	jae    14f75 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1905>
+   14f70:	xor    %r8d,%r8d
+   14f73:	jmp    14fd6 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1966>
+   14f75:	movabs $0x7ffffffffffffff8,%rsi
+   14f7f:	lea    -0x18(%rsi),%r8
+   14f83:	and    %rdi,%r8
+   14f86:	lea    (%rdx,%r8,4),%rsi
+   14f8a:	xor    %r9d,%r9d
+   14f8d:	vbroadcastss -0x138ca(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   14f96:	cs nopw 0x0(%rax,%rax,1)
+   14fa0:	vmovupd %ymm0,0x40(%rcx,%r9,4)
+   14fa7:	vmovupd %ymm0,0x60(%rcx,%r9,4)
+   14fae:	vmovupd %ymm0,0x80(%rcx,%r9,4)
+   14fb8:	vmovupd %ymm0,0xa0(%rcx,%r9,4)
+   14fc2:	add    $0x20,%r9
+   14fc6:	cmp    %r9,%r8
+   14fc9:	jne    14fa0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1930>
+   14fcb:	cmp    %r8,%rdi
+   14fce:	je     1502f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x19bf>
+   14fd0:	test   $0x18,%dil
+   14fd4:	je     15014 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x19a4>
+   14fd6:	mov    %rdi,%r9
+   14fd9:	movabs $0x7ffffffffffffff8,%rsi
+   14fe3:	and    %rsi,%r9
+   14fe6:	lea    (%rdx,%r9,4),%rsi
+   14fea:	vbroadcastss -0x13927(%rip),%ymm0        # 16cc <__abi_tag+0x1408>
+   14ff3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   15000:	vmovupd %ymm0,(%rdx,%r8,4)
+   15006:	add    $0x8,%r8
+   1500a:	cmp    %r8,%r9
+   1500d:	jne    15000 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1990>
+   1500f:	cmp    %r9,%rdi
+   15012:	je     1502f <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x19bf>
+   15014:	lea    0x40(%rcx,%rax,4),%rax
+   15019:	nopl   0x0(%rax)
+   15020:	movl   $0x2,(%rsi)
+   15026:	add    $0x4,%rsi
+   1502a:	cmp    %rax,%rsi
+   1502d:	jne    15020 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x19b0>
+   1502f:	vzeroupper
+   15032:	call   31a40 <_ZNSt6chrono3_V212steady_clock3nowEv@plt>
+   15037:	mov    %rax,0x68(%rsp)
+   1503c:	mov    %r12,%r15
+   1503f:	cmp    $0x3,%r12d
+   15043:	ja     15470 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1e00>
+   15049:	mov    %r15d,%eax
+   1504c:	lea    -0x13253(%rip),%rcx        # 1e00 <_IO_stdin_used+0x718>
+   15053:	movslq (%rcx,%rax,4),%rax
+   15057:	add    %rcx,%rax
+   1505a:	jmp    *%rax
+   1505c:	mov    0x20(%rsp),%rax
+   15061:	cmp    %rax,0x28(%rsp)
+   15066:	mov    0x8(%rsp),%rbp
+   1506b:	je     15470 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1e00>
+   15071:	mov    (%rsp),%rax
+   15075:	mov    0xc(%rax),%eax
+   15078:	xor    %r12d,%r12d
+   1507b:	nopl   0x0(%rax,%rax,1)
+   15080:	mov    %eax,%eax
+   15082:	mov    %rbp,%rsi
+   15085:	sub    %r12,%rsi
+   15088:	cmp    %rax,%rsi
+   1508b:	cmovae %rax,%rsi
+   1508f:	lea    0x0(,%r12,8),%rdx
+   15097:	mov    0x38(%rsp),%rax
+   1509c:	add    0x48(%rax),%rdx
+   150a0:	mov    0x40(%rsp),%rax
+   150a5:	lea    0x40(%rax,%r12,4),%rcx
+   150aa:	mov    %rbx,%rdi
+   150ad:	call   2adf0 <_Z13lookup_kernelIN13bloom_filters13FastPatternBFEmEvRT_mPKT0_Pj>
+   150b2:	mov    (%rsp),%rax
+   150b6:	mov    0xc(%rax),%eax
+   150b9:	add    %rax,%r12
+   150bc:	cmp    %rbp,%r12
+   150bf:	jb     15080 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1a10>
+   150c1:	jmp    15470 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1e00>
+   150c6:	mov    0x38(%rsp),%rax
+   150cb:	mov    0x48(%rax),%rdx
+   150cf:	mov    0x40(%rsp),%rcx
+   150d4:	add    $0x40,%rcx
+   150d8:	mov    %rbx,%rdi
+   150db:	mov    0x8(%rsp),%rsi
+   150e0:	call   2ae00 <_Z20inline_single_kernelILb0EN13bloom_filters13FastPatternBFEmEvRKT0_mPKmPj>
+   150e5:	jmp    15470 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1e00>
+   150ea:	mov    0x38(%rsp),%rax
+   150ef:	mov    0x18(%rax),%rdx
+   150f3:	mov    0x40(%rsp),%rcx
+   150f8:	add    $0x40,%rcx
+   150fc:	mov    %rbx,%rdi
+   150ff:	mov    0x8(%rsp),%rsi
+   15104:	call   2af90 <_Z20inline_single_kernelILb1EN13bloom_filters13FastPatternBFEmEvRKT0_mPKmPj>
+   15109:	jmp    15470 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1e00>
+   1510e:	mov    0x20(%rsp),%rax
+   15113:	cmp    %rax,0x28(%rsp)
+   15118:	mov    0x8(%rsp),%rsi
+   1511d:	je     15470 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1e00>
+   15123:	mov    (%rsp),%rax
+   15127:	mov    0xc(%rax),%eax
+   1512a:	xor    %ebp,%ebp
+   1512c:	nopl   0x0(%rax)
+   15130:	mov    %eax,%eax
+   15132:	sub    %rbp,%rsi
+   15135:	cmp    %rax,%rsi
+   15138:	cmovae %rax,%rsi
+   1513c:	test   %rsi,%rsi
+   1513f:	je     1529b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1c2b>
+   15145:	mov    0x38(%rsp),%rax
+   1514a:	mov    0x18(%rax),%rax
+   1514e:	lea    (%rax,%rbp,8),%rcx
+   15152:	cmp    $0x4,%rsi
+   15156:	jb     1516b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1afb>
+   15158:	mov    %r14,%rdx
+   1515b:	sub    %rcx,%rdx
+   1515e:	cmp    $0x80,%rdx
+   15165:	jae    152d0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1c60>
+   1516b:	xor    %edx,%edx
+   1516d:	mov    %rsi,%r8
+   15170:	mov    %rdx,%rdi
+   15173:	and    $0x3,%r8
+   15177:	je     151b6 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1b46>
+   15179:	mov    %rdx,%rdi
+   1517c:	nopl   0x0(%rax)
+   15180:	mov    (%rcx,%rdi,8),%r9
+   15184:	mov    %r9,%r10
+   15187:	shr    $0x20,%r10
+   1518b:	xor    %r9,%r10
+   1518e:	imul   %r13,%r10
+   15192:	mov    %r10,%r9
+   15195:	shr    $0x20,%r9
+   15199:	xor    %r10,%r9
+   1519c:	imul   %r13,%r9
+   151a0:	mov    %r9,%r10
+   151a3:	shr    $0x20,%r10
+   151a7:	xor    %r9,%r10
+   151aa:	mov    %r10,(%r14,%rdi,8)
+   151ae:	inc    %rdi
+   151b1:	dec    %r8
+   151b4:	jne    15180 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1b10>
+   151b6:	sub    %rsi,%rdx
+   151b9:	cmp    $0xfffffffffffffffc,%rdx
+   151bd:	ja     1529b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1c2b>
+   151c3:	lea    0x18(%rax,%rbp,8),%rax
+   151c8:	nopl   0x0(%rax,%rax,1)
+   151d0:	mov    -0x18(%rax,%rdi,8),%rcx
+   151d5:	mov    %rcx,%rdx
+   151d8:	shr    $0x20,%rdx
+   151dc:	xor    %rcx,%rdx
+   151df:	imul   %r13,%rdx
+   151e3:	mov    %rdx,%rcx
+   151e6:	shr    $0x20,%rcx
+   151ea:	xor    %rdx,%rcx
+   151ed:	imul   %r13,%rcx
+   151f1:	mov    %rcx,%rdx
+   151f4:	shr    $0x20,%rdx
+   151f8:	xor    %rcx,%rdx
+   151fb:	mov    %rdx,(%r14,%rdi,8)
+   151ff:	mov    -0x10(%rax,%rdi,8),%rcx
+   15204:	mov    %rcx,%rdx
+   15207:	shr    $0x20,%rdx
+   1520b:	xor    %rcx,%rdx
+   1520e:	imul   %r13,%rdx
+   15212:	mov    %rdx,%rcx
+   15215:	shr    $0x20,%rcx
+   15219:	xor    %rdx,%rcx
+   1521c:	imul   %r13,%rcx
+   15220:	mov    %rcx,%rdx
+   15223:	shr    $0x20,%rdx
+   15227:	xor    %rcx,%rdx
+   1522a:	mov    %rdx,0x8(%r14,%rdi,8)
+   1522f:	mov    -0x8(%rax,%rdi,8),%rcx
+   15234:	mov    %rcx,%rdx
+   15237:	shr    $0x20,%rdx
+   1523b:	xor    %rcx,%rdx
+   1523e:	imul   %r13,%rdx
+   15242:	mov    %rdx,%rcx
+   15245:	shr    $0x20,%rcx
+   15249:	xor    %rdx,%rcx
+   1524c:	imul   %r13,%rcx
+   15250:	mov    %rcx,%rdx
+   15253:	shr    $0x20,%rdx
+   15257:	xor    %rcx,%rdx
+   1525a:	mov    %rdx,0x10(%r14,%rdi,8)
+   1525f:	mov    (%rax,%rdi,8),%rcx
+   15263:	mov    %rcx,%rdx
+   15266:	shr    $0x20,%rdx
+   1526a:	xor    %rcx,%rdx
+   1526d:	imul   %r13,%rdx
+   15271:	mov    %rdx,%rcx
+   15274:	shr    $0x20,%rcx
+   15278:	xor    %rdx,%rcx
+   1527b:	imul   %r13,%rcx
+   1527f:	mov    %rcx,%rdx
+   15282:	shr    $0x20,%rdx
+   15286:	xor    %rcx,%rdx
+   15289:	mov    %rdx,0x18(%r14,%rdi,8)
+   1528e:	add    $0x4,%rdi
+   15292:	cmp    %rdi,%rsi
+   15295:	jne    151d0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1b60>
+   1529b:	mov    0x40(%rsp),%rax
+   152a0:	lea    0x40(%rax,%rbp,4),%rcx
+   152a5:	mov    %rbx,%rdi
+   152a8:	mov    %r14,%rdx
+   152ab:	vzeroupper
+   152ae:	call   2adf0 <_Z13lookup_kernelIN13bloom_filters13FastPatternBFEmEvRT_mPKT0_Pj>
+   152b3:	mov    (%rsp),%rax
+   152b7:	mov    0xc(%rax),%eax
+   152ba:	add    %rax,%rbp
+   152bd:	mov    0x8(%rsp),%rsi
+   152c2:	cmp    %rsi,%rbp
+   152c5:	jb     15130 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1ac0>
+   152cb:	jmp    15470 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1e00>
+   152d0:	cmp    $0x10,%rsi
+   152d4:	jae    152dd <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1c6d>
+   152d6:	xor    %edx,%edx
+   152d8:	jmp    15402 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1d92>
+   152dd:	lea    0x0(,%rbp,8),%r8
+   152e5:	mov    %esi,%edx
+   152e7:	and    $0xfffffff0,%edx
+   152ea:	lea    0x0(,%rsi,8),%rdi
+   152f2:	and    $0xffffffffffffff80,%rdi
+   152f6:	lea    0x60(%rax,%r8,1),%r8
+   152fb:	xor    %r9d,%r9d
+   152fe:	vpbroadcastq -0x136b7(%rip),%ymm8        # 1c50 <_IO_stdin_used+0x568>
+   15307:	nopw   0x0(%rax,%rax,1)
+   15310:	vmovdqu -0x60(%r8,%r9,1),%ymm0
+   15317:	vmovdqu -0x40(%r8,%r9,1),%ymm1
+   1531e:	vmovdqu -0x20(%r8,%r9,1),%ymm2
+   15325:	vmovdqu (%r8,%r9,1),%ymm3
+   1532b:	vpsrlq $0x20,%ymm0,%ymm4
+   15330:	vpsrlq $0x20,%ymm1,%ymm5
+   15335:	vpsrlq $0x20,%ymm2,%ymm6
+   1533a:	vpsrlq $0x20,%ymm3,%ymm7
+   1533f:	vpxor  %ymm0,%ymm4,%ymm0
+   15343:	vpxor  %ymm1,%ymm5,%ymm1
+   15347:	vpxor  %ymm2,%ymm6,%ymm2
+   1534b:	vpmullq %ymm8,%ymm0,%ymm0
+   15351:	vpmullq %ymm8,%ymm1,%ymm1
+   15357:	vpmullq %ymm8,%ymm2,%ymm2
+   1535d:	vpxor  %ymm3,%ymm7,%ymm3
+   15361:	vpmullq %ymm8,%ymm3,%ymm3
+   15367:	vpsrlq $0x20,%ymm0,%ymm4
+   1536c:	vpsrlq $0x20,%ymm1,%ymm5
+   15371:	vpsrlq $0x20,%ymm2,%ymm6
+   15376:	vpsrlq $0x20,%ymm3,%ymm7
+   1537b:	vpxor  %ymm0,%ymm4,%ymm0
+   1537f:	vpxor  %ymm1,%ymm5,%ymm1
+   15383:	vpxor  %ymm2,%ymm6,%ymm2
+   15387:	vpxor  %ymm3,%ymm7,%ymm3
+   1538b:	vpmullq %ymm8,%ymm0,%ymm0
+   15391:	vpmullq %ymm8,%ymm1,%ymm1
+   15397:	vpmullq %ymm8,%ymm2,%ymm2
+   1539d:	vpmullq %ymm8,%ymm3,%ymm3
+   153a3:	vpsrlq $0x20,%ymm0,%ymm4
+   153a8:	vpsrlq $0x20,%ymm1,%ymm5
+   153ad:	vpsrlq $0x20,%ymm2,%ymm6
+   153b2:	vpsrlq $0x20,%ymm3,%ymm7
+   153b7:	vpxor  %ymm0,%ymm4,%ymm0
+   153bb:	vpxor  %ymm1,%ymm5,%ymm1
+   153bf:	vpxor  %ymm2,%ymm6,%ymm2
+   153c3:	vpxor  %ymm3,%ymm7,%ymm3
+   153c7:	vmovdqu %ymm0,(%r14,%r9,1)
+   153cd:	vmovdqu %ymm1,0x20(%r14,%r9,1)
+   153d4:	vmovdqu %ymm2,0x40(%r14,%r9,1)
+   153db:	vmovdqu %ymm3,0x60(%r14,%r9,1)
+   153e2:	sub    $0xffffffffffffff80,%r9
+   153e6:	cmp    %r9,%rdi
+   153e9:	jne    15310 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1ca0>
+   153ef:	cmp    %rdx,%rsi
+   153f2:	je     1529b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1c2b>
+   153f8:	test   $0xc,%sil
+   153fc:	je     1516d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1afd>
+   15402:	mov    %rdx,%rdi
+   15405:	mov    %esi,%edx
+   15407:	and    $0xfffffffc,%edx
+   1540a:	vpbroadcastq -0x137c3(%rip),%ymm2        # 1c50 <_IO_stdin_used+0x568>
+   15413:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   15420:	vmovdqu (%rcx,%rdi,8),%ymm0
+   15425:	vpsrlq $0x20,%ymm0,%ymm1
+   1542a:	vpxor  %ymm0,%ymm1,%ymm0
+   1542e:	vpmullq %ymm2,%ymm0,%ymm0
+   15434:	vpsrlq $0x20,%ymm0,%ymm1
+   15439:	vpxor  %ymm0,%ymm1,%ymm0
+   1543d:	vpmullq %ymm2,%ymm0,%ymm0
+   15443:	vpsrlq $0x20,%ymm0,%ymm1
+   15448:	vpxor  %ymm0,%ymm1,%ymm0
+   1544c:	vmovdqu %ymm0,(%r14,%rdi,8)
+   15452:	add    $0x4,%rdi
+   15456:	cmp    %rdi,%rdx
+   15459:	jne    15420 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1db0>
+   1545b:	cmp    %rdx,%rsi
+   1545e:	je     1529b <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1c2b>
+   15464:	jmp    1516d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1afd>
+   15469:	nopl   0x0(%rax)
+   15470:	call   31a40 <_ZNSt6chrono3_V212steady_clock3nowEv@plt>
+   15475:	sub    0x68(%rsp),%rax
+   1547a:	vcvtsi2sd %rax,%xmm15,%xmm0
+   1547f:	vdivsd 0x150(%rsp),%xmm0,%xmm0
+   15488:	vmovq  %xmm0,%rax
+   1548d:	mov    $0x3f,%cl
+   1548f:	bzhi   %rcx,%rax,%rcx
+   15494:	movabs $0xfff0000000000000,%rdx
+   1549e:	add    %rdx,%rcx
+   154a1:	shr    $0x35,%rcx
+   154a5:	cmp    $0x3ff,%ecx
+   154ab:	setb   %cl
+   154ae:	test   %rax,%rax
+   154b1:	setns  %dl
+   154b4:	and    %cl,%dl
+   154b6:	dec    %rax
+   154b9:	movabs $0xfffffffffffff,%rcx
+   154c3:	cmp    %rcx,%rax
+   154c6:	setb   %al
+   154c9:	or     %dl,%al
+   154cb:	je     16272 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2c02>
+   154d1:	lea    (%r15,%r15,2),%rax
+   154d5:	lea    0x160(%rsp,%rax,8),%rcx
+   154dd:	mov    0x168(%rsp,%rax,8),%r15
+   154e5:	cmp    0x170(%rsp,%rax,8),%r15
+   154ed:	je     15510 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1ea0>
+   154ef:	vmovsd %xmm0,(%r15)
+   154f4:	add    $0x8,%r15
+   154f8:	mov    %r15,0x8(%rcx)
+   154fc:	jmp    155c2 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1f52>
+   15501:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   15510:	mov    (%rcx),%r12
+   15513:	sub    %r12,%r15
+   15516:	movabs $0x7ffffffffffffff8,%rax
+   15520:	cmp    %rax,%r15
+   15523:	je     162b8 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2c48>
+   15529:	mov    %rcx,0x140(%rsp)
+   15531:	vmovsd %xmm0,0x68(%rsp)
+   15537:	mov    %r15,%rax
+   1553a:	sar    $0x3,%rax
+   1553e:	cmp    $0x1,%rax
+   15542:	mov    %rax,%rcx
+   15545:	adc    $0x0,%rcx
+   15549:	lea    (%rcx,%rax,1),%rbp
+   1554d:	movabs $0xfffffffffffffff,%rdx
+   15557:	cmp    %rdx,%rbp
+   1555a:	cmovae %rdx,%rbp
+   1555e:	add    %rax,%rcx
+   15561:	cmovb  %rdx,%rbp
+   15565:	lea    0x0(,%rbp,8),%rdi
+   1556d:	call   319e0 <_Znwm@plt>
+   15572:	mov    %rax,%rbx
+   15575:	vmovsd 0x68(%rsp),%xmm0
+   1557b:	vmovsd %xmm0,(%rax,%r15,1)
+   15581:	test   %r15,%r15
+   15584:	jle    15594 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1f24>
+   15586:	mov    %rbx,%rdi
+   15589:	mov    %r12,%rsi
+   1558c:	mov    %r15,%rdx
+   1558f:	call   31a00 <memmove@plt>
+   15594:	test   %r12,%r12
+   15597:	je     155a4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1f34>
+   15599:	mov    %r12,%rdi
+   1559c:	mov    %r15,%rsi
+   1559f:	call   319f0 <_ZdlPvm@plt>
+   155a4:	add    %rbx,%r15
+   155a7:	mov    0x140(%rsp),%rcx
+   155af:	mov    %rbx,(%rcx)
+   155b2:	add    $0x8,%r15
+   155b6:	mov    %r15,0x8(%rcx)
+   155ba:	lea    (%rbx,%rbp,8),%rax
+   155be:	mov    %rax,0x10(%rcx)
+   155c2:	lea    0x40(%rsp),%rdi
+   155c7:	lea    0xb0(%rsp),%rsi
+   155cf:	call   29df0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   155d4:	mov    0xa8(%rsp),%rbp
+   155dc:	add    $0x4,%rbp
+   155e0:	mov    0x100(%rsp),%r10
+   155e8:	inc    %r10
+   155eb:	mov    0x10(%rsp),%r15
+   155f0:	cmp    0x148(%rsp),%r10
+   155f8:	lea    0x78(%rsp),%rbx
+   155fd:	jne    14e40 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x17d0>
+   15603:	mov    0x128(%rsp),%rcx
+   1560b:	inc    %ecx
+   1560d:	mov    (%rsp),%rax
+   15611:	cmp    0x10(%rax),%ecx
+   15614:	jb     14e00 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1790>
+   1561a:	jmp    15630 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x1fc0>
+   1561c:	movq   $0x0,0x30(%rsp)
+   15625:	xor    %ebp,%ebp
+   15627:	movq   $0x0,0x10(%rsp)
+   15630:	movabs $0xcbf29ce484222325,%rcx
+   1563a:	mov    0xf0(%rsp),%rax
+   15642:	cmp    0xf8(%rsp),%rax
+   1564a:	mov    0x38(%rsp),%r13
+   1564f:	je     15700 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2090>
+   15655:	mov    0x0(%r13),%rdx
+   15659:	mov    0x18(%rsp),%rdi
+   1565e:	mov    %edi,%eax
+   15660:	and    $0x7,%eax
+   15663:	cmp    $0x8,%rdi
+   15667:	jae    15677 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2007>
+   15669:	xor    %esi,%esi
+   1566b:	movabs $0x100000001b3,%r8
+   15675:	jmp    156e5 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2075>
+   15677:	and    $0xfffffffffffffff8,%rdi
+   1567b:	xor    %esi,%esi
+   1567d:	movabs $0x100000001b3,%r8
+   15687:	nopw   0x0(%rax,%rax,1)
+   15690:	xor    (%rdx,%rsi,8),%rcx
+   15694:	imul   %r8,%rcx
+   15698:	xor    0x8(%rdx,%rsi,8),%rcx
+   1569d:	imul   %r8,%rcx
+   156a1:	xor    0x10(%rdx,%rsi,8),%rcx
+   156a6:	imul   %r8,%rcx
+   156aa:	xor    0x18(%rdx,%rsi,8),%rcx
+   156af:	imul   %r8,%rcx
+   156b3:	xor    0x20(%rdx,%rsi,8),%rcx
+   156b8:	imul   %r8,%rcx
+   156bc:	xor    0x28(%rdx,%rsi,8),%rcx
+   156c1:	imul   %r8,%rcx
+   156c5:	xor    0x30(%rdx,%rsi,8),%rcx
+   156ca:	imul   %r8,%rcx
+   156ce:	xor    0x38(%rdx,%rsi,8),%rcx
+   156d3:	imul   %r8,%rcx
+   156d7:	add    $0x8,%rsi
+   156db:	cmp    %rsi,%rdi
+   156de:	jne    15690 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2020>
+   156e0:	test   %rax,%rax
+   156e3:	je     15700 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2090>
+   156e5:	lea    (%rdx,%rsi,8),%rdx
+   156e9:	xor    %esi,%esi
+   156eb:	nopl   0x0(%rax,%rax,1)
+   156f0:	xor    (%rdx,%rsi,8),%rcx
+   156f4:	imul   %r8,%rcx
+   156f8:	inc    %rsi
+   156fb:	cmp    %rsi,%rax
+   156fe:	jne    156f0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2080>
+   15700:	cmp    0x68(%r13),%rcx
+   15704:	jne    16314 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ca4>
+   1570a:	movabs $0xcbf29ce484222325,%rcx
+   15714:	mov    0x20(%rsp),%rax
+   15719:	cmp    %rax,0x28(%rsp)
+   1571e:	je     157e0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2170>
+   15724:	mov    0x18(%r13),%rdx
+   15728:	mov    0x8(%rsp),%rdi
+   1572d:	mov    %edi,%eax
+   1572f:	and    $0x7,%eax
+   15732:	cmp    $0x8,%rdi
+   15736:	jae    15749 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x20d9>
+   15738:	xor    %esi,%esi
+   1573a:	movabs $0x100000001b3,%r8
+   15744:	jmp    157c5 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2155>
+   15749:	movabs $0x1ffffffffffffff8,%rcx
+   15753:	and    %rcx,%rdi
+   15756:	xor    %esi,%esi
+   15758:	movabs $0xcbf29ce484222325,%rcx
+   15762:	movabs $0x100000001b3,%r8
+   1576c:	nopl   0x0(%rax)
+   15770:	xor    (%rdx,%rsi,8),%rcx
+   15774:	imul   %r8,%rcx
+   15778:	xor    0x8(%rdx,%rsi,8),%rcx
+   1577d:	imul   %r8,%rcx
+   15781:	xor    0x10(%rdx,%rsi,8),%rcx
+   15786:	imul   %r8,%rcx
+   1578a:	xor    0x18(%rdx,%rsi,8),%rcx
+   1578f:	imul   %r8,%rcx
+   15793:	xor    0x20(%rdx,%rsi,8),%rcx
+   15798:	imul   %r8,%rcx
+   1579c:	xor    0x28(%rdx,%rsi,8),%rcx
+   157a1:	imul   %r8,%rcx
+   157a5:	xor    0x30(%rdx,%rsi,8),%rcx
+   157aa:	imul   %r8,%rcx
+   157ae:	xor    0x38(%rdx,%rsi,8),%rcx
+   157b3:	imul   %r8,%rcx
+   157b7:	add    $0x8,%rsi
+   157bb:	cmp    %rsi,%rdi
+   157be:	jne    15770 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2100>
+   157c0:	test   %rax,%rax
+   157c3:	je     157e0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2170>
+   157c5:	lea    (%rdx,%rsi,8),%rdx
+   157c9:	xor    %esi,%esi
+   157cb:	nopl   0x0(%rax,%rax,1)
+   157d0:	xor    (%rdx,%rsi,8),%rcx
+   157d4:	imul   %r8,%rcx
+   157d8:	inc    %rsi
+   157db:	cmp    %rsi,%rax
+   157de:	jne    157d0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2160>
+   157e0:	cmp    0x70(%r13),%rcx
+   157e4:	jne    16314 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ca4>
+   157ea:	movabs $0xcbf29ce484222325,%rcx
+   157f4:	mov    0xf0(%rsp),%rax
+   157fc:	cmp    0xf8(%rsp),%rax
+   15804:	je     158b0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2240>
+   1580a:	mov    0x30(%r13),%rdx
+   1580e:	mov    0x18(%rsp),%rdi
+   15813:	mov    %edi,%eax
+   15815:	and    $0x7,%eax
+   15818:	cmp    $0x8,%rdi
+   1581c:	jae    1582c <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x21bc>
+   1581e:	xor    %esi,%esi
+   15820:	movabs $0x100000001b3,%r8
+   1582a:	jmp    15895 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2225>
+   1582c:	and    $0xfffffffffffffff8,%rdi
+   15830:	xor    %esi,%esi
+   15832:	movabs $0x100000001b3,%r8
+   1583c:	nopl   0x0(%rax)
+   15840:	xor    (%rdx,%rsi,8),%rcx
+   15844:	imul   %r8,%rcx
+   15848:	xor    0x8(%rdx,%rsi,8),%rcx
+   1584d:	imul   %r8,%rcx
+   15851:	xor    0x10(%rdx,%rsi,8),%rcx
+   15856:	imul   %r8,%rcx
+   1585a:	xor    0x18(%rdx,%rsi,8),%rcx
+   1585f:	imul   %r8,%rcx
+   15863:	xor    0x20(%rdx,%rsi,8),%rcx
+   15868:	imul   %r8,%rcx
+   1586c:	xor    0x28(%rdx,%rsi,8),%rcx
+   15871:	imul   %r8,%rcx
+   15875:	xor    0x30(%rdx,%rsi,8),%rcx
+   1587a:	imul   %r8,%rcx
+   1587e:	xor    0x38(%rdx,%rsi,8),%rcx
+   15883:	imul   %r8,%rcx
+   15887:	add    $0x8,%rsi
+   1588b:	cmp    %rsi,%rdi
+   1588e:	jne    15840 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x21d0>
+   15890:	test   %rax,%rax
+   15893:	je     158b0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2240>
+   15895:	lea    (%rdx,%rsi,8),%rdx
+   15899:	xor    %esi,%esi
+   1589b:	nopl   0x0(%rax,%rax,1)
+   158a0:	xor    (%rdx,%rsi,8),%rcx
+   158a4:	imul   %r8,%rcx
+   158a8:	inc    %rsi
+   158ab:	cmp    %rsi,%rax
+   158ae:	jne    158a0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2230>
+   158b0:	cmp    0x78(%r13),%rcx
+   158b4:	jne    16314 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ca4>
+   158ba:	movabs $0xcbf29ce484222325,%rcx
+   158c4:	mov    0x20(%rsp),%rax
+   158c9:	cmp    %rax,0x28(%rsp)
+   158ce:	je     15990 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2320>
+   158d4:	mov    0x48(%r13),%rdx
+   158d8:	mov    0x8(%rsp),%rdi
+   158dd:	mov    %edi,%eax
+   158df:	and    $0x7,%eax
+   158e2:	cmp    $0x8,%rdi
+   158e6:	jae    158f9 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2289>
+   158e8:	xor    %esi,%esi
+   158ea:	movabs $0x100000001b3,%r8
+   158f4:	jmp    15975 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2305>
+   158f9:	movabs $0x1ffffffffffffff8,%rcx
+   15903:	and    %rcx,%rdi
+   15906:	xor    %esi,%esi
+   15908:	movabs $0xcbf29ce484222325,%rcx
+   15912:	movabs $0x100000001b3,%r8
+   1591c:	nopl   0x0(%rax)
+   15920:	xor    (%rdx,%rsi,8),%rcx
+   15924:	imul   %r8,%rcx
+   15928:	xor    0x8(%rdx,%rsi,8),%rcx
+   1592d:	imul   %r8,%rcx
+   15931:	xor    0x10(%rdx,%rsi,8),%rcx
+   15936:	imul   %r8,%rcx
+   1593a:	xor    0x18(%rdx,%rsi,8),%rcx
+   1593f:	imul   %r8,%rcx
+   15943:	xor    0x20(%rdx,%rsi,8),%rcx
+   15948:	imul   %r8,%rcx
+   1594c:	xor    0x28(%rdx,%rsi,8),%rcx
+   15951:	imul   %r8,%rcx
+   15955:	xor    0x30(%rdx,%rsi,8),%rcx
+   1595a:	imul   %r8,%rcx
+   1595e:	xor    0x38(%rdx,%rsi,8),%rcx
+   15963:	imul   %r8,%rcx
+   15967:	add    $0x8,%rsi
+   1596b:	cmp    %rsi,%rdi
+   1596e:	jne    15920 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x22b0>
+   15970:	test   %rax,%rax
+   15973:	je     15990 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2320>
+   15975:	lea    (%rdx,%rsi,8),%rdx
+   15979:	xor    %esi,%esi
+   1597b:	nopl   0x0(%rax,%rax,1)
+   15980:	xor    (%rdx,%rsi,8),%rcx
+   15984:	imul   %r8,%rcx
+   15988:	inc    %rsi
+   1598b:	cmp    %rsi,%rax
+   1598e:	jne    15980 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2310>
+   15990:	cmp    0x80(%r13),%rcx
+   15997:	jne    16314 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ca4>
+   1599d:	mov    0x1d494(%rip),%rax        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   159a4:	mov    (%rax),%rcx
+   159a7:	mov    -0x18(%rcx),%rcx
+   159ab:	movq   $0x11,0x8(%rax,%rcx,1)
+   159b4:	movb   $0x7b,0x8168(%rsp)
+   159bc:	mov    (%rax),%rcx
+   159bf:	mov    -0x18(%rcx),%rcx
+   159c3:	cmpq   $0x0,0x10(%rax,%rcx,1)
+   159c9:	je     159e9 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2379>
+   159cb:	mov    0x1d466(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   159d2:	lea    0x8168(%rsp),%rsi
+   159da:	mov    $0x1,%edx
+   159df:	vzeroupper
+   159e2:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   159e7:	jmp    159fd <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x238d>
+   159e9:	mov    0x1d448(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   159f0:	mov    $0x7b,%esi
+   159f5:	vzeroupper
+   159f8:	call   319d0 <_ZNSo3putEc@plt>
+   159fd:	mov    0x120(%rsp),%rdi
+   15a05:	call   75d0 <_Z11PointFieldsRK5Point>
+   15a0a:	mov    0x1d427(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15a11:	lea    -0x124fb(%rip),%rsi        # 351d <_IO_stdin_used+0x1e35>
+   15a18:	mov    $0xb,%edx
+   15a1d:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15a22:	mov    0x1d40f(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15a29:	mov    0x8(%rsp),%rsi
+   15a2e:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15a33:	mov    %rax,%rbx
+   15a36:	lea    -0x12db0(%rip),%rsi        # 2c8d <_IO_stdin_used+0x15a5>
+   15a3d:	mov    $0x7,%edx
+   15a42:	mov    %rax,%rdi
+   15a45:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15a4a:	mov    (%rsp),%rax
+   15a4e:	mov    0x4(%rax),%esi
+   15a51:	mov    %rbx,%rdi
+   15a54:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15a59:	mov    %rax,%rbx
+   15a5c:	lea    -0x122c0(%rip),%rsi        # 37a3 <_IO_stdin_used+0x20bb>
+   15a63:	mov    $0x9,%edx
+   15a68:	mov    %rax,%rdi
+   15a6b:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15a70:	mov    (%rsp),%rax
+   15a74:	mov    0xc(%rax),%esi
+   15a77:	mov    %rbx,%rdi
+   15a7a:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15a7f:	mov    %rax,%rbx
+   15a82:	lea    -0x12c47(%rip),%rsi        # 2e42 <_IO_stdin_used+0x175a>
+   15a89:	mov    $0xb,%edx
+   15a8e:	mov    %rax,%rdi
+   15a91:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15a96:	mov    (%rsp),%rax
+   15a9a:	mov    0x10(%rax),%esi
+   15a9d:	mov    %rbx,%rdi
+   15aa0:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15aa5:	mov    %rax,%rbx
+   15aa8:	lea    -0x129bf(%rip),%rsi        # 30f0 <_IO_stdin_used+0x1a08>
+   15aaf:	mov    $0x8,%edx
+   15ab4:	mov    %rax,%rdi
+   15ab7:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15abc:	mov    (%rsp),%rax
+   15ac0:	mov    0x20(%rax),%rsi
+   15ac4:	mov    %rbx,%rdi
+   15ac7:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15acc:	mov    %rax,%r15
+   15acf:	lea    -0x1250e(%rip),%rsi        # 35c8 <_IO_stdin_used+0x1ee0>
+   15ad6:	mov    $0x10,%edx
+   15adb:	mov    %rax,%rdi
+   15ade:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15ae3:	xor    %edx,%edx
+   15ae5:	mov    (%rsp),%rax
+   15ae9:	cmpl   $0x0,0x14(%rax)
+   15aed:	sete   %dl
+   15af0:	lea    -0x12fce(%rip),%rbx        # 2b29 <_IO_stdin_used+0x1441>
+   15af7:	lea    -0x1294c(%rip),%r12        # 31b2 <_IO_stdin_used+0x1aca>
+   15afe:	mov    %r12,%rsi
+   15b01:	cmove  %rbx,%rsi
+   15b05:	or     $0x4,%rdx
+   15b09:	mov    %r15,%rdi
+   15b0c:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15b11:	lea    -0x12d43(%rip),%rsi        # 2dd5 <_IO_stdin_used+0x16ed>
+   15b18:	mov    $0xb,%edx
+   15b1d:	mov    %r15,%rdi
+   15b20:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15b25:	mov    (%rsp),%rax
+   15b29:	movzbl 0x28(%rax),%edx
+   15b2d:	test   %rdx,%rdx
+   15b30:	cmove  %rbx,%r12
+   15b34:	xor    $0x5,%rdx
+   15b38:	mov    %r15,%rdi
+   15b3b:	mov    %r12,%rsi
+   15b3e:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15b43:	lea    -0x12571(%rip),%rsi        # 35d9 <_IO_stdin_used+0x1ef1>
+   15b4a:	mov    $0xc,%edx
+   15b4f:	mov    %r15,%rdi
+   15b52:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15b57:	mov    0x60(%r13),%rsi
+   15b5b:	mov    %r15,%rdi
+   15b5e:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15b63:	mov    %rax,%rbx
+   15b66:	lea    -0x12e67(%rip),%rsi        # 2d06 <_IO_stdin_used+0x161e>
+   15b6d:	mov    $0x13,%edx
+   15b72:	mov    %rax,%rdi
+   15b75:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15b7a:	mov    0x68(%r13),%rsi
+   15b7e:	mov    %rbx,%rdi
+   15b81:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15b86:	mov    %rax,%rbx
+   15b89:	lea    -0x12c34(%rip),%rsi        # 2f5c <_IO_stdin_used+0x1874>
+   15b90:	mov    $0x10,%edx
+   15b95:	mov    %rax,%rdi
+   15b98:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15b9d:	mov    0x70(%r13),%rsi
+   15ba1:	mov    %rbx,%rdi
+   15ba4:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15ba9:	mov    %rax,%rbx
+   15bac:	lea    -0x12d26(%rip),%rsi        # 2e8d <_IO_stdin_used+0x17a5>
+   15bb3:	mov    $0x18,%edx
+   15bb8:	mov    %rax,%rdi
+   15bbb:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15bc0:	mov    0x78(%r13),%rsi
+   15bc4:	mov    %rbx,%rdi
+   15bc7:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15bcc:	mov    %rax,%rbx
+   15bcf:	lea    -0x126ad(%rip),%rsi        # 3529 <_IO_stdin_used+0x1e41>
+   15bd6:	mov    $0x15,%edx
+   15bdb:	mov    %rax,%rdi
+   15bde:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15be3:	mov    0x80(%r13),%rsi
+   15bea:	mov    %rbx,%rdi
+   15bed:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15bf2:	mov    %rax,%r15
+   15bf5:	lea    -0x12c49(%rip),%rsi        # 2fb3 <_IO_stdin_used+0x18cb>
+   15bfc:	mov    $0x11,%edx
+   15c01:	mov    %rax,%rdi
+   15c04:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15c09:	mov    0x20(%rsp),%rax
+   15c0e:	cmp    %rax,0x28(%rsp)
+   15c13:	je     15c49 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x25d9>
+   15c15:	mov    0xb0(%rsp),%rcx
+   15c1d:	mov    0x8(%rsp),%r8
+   15c22:	mov    %r8d,%eax
+   15c25:	and    $0x7,%eax
+   15c28:	cmp    $0x8,%r8
+   15c2c:	jae    15c58 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x25e8>
+   15c2e:	xor    %edx,%edx
+   15c30:	movabs $0x100000001b3,%r9
+   15c3a:	movabs $0xcbf29ce484222325,%rsi
+   15c44:	jmp    15ce7 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2677>
+   15c49:	movabs $0xcbf29ce484222325,%rsi
+   15c53:	jmp    15d02 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2692>
+   15c58:	movabs $0x1ffffffffffffff8,%rdx
+   15c62:	and    %rdx,%r8
+   15c65:	xor    %edx,%edx
+   15c67:	movabs $0x100000001b3,%r9
+   15c71:	movabs $0xcbf29ce484222325,%rsi
+   15c7b:	nopl   0x0(%rax,%rax,1)
+   15c80:	mov    (%rcx,%rdx,4),%r10d
+   15c84:	mov    0x4(%rcx,%rdx,4),%edi
+   15c88:	xor    %rsi,%r10
+   15c8b:	imul   %r9,%r10
+   15c8f:	xor    %r10,%rdi
+   15c92:	imul   %r9,%rdi
+   15c96:	mov    0x8(%rcx,%rdx,4),%esi
+   15c9a:	xor    %rdi,%rsi
+   15c9d:	imul   %r9,%rsi
+   15ca1:	mov    0xc(%rcx,%rdx,4),%edi
+   15ca5:	xor    %rsi,%rdi
+   15ca8:	imul   %r9,%rdi
+   15cac:	mov    0x10(%rcx,%rdx,4),%esi
+   15cb0:	xor    %rdi,%rsi
+   15cb3:	imul   %r9,%rsi
+   15cb7:	mov    0x14(%rcx,%rdx,4),%edi
+   15cbb:	xor    %rsi,%rdi
+   15cbe:	imul   %r9,%rdi
+   15cc2:	mov    0x18(%rcx,%rdx,4),%r10d
+   15cc7:	xor    %rdi,%r10
+   15cca:	imul   %r9,%r10
+   15cce:	mov    0x1c(%rcx,%rdx,4),%esi
+   15cd2:	xor    %r10,%rsi
+   15cd5:	imul   %r9,%rsi
+   15cd9:	add    $0x8,%rdx
+   15cdd:	cmp    %rdx,%r8
+   15ce0:	jne    15c80 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2610>
+   15ce2:	test   %rax,%rax
+   15ce5:	je     15d02 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2692>
+   15ce7:	lea    (%rcx,%rdx,4),%rcx
+   15ceb:	xor    %edx,%edx
+   15ced:	nopl   (%rax)
+   15cf0:	mov    (%rcx,%rdx,4),%edi
+   15cf3:	xor    %rdi,%rsi
+   15cf6:	imul   %r9,%rsi
+   15cfa:	inc    %rdx
+   15cfd:	cmp    %rdx,%rax
+   15d00:	jne    15cf0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2680>
+   15d02:	mov    %r15,%rdi
+   15d05:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15d0a:	mov    %rax,%rbx
+   15d0d:	lea    -0x12c96(%rip),%rsi        # 307e <_IO_stdin_used+0x1996>
+   15d14:	mov    $0xb,%edx
+   15d19:	mov    %rax,%rdi
+   15d1c:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15d21:	mov    %rbx,%rdi
+   15d24:	mov    0x118(%rsp),%rsi
+   15d2c:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15d31:	mov    %rax,%rbx
+   15d34:	lea    -0x124f5(%rip),%rsi        # 3846 <_IO_stdin_used+0x215e>
+   15d3b:	mov    $0xa,%edx
+   15d40:	mov    %rax,%rdi
+   15d43:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15d48:	mov    %rbx,%rdi
+   15d4b:	mov    0x110(%rsp),%rsi
+   15d53:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15d58:	mov    %rax,%rbx
+   15d5b:	lea    -0x12511(%rip),%rsi        # 3851 <_IO_stdin_used+0x2169>
+   15d62:	mov    $0x13,%edx
+   15d67:	mov    %rax,%rdi
+   15d6a:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15d6f:	mov    %rbx,%rdi
+   15d72:	mov    0x108(%rsp),%rsi
+   15d7a:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15d7f:	mov    %rax,%rbx
+   15d82:	lea    -0x131a6(%rip),%rsi        # 2be3 <_IO_stdin_used+0x14fb>
+   15d89:	mov    $0x19,%edx
+   15d8e:	mov    %rax,%rdi
+   15d91:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15d96:	mov    %rbx,%rdi
+   15d99:	mov    0xd8(%rsp),%rsi
+   15da1:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15da6:	mov    %rax,%rbx
+   15da9:	lea    -0x12d26(%rip),%rsi        # 308a <_IO_stdin_used+0x19a2>
+   15db0:	mov    $0x12,%edx
+   15db5:	mov    %rax,%rdi
+   15db8:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15dbd:	mov    %rbx,%rdi
+   15dc0:	mov    0xd0(%rsp),%rsi
+   15dc8:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15dcd:	lea    -0x126eb(%rip),%rsi        # 36e9 <_IO_stdin_used+0x2001>
+   15dd4:	mov    $0x16,%edx
+   15dd9:	mov    %rax,%rdi
+   15ddc:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15de1:	cmpq   $0x0,0xd8(%rsp)
+   15dea:	je     15e02 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2792>
+   15dec:	mov    0x1d045(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15df3:	mov    0xa0(%rsp),%rsi
+   15dfb:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15e00:	jmp    15e1a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x27aa>
+   15e02:	mov    0x1d02f(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15e09:	lea    -0x12ea3(%rip),%rsi        # 2f6d <_IO_stdin_used+0x1885>
+   15e10:	mov    $0x4,%edx
+   15e15:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15e1a:	mov    0x1d017(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15e21:	lea    -0x12785(%rip),%rsi        # 36a3 <_IO_stdin_used+0x1fbb>
+   15e28:	mov    $0x14,%edx
+   15e2d:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15e32:	mov    0x1cfff(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15e39:	lea    -0x13317(%rip),%rsi        # 2b29 <_IO_stdin_used+0x1441>
+   15e40:	mov    $0x5,%edx
+   15e45:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15e4a:	mov    0x1cfe7(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15e51:	lea    -0x1313e(%rip),%rsi        # 2d1a <_IO_stdin_used+0x1632>
+   15e58:	mov    $0x11,%edx
+   15e5d:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15e62:	mov    0x1cfcf(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15e69:	lea    -0x12f03(%rip),%rsi        # 2f6d <_IO_stdin_used+0x1885>
+   15e70:	mov    $0x4,%edx
+   15e75:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15e7a:	mov    0x1cfb7(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15e81:	lea    -0x1315c(%rip),%rsi        # 2d2c <_IO_stdin_used+0x1644>
+   15e88:	mov    $0x17,%edx
+   15e8d:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15e92:	mov    0xe8(%rsp),%rsi
+   15e9a:	sub    %r14,%rsi
+   15e9d:	mov    0x1cf94(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15ea4:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15ea9:	lea    -0x132b3(%rip),%rsi        # 2bfd <_IO_stdin_used+0x1515>
+   15eb0:	mov    $0x10,%edx
+   15eb5:	mov    %rax,%rdi
+   15eb8:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15ebd:	sub    0x10(%rsp),%rbp
+   15ec2:	je     15f56 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x28e6>
+   15ec8:	mov    0x10(%rsp),%rax
+   15ecd:	mov    (%rax),%esi
+   15ecf:	mov    0x1cf62(%rip),%rbx        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15ed6:	mov    %rbx,%rdi
+   15ed9:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15ede:	cmp    $0x4,%rbp
+   15ee2:	je     15f56 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x28e6>
+   15ee4:	sar    $0x2,%rbp
+   15ee8:	mov    $0x1,%r12d
+   15eee:	lea    0x8168(%rsp),%r15
+   15ef6:	cs nopw 0x0(%rax,%rax,1)
+   15f00:	movb   $0x2c,0x8168(%rsp)
+   15f08:	mov    (%rbx),%rax
+   15f0b:	mov    -0x18(%rax),%rax
+   15f0f:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   15f15:	je     15f30 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x28c0>
+   15f17:	mov    $0x1,%edx
+   15f1c:	mov    %rbx,%rdi
+   15f1f:	mov    %r15,%rsi
+   15f22:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15f27:	jmp    15f3d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x28cd>
+   15f29:	nopl   0x0(%rax)
+   15f30:	mov    %rbx,%rdi
+   15f33:	mov    $0x2c,%esi
+   15f38:	call   319d0 <_ZNSo3putEc@plt>
+   15f3d:	mov    0x10(%rsp),%rax
+   15f42:	mov    (%rax,%r12,4),%esi
+   15f46:	mov    %rbx,%rdi
+   15f49:	call   319b0 <_ZNSo9_M_insertImEERSoT_@plt>
+   15f4e:	inc    %r12
+   15f51:	cmp    %r12,%rbp
+   15f54:	jne    15f00 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2890>
+   15f56:	mov    0x1cedb(%rip),%rbx        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   15f5d:	lea    -0x12d02(%rip),%rsi        # 3262 <_IO_stdin_used+0x1b7a>
+   15f64:	mov    $0xd,%edx
+   15f69:	mov    %rbx,%rdi
+   15f6c:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15f71:	xor    %r15d,%r15d
+   15f74:	jmp    15f9a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x292a>
+   15f76:	cs nopw 0x0(%rax,%rax,1)
+   15f80:	mov    %rbx,%rdi
+   15f83:	mov    $0x5d,%esi
+   15f88:	call   319d0 <_ZNSo3putEc@plt>
+   15f8d:	inc    %r15
+   15f90:	cmp    $0x4,%r15
+   15f94:	je     16119 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2aa9>
+   15f9a:	test   %r15,%r15
+   15f9d:	je     15fdd <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x296d>
+   15f9f:	movb   $0x2c,0x8168(%rsp)
+   15fa7:	mov    (%rbx),%rax
+   15faa:	mov    -0x18(%rax),%rax
+   15fae:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   15fb4:	je     15fd0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2960>
+   15fb6:	mov    $0x1,%edx
+   15fbb:	mov    %rbx,%rdi
+   15fbe:	lea    0x8168(%rsp),%rsi
+   15fc6:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   15fcb:	jmp    15fdd <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x296d>
+   15fcd:	nopl   (%rax)
+   15fd0:	mov    %rbx,%rdi
+   15fd3:	mov    $0x2c,%esi
+   15fd8:	call   319d0 <_ZNSo3putEc@plt>
+   15fdd:	movb   $0x22,0x8168(%rsp)
+   15fe5:	mov    (%rbx),%rax
+   15fe8:	mov    -0x18(%rax),%rax
+   15fec:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   15ff2:	je     16010 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x29a0>
+   15ff4:	mov    $0x1,%edx
+   15ff9:	mov    %rbx,%rdi
+   15ffc:	lea    0x8168(%rsp),%rsi
+   16004:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   16009:	mov    %rax,%r13
+   1600c:	jmp    16020 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x29b0>
+   1600e:	xchg   %ax,%ax
+   16010:	mov    %rbx,%rdi
+   16013:	mov    $0x22,%esi
+   16018:	call   319d0 <_ZNSo3putEc@plt>
+   1601d:	mov    %rbx,%r13
+   16020:	lea    0x1cbf9(%rip),%rax        # 32c20 <__frame_dummy_init_array_entry+0x18>
+   16027:	mov    (%rax,%r15,8),%rbp
+   1602b:	mov    %rbp,%rdi
+   1602e:	call   31990 <strlen@plt>
+   16033:	mov    %r13,%rdi
+   16036:	mov    %rbp,%rsi
+   16039:	mov    %rax,%rdx
+   1603c:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   16041:	mov    $0x3,%edx
+   16046:	mov    %r13,%rdi
+   16049:	lea    -0x12f57(%rip),%rsi        # 30f9 <_IO_stdin_used+0x1a11>
+   16050:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   16055:	lea    (%r15,%r15,2),%rax
+   16059:	mov    0x160(%rsp,%rax,8),%r13
+   16061:	mov    0x168(%rsp,%rax,8),%rbp
+   16069:	sub    %r13,%rbp
+   1606c:	je     160e4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2a74>
+   1606e:	vmovsd 0x0(%r13),%xmm0
+   16074:	mov    %rbx,%rdi
+   16077:	call   31a50 <_ZNSo9_M_insertIdEERSoT_@plt>
+   1607c:	cmp    $0x8,%rbp
+   16080:	je     160e4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2a74>
+   16082:	sar    $0x3,%rbp
+   16086:	mov    $0x1,%r12d
+   1608c:	nopl   0x0(%rax)
+   16090:	movb   $0x2c,0x8168(%rsp)
+   16098:	mov    (%rbx),%rax
+   1609b:	mov    -0x18(%rax),%rax
+   1609f:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   160a5:	je     160c0 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2a50>
+   160a7:	mov    $0x1,%edx
+   160ac:	mov    %rbx,%rdi
+   160af:	lea    0x8168(%rsp),%rsi
+   160b7:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   160bc:	jmp    160cd <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2a5d>
+   160be:	xchg   %ax,%ax
+   160c0:	mov    %rbx,%rdi
+   160c3:	mov    $0x2c,%esi
+   160c8:	call   319d0 <_ZNSo3putEc@plt>
+   160cd:	vmovsd 0x0(%r13,%r12,8),%xmm0
+   160d4:	mov    %rbx,%rdi
+   160d7:	call   31a50 <_ZNSo9_M_insertIdEERSoT_@plt>
+   160dc:	inc    %r12
+   160df:	cmp    %r12,%rbp
+   160e2:	jne    16090 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2a20>
+   160e4:	movb   $0x5d,0x8168(%rsp)
+   160ec:	mov    (%rbx),%rax
+   160ef:	mov    -0x18(%rax),%rax
+   160f3:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   160f9:	je     15f80 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2910>
+   160ff:	mov    $0x1,%edx
+   16104:	mov    %rbx,%rdi
+   16107:	lea    0x8168(%rsp),%rsi
+   1610f:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   16114:	jmp    15f8d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x291d>
+   16119:	mov    0x1cd18(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   16120:	lea    -0x135f8(%rip),%rsi        # 2b2f <_IO_stdin_used+0x1447>
+   16127:	mov    $0x3,%edx
+   1612c:	call   31980 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   16131:	mov    0x1cd00(%rip),%rdi        # 32e38 <_ZSt4cout@GLIBCXX_3.4>
+   16138:	call   31a60 <_ZNSo5flushEv@plt>
+   1613d:	mov    0x10(%rsp),%rdi
+   16142:	test   %rdi,%rdi
+   16145:	je     16154 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ae4>
+   16147:	mov    0x30(%rsp),%rsi
+   1614c:	sub    %rdi,%rsi
+   1614f:	call   319f0 <_ZdlPvm@plt>
+   16154:	mov    0x1a8(%rsp),%rdi
+   1615c:	test   %rdi,%rdi
+   1615f:	je     16171 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2b01>
+   16161:	mov    0x1b8(%rsp),%rsi
+   16169:	sub    %rdi,%rsi
+   1616c:	call   319f0 <_ZdlPvm@plt>
+   16171:	mov    0x190(%rsp),%rdi
+   16179:	test   %rdi,%rdi
+   1617c:	je     1618e <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2b1e>
+   1617e:	mov    0x1a0(%rsp),%rsi
+   16186:	sub    %rdi,%rsi
+   16189:	call   319f0 <_ZdlPvm@plt>
+   1618e:	mov    0x178(%rsp),%rdi
+   16196:	test   %rdi,%rdi
+   16199:	je     161ab <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2b3b>
+   1619b:	mov    0x188(%rsp),%rsi
+   161a3:	sub    %rdi,%rsi
+   161a6:	call   319f0 <_ZdlPvm@plt>
+   161ab:	mov    0x160(%rsp),%rdi
+   161b3:	test   %rdi,%rdi
+   161b6:	je     161c8 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2b58>
+   161b8:	mov    0x170(%rsp),%rsi
+   161c0:	sub    %rdi,%rsi
+   161c3:	call   319f0 <_ZdlPvm@plt>
+   161c8:	mov    0xb0(%rsp),%rdi
+   161d0:	test   %rdi,%rdi
+   161d3:	je     161e5 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2b75>
+   161d5:	mov    0xc0(%rsp),%rsi
+   161dd:	sub    %rdi,%rsi
+   161e0:	call   319f0 <_ZdlPvm@plt>
+   161e5:	test   %r14,%r14
+   161e8:	je     161fd <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2b8d>
+   161ea:	mov    0xe0(%rsp),%rsi
+   161f2:	sub    %r14,%rsi
+   161f5:	mov    %r14,%rdi
+   161f8:	call   319f0 <_ZdlPvm@plt>
+   161fd:	mov    0x40(%rsp),%rdi
+   16202:	test   %rdi,%rdi
+   16205:	je     16214 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ba4>
+   16207:	mov    0x50(%rsp),%rsi
+   1620c:	sub    %rdi,%rsi
+   1620f:	call   319f0 <_ZdlPvm@plt>
+   16214:	mov    0x88(%rsp),%rdi
+   1621c:	test   %rdi,%rdi
+   1621f:	je     16226 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2bb6>
+   16221:	call   31a70 <free@plt>
+   16226:	add    $0x10168,%rsp
+   1622d:	pop    %rbx
+   1622e:	pop    %r12
+   16230:	pop    %r13
+   16232:	pop    %r14
+   16234:	pop    %r15
+   16236:	pop    %rbp
+   16237:	ret
+   16238:	mov    $0x10,%edi
+   1623d:	vzeroupper
+   16240:	call   31a80 <__cxa_allocate_exception@plt>
+   16245:	mov    %rax,%r15
+   16248:	lea    -0x12d10(%rip),%rsi        # 353f <_IO_stdin_used+0x1e57>
+   1624f:	mov    %rax,%rdi
+   16252:	call   31a90 <_ZNSt13runtime_errorC1EPKc@plt>
+   16257:	mov    0x1cbe2(%rip),%rsi        # 32e40 <_ZTISt13runtime_error@GLIBCXX_3.4>
+   1625e:	mov    0x1cbe3(%rip),%rdx        # 32e48 <_ZNSt13runtime_errorD1Ev@GLIBCXX_3.4>
+   16265:	mov    %r15,%rdi
+   16268:	call   31aa0 <__cxa_throw@plt>
+   1626d:	jmp    16349 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2cd9>
+   16272:	mov    $0x10,%edi
+   16277:	call   31a80 <__cxa_allocate_exception@plt>
+   1627c:	mov    %rax,%r15
+   1627f:	lea    -0x12a4f(%rip),%rsi        # 3837 <_IO_stdin_used+0x214f>
+   16286:	mov    %rax,%rdi
+   16289:	call   31a90 <_ZNSt13runtime_errorC1EPKc@plt>
+   1628e:	mov    0x1cbab(%rip),%rsi        # 32e40 <_ZTISt13runtime_error@GLIBCXX_3.4>
+   16295:	mov    0x1cbac(%rip),%rdx        # 32e48 <_ZNSt13runtime_errorD1Ev@GLIBCXX_3.4>
+   1629c:	mov    %r15,%rdi
+   1629f:	call   31aa0 <__cxa_throw@plt>
+   162a4:	jmp    16349 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2cd9>
+   162a9:	lea    -0x131da(%rip),%rdi        # 30d6 <_IO_stdin_used+0x19ee>
+   162b0:	vzeroupper
+   162b3:	call   31a10 <_ZSt20__throw_length_errorPKc@plt>
+   162b8:	lea    -0x131e9(%rip),%rdi        # 30d6 <_IO_stdin_used+0x19ee>
+   162bf:	call   31a10 <_ZSt20__throw_length_errorPKc@plt>
+   162c4:	mov    $0x10,%edi
+   162c9:	call   31a80 <__cxa_allocate_exception@plt>
+   162ce:	mov    %rax,%r15
+   162d1:	lea    -0x12eba(%rip),%rsi        # 341e <_IO_stdin_used+0x1d36>
+   162d8:	mov    %rax,%rdi
+   162db:	call   31a90 <_ZNSt13runtime_errorC1EPKc@plt>
+   162e0:	jmp    162fe <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2c8e>
+   162e2:	mov    $0x10,%edi
+   162e7:	call   31a80 <__cxa_allocate_exception@plt>
+   162ec:	mov    %rax,%r15
+   162ef:	lea    -0x12d7f(%rip),%rsi        # 3577 <_IO_stdin_used+0x1e8f>
+   162f6:	mov    %rax,%rdi
+   162f9:	call   31a90 <_ZNSt13runtime_errorC1EPKc@plt>
+   162fe:	mov    0x1cb3b(%rip),%rsi        # 32e40 <_ZTISt13runtime_error@GLIBCXX_3.4>
+   16305:	mov    0x1cb3c(%rip),%rdx        # 32e48 <_ZNSt13runtime_errorD1Ev@GLIBCXX_3.4>
+   1630c:	mov    %r15,%rdi
+   1630f:	call   31aa0 <__cxa_throw@plt>
+   16314:	mov    $0x10,%edi
+   16319:	vzeroupper
+   1631c:	call   31a80 <__cxa_allocate_exception@plt>
+   16321:	mov    %rax,%r15
+   16324:	lea    -0x130d7(%rip),%rsi        # 3254 <_IO_stdin_used+0x1b6c>
+   1632b:	mov    %rax,%rdi
+   1632e:	call   31a90 <_ZNSt13runtime_errorC1EPKc@plt>
+   16333:	mov    0x1cb06(%rip),%rsi        # 32e40 <_ZTISt13runtime_error@GLIBCXX_3.4>
+   1633a:	mov    0x1cb07(%rip),%rdx        # 32e48 <_ZNSt13runtime_errorD1Ev@GLIBCXX_3.4>
+   16341:	mov    %r15,%rdi
+   16344:	call   31aa0 <__cxa_throw@plt>
+   16349:	lea    -0x12ac7(%rip),%rdi        # 3889 <_IO_stdin_used+0x21a1>
+   16350:	call   31a10 <_ZSt20__throw_length_errorPKc@plt>
+   16355:	lea    -0x12ad3(%rip),%rdi        # 3889 <_IO_stdin_used+0x21a1>
+   1635c:	vzeroupper
+   1635f:	call   31a10 <_ZSt20__throw_length_errorPKc@plt>
+   16364:	mov    %rax,%rbx
+   16367:	mov    0x10(%rsp),%rdi
+   1636c:	jmp    16552 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ee2>
+   16371:	mov    %rax,%rbx
+   16374:	mov    0x40(%rsp),%rdi
+   16379:	test   %rdi,%rdi
+   1637c:	je     16538 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ec8>
+   16382:	jmp    1662e <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2fbe>
+   16387:	mov    %rax,%rbx
+   1638a:	test   %r14,%r14
+   1638d:	je     1652a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eba>
+   16393:	jmp    1660d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f9d>
+   16398:	jmp    163a6 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2d36>
+   1639a:	jmp    163a6 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2d36>
+   1639c:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   163a1:	jmp    16480 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e10>
+   163a6:	mov    %rax,%rbx
+   163a9:	mov    0x88(%rsp),%rdi
+   163b1:	test   %rdi,%rdi
+   163b4:	jne    16545 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ed5>
+   163ba:	jmp    1654a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eda>
+   163bf:	mov    %rax,%rbx
+   163c2:	mov    0xb0(%rsp),%rdi
+   163ca:	test   %rdi,%rdi
+   163cd:	je     16521 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eb1>
+   163d3:	jmp    165f4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f84>
+   163d8:	jmp    163da <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2d6a>
+   163da:	mov    %rax,%rbx
+   163dd:	mov    %r15,%rdi
+   163e0:	call   31ab0 <__cxa_free_exception@plt>
+   163e5:	mov    0xb0(%rsp),%rdi
+   163ed:	test   %rdi,%rdi
+   163f0:	je     16521 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eb1>
+   163f6:	jmp    165f4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f84>
+   163fb:	mov    %rax,%rbx
+   163fe:	mov    0xb0(%rsp),%rdi
+   16406:	test   %rdi,%rdi
+   16409:	je     16521 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eb1>
+   1640f:	jmp    165f4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f84>
+   16414:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   16419:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   1641e:	mov    %rax,%rbx
+   16421:	test   %r14,%r14
+   16424:	je     1652a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eba>
+   1642a:	jmp    1660d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f9d>
+   1642f:	mov    %rax,%rbx
+   16432:	mov    0xb0(%rsp),%rdi
+   1643a:	test   %rdi,%rdi
+   1643d:	je     16521 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eb1>
+   16443:	jmp    165f4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f84>
+   16448:	mov    %rax,%rbx
+   1644b:	mov    0xb0(%rsp),%rdi
+   16453:	test   %rdi,%rdi
+   16456:	je     16521 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eb1>
+   1645c:	jmp    165f4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f84>
+   16461:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   16463:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   16465:	jmp    16467 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2df7>
+   16467:	mov    %rax,%rbx
+   1646a:	mov    0xa8(%rsp),%rax
+   16472:	mov    %rax,0x30(%rsp)
+   16477:	mov    %r15,0x10(%rsp)
+   1647c:	jmp    164be <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4e>
+   1647e:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   16480:	mov    %rax,%rbx
+   16483:	mov    %r15,%rdi
+   16486:	call   31ab0 <__cxa_free_exception@plt>
+   1648b:	jmp    164be <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4e>
+   1648d:	mov    %rax,%rbx
+   16490:	test   %r14,%r14
+   16493:	je     1652a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eba>
+   16499:	jmp    1660d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f9d>
+   1649e:	mov    %rax,%rbx
+   164a1:	mov    %r15,%rdi
+   164a4:	call   31ab0 <__cxa_free_exception@plt>
+   164a9:	test   %r14,%r14
+   164ac:	je     1652a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eba>
+   164ae:	jmp    1660d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f9d>
+   164b3:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   164b5:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   164b7:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   164b9:	jmp    164bb <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e4b>
+   164bb:	mov    %rax,%rbx
+   164be:	mov    0x10(%rsp),%rdi
+   164c3:	test   %rdi,%rdi
+   164c6:	jne    16552 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ee2>
+   164cc:	mov    0x1a8(%rsp),%rdi
+   164d4:	test   %rdi,%rdi
+   164d7:	jne    16570 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f00>
+   164dd:	mov    0x190(%rsp),%rdi
+   164e5:	test   %rdi,%rdi
+   164e8:	jne    16591 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f21>
+   164ee:	mov    0x178(%rsp),%rdi
+   164f6:	test   %rdi,%rdi
+   164f9:	jne    165b2 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f42>
+   164ff:	mov    0x160(%rsp),%rdi
+   16507:	test   %rdi,%rdi
+   1650a:	jne    165d3 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f63>
+   16510:	mov    0xb0(%rsp),%rdi
+   16518:	test   %rdi,%rdi
+   1651b:	jne    165f4 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f84>
+   16521:	test   %r14,%r14
+   16524:	jne    1660d <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2f9d>
+   1652a:	mov    0x40(%rsp),%rdi
+   1652f:	test   %rdi,%rdi
+   16532:	jne    1662e <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2fbe>
+   16538:	mov    0x88(%rsp),%rdi
+   16540:	test   %rdi,%rdi
+   16543:	je     1654a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eda>
+   16545:	call   31a70 <free@plt>
+   1654a:	mov    %rbx,%rdi
+   1654d:	call   31a20 <_Unwind_Resume@plt>
+   16552:	mov    0x30(%rsp),%rsi
+   16557:	sub    %rdi,%rsi
+   1655a:	call   319f0 <_ZdlPvm@plt>
+   1655f:	mov    0x1a8(%rsp),%rdi
+   16567:	test   %rdi,%rdi
+   1656a:	je     164dd <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e6d>
+   16570:	mov    0x1b8(%rsp),%rsi
+   16578:	sub    %rdi,%rsi
+   1657b:	call   319f0 <_ZdlPvm@plt>
+   16580:	mov    0x190(%rsp),%rdi
+   16588:	test   %rdi,%rdi
+   1658b:	je     164ee <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e7e>
+   16591:	mov    0x1a0(%rsp),%rsi
+   16599:	sub    %rdi,%rsi
+   1659c:	call   319f0 <_ZdlPvm@plt>
+   165a1:	mov    0x178(%rsp),%rdi
+   165a9:	test   %rdi,%rdi
+   165ac:	je     164ff <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2e8f>
+   165b2:	mov    0x188(%rsp),%rsi
+   165ba:	sub    %rdi,%rsi
+   165bd:	call   319f0 <_ZdlPvm@plt>
+   165c2:	mov    0x160(%rsp),%rdi
+   165ca:	test   %rdi,%rdi
+   165cd:	je     16510 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ea0>
+   165d3:	mov    0x170(%rsp),%rsi
+   165db:	sub    %rdi,%rsi
+   165de:	call   319f0 <_ZdlPvm@plt>
+   165e3:	mov    0xb0(%rsp),%rdi
+   165eb:	test   %rdi,%rdi
+   165ee:	je     16521 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eb1>
+   165f4:	mov    0xc0(%rsp),%rsi
+   165fc:	sub    %rdi,%rsi
+   165ff:	call   319f0 <_ZdlPvm@plt>
+   16604:	test   %r14,%r14
+   16607:	je     1652a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eba>
+   1660d:	mov    0xe0(%rsp),%rsi
+   16615:	sub    %r14,%rsi
+   16618:	mov    %r14,%rdi
+   1661b:	call   319f0 <_ZdlPvm@plt>
+   16620:	mov    0x40(%rsp),%rdi
+   16625:	test   %rdi,%rdi
+   16628:	je     16538 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ec8>
+   1662e:	mov    0x50(%rsp),%rsi
+   16633:	sub    %rdi,%rsi
+   16636:	call   319f0 <_ZdlPvm@plt>
+   1663b:	mov    0x88(%rsp),%rdi
+   16643:	test   %rdi,%rdi
+   16646:	jne    16545 <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2ed5>
+   1664c:	jmp    1654a <_Z3RunIN13bloom_filters13FastPatternBFEEvRK5PointRK4CaseRK5Input+0x2eda>

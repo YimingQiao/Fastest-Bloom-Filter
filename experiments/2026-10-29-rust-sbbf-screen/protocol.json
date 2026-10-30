@@ -1,0 +1,84 @@
+{
+  "purpose": "Initial same-process Rust SBBF14 screen, preserving every original and symmetric public singleton control; exploratory only, no production promotion or global fastest claim.",
+  "date": "2026-10-29",
+  "adapter_commit": "9c5820f0529efeaa37f896f6f8ce269a2e940afb",
+  "adapter_archive_manifest_sha256": "b1f6e39c96f3733d15767b3ab14c913bf77088be3f1bdd991366ceb4cfbb3c0d",
+  "adapter_freeze_sha256": "3a7375900cd9ce4527eea8560a1613856d3113982982b49e4d1fce04159a7d83",
+  "binary": "/tmp/fastest-bf-rust-sbbf-external/release/compare_benchmark",
+  "binary_sha256": "db221b2fea6029cf2fdb35912ae3f52055f8084cdde2fe0a8bdf9f26d752f2a1",
+  "filters": [
+    "FastPatternBF",
+    "FastPatternSingleApiV1",
+    "ByteSplitBloomFilter",
+    "ByteNativeSingleApiV1",
+    "FourSectorBloomFilter",
+    "FourSectorNativeSingleApiV1",
+    "Split64BloomFilter",
+    "SplitNativeSingleApiV1",
+    "Fastbloom017",
+    "FastbloomSingleApiV1",
+    "BloomsdayPinned",
+    "BloomsdaySingleApiV1",
+    "SbbfSafePinned",
+    "SbbfSafeSingleApiV1"
+  ],
+  "key_powers": [
+    16,
+    25
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "actual_bpk": [
+    16,
+    32
+  ],
+  "batches": [
+    1,
+    31,
+    4096
+  ],
+  "hit_percent": 50,
+  "query_power": 22,
+  "repeats": 5,
+  "seeds": [
+    42
+  ],
+  "calibration_power": 24,
+  "insert_batch": "whole input",
+  "workloads": 12,
+  "rows": 168,
+  "cpu": 3,
+  "numa_node": 1,
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "phase_order": "Unmodified frozen Rust harness: prehashed query then hash+query for each repetition; filter order deterministically shuffled per workload. No phase counterbalancing claim.",
+  "ranking": {
+    "memory_caps_bpk": [
+      16,
+      32
+    ],
+    "allocation_slack_bytes": 0,
+    "fpr_ceilings": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "fpr_bound": "upper endpoint of pointwise two-sided 95% Wilson interval from independent calibration negatives",
+    "z": 1.959963984540054,
+    "metrics": [
+      "lookup_ns",
+      "hash_lookup_ns"
+    ],
+    "tracks": [
+      "original_only",
+      "original_native_vs_best_external",
+      "singleton_controls",
+      "best_public_paths"
+    ],
+    "native_control_classification": "native singleton controls remain native experiments, never external rivals",
+    "quality_deduplication": "one original row per family/n/requested_bpk/seed; identical controls and batch repeats add zero calibration samples",
+    "speed_interpretation": "descriptive median ratios only; no confidence intervals or held-out evidence"
+  },
+  "future_confirmation": "Choose candidates only after retaining all initial wins/losses; a later fresh-seed protocol must be frozen separately."
+}

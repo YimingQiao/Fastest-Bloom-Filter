@@ -1,0 +1,224 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000639e0 <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj>:
+   639e0:	push   %r14
+   639e2:	push   %rbx
+   639e3:	mov    %esi,%eax
+   639e5:	cmp    $0x1,%esi
+   639e8:	jne    63a46 <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x66>
+   639ea:	mov    (%rdx),%rdx
+   639ed:	vpbroadcastd %edx,%ymm0
+   639f3:	shr    $0x20,%rdx
+   639f7:	mov    0x18(%rdi),%esi
+   639fa:	imul   %rdx,%rsi
+   639fe:	mov    (%rdi),%rdx
+   63a01:	shr    $0x1a,%rsi
+   63a05:	and    $0xffffffffffffffc0,%rsi
+   63a09:	vpmulld -0x5f7d2(%rip),%ymm0,%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   63a12:	vmovdqa64 (%rdx,%rsi,1),%zmm1
+   63a19:	vpsrld $0x1a,%ymm0,%ymm0
+   63a1e:	vpmovzxdq %ymm0,%zmm0
+   63a24:	vpsrlvq %zmm0,%zmm1,%zmm0
+   63a2a:	vptestnmq -0x61ab4(%rip){1to8},%zmm0,%k0        # 1f80 <_IO_stdin_used+0x88>
+   63a34:	xor    %edx,%edx
+   63a36:	kortestb %k0,%k0
+   63a3a:	sete   %dl
+   63a3d:	mov    %edx,(%rcx)
+   63a3f:	pop    %rbx
+   63a40:	pop    %r14
+   63a42:	vzeroupper
+   63a45:	ret
+   63a46:	mov    %eax,%esi
+   63a48:	cmp    $0x10,%eax
+   63a4b:	jae    63b9c <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x1bc>
+   63a51:	test   %eax,%eax
+   63a53:	je     63a3f <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x5f>
+   63a55:	lea    0x0(,%rsi,4),%r9d
+   63a5d:	and    $0x38,%r9d
+   63a61:	xor    %r8d,%r8d
+   63a64:	vmovdqa64 -0x5fa2e(%rip),%zmm0        # 4040 <_IO_stdin_used+0x2148>
+   63a6e:	vpbroadcastq -0x61af8(%rip),%zmm1        # 1f80 <_IO_stdin_used+0x88>
+   63a78:	nopl   0x0(%rax,%rax,1)
+   63a80:	mov    (%rdx,%r8,2),%r10
+   63a84:	mov    %r10d,%r11d
+   63a87:	shr    $0x20,%r10
+   63a8b:	mov    0x18(%rdi),%ebx
+   63a8e:	imul   %r10,%rbx
+   63a92:	mov    (%rdi),%r10
+   63a95:	shr    $0x1a,%rbx
+   63a99:	and    $0xffffffffffffffc0,%rbx
+   63a9d:	vmovdqa64 (%r10,%rbx,1),%zmm2
+   63aa4:	vpbroadcastq %r11,%zmm3
+   63aaa:	vpmulld %zmm0,%zmm3,%zmm3
+   63ab0:	vpsrlq $0x1a,%zmm3,%zmm3
+   63ab7:	vpsrlvq %zmm3,%zmm2,%zmm2
+   63abd:	vptestnmq %zmm1,%zmm2,%k0
+   63ac3:	xor    %r10d,%r10d
+   63ac6:	kortestb %k0,%k0
+   63aca:	sete   %r10b
+   63ace:	mov    %r10d,(%rcx,%r8,1)
+   63ad2:	mov    0x8(%rdx,%r8,2),%r10
+   63ad7:	mov    %r10d,%r11d
+   63ada:	shr    $0x20,%r10
+   63ade:	mov    0x18(%rdi),%ebx
+   63ae1:	imul   %r10,%rbx
+   63ae5:	mov    (%rdi),%r10
+   63ae8:	shr    $0x1a,%rbx
+   63aec:	and    $0xffffffffffffffc0,%rbx
+   63af0:	vpbroadcastq %r11,%zmm2
+   63af6:	vpmulld %zmm0,%zmm2,%zmm2
+   63afc:	vmovdqa64 (%r10,%rbx,1),%zmm3
+   63b03:	vpsrlq $0x1a,%zmm2,%zmm2
+   63b0a:	vpsrlvq %zmm2,%zmm3,%zmm2
+   63b10:	vptestnmq %zmm1,%zmm2,%k0
+   63b16:	xor    %r10d,%r10d
+   63b19:	kortestb %k0,%k0
+   63b1d:	sete   %r10b
+   63b21:	mov    %r10d,0x4(%rcx,%r8,1)
+   63b26:	add    $0x8,%r8
+   63b2a:	cmp    %r8,%r9
+   63b2d:	jne    63a80 <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0xa0>
+   63b33:	test   $0x1,%sil
+   63b37:	je     63a3f <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x5f>
+   63b3d:	mov    (%rdx,%r8,2),%rdx
+   63b41:	mov    %edx,%esi
+   63b43:	shr    $0x20,%rdx
+   63b47:	mov    0x18(%rdi),%r9d
+   63b4b:	imul   %rdx,%r9
+   63b4f:	mov    (%rdi),%rdx
+   63b52:	shr    $0x1a,%r9
+   63b56:	vpbroadcastq %rsi,%zmm0
+   63b5c:	vpmulld -0x5fb26(%rip),%zmm0,%zmm0        # 4040 <_IO_stdin_used+0x2148>
+   63b66:	and    $0xffffffffffffffc0,%r9
+   63b6a:	vmovdqa64 (%rdx,%r9,1),%zmm1
+   63b71:	vpsrlq $0x1a,%zmm0,%zmm0
+   63b78:	vpsrlvq %zmm0,%zmm1,%zmm0
+   63b7e:	vptestnmq -0x61c08(%rip){1to8},%zmm0,%k0        # 1f80 <_IO_stdin_used+0x88>
+   63b88:	xor    %edx,%edx
+   63b8a:	kortestb %k0,%k0
+   63b8e:	sete   %dl
+   63b91:	mov    %edx,(%rcx,%r8,1)
+   63b95:	pop    %rbx
+   63b96:	pop    %r14
+   63b98:	vzeroupper
+   63b9b:	ret
+   63b9c:	cmp    $0x21,%eax
+   63b9f:	jb     63bb2 <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x1d2>
+   63ba1:	lea    -0x20(%rsi),%r8
+   63ba5:	cmp    $0x21,%eax
+   63ba8:	jne    63bba <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x1da>
+   63baa:	xor    %r9d,%r9d
+   63bad:	jmp    63ccb <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x2eb>
+   63bb2:	xor    %r8d,%r8d
+   63bb5:	jmp    63d3f <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x35f>
+   63bba:	mov    %r8,%r10
+   63bbd:	and    $0xfffffffffffffffe,%r10
+   63bc1:	xor    %r9d,%r9d
+   63bc4:	vmovdqa -0x5f98c(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   63bcc:	vpbroadcastq -0x61c56(%rip),%zmm1        # 1f80 <_IO_stdin_used+0x88>
+   63bd6:	cs nopw 0x0(%rax,%rax,1)
+   63be0:	mov    0x104(%rdx,%r9,8),%r11d
+   63be8:	mov    0x18(%rdi),%ebx
+   63beb:	imul   %rbx,%r11
+   63bef:	mov    (%rdi),%r14
+   63bf2:	shr    $0x1a,%r11
+   63bf6:	and    $0xffffffffffffffc0,%r11
+   63bfa:	prefetcht0 (%r14,%r11,1)
+   63bff:	mov    (%rdx,%r9,8),%r11
+   63c03:	vpbroadcastd %r11d,%ymm2
+   63c09:	shr    $0x20,%r11
+   63c0d:	imul   %rbx,%r11
+   63c11:	shr    $0x1a,%r11
+   63c15:	and    $0xffffffffffffffc0,%r11
+   63c19:	vmovdqa64 (%r14,%r11,1),%zmm3
+   63c20:	vpmulld %ymm0,%ymm2,%ymm2
+   63c25:	vpsrld $0x1a,%ymm2,%ymm2
+   63c2a:	vpmovzxdq %ymm2,%zmm2
+   63c30:	vpsrlvq %zmm2,%zmm3,%zmm2
+   63c36:	vptestnmq %zmm1,%zmm2,%k0
+   63c3c:	xor    %r11d,%r11d
+   63c3f:	kortestb %k0,%k0
+   63c43:	sete   %r11b
+   63c47:	mov    %r11d,(%rcx,%r9,4)
+   63c4b:	mov    0x10c(%rdx,%r9,8),%r11d
+   63c53:	mov    0x18(%rdi),%ebx
+   63c56:	imul   %rbx,%r11
+   63c5a:	mov    (%rdi),%r14
+   63c5d:	shr    $0x1a,%r11
+   63c61:	and    $0xffffffffffffffc0,%r11
+   63c65:	prefetcht0 (%r14,%r11,1)
+   63c6a:	mov    0x8(%rdx,%r9,8),%r11
+   63c6f:	vpbroadcastd %r11d,%ymm2
+   63c75:	shr    $0x20,%r11
+   63c79:	imul   %rbx,%r11
+   63c7d:	shr    $0x1a,%r11
+   63c81:	and    $0xffffffffffffffc0,%r11
+   63c85:	vmovdqa64 (%r14,%r11,1),%zmm3
+   63c8c:	vpmulld %ymm0,%ymm2,%ymm2
+   63c91:	vpsrld $0x1a,%ymm2,%ymm2
+   63c96:	vpmovzxdq %ymm2,%zmm2
+   63c9c:	vpsrlvq %zmm2,%zmm3,%zmm2
+   63ca2:	vptestnmq %zmm1,%zmm2,%k0
+   63ca8:	xor    %r11d,%r11d
+   63cab:	kortestb %k0,%k0
+   63caf:	sete   %r11b
+   63cb3:	mov    %r11d,0x4(%rcx,%r9,4)
+   63cb8:	add    $0x2,%r9
+   63cbc:	cmp    %r9,%r10
+   63cbf:	jne    63be0 <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x200>
+   63cc5:	test   $0x1,%sil
+   63cc9:	je     63d3f <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x35f>
+   63ccb:	mov    0x104(%rdx,%r9,8),%r10d
+   63cd3:	mov    0x18(%rdi),%r11d
+   63cd7:	imul   %r11,%r10
+   63cdb:	mov    (%rdi),%rbx
+   63cde:	shr    $0x1a,%r10
+   63ce2:	and    $0xffffffffffffffc0,%r10
+   63ce6:	prefetcht0 (%rbx,%r10,1)
+   63ceb:	mov    (%rdx,%r9,8),%r10
+   63cef:	vpbroadcastd %r10d,%ymm0
+   63cf5:	shr    $0x20,%r10
+   63cf9:	imul   %r11,%r10
+   63cfd:	shr    $0x1a,%r10
+   63d01:	and    $0xffffffffffffffc0,%r10
+   63d05:	vpmulld -0x5face(%rip),%ymm0,%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   63d0e:	vmovdqa64 (%rbx,%r10,1),%zmm1
+   63d15:	vpsrld $0x1a,%ymm0,%ymm0
+   63d1a:	vpmovzxdq %ymm0,%zmm0
+   63d20:	vpsrlvq %zmm0,%zmm1,%zmm0
+   63d26:	vptestnmq -0x61db0(%rip){1to8},%zmm0,%k0        # 1f80 <_IO_stdin_used+0x88>
+   63d30:	xor    %r10d,%r10d
+   63d33:	kortestb %k0,%k0
+   63d37:	sete   %r10b
+   63d3b:	mov    %r10d,(%rcx,%r9,4)
+   63d3f:	cmp    %rsi,%r8
+   63d42:	jae    63a3f <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x5f>
+   63d48:	vmovdqa -0x5fb10(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   63d50:	vpbroadcastq -0x61dda(%rip),%zmm1        # 1f80 <_IO_stdin_used+0x88>
+   63d5a:	nopw   0x0(%rax,%rax,1)
+   63d60:	mov    (%rdx,%r8,8),%r9
+   63d64:	vpbroadcastd %r9d,%ymm2
+   63d6a:	shr    $0x20,%r9
+   63d6e:	mov    0x18(%rdi),%r10d
+   63d72:	imul   %r9,%r10
+   63d76:	mov    (%rdi),%r9
+   63d79:	shr    $0x1a,%r10
+   63d7d:	and    $0xffffffffffffffc0,%r10
+   63d81:	vpmulld %ymm0,%ymm2,%ymm2
+   63d86:	vmovdqa64 (%r9,%r10,1),%zmm3
+   63d8d:	vpsrld $0x1a,%ymm2,%ymm2
+   63d92:	vpmovzxdq %ymm2,%zmm2
+   63d98:	vpsrlvq %zmm2,%zmm3,%zmm2
+   63d9e:	vptestnmq %zmm1,%zmm2,%k0
+   63da4:	xor    %r9d,%r9d
+   63da7:	kortestb %k0,%k0
+   63dab:	sete   %r9b
+   63daf:	mov    %r9d,(%rcx,%r8,4)
+   63db3:	inc    %r8
+   63db6:	cmp    %r8,%rsi
+   63db9:	jne    63d60 <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x380>
+   63dbb:	jmp    63a3f <_ZNK13bloom_filters23Split64RangeBloomFilter6LookupEjPKmPj+0x5f>

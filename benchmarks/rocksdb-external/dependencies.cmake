@@ -1,0 +1,20 @@
+include_guard(GLOBAL)
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+execute_process(COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/vendor.py
+  RESULT_VARIABLE rocksdb_verify_result OUTPUT_VARIABLE rocksdb_verify_output ERROR_VARIABLE rocksdb_verify_error)
+if(NOT rocksdb_verify_result EQUAL 0)
+  message(FATAL_ERROR "Pinned RocksDB source verification failed: ${rocksdb_verify_error}")
+endif()
+message(STATUS "${rocksdb_verify_output}")
+add_library(bf_rocksdb_baseline INTERFACE)
+target_include_directories(bf_rocksdb_baseline INTERFACE
+  ${CMAKE_CURRENT_LIST_DIR}/vendor ${CMAKE_CURRENT_LIST_DIR}/vendor/include
+  ${CMAKE_CURRENT_LIST_DIR}/../../include)
+target_compile_definitions(bf_rocksdb_baseline INTERFACE ROCKSDB_PLATFORM_POSIX)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  target_compile_definitions(bf_rocksdb_baseline INTERFACE OS_LINUX)
+elseif(APPLE)
+  target_compile_definitions(bf_rocksdb_baseline INTERFACE OS_MACOSX)
+else()
+  message(FATAL_ERROR "This minimal RocksDB adapter currently supports Linux/macOS POSIX headers")
+endif()

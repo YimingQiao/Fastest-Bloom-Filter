@@ -1,0 +1,1532 @@
+   19620:	push   %rbp
+   19621:	push   %r15
+   19623:	push   %r14
+   19625:	push   %r13
+   19627:	push   %r12
+   19629:	push   %rbx
+   1962a:	sub    $0x48,%rsp
+   1962e:	mov    %rdx,0x8(%rsp)
+   19633:	mov    %r8,0x10(%rsp)
+   19638:	cmp    %r8,%rdx
+   1963b:	jne    1b337 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d17>
+   19641:	mov    %rcx,%rax
+   19644:	cmpb   $0x0,0x1c(%rdi)
+   19648:	je     1985e <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x23e>
+   1964e:	lea    -0x1(%rdx),%rcx
+   19652:	cmp    $0x2,%rcx
+   19656:	ja     19e66 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x846>
+   1965c:	mov    0x18(%rdi),%r9d
+   19660:	mov    0x10(%rdi),%rcx
+   19664:	mov    (%rsi),%r10
+   19667:	mov    %r10,%r8
+   1966a:	shr    $0x28,%r8
+   1966e:	imul   %r9,%r8
+   19672:	shr    $0x18,%r8
+   19676:	and    $0xfffffff,%r8d
+   1967d:	cmp    %rcx,%r8
+   19680:	jae    1b3e8 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1dc8>
+   19686:	mov    0x8(%rdi),%rdi
+   1968a:	vmovdqa64 -0x11794(%rip),%zmm0        # 7f00 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x50>
+   19694:	mov    %r10,%r11
+   19697:	shr    $0x20,%r11
+   1969b:	vpbroadcastd %r11d,%zmm1
+   196a1:	vpsrlvd -0x11b2b(%rip),%zmm1,%zmm2        # 7b80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x4c0>
+   196ab:	vpxord %zmm1,%zmm2,%zmm2
+   196b1:	vbroadcasti32x4 -0x1191b(%rip),%zmm1        # 7da0 <anon.35274091df3394f4211c680a8c77ed4a.34.llvm.9036914972901821666+0x110>
+   196bb:	vpternlogd $0xec,-0x1238a(%rip){1to16},%zmm1,%zmm2        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   196c6:	shl    $0x6,%r8
+   196ca:	vpermd (%rdi,%r8,1),%zmm2,%zmm2
+   196d1:	vpbroadcastd %r10d,%zmm3
+   196d7:	vprorvd -0x11ae1(%rip),%zmm3,%zmm3        # 7c00 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x540>
+   196e1:	vpermd %zmm0,%zmm3,%zmm4
+   196e7:	vpsrld $0x4,%zmm3,%zmm3
+   196ee:	vprolvd %zmm3,%zmm4,%zmm3
+   196f4:	vpandd %zmm2,%zmm3,%zmm2
+   196fa:	vpcmpneqd %zmm3,%zmm2,%k0
+   19701:	kmovd  %k0,%r8d
+   19705:	xor    %r10d,%r10d
+   19708:	test   $0xf,%r8b
+   1970c:	sete   %r10b
+   19710:	mov    %r10d,(%rax)
+   19713:	cmp    $0x1,%rdx
+   19717:	je     1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1971d:	mov    0x8(%rsi),%r10
+   19721:	mov    %r10,%r8
+   19724:	shr    $0x28,%r8
+   19728:	imul   %r9,%r8
+   1972c:	shr    $0x18,%r8
+   19730:	and    $0xfffffff,%r8d
+   19737:	cmp    %rcx,%r8
+   1973a:	jae    1b3e8 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1dc8>
+   19740:	mov    %r10,%r11
+   19743:	shr    $0x20,%r11
+   19747:	vpbroadcastd %r11d,%zmm2
+   1974d:	vpsrlvd -0x11bd7(%rip),%zmm2,%zmm3        # 7b80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x4c0>
+   19757:	vpxord %zmm2,%zmm3,%zmm2
+   1975d:	vpternlogd $0xec,-0x1242c(%rip){1to16},%zmm1,%zmm2        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   19768:	shl    $0x6,%r8
+   1976c:	vpermd (%rdi,%r8,1),%zmm2,%zmm2
+   19773:	vpbroadcastd %r10d,%zmm3
+   19779:	vprorvd -0x11b83(%rip),%zmm3,%zmm3        # 7c00 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x540>
+   19783:	vpxor  %xmm4,%xmm4,%xmm4
+   19787:	vpermd %zmm0,%zmm3,%zmm4
+   1978d:	vpsrld $0x4,%zmm3,%zmm3
+   19794:	vprolvd %zmm3,%zmm4,%zmm3
+   1979a:	vpandd %zmm2,%zmm3,%zmm2
+   197a0:	vpcmpneqd %zmm3,%zmm2,%k0
+   197a7:	kmovd  %k0,%r8d
+   197ab:	xor    %r10d,%r10d
+   197ae:	test   $0xf,%r8b
+   197b2:	sete   %r10b
+   197b6:	mov    %r10d,0x4(%rax)
+   197ba:	cmp    $0x2,%rdx
+   197be:	je     1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   197c4:	mov    0x10(%rsi),%rdx
+   197c8:	mov    %rdx,%r8
+   197cb:	shr    $0x28,%r8
+   197cf:	imul   %r9,%r8
+   197d3:	shr    $0x18,%r8
+   197d7:	and    $0xfffffff,%r8d
+   197de:	cmp    %rcx,%r8
+   197e1:	jae    1b3e8 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1dc8>
+   197e7:	mov    %rdx,%rcx
+   197ea:	shr    $0x20,%rcx
+   197ee:	vpbroadcastd %ecx,%zmm2
+   197f4:	vpsrlvd -0x11c7e(%rip),%zmm2,%zmm3        # 7b80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x4c0>
+   197fe:	vpxord %zmm2,%zmm3,%zmm2
+   19804:	vpternlogd $0xf8,-0x124d3(%rip){1to16},%zmm2,%zmm1        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   1980f:	shl    $0x6,%r8
+   19813:	vpermd (%rdi,%r8,1),%zmm1,%zmm1
+   1981a:	vpbroadcastd %edx,%zmm2
+   19820:	vprorvd -0x11c2a(%rip),%zmm2,%zmm2        # 7c00 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x540>
+   1982a:	vpermd %zmm0,%zmm2,%zmm0
+   19830:	vpsrld $0x4,%zmm2,%zmm2
+   19837:	vprolvd %zmm2,%zmm0,%zmm0
+   1983d:	vpandd %zmm1,%zmm0,%zmm1
+   19843:	vpcmpneqd %zmm0,%zmm1,%k0
+   1984a:	kmovd  %k0,%ecx
+   1984e:	xor    %edx,%edx
+   19850:	test   $0xf,%cl
+   19853:	sete   %dl
+   19856:	mov    %edx,0x8(%rax)
+   19859:	jmp    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1985e:	cmp    $0x8,%rdx
+   19862:	jb     19d3c <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x71c>
+   19868:	cmpb   $0x0,0x1d(%rdi)
+   1986c:	je     19d3c <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x71c>
+   19872:	mov    (%rdi),%rcx
+   19875:	shl    $0x6,%rcx
+   19879:	cmp    $0x200000,%rcx
+   19880:	jbe    1a079 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0xa59>
+   19886:	mov    0x8(%rdi),%r10
+   1988a:	mov    0x18(%rdi),%r11d
+   1988e:	vpbroadcastd %r11d,%ymm0
+   19894:	xor    %r9d,%r9d
+   19897:	vmovdqa64 -0x122a1(%rip),%ymm16        # 7600 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x1b0>
+   198a1:	vmovdqa64 -0x1226b(%rip),%ymm17        # 7640 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x1f0>
+   198ab:	vpbroadcastd -0x12579(%rip),%ymm18        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   198b5:	vpbroadcastq -0x12436(%rip),%ymm4        # 7488 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x38>
+   198be:	vpbroadcastq -0x124b8(%rip),%ymm19        # 7410 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1d3>
+   198c8:	vpbroadcastq -0x12472(%rip),%ymm20        # 7460 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x10>
+   198d2:	vpbroadcastq -0x1244b(%rip),%ymm7        # 7490 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x40>
+   198db:	vpbroadcastd -0x12590(%rip),%ymm8        # 7354 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x117>
+   198e4:	vmovdqa -0x1224c(%rip),%ymm9        # 76a0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x250>
+   198ec:	vmovdqa -0x123b4(%rip),%ymm10        # 7540 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xf0>
+   198f4:	vpbroadcastd -0x125a1(%rip),%ymm11        # 735c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x11f>
+   198fd:	vpbroadcastq -0x12466(%rip),%ymm12        # 74a0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x50>
+   19906:	movabs $0x3ffffffc0,%rbx
+   19910:	jmp    19b72 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x552>
+   19915:	data16 cs nopw 0x0(%rax,%rax,1)
+   19920:	vpermd (%rsi,%r9,8),%zmm16,%zmm13
+   19927:	vpsrld $0x8,%ymm13,%ymm1
+   1992d:	vpmuludq %ymm0,%ymm1,%ymm1
+   19931:	vpsrlq $0x18,%ymm1,%ymm1
+   19936:	vpsrlq $0x28,%ymm13,%ymm2
+   1993c:	vpmuludq %ymm0,%ymm2,%ymm2
+   19940:	vpshufb %ymm17,%ymm2,%ymm2
+   19946:	vpor   %ymm1,%ymm2,%ymm1
+   1994a:	vpslld $0x4,%ymm1,%ymm14
+   1994f:	vpternlogd $0xf8,%ymm18,%ymm13,%ymm14
+   19956:	vpcmpeqd %ymm1,%ymm1,%ymm1
+   1995a:	vpxor  %xmm15,%xmm15,%xmm15
+   1995f:	vpgatherdd %ymm1,(%r10,%ymm14,4),%ymm15
+   19965:	vmovdqu64 (%rsi,%r9,8),%zmm2
+   1996c:	vpsrld $0x2,%ymm13,%ymm1
+   19972:	vpand  %ymm4,%ymm1,%ymm3
+   19976:	vpternlogq $0x36,%ymm19,%ymm14,%ymm3
+   1997d:	vpcmpeqd %ymm5,%ymm5,%ymm5
+   19981:	vpxor  %xmm1,%xmm1,%xmm1
+   19985:	vpgatherdd %ymm5,(%r10,%ymm3,4),%ymm1
+   1998b:	vpmovqd %zmm2,%ymm3
+   19991:	vpsrld $0x4,%ymm13,%ymm2
+   19997:	vpand  %ymm4,%ymm2,%ymm5
+   1999b:	vpternlogq $0x36,%ymm20,%ymm14,%ymm5
+   199a2:	vpcmpeqd %ymm6,%ymm6,%ymm6
+   199a6:	vpxor  %xmm2,%xmm2,%xmm2
+   199aa:	vpgatherdd %ymm6,(%r10,%ymm5,4),%ymm2
+   199b0:	vpsrld $0x6,%ymm13,%ymm5
+   199b6:	vpand  %ymm4,%ymm5,%ymm5
+   199ba:	vpternlogq $0x36,%ymm7,%ymm14,%ymm5
+   199c1:	vprold $0x18,%ymm3,%ymm6
+   199c8:	vpcmpeqd %ymm14,%ymm14,%ymm14
+   199cd:	vpxor  %xmm13,%xmm13,%xmm13
+   199d2:	vpgatherdd %ymm14,(%r10,%ymm5,4),%ymm13
+   199d8:	vprold $0x10,%ymm3,%ymm5
+   199df:	vprold $0x8,%ymm3,%ymm14
+   199e6:	vpslld $0x1c,%ymm3,%ymm21
+   199ed:	vpsrad $0x1f,%ymm21,%ymm21
+   199f4:	vpermd %ymm9,%ymm3,%ymm22
+   199fa:	vpermd %ymm10,%ymm3,%ymm23
+   19a00:	vpmovb2m %ymm21,%k1
+   19a06:	vmovdqu8 %ymm23,%ymm22{%k1}
+   19a0c:	vpsrld $0x4,%ymm3,%ymm3
+   19a11:	vpand  %ymm3,%ymm8,%ymm3
+   19a15:	vpsllvd %ymm3,%ymm22,%ymm21
+   19a1b:	vpsubd %ymm3,%ymm11,%ymm3
+   19a1f:	vpsrlvd %ymm3,%ymm22,%ymm3
+   19a25:	vpord  %ymm3,%ymm21,%ymm3
+   19a2b:	vpslld $0x1c,%ymm6,%ymm21
+   19a32:	vpsrad $0x1f,%ymm21,%ymm21
+   19a39:	vpxord %xmm22,%xmm22,%xmm22
+   19a3f:	vpermd %ymm9,%ymm6,%ymm22
+   19a45:	vpxord %xmm23,%xmm23,%xmm23
+   19a4b:	vpermd %ymm10,%ymm6,%ymm23
+   19a51:	vpmovb2m %ymm21,%k1
+   19a57:	vmovdqu8 %ymm23,%ymm22{%k1}
+   19a5d:	vpsrld $0x4,%ymm6,%ymm6
+   19a62:	vpand  %ymm6,%ymm8,%ymm6
+   19a66:	vpsllvd %ymm6,%ymm22,%ymm21
+   19a6c:	vpsubd %ymm6,%ymm11,%ymm6
+   19a70:	vpsrlvd %ymm6,%ymm22,%ymm6
+   19a76:	vpord  %ymm6,%ymm21,%ymm6
+   19a7c:	vpslld $0x1c,%ymm5,%ymm21
+   19a83:	vpsrad $0x1f,%ymm21,%ymm21
+   19a8a:	vpxord %xmm22,%xmm22,%xmm22
+   19a90:	vpermd %ymm9,%ymm5,%ymm22
+   19a96:	vpxord %xmm23,%xmm23,%xmm23
+   19a9c:	vpermd %ymm10,%ymm5,%ymm23
+   19aa2:	vpmovb2m %ymm21,%k1
+   19aa8:	vmovdqu8 %ymm23,%ymm22{%k1}
+   19aae:	vpsrld $0x4,%ymm5,%ymm5
+   19ab3:	vpand  %ymm5,%ymm8,%ymm5
+   19ab7:	vpsllvd %ymm5,%ymm22,%ymm21
+   19abd:	vpsubd %ymm5,%ymm11,%ymm5
+   19ac1:	vpsrlvd %ymm5,%ymm22,%ymm5
+   19ac7:	vpord  %ymm5,%ymm21,%ymm5
+   19acd:	vpslld $0x1c,%ymm14,%ymm21
+   19ad4:	vpsrad $0x1f,%ymm21,%ymm21
+   19adb:	vpxord %xmm22,%xmm22,%xmm22
+   19ae1:	vpermd %ymm9,%ymm14,%ymm22
+   19ae7:	vpxord %xmm23,%xmm23,%xmm23
+   19aed:	vpermd %ymm10,%ymm14,%ymm23
+   19af3:	vpmovb2m %ymm21,%k1
+   19af9:	vmovdqu8 %ymm23,%ymm22{%k1}
+   19aff:	vpsrld $0x4,%ymm14,%ymm14
+   19b05:	vpand  %ymm8,%ymm14,%ymm14
+   19b0a:	vpsllvd %ymm14,%ymm22,%ymm21
+   19b10:	vpsubd %ymm14,%ymm11,%ymm14
+   19b15:	vpsrlvd %ymm14,%ymm22,%ymm14
+   19b1b:	vpord  %ymm14,%ymm21,%ymm14
+   19b21:	vpand  %ymm3,%ymm15,%ymm15
+   19b25:	vpcmpeqd %ymm3,%ymm15,%k1
+   19b2b:	vpand  %ymm6,%ymm1,%ymm1
+   19b2f:	vpand  %ymm5,%ymm2,%ymm2
+   19b33:	vpcmpeqd %ymm5,%ymm2,%k2
+   19b39:	vpand  %ymm14,%ymm13,%ymm2
+   19b3e:	vpcmpeqd %ymm6,%ymm1,%k0{%k1}
+   19b44:	vpcmpeqd %ymm14,%ymm2,%k1{%k2}
+   19b4a:	kandb  %k1,%k0,%k0
+   19b4e:	vpmovm2d %k0,%ymm1
+   19b54:	vpand  %ymm1,%ymm12,%ymm1
+   19b58:	vmovdqu %ymm1,(%rax,%r9,4)
+   19b5e:	lea    0x8(%r9),%r8
+   19b62:	add    $0x10,%r9
+   19b66:	cmp    %rdx,%r9
+   19b69:	mov    %r8,%r9
+   19b6c:	ja     1a480 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0xe60>
+   19b72:	lea    0x48(%r9),%rcx
+   19b76:	cmp    %rdx,%rcx
+   19b79:	ja     19920 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x300>
+   19b7f:	lea    0x40(%r9),%rcx
+   19b83:	cmp    %rdx,%rcx
+   19b86:	jae    1b37d <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d5d>
+   19b8c:	mov    0x200(%rsi,%r9,8),%rcx
+   19b94:	mov    %rcx,%r8
+   19b97:	shr    $0x20,%r8
+   19b9b:	shr    $0x28,%rcx
+   19b9f:	imul   %r11,%rcx
+   19ba3:	and    $0x3,%r8d
+   19ba7:	shr    $0x12,%rcx
+   19bab:	and    %rbx,%rcx
+   19bae:	add    %r10,%rcx
+   19bb1:	prefetcht0 (%rcx,%r8,4)
+   19bb6:	lea    0x41(%r9),%rcx
+   19bba:	cmp    %rdx,%rcx
+   19bbd:	jae    1b37d <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d5d>
+   19bc3:	mov    0x208(%rsi,%r9,8),%rcx
+   19bcb:	mov    %rcx,%r8
+   19bce:	shr    $0x20,%r8
+   19bd2:	shr    $0x28,%rcx
+   19bd6:	imul   %r11,%rcx
+   19bda:	and    $0x3,%r8d
+   19bde:	shr    $0x12,%rcx
+   19be2:	and    %rbx,%rcx
+   19be5:	add    %r10,%rcx
+   19be8:	prefetcht0 (%rcx,%r8,4)
+   19bed:	lea    0x42(%r9),%rcx
+   19bf1:	cmp    %rdx,%rcx
+   19bf4:	jae    1b37d <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d5d>
+   19bfa:	mov    0x210(%rsi,%r9,8),%rcx
+   19c02:	mov    %rcx,%r8
+   19c05:	shr    $0x20,%r8
+   19c09:	shr    $0x28,%rcx
+   19c0d:	imul   %r11,%rcx
+   19c11:	and    $0x3,%r8d
+   19c15:	shr    $0x12,%rcx
+   19c19:	and    %rbx,%rcx
+   19c1c:	add    %r10,%rcx
+   19c1f:	prefetcht0 (%rcx,%r8,4)
+   19c24:	lea    0x43(%r9),%rcx
+   19c28:	cmp    %rdx,%rcx
+   19c2b:	jae    1b37d <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d5d>
+   19c31:	mov    0x218(%rsi,%r9,8),%rcx
+   19c39:	mov    %rcx,%r8
+   19c3c:	shr    $0x20,%r8
+   19c40:	shr    $0x28,%rcx
+   19c44:	imul   %r11,%rcx
+   19c48:	and    $0x3,%r8d
+   19c4c:	shr    $0x12,%rcx
+   19c50:	and    %rbx,%rcx
+   19c53:	add    %r10,%rcx
+   19c56:	prefetcht0 (%rcx,%r8,4)
+   19c5b:	lea    0x44(%r9),%rcx
+   19c5f:	cmp    %rdx,%rcx
+   19c62:	jae    1b37d <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d5d>
+   19c68:	mov    0x220(%rsi,%r9,8),%rcx
+   19c70:	mov    %rcx,%r8
+   19c73:	shr    $0x20,%r8
+   19c77:	shr    $0x28,%rcx
+   19c7b:	imul   %r11,%rcx
+   19c7f:	and    $0x3,%r8d
+   19c83:	shr    $0x12,%rcx
+   19c87:	and    %rbx,%rcx
+   19c8a:	add    %r10,%rcx
+   19c8d:	prefetcht0 (%rcx,%r8,4)
+   19c92:	lea    0x45(%r9),%rcx
+   19c96:	cmp    %rdx,%rcx
+   19c99:	jae    1b37d <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d5d>
+   19c9f:	mov    0x228(%rsi,%r9,8),%rcx
+   19ca7:	mov    %rcx,%r8
+   19caa:	shr    $0x20,%r8
+   19cae:	shr    $0x28,%rcx
+   19cb2:	imul   %r11,%rcx
+   19cb6:	and    $0x3,%r8d
+   19cba:	shr    $0x12,%rcx
+   19cbe:	and    %rbx,%rcx
+   19cc1:	add    %r10,%rcx
+   19cc4:	prefetcht0 (%rcx,%r8,4)
+   19cc9:	lea    0x46(%r9),%rcx
+   19ccd:	cmp    %rdx,%rcx
+   19cd0:	jae    1b37d <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d5d>
+   19cd6:	mov    0x230(%rsi,%r9,8),%rcx
+   19cde:	mov    %rcx,%r8
+   19ce1:	shr    $0x20,%r8
+   19ce5:	shr    $0x28,%rcx
+   19ce9:	imul   %r11,%rcx
+   19ced:	and    $0x3,%r8d
+   19cf1:	shr    $0x12,%rcx
+   19cf5:	and    %rbx,%rcx
+   19cf8:	add    %r10,%rcx
+   19cfb:	prefetcht0 (%rcx,%r8,4)
+   19d00:	lea    0x47(%r9),%rcx
+   19d04:	cmp    %rdx,%rcx
+   19d07:	jae    1b37d <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d5d>
+   19d0d:	mov    0x238(%rsi,%r9,8),%rcx
+   19d15:	mov    %rcx,%r8
+   19d18:	shr    $0x20,%r8
+   19d1c:	shr    $0x28,%rcx
+   19d20:	imul   %r11,%rcx
+   19d24:	and    $0x3,%r8d
+   19d28:	shr    $0x12,%rcx
+   19d2c:	and    %rbx,%rcx
+   19d2f:	add    %r10,%rcx
+   19d32:	prefetcht0 (%rcx,%r8,4)
+   19d37:	jmp    19920 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x300>
+   19d3c:	test   %rdx,%rdx
+   19d3f:	je     1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   19d45:	mov    0x18(%rdi),%r9d
+   19d49:	mov    0x8(%rdi),%r10
+   19d4d:	mov    0x10(%rdi),%r8
+   19d51:	xor    %ebx,%ebx
+   19d53:	lea    -0x11e5a(%rip),%r11        # 7f00 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x50>
+   19d5a:	nopw   0x0(%rax,%rax,1)
+   19d60:	mov    (%rsi,%rbx,8),%r14
+   19d64:	mov    %r14,%rdi
+   19d67:	shr    $0x28,%rdi
+   19d6b:	imul   %r9,%rdi
+   19d6f:	shr    $0x18,%rdi
+   19d73:	and    $0xfffffff,%edi
+   19d79:	cmp    %rdi,%r8
+   19d7c:	jbe    1b3ac <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d8c>
+   19d82:	shl    $0x6,%rdi
+   19d86:	add    %r10,%rdi
+   19d89:	mov    %r14,%r15
+   19d8c:	shr    $0x20,%r15
+   19d90:	and    $0x3,%r15d
+   19d94:	mov    %r14d,%ecx
+   19d97:	and    $0xf,%ecx
+   19d9a:	mov    (%r11,%rcx,4),%r12d
+   19d9e:	mov    %r14d,%ecx
+   19da1:	shr    $0x4,%ecx
+   19da4:	rol    %cl,%r12d
+   19da7:	mov    (%rdi,%r15,4),%ebp
+   19dab:	and    %r12d,%ebp
+   19dae:	xor    %r12d,%ebp
+   19db1:	lea    0x4(%r15),%ecx
+   19db5:	mov    %r14,%r12
+   19db8:	shr    $0x22,%r12
+   19dbc:	and    $0x3,%r12d
+   19dc0:	xor    %ecx,%r12d
+   19dc3:	mov    %r14d,%ecx
+   19dc6:	shr    $0x6,%ecx
+   19dc9:	and    $0x3c,%ecx
+   19dcc:	mov    (%rcx,%r11,1),%r13d
+   19dd0:	mov    %r14d,%ecx
+   19dd3:	shr    $0xc,%ecx
+   19dd6:	rol    %cl,%r13d
+   19dd9:	mov    (%rdi,%r12,4),%r12d
+   19ddd:	and    %r13d,%r12d
+   19de0:	xor    %r13d,%r12d
+   19de3:	or     %ebp,%r12d
+   19de6:	lea    0x8(%r15),%ecx
+   19dea:	mov    %r14,%r13
+   19ded:	shr    $0x24,%r13
+   19df1:	and    $0x3,%r13d
+   19df5:	xor    %ecx,%r13d
+   19df8:	mov    (%rdi,%r13,4),%ebp
+   19dfc:	mov    %r14d,%ecx
+   19dff:	shr    $0xe,%ecx
+   19e02:	and    $0x3c,%ecx
+   19e05:	mov    (%rcx,%r11,1),%r13d
+   19e09:	mov    %r14d,%ecx
+   19e0c:	shr    $0x14,%ecx
+   19e0f:	rol    %cl,%r13d
+   19e12:	andn   %r13d,%ebp,%ebp
+   19e17:	or     %r12d,%ebp
+   19e1a:	or     $0xc,%r15d
+   19e1e:	mov    %r14,%rcx
+   19e21:	shr    $0x26,%rcx
+   19e25:	and    $0x3,%ecx
+   19e28:	xor    %r15d,%ecx
+   19e2b:	mov    (%rdi,%rcx,4),%edi
+   19e2e:	rorx   $0x18,%r14d,%ecx
+   19e34:	mov    %ecx,%r14d
+   19e37:	and    $0xf,%r14d
+   19e3b:	mov    (%r11,%r14,4),%r14d
+   19e3f:	shr    $0x4,%ecx
+   19e42:	rol    %cl,%r14d
+   19e45:	andn   %r14d,%edi,%ecx
+   19e4a:	xor    %edi,%edi
+   19e4c:	or     %ebp,%ecx
+   19e4e:	sete   %dil
+   19e52:	mov    %edi,(%rax,%rbx,4)
+   19e55:	inc    %rbx
+   19e58:	cmp    %rbx,%rdx
+   19e5b:	jne    19d60 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x740>
+   19e61:	jmp    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   19e66:	cmp    $0x3,%rdx
+   19e6a:	jbe    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   19e70:	mov    (%rdi),%rcx
+   19e73:	shl    $0x6,%rcx
+   19e77:	cmp    $0x40,%rdx
+   19e7b:	jae    1a5b0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0xf90>
+   19e81:	cmp    $0x200001,%rcx
+   19e88:	setb   %r8b
+   19e8c:	cmp    $0x9,%rdx
+   19e90:	setae  %r9b
+   19e94:	test   %r8b,%r9b
+   19e97:	jne    1ab58 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1538>
+   19e9d:	mov    0x18(%rdi),%r8d
+   19ea1:	cmp    $0x200000,%rcx
+   19ea8:	jbe    1b13a <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b1a>
+   19eae:	mov    0x8(%rdi),%rcx
+   19eb2:	lea    -0x8(,%rdx,8),%r9
+   19eba:	mov    %r9d,%r10d
+   19ebd:	not    %r10d
+   19ec0:	mov    %rsi,%rdi
+   19ec3:	test   $0x38,%r10b
+   19ec7:	je     19f1e <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x8fe>
+   19ec9:	mov    %r9d,%r10d
+   19ecc:	shr    $0x3,%r10d
+   19ed0:	inc    %r10d
+   19ed3:	and    $0x7,%r10d
+   19ed7:	neg    %r10
+   19eda:	movabs $0x3ffffffc0,%r11
+   19ee4:	mov    %rsi,%rdi
+   19ee7:	nopw   0x0(%rax,%rax,1)
+   19ef0:	mov    (%rdi),%rbx
+   19ef3:	add    $0x8,%rdi
+   19ef7:	mov    %rbx,%r14
+   19efa:	shr    $0x20,%r14
+   19efe:	shr    $0x28,%rbx
+   19f02:	imul   %r8,%rbx
+   19f06:	and    $0x3,%r14d
+   19f0a:	shr    $0x12,%rbx
+   19f0e:	and    %r11,%rbx
+   19f11:	add    %rcx,%rbx
+   19f14:	prefetcht0 (%rbx,%r14,4)
+   19f19:	inc    %r10
+   19f1c:	jne    19ef0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x8d0>
+   19f1e:	cmp    $0x38,%r9
+   19f22:	jb     1b13e <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b1e>
+   19f28:	lea    (%rsi,%rdx,8),%r9
+   19f2c:	movabs $0x3ffffffc0,%r10
+   19f36:	cs nopw 0x0(%rax,%rax,1)
+   19f40:	mov    (%rdi),%r11
+   19f43:	mov    %r11,%rbx
+   19f46:	shr    $0x20,%rbx
+   19f4a:	shr    $0x28,%r11
+   19f4e:	imul   %r8,%r11
+   19f52:	and    $0x3,%ebx
+   19f55:	shr    $0x12,%r11
+   19f59:	and    %r10,%r11
+   19f5c:	add    %rcx,%r11
+   19f5f:	prefetcht0 (%r11,%rbx,4)
+   19f64:	mov    0x8(%rdi),%r11
+   19f68:	mov    %r11,%rbx
+   19f6b:	shr    $0x20,%rbx
+   19f6f:	shr    $0x28,%r11
+   19f73:	imul   %r8,%r11
+   19f77:	and    $0x3,%ebx
+   19f7a:	shr    $0x12,%r11
+   19f7e:	and    %r10,%r11
+   19f81:	add    %rcx,%r11
+   19f84:	prefetcht0 (%r11,%rbx,4)
+   19f89:	mov    0x10(%rdi),%r11
+   19f8d:	mov    %r11,%rbx
+   19f90:	shr    $0x20,%rbx
+   19f94:	shr    $0x28,%r11
+   19f98:	imul   %r8,%r11
+   19f9c:	and    $0x3,%ebx
+   19f9f:	shr    $0x12,%r11
+   19fa3:	and    %r10,%r11
+   19fa6:	add    %rcx,%r11
+   19fa9:	prefetcht0 (%r11,%rbx,4)
+   19fae:	mov    0x18(%rdi),%r11
+   19fb2:	mov    %r11,%rbx
+   19fb5:	shr    $0x20,%rbx
+   19fb9:	shr    $0x28,%r11
+   19fbd:	imul   %r8,%r11
+   19fc1:	and    $0x3,%ebx
+   19fc4:	shr    $0x12,%r11
+   19fc8:	and    %r10,%r11
+   19fcb:	add    %rcx,%r11
+   19fce:	prefetcht0 (%r11,%rbx,4)
+   19fd3:	mov    0x20(%rdi),%r11
+   19fd7:	mov    %r11,%rbx
+   19fda:	shr    $0x20,%rbx
+   19fde:	shr    $0x28,%r11
+   19fe2:	imul   %r8,%r11
+   19fe6:	and    $0x3,%ebx
+   19fe9:	shr    $0x12,%r11
+   19fed:	and    %r10,%r11
+   19ff0:	add    %rcx,%r11
+   19ff3:	prefetcht0 (%r11,%rbx,4)
+   19ff8:	mov    0x28(%rdi),%r11
+   19ffc:	mov    %r11,%rbx
+   19fff:	shr    $0x20,%rbx
+   1a003:	shr    $0x28,%r11
+   1a007:	imul   %r8,%r11
+   1a00b:	and    $0x3,%ebx
+   1a00e:	shr    $0x12,%r11
+   1a012:	and    %r10,%r11
+   1a015:	add    %rcx,%r11
+   1a018:	prefetcht0 (%r11,%rbx,4)
+   1a01d:	mov    0x30(%rdi),%r11
+   1a021:	mov    %r11,%rbx
+   1a024:	shr    $0x20,%rbx
+   1a028:	shr    $0x28,%r11
+   1a02c:	imul   %r8,%r11
+   1a030:	and    $0x3,%ebx
+   1a033:	shr    $0x12,%r11
+   1a037:	and    %r10,%r11
+   1a03a:	add    %rcx,%r11
+   1a03d:	prefetcht0 (%r11,%rbx,4)
+   1a042:	mov    0x38(%rdi),%r11
+   1a046:	mov    %r11,%rbx
+   1a049:	shr    $0x20,%rbx
+   1a04d:	shr    $0x28,%r11
+   1a051:	imul   %r8,%r11
+   1a055:	and    $0x3,%ebx
+   1a058:	shr    $0x12,%r11
+   1a05c:	and    %r10,%r11
+   1a05f:	add    %rcx,%r11
+   1a062:	prefetcht0 (%r11,%rbx,4)
+   1a067:	add    $0x40,%rdi
+   1a06b:	cmp    %r9,%rdi
+   1a06e:	jne    19f40 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x920>
+   1a074:	jmp    1b13e <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b1e>
+   1a079:	mov    0x8(%rdi),%r10
+   1a07d:	mov    0x18(%rdi),%r11d
+   1a081:	vpbroadcastd %r11d,%ymm0
+   1a087:	xor    %r8d,%r8d
+   1a08a:	vmovdqa64 -0x12a94(%rip),%ymm16        # 7600 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x1b0>
+   1a094:	vmovdqa64 -0x12a5e(%rip),%ymm17        # 7640 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x1f0>
+   1a09e:	vpbroadcastd -0x12d6c(%rip),%ymm18        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   1a0a8:	vpbroadcastq -0x12c29(%rip),%ymm4        # 7488 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x38>
+   1a0b1:	vpbroadcastq -0x12cab(%rip),%ymm19        # 7410 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x1d3>
+   1a0bb:	vpbroadcastq -0x12c65(%rip),%ymm20        # 7460 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x10>
+   1a0c5:	vpbroadcastq -0x12c3e(%rip),%ymm7        # 7490 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x40>
+   1a0ce:	vpbroadcastd -0x12d83(%rip),%ymm8        # 7354 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x117>
+   1a0d7:	vmovdqa -0x12a3f(%rip),%ymm9        # 76a0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x250>
+   1a0df:	vmovdqa -0x12ba7(%rip),%ymm10        # 7540 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xf0>
+   1a0e7:	vpbroadcastd -0x12d94(%rip),%ymm11        # 735c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x11f>
+   1a0f0:	vpbroadcastq -0x12c59(%rip),%ymm12        # 74a0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x50>
+   1a0f9:	nopl   0x0(%rax)
+   1a100:	mov    %r8,%rcx
+   1a103:	vpermd (%rsi,%r8,8),%zmm16,%zmm13
+   1a10a:	vpsrld $0x8,%ymm13,%ymm1
+   1a110:	vpmuludq %ymm0,%ymm1,%ymm1
+   1a114:	vpsrlq $0x18,%ymm1,%ymm1
+   1a119:	vpsrlq $0x28,%ymm13,%ymm2
+   1a11f:	vpmuludq %ymm0,%ymm2,%ymm2
+   1a123:	vpshufb %ymm17,%ymm2,%ymm2
+   1a129:	vpor   %ymm1,%ymm2,%ymm1
+   1a12d:	vpslld $0x4,%ymm1,%ymm14
+   1a132:	vpternlogd $0xf8,%ymm18,%ymm13,%ymm14
+   1a139:	vpcmpeqd %ymm1,%ymm1,%ymm1
+   1a13d:	vpxor  %xmm15,%xmm15,%xmm15
+   1a142:	vpgatherdd %ymm1,(%r10,%ymm14,4),%ymm15
+   1a148:	vmovdqu64 (%rsi,%r8,8),%zmm2
+   1a14f:	vpsrld $0x2,%ymm13,%ymm1
+   1a155:	vpand  %ymm4,%ymm1,%ymm3
+   1a159:	vpternlogq $0x36,%ymm19,%ymm14,%ymm3
+   1a160:	vpcmpeqd %ymm5,%ymm5,%ymm5
+   1a164:	vpxor  %xmm1,%xmm1,%xmm1
+   1a168:	vpgatherdd %ymm5,(%r10,%ymm3,4),%ymm1
+   1a16e:	vpmovqd %zmm2,%ymm3
+   1a174:	vpsrld $0x4,%ymm13,%ymm2
+   1a17a:	vpand  %ymm4,%ymm2,%ymm5
+   1a17e:	vpternlogq $0x36,%ymm20,%ymm14,%ymm5
+   1a185:	vpcmpeqd %ymm6,%ymm6,%ymm6
+   1a189:	vpxor  %xmm2,%xmm2,%xmm2
+   1a18d:	vpgatherdd %ymm6,(%r10,%ymm5,4),%ymm2
+   1a193:	vpsrld $0x6,%ymm13,%ymm5
+   1a199:	vpand  %ymm4,%ymm5,%ymm5
+   1a19d:	vpternlogq $0x36,%ymm7,%ymm14,%ymm5
+   1a1a4:	vprold $0x18,%ymm3,%ymm6
+   1a1ab:	vpcmpeqd %ymm14,%ymm14,%ymm14
+   1a1b0:	vpxor  %xmm13,%xmm13,%xmm13
+   1a1b5:	vpgatherdd %ymm14,(%r10,%ymm5,4),%ymm13
+   1a1bb:	vprold $0x10,%ymm3,%ymm5
+   1a1c2:	vprold $0x8,%ymm3,%ymm14
+   1a1c9:	vpslld $0x1c,%ymm3,%ymm21
+   1a1d0:	vpsrad $0x1f,%ymm21,%ymm21
+   1a1d7:	vpxord %xmm22,%xmm22,%xmm22
+   1a1dd:	vpermd %ymm9,%ymm3,%ymm22
+   1a1e3:	vpermd %ymm10,%ymm3,%ymm23
+   1a1e9:	vpmovb2m %ymm21,%k1
+   1a1ef:	vmovdqu8 %ymm23,%ymm22{%k1}
+   1a1f5:	vpsrld $0x4,%ymm3,%ymm3
+   1a1fa:	vpand  %ymm3,%ymm8,%ymm3
+   1a1fe:	vpsllvd %ymm3,%ymm22,%ymm21
+   1a204:	vpsubd %ymm3,%ymm11,%ymm3
+   1a208:	vpsrlvd %ymm3,%ymm22,%ymm3
+   1a20e:	vpord  %ymm3,%ymm21,%ymm3
+   1a214:	vpslld $0x1c,%ymm6,%ymm21
+   1a21b:	vpsrad $0x1f,%ymm21,%ymm21
+   1a222:	vpxord %xmm22,%xmm22,%xmm22
+   1a228:	vpermd %ymm9,%ymm6,%ymm22
+   1a22e:	vpxord %xmm23,%xmm23,%xmm23
+   1a234:	vpermd %ymm10,%ymm6,%ymm23
+   1a23a:	vpmovb2m %ymm21,%k1
+   1a240:	vmovdqu8 %ymm23,%ymm22{%k1}
+   1a246:	vpsrld $0x4,%ymm6,%ymm6
+   1a24b:	vpand  %ymm6,%ymm8,%ymm6
+   1a24f:	vpsllvd %ymm6,%ymm22,%ymm21
+   1a255:	vpsubd %ymm6,%ymm11,%ymm6
+   1a259:	vpsrlvd %ymm6,%ymm22,%ymm6
+   1a25f:	vpord  %ymm6,%ymm21,%ymm6
+   1a265:	vpslld $0x1c,%ymm5,%ymm21
+   1a26c:	vpsrad $0x1f,%ymm21,%ymm21
+   1a273:	vpxord %xmm22,%xmm22,%xmm22
+   1a279:	vpermd %ymm9,%ymm5,%ymm22
+   1a27f:	vpxord %xmm23,%xmm23,%xmm23
+   1a285:	vpermd %ymm10,%ymm5,%ymm23
+   1a28b:	vpmovb2m %ymm21,%k1
+   1a291:	vmovdqu8 %ymm23,%ymm22{%k1}
+   1a297:	vpsrld $0x4,%ymm5,%ymm5
+   1a29c:	vpand  %ymm5,%ymm8,%ymm5
+   1a2a0:	vpsllvd %ymm5,%ymm22,%ymm21
+   1a2a6:	vpsubd %ymm5,%ymm11,%ymm5
+   1a2aa:	vpsrlvd %ymm5,%ymm22,%ymm5
+   1a2b0:	vpord  %ymm5,%ymm21,%ymm5
+   1a2b6:	vpslld $0x1c,%ymm14,%ymm21
+   1a2bd:	vpsrad $0x1f,%ymm21,%ymm21
+   1a2c4:	vpxord %xmm22,%xmm22,%xmm22
+   1a2ca:	vpermd %ymm9,%ymm14,%ymm22
+   1a2d0:	vpxord %xmm23,%xmm23,%xmm23
+   1a2d6:	vpermd %ymm10,%ymm14,%ymm23
+   1a2dc:	vpmovb2m %ymm21,%k1
+   1a2e2:	vmovdqu8 %ymm23,%ymm22{%k1}
+   1a2e8:	vpsrld $0x4,%ymm14,%ymm14
+   1a2ee:	vpand  %ymm8,%ymm14,%ymm14
+   1a2f3:	vpsllvd %ymm14,%ymm22,%ymm21
+   1a2f9:	vpsubd %ymm14,%ymm11,%ymm14
+   1a2fe:	vpsrlvd %ymm14,%ymm22,%ymm14
+   1a304:	vpord  %ymm14,%ymm21,%ymm14
+   1a30a:	vpand  %ymm3,%ymm15,%ymm15
+   1a30e:	vpcmpeqd %ymm3,%ymm15,%k1
+   1a314:	vpand  %ymm6,%ymm1,%ymm1
+   1a318:	vpand  %ymm5,%ymm2,%ymm2
+   1a31c:	vpcmpeqd %ymm5,%ymm2,%k2
+   1a322:	vpand  %ymm14,%ymm13,%ymm2
+   1a327:	vpcmpeqd %ymm6,%ymm1,%k0{%k1}
+   1a32d:	vpcmpeqd %ymm14,%ymm2,%k1{%k2}
+   1a333:	kandb  %k1,%k0,%k0
+   1a337:	vpmovm2d %k0,%ymm1
+   1a33d:	vpand  %ymm1,%ymm12,%ymm1
+   1a341:	vmovdqu %ymm1,(%rax,%r8,4)
+   1a347:	add    $0x8,%r8
+   1a34b:	add    $0x10,%rcx
+   1a34f:	cmp    %rdx,%rcx
+   1a352:	jbe    1a100 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0xae0>
+   1a358:	cmp    %rdx,%r8
+   1a35b:	jae    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1a361:	mov    0x10(%rdi),%r9
+   1a365:	lea    -0x1246c(%rip),%rbx        # 7f00 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x50>
+   1a36c:	nopl   0x0(%rax)
+   1a370:	mov    (%rsi,%r8,8),%r14
+   1a374:	mov    %r14,%rdi
+   1a377:	shr    $0x28,%rdi
+   1a37b:	imul   %r11,%rdi
+   1a37f:	shr    $0x18,%rdi
+   1a383:	and    $0xfffffff,%edi
+   1a389:	cmp    %rdi,%r9
+   1a38c:	jbe    1b3d5 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1db5>
+   1a392:	cmp    %rdx,%r8
+   1a395:	jae    1b3bc <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d9c>
+   1a39b:	shl    $0x6,%rdi
+   1a39f:	add    %r10,%rdi
+   1a3a2:	mov    %r14,%r15
+   1a3a5:	shr    $0x20,%r15
+   1a3a9:	and    $0x3,%r15d
+   1a3ad:	mov    %r14d,%ecx
+   1a3b0:	and    $0xf,%ecx
+   1a3b3:	mov    (%rbx,%rcx,4),%r12d
+   1a3b7:	mov    %r14d,%ecx
+   1a3ba:	shr    $0x4,%ecx
+   1a3bd:	rol    %cl,%r12d
+   1a3c0:	mov    (%rdi,%r15,4),%ebp
+   1a3c4:	and    %r12d,%ebp
+   1a3c7:	xor    %r12d,%ebp
+   1a3ca:	lea    0x4(%r15),%ecx
+   1a3ce:	mov    %r14,%r12
+   1a3d1:	shr    $0x22,%r12
+   1a3d5:	and    $0x3,%r12d
+   1a3d9:	xor    %ecx,%r12d
+   1a3dc:	mov    %r14d,%ecx
+   1a3df:	shr    $0x6,%ecx
+   1a3e2:	and    $0x3c,%ecx
+   1a3e5:	mov    (%rcx,%rbx,1),%r13d
+   1a3e9:	mov    %r14d,%ecx
+   1a3ec:	shr    $0xc,%ecx
+   1a3ef:	rol    %cl,%r13d
+   1a3f2:	mov    (%rdi,%r12,4),%r12d
+   1a3f6:	and    %r13d,%r12d
+   1a3f9:	xor    %r13d,%r12d
+   1a3fc:	or     %ebp,%r12d
+   1a3ff:	lea    0x8(%r15),%ecx
+   1a403:	mov    %r14,%r13
+   1a406:	shr    $0x24,%r13
+   1a40a:	and    $0x3,%r13d
+   1a40e:	xor    %ecx,%r13d
+   1a411:	mov    (%rdi,%r13,4),%ebp
+   1a415:	mov    %r14d,%ecx
+   1a418:	shr    $0xe,%ecx
+   1a41b:	and    $0x3c,%ecx
+   1a41e:	mov    (%rcx,%rbx,1),%r13d
+   1a422:	mov    %r14d,%ecx
+   1a425:	shr    $0x14,%ecx
+   1a428:	rol    %cl,%r13d
+   1a42b:	andn   %r13d,%ebp,%ebp
+   1a430:	or     %r12d,%ebp
+   1a433:	or     $0xc,%r15d
+   1a437:	mov    %r14,%rcx
+   1a43a:	shr    $0x26,%rcx
+   1a43e:	and    $0x3,%ecx
+   1a441:	xor    %r15d,%ecx
+   1a444:	mov    (%rdi,%rcx,4),%edi
+   1a447:	rorx   $0x18,%r14d,%ecx
+   1a44d:	mov    %ecx,%r14d
+   1a450:	and    $0xf,%r14d
+   1a454:	mov    (%rbx,%r14,4),%r14d
+   1a458:	shr    $0x4,%ecx
+   1a45b:	rol    %cl,%r14d
+   1a45e:	andn   %r14d,%edi,%ecx
+   1a463:	xor    %edi,%edi
+   1a465:	or     %ebp,%ecx
+   1a467:	sete   %dil
+   1a46b:	mov    %edi,(%rax,%r8,4)
+   1a46f:	inc    %r8
+   1a472:	cmp    %r8,%rdx
+   1a475:	jne    1a370 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0xd50>
+   1a47b:	jmp    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1a480:	cmp    %rdx,%r8
+   1a483:	jae    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1a489:	mov    0x10(%rdi),%r9
+   1a48d:	lea    -0x12594(%rip),%rbx        # 7f00 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x50>
+   1a494:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   1a4a0:	mov    (%rsi,%r8,8),%r14
+   1a4a4:	mov    %r14,%rdi
+   1a4a7:	shr    $0x28,%rdi
+   1a4ab:	imul   %r11,%rdi
+   1a4af:	shr    $0x18,%rdi
+   1a4b3:	and    $0xfffffff,%edi
+   1a4b9:	cmp    %rdi,%r9
+   1a4bc:	jbe    1b3d5 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1db5>
+   1a4c2:	cmp    %rdx,%r8
+   1a4c5:	jae    1b3bc <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d9c>
+   1a4cb:	shl    $0x6,%rdi
+   1a4cf:	add    %r10,%rdi
+   1a4d2:	mov    %r14,%r15
+   1a4d5:	shr    $0x20,%r15
+   1a4d9:	and    $0x3,%r15d
+   1a4dd:	mov    %r14d,%ecx
+   1a4e0:	and    $0xf,%ecx
+   1a4e3:	mov    (%rbx,%rcx,4),%r12d
+   1a4e7:	mov    %r14d,%ecx
+   1a4ea:	shr    $0x4,%ecx
+   1a4ed:	rol    %cl,%r12d
+   1a4f0:	mov    (%rdi,%r15,4),%ebp
+   1a4f4:	and    %r12d,%ebp
+   1a4f7:	xor    %r12d,%ebp
+   1a4fa:	lea    0x4(%r15),%ecx
+   1a4fe:	mov    %r14,%r12
+   1a501:	shr    $0x22,%r12
+   1a505:	and    $0x3,%r12d
+   1a509:	xor    %ecx,%r12d
+   1a50c:	mov    %r14d,%ecx
+   1a50f:	shr    $0x6,%ecx
+   1a512:	and    $0x3c,%ecx
+   1a515:	mov    (%rcx,%rbx,1),%r13d
+   1a519:	mov    %r14d,%ecx
+   1a51c:	shr    $0xc,%ecx
+   1a51f:	rol    %cl,%r13d
+   1a522:	mov    (%rdi,%r12,4),%r12d
+   1a526:	and    %r13d,%r12d
+   1a529:	xor    %r13d,%r12d
+   1a52c:	or     %ebp,%r12d
+   1a52f:	lea    0x8(%r15),%ecx
+   1a533:	mov    %r14,%r13
+   1a536:	shr    $0x24,%r13
+   1a53a:	and    $0x3,%r13d
+   1a53e:	xor    %ecx,%r13d
+   1a541:	mov    (%rdi,%r13,4),%ebp
+   1a545:	mov    %r14d,%ecx
+   1a548:	shr    $0xe,%ecx
+   1a54b:	and    $0x3c,%ecx
+   1a54e:	mov    (%rcx,%rbx,1),%r13d
+   1a552:	mov    %r14d,%ecx
+   1a555:	shr    $0x14,%ecx
+   1a558:	rol    %cl,%r13d
+   1a55b:	andn   %r13d,%ebp,%ebp
+   1a560:	or     %r12d,%ebp
+   1a563:	or     $0xc,%r15d
+   1a567:	mov    %r14,%rcx
+   1a56a:	shr    $0x26,%rcx
+   1a56e:	and    $0x3,%ecx
+   1a571:	xor    %r15d,%ecx
+   1a574:	mov    (%rdi,%rcx,4),%edi
+   1a577:	rorx   $0x18,%r14d,%ecx
+   1a57d:	mov    %ecx,%r14d
+   1a580:	and    $0xf,%r14d
+   1a584:	mov    (%rbx,%r14,4),%r14d
+   1a588:	shr    $0x4,%ecx
+   1a58b:	rol    %cl,%r14d
+   1a58e:	andn   %r14d,%edi,%ecx
+   1a593:	xor    %edi,%edi
+   1a595:	or     %ebp,%ecx
+   1a597:	sete   %dil
+   1a59b:	mov    %edi,(%rax,%r8,4)
+   1a59f:	inc    %r8
+   1a5a2:	cmp    %r8,%rdx
+   1a5a5:	jne    1a4a0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0xe80>
+   1a5ab:	jmp    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1a5b0:	vmovdqa64 -0x126ba(%rip),%zmm0        # 7f00 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x50>
+   1a5ba:	cmp    $0x200000,%rcx
+   1a5c1:	jbe    1ab77 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1557>
+   1a5c7:	mov    0x18(%rdi),%r8d
+   1a5cb:	mov    0x8(%rdi),%rcx
+   1a5cf:	vpbroadcastd %r8d,%zmm4
+   1a5d5:	xor    %r9d,%r9d
+   1a5d8:	vmovdqa64 -0x12ca2(%rip),%zmm1        # 7940 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x280>
+   1a5e2:	vmovdqa64 -0x12c6c(%rip),%zmm2        # 7980 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x2c0>
+   1a5ec:	vmovdqa64 -0x12c36(%rip),%zmm5        # 79c0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x300>
+   1a5f6:	vpbroadcastd -0x132c4(%rip),%zmm3        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   1a600:	vpbroadcastd -0x132fe(%rip),%zmm6        # 730c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xcf>
+   1a60a:	vpbroadcastd -0x132b4(%rip),%zmm7        # 7360 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x123>
+   1a614:	vpbroadcastd -0x13306(%rip),%zmm8        # 7318 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xdb>
+   1a61e:	movabs $0x3ffffffc0,%r10
+   1a628:	jmp    1a7d6 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x11b6>
+   1a62d:	nopl   (%rax)
+   1a630:	vmovdqu64 (%rsi,%r9,8),%zmm9
+   1a637:	vmovdqu64 0x40(%rsi,%r9,8),%zmm10
+   1a63f:	vmovdqa64 %zmm9,%zmm11
+   1a645:	vpermt2d %zmm10,%zmm1,%zmm11
+   1a64b:	vpermt2d %zmm10,%zmm2,%zmm9
+   1a651:	vpsrld $0x8,%zmm9,%zmm10
+   1a658:	vpmuludq %zmm4,%zmm10,%zmm10
+   1a65e:	vpsrlq $0x18,%zmm10,%zmm10
+   1a665:	vpsrlq $0x28,%zmm9,%zmm12
+   1a66c:	vpmuludq %zmm4,%zmm12,%zmm12
+   1a672:	vpshufb %zmm5,%zmm12,%zmm12
+   1a678:	vpord  %zmm10,%zmm12,%zmm10
+   1a67e:	vpslld $0x4,%zmm10,%zmm10
+   1a685:	vpternlogd $0xf8,%zmm3,%zmm9,%zmm10
+   1a68c:	vpsrld $0x2,%zmm9,%zmm12
+   1a693:	vpandd %zmm3,%zmm12,%zmm12
+   1a699:	vpternlogd $0x36,%zmm6,%zmm10,%zmm12
+   1a6a0:	vpsrld $0x4,%zmm9,%zmm13
+   1a6a7:	vpandd %zmm3,%zmm13,%zmm13
+   1a6ad:	vpternlogd $0x36,%zmm7,%zmm10,%zmm13
+   1a6b4:	vpsrld $0x6,%zmm9,%zmm9
+   1a6bb:	vpandd %zmm3,%zmm9,%zmm9
+   1a6c1:	vpternlogd $0x36,%zmm8,%zmm10,%zmm9
+   1a6c8:	vprold $0x18,%zmm11,%zmm14
+   1a6cf:	vprold $0x10,%zmm11,%zmm15
+   1a6d6:	vprold $0x8,%zmm11,%zmm16
+   1a6dd:	vpxord %xmm17,%xmm17,%xmm17
+   1a6e3:	kxnorw %k0,%k0,%k1
+   1a6e7:	vpgatherdd (%rcx,%zmm10,4),%zmm17{%k1}
+   1a6ee:	vpxor  %xmm10,%xmm10,%xmm10
+   1a6f3:	vpermd %zmm0,%zmm11,%zmm10
+   1a6f9:	vpsrld $0x4,%zmm11,%zmm11
+   1a700:	vprolvd %zmm11,%zmm10,%zmm10
+   1a706:	vpxor  %xmm11,%xmm11,%xmm11
+   1a70b:	kxnorw %k0,%k0,%k1
+   1a70f:	vpgatherdd (%rcx,%zmm12,4),%zmm11{%k1}
+   1a716:	vpxor  %xmm12,%xmm12,%xmm12
+   1a71b:	vpermd %zmm0,%zmm14,%zmm12
+   1a721:	vpsrld $0x4,%zmm14,%zmm14
+   1a728:	vprolvd %zmm14,%zmm12,%zmm12
+   1a72e:	vpxor  %xmm14,%xmm14,%xmm14
+   1a733:	kxnorw %k0,%k0,%k1
+   1a737:	vpgatherdd (%rcx,%zmm13,4),%zmm14{%k1}
+   1a73e:	vpxor  %xmm13,%xmm13,%xmm13
+   1a743:	vpermd %zmm0,%zmm15,%zmm13
+   1a749:	vpsrld $0x4,%zmm15,%zmm15
+   1a750:	vprolvd %zmm15,%zmm13,%zmm13
+   1a756:	vpxor  %xmm15,%xmm15,%xmm15
+   1a75b:	kxnorw %k0,%k0,%k1
+   1a75f:	vpgatherdd (%rcx,%zmm9,4),%zmm15{%k1}
+   1a766:	vpxor  %xmm9,%xmm9,%xmm9
+   1a76b:	vpermd %zmm0,%zmm16,%zmm9
+   1a771:	vpsrld $0x4,%zmm16,%zmm16
+   1a778:	vprolvd %zmm16,%zmm9,%zmm9
+   1a77e:	vpandd %zmm10,%zmm17,%zmm16
+   1a784:	vpcmpeqd %zmm10,%zmm16,%k1
+   1a78a:	vpandd %zmm12,%zmm11,%zmm10
+   1a790:	vpcmpeqd %zmm12,%zmm10,%k1{%k1}
+   1a796:	vpandd %zmm13,%zmm14,%zmm10
+   1a79c:	vpcmpeqd %zmm13,%zmm10,%k1{%k1}
+   1a7a2:	vpandd %zmm9,%zmm15,%zmm10
+   1a7a8:	vpcmpeqd %zmm9,%zmm10,%k0{%k1}
+   1a7ae:	vpmovm2d %k0,%zmm9
+   1a7b4:	vpsrld $0x1f,%zmm9,%zmm9
+   1a7bb:	vmovdqu64 %zmm9,(%rax,%r9,4)
+   1a7c2:	lea    0x10(%r9),%rdi
+   1a7c6:	add    $0x20,%r9
+   1a7ca:	cmp    %rdx,%r9
+   1a7cd:	mov    %rdi,%r9
+   1a7d0:	ja     1af56 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1936>
+   1a7d6:	lea    0x50(%r9),%rdi
+   1a7da:	cmp    %rdx,%rdi
+   1a7dd:	ja     1a630 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1010>
+   1a7e3:	lea    0x40(%r9),%rdi
+   1a7e7:	cmp    %rdx,%rdi
+   1a7ea:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a7f0:	mov    0x200(%rsi,%r9,8),%rdi
+   1a7f8:	mov    %rdi,%r11
+   1a7fb:	shr    $0x20,%r11
+   1a7ff:	shr    $0x28,%rdi
+   1a803:	imul   %r8,%rdi
+   1a807:	and    $0x3,%r11d
+   1a80b:	shr    $0x12,%rdi
+   1a80f:	and    %r10,%rdi
+   1a812:	add    %rcx,%rdi
+   1a815:	prefetcht0 (%rdi,%r11,4)
+   1a81a:	lea    0x41(%r9),%rdi
+   1a81e:	cmp    %rdx,%rdi
+   1a821:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a827:	mov    0x208(%rsi,%r9,8),%rdi
+   1a82f:	mov    %rdi,%r11
+   1a832:	shr    $0x20,%r11
+   1a836:	shr    $0x28,%rdi
+   1a83a:	imul   %r8,%rdi
+   1a83e:	and    $0x3,%r11d
+   1a842:	shr    $0x12,%rdi
+   1a846:	and    %r10,%rdi
+   1a849:	add    %rcx,%rdi
+   1a84c:	prefetcht0 (%rdi,%r11,4)
+   1a851:	lea    0x42(%r9),%rdi
+   1a855:	cmp    %rdx,%rdi
+   1a858:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a85e:	mov    0x210(%rsi,%r9,8),%rdi
+   1a866:	mov    %rdi,%r11
+   1a869:	shr    $0x20,%r11
+   1a86d:	shr    $0x28,%rdi
+   1a871:	imul   %r8,%rdi
+   1a875:	and    $0x3,%r11d
+   1a879:	shr    $0x12,%rdi
+   1a87d:	and    %r10,%rdi
+   1a880:	add    %rcx,%rdi
+   1a883:	prefetcht0 (%rdi,%r11,4)
+   1a888:	lea    0x43(%r9),%rdi
+   1a88c:	cmp    %rdx,%rdi
+   1a88f:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a895:	mov    0x218(%rsi,%r9,8),%rdi
+   1a89d:	mov    %rdi,%r11
+   1a8a0:	shr    $0x20,%r11
+   1a8a4:	shr    $0x28,%rdi
+   1a8a8:	imul   %r8,%rdi
+   1a8ac:	and    $0x3,%r11d
+   1a8b0:	shr    $0x12,%rdi
+   1a8b4:	and    %r10,%rdi
+   1a8b7:	add    %rcx,%rdi
+   1a8ba:	prefetcht0 (%rdi,%r11,4)
+   1a8bf:	lea    0x44(%r9),%rdi
+   1a8c3:	cmp    %rdx,%rdi
+   1a8c6:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a8cc:	mov    0x220(%rsi,%r9,8),%rdi
+   1a8d4:	mov    %rdi,%r11
+   1a8d7:	shr    $0x20,%r11
+   1a8db:	shr    $0x28,%rdi
+   1a8df:	imul   %r8,%rdi
+   1a8e3:	and    $0x3,%r11d
+   1a8e7:	shr    $0x12,%rdi
+   1a8eb:	and    %r10,%rdi
+   1a8ee:	add    %rcx,%rdi
+   1a8f1:	prefetcht0 (%rdi,%r11,4)
+   1a8f6:	lea    0x45(%r9),%rdi
+   1a8fa:	cmp    %rdx,%rdi
+   1a8fd:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a903:	mov    0x228(%rsi,%r9,8),%rdi
+   1a90b:	mov    %rdi,%r11
+   1a90e:	shr    $0x20,%r11
+   1a912:	shr    $0x28,%rdi
+   1a916:	imul   %r8,%rdi
+   1a91a:	and    $0x3,%r11d
+   1a91e:	shr    $0x12,%rdi
+   1a922:	and    %r10,%rdi
+   1a925:	add    %rcx,%rdi
+   1a928:	prefetcht0 (%rdi,%r11,4)
+   1a92d:	lea    0x46(%r9),%rdi
+   1a931:	cmp    %rdx,%rdi
+   1a934:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a93a:	mov    0x230(%rsi,%r9,8),%rdi
+   1a942:	mov    %rdi,%r11
+   1a945:	shr    $0x20,%r11
+   1a949:	shr    $0x28,%rdi
+   1a94d:	imul   %r8,%rdi
+   1a951:	and    $0x3,%r11d
+   1a955:	shr    $0x12,%rdi
+   1a959:	and    %r10,%rdi
+   1a95c:	add    %rcx,%rdi
+   1a95f:	prefetcht0 (%rdi,%r11,4)
+   1a964:	lea    0x47(%r9),%rdi
+   1a968:	cmp    %rdx,%rdi
+   1a96b:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a971:	mov    0x238(%rsi,%r9,8),%rdi
+   1a979:	mov    %rdi,%r11
+   1a97c:	shr    $0x20,%r11
+   1a980:	shr    $0x28,%rdi
+   1a984:	imul   %r8,%rdi
+   1a988:	and    $0x3,%r11d
+   1a98c:	shr    $0x12,%rdi
+   1a990:	and    %r10,%rdi
+   1a993:	add    %rcx,%rdi
+   1a996:	prefetcht0 (%rdi,%r11,4)
+   1a99b:	lea    0x48(%r9),%rdi
+   1a99f:	cmp    %rdx,%rdi
+   1a9a2:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a9a8:	mov    0x240(%rsi,%r9,8),%rdi
+   1a9b0:	mov    %rdi,%r11
+   1a9b3:	shr    $0x20,%r11
+   1a9b7:	shr    $0x28,%rdi
+   1a9bb:	imul   %r8,%rdi
+   1a9bf:	and    $0x3,%r11d
+   1a9c3:	shr    $0x12,%rdi
+   1a9c7:	and    %r10,%rdi
+   1a9ca:	add    %rcx,%rdi
+   1a9cd:	prefetcht0 (%rdi,%r11,4)
+   1a9d2:	lea    0x49(%r9),%rdi
+   1a9d6:	cmp    %rdx,%rdi
+   1a9d9:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1a9df:	mov    0x248(%rsi,%r9,8),%rdi
+   1a9e7:	mov    %rdi,%r11
+   1a9ea:	shr    $0x20,%r11
+   1a9ee:	shr    $0x28,%rdi
+   1a9f2:	imul   %r8,%rdi
+   1a9f6:	and    $0x3,%r11d
+   1a9fa:	shr    $0x12,%rdi
+   1a9fe:	and    %r10,%rdi
+   1aa01:	add    %rcx,%rdi
+   1aa04:	prefetcht0 (%rdi,%r11,4)
+   1aa09:	lea    0x4a(%r9),%rdi
+   1aa0d:	cmp    %rdx,%rdi
+   1aa10:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1aa16:	mov    0x250(%rsi,%r9,8),%rdi
+   1aa1e:	mov    %rdi,%r11
+   1aa21:	shr    $0x20,%r11
+   1aa25:	shr    $0x28,%rdi
+   1aa29:	imul   %r8,%rdi
+   1aa2d:	and    $0x3,%r11d
+   1aa31:	shr    $0x12,%rdi
+   1aa35:	and    %r10,%rdi
+   1aa38:	add    %rcx,%rdi
+   1aa3b:	prefetcht0 (%rdi,%r11,4)
+   1aa40:	lea    0x4b(%r9),%rdi
+   1aa44:	cmp    %rdx,%rdi
+   1aa47:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1aa4d:	mov    0x258(%rsi,%r9,8),%rdi
+   1aa55:	mov    %rdi,%r11
+   1aa58:	shr    $0x20,%r11
+   1aa5c:	shr    $0x28,%rdi
+   1aa60:	imul   %r8,%rdi
+   1aa64:	and    $0x3,%r11d
+   1aa68:	shr    $0x12,%rdi
+   1aa6c:	and    %r10,%rdi
+   1aa6f:	add    %rcx,%rdi
+   1aa72:	prefetcht0 (%rdi,%r11,4)
+   1aa77:	lea    0x4c(%r9),%rdi
+   1aa7b:	cmp    %rdx,%rdi
+   1aa7e:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1aa84:	mov    0x260(%rsi,%r9,8),%rdi
+   1aa8c:	mov    %rdi,%r11
+   1aa8f:	shr    $0x20,%r11
+   1aa93:	shr    $0x28,%rdi
+   1aa97:	imul   %r8,%rdi
+   1aa9b:	and    $0x3,%r11d
+   1aa9f:	shr    $0x12,%rdi
+   1aaa3:	and    %r10,%rdi
+   1aaa6:	add    %rcx,%rdi
+   1aaa9:	prefetcht0 (%rdi,%r11,4)
+   1aaae:	lea    0x4d(%r9),%rdi
+   1aab2:	cmp    %rdx,%rdi
+   1aab5:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1aabb:	mov    0x268(%rsi,%r9,8),%rdi
+   1aac3:	mov    %rdi,%r11
+   1aac6:	shr    $0x20,%r11
+   1aaca:	shr    $0x28,%rdi
+   1aace:	imul   %r8,%rdi
+   1aad2:	and    $0x3,%r11d
+   1aad6:	shr    $0x12,%rdi
+   1aada:	and    %r10,%rdi
+   1aadd:	add    %rcx,%rdi
+   1aae0:	prefetcht0 (%rdi,%r11,4)
+   1aae5:	lea    0x4e(%r9),%rdi
+   1aae9:	cmp    %rdx,%rdi
+   1aaec:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1aaf2:	mov    0x270(%rsi,%r9,8),%rdi
+   1aafa:	mov    %rdi,%r11
+   1aafd:	shr    $0x20,%r11
+   1ab01:	shr    $0x28,%rdi
+   1ab05:	imul   %r8,%rdi
+   1ab09:	and    $0x3,%r11d
+   1ab0d:	shr    $0x12,%rdi
+   1ab11:	and    %r10,%rdi
+   1ab14:	add    %rcx,%rdi
+   1ab17:	prefetcht0 (%rdi,%r11,4)
+   1ab1c:	lea    0x4f(%r9),%rdi
+   1ab20:	cmp    %rdx,%rdi
+   1ab23:	jae    1b396 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1d76>
+   1ab29:	mov    0x278(%rsi,%r9,8),%rdi
+   1ab31:	mov    %rdi,%r11
+   1ab34:	shr    $0x20,%r11
+   1ab38:	shr    $0x28,%rdi
+   1ab3c:	imul   %r8,%rdi
+   1ab40:	and    $0x3,%r11d
+   1ab44:	shr    $0x12,%rdi
+   1ab48:	and    %r10,%rdi
+   1ab4b:	add    %rcx,%rdi
+   1ab4e:	prefetcht0 (%rdi,%r11,4)
+   1ab53:	jmp    1a630 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1010>
+   1ab58:	vmovdqa64 -0x12c62(%rip),%zmm0        # 7f00 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x50>
+   1ab62:	cmp    $0xf,%rdx
+   1ab66:	ja     1ab77 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1557>
+   1ab68:	mov    0x8(%rdi),%rcx
+   1ab6c:	mov    0x18(%rdi),%r8d
+   1ab70:	xor    %edi,%edi
+   1ab72:	jmp    1ad7f <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x175f>
+   1ab77:	mov    0x8(%rdi),%rcx
+   1ab7b:	mov    0x18(%rdi),%r8d
+   1ab7f:	vpbroadcastd %r8d,%zmm1
+   1ab85:	xor    %edi,%edi
+   1ab87:	vmovdqa64 -0x13251(%rip),%zmm2        # 7940 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x280>
+   1ab91:	vmovdqa64 -0x1321b(%rip),%zmm3        # 7980 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x2c0>
+   1ab9b:	vmovdqa64 -0x131e5(%rip),%zmm4        # 79c0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x300>
+   1aba5:	vpbroadcastd -0x13873(%rip),%zmm5        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   1abaf:	vpbroadcastd -0x138ad(%rip),%zmm6        # 730c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xcf>
+   1abb9:	vpbroadcastd -0x13863(%rip),%zmm7        # 7360 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x123>
+   1abc3:	vpbroadcastd -0x138b5(%rip),%zmm8        # 7318 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xdb>
+   1abcd:	nopl   (%rax)
+   1abd0:	mov    %rdi,%r9
+   1abd3:	vmovdqu64 (%rsi,%rdi,8),%zmm9
+   1abda:	vmovdqu64 0x40(%rsi,%rdi,8),%zmm10
+   1abe2:	vmovdqa64 %zmm9,%zmm11
+   1abe8:	vpermt2d %zmm10,%zmm2,%zmm11
+   1abee:	vpermt2d %zmm10,%zmm3,%zmm9
+   1abf4:	vpsrld $0x8,%zmm9,%zmm10
+   1abfb:	vpmuludq %zmm1,%zmm10,%zmm10
+   1ac01:	vpsrlq $0x18,%zmm10,%zmm10
+   1ac08:	vpsrlq $0x28,%zmm9,%zmm12
+   1ac0f:	vpmuludq %zmm1,%zmm12,%zmm12
+   1ac15:	vpshufb %zmm4,%zmm12,%zmm12
+   1ac1b:	vpord  %zmm10,%zmm12,%zmm10
+   1ac21:	vpslld $0x4,%zmm10,%zmm10
+   1ac28:	vpternlogd $0xf8,%zmm5,%zmm9,%zmm10
+   1ac2f:	vpsrld $0x2,%zmm9,%zmm12
+   1ac36:	vpandd %zmm5,%zmm12,%zmm12
+   1ac3c:	vpternlogd $0x36,%zmm6,%zmm10,%zmm12
+   1ac43:	vpsrld $0x4,%zmm9,%zmm13
+   1ac4a:	vpandd %zmm5,%zmm13,%zmm13
+   1ac50:	vpternlogd $0x36,%zmm7,%zmm10,%zmm13
+   1ac57:	vpsrld $0x6,%zmm9,%zmm9
+   1ac5e:	vpandd %zmm5,%zmm9,%zmm9
+   1ac64:	vpternlogd $0x36,%zmm8,%zmm10,%zmm9
+   1ac6b:	vprold $0x18,%zmm11,%zmm14
+   1ac72:	vprold $0x10,%zmm11,%zmm15
+   1ac79:	vprold $0x8,%zmm11,%zmm16
+   1ac80:	vpxord %xmm17,%xmm17,%xmm17
+   1ac86:	kxnorw %k0,%k0,%k1
+   1ac8a:	vpgatherdd (%rcx,%zmm10,4),%zmm17{%k1}
+   1ac91:	vpxor  %xmm10,%xmm10,%xmm10
+   1ac96:	vpermd %zmm0,%zmm11,%zmm10
+   1ac9c:	vpsrld $0x4,%zmm11,%zmm11
+   1aca3:	vprolvd %zmm11,%zmm10,%zmm10
+   1aca9:	vpxor  %xmm11,%xmm11,%xmm11
+   1acae:	kxnorw %k0,%k0,%k1
+   1acb2:	vpgatherdd (%rcx,%zmm12,4),%zmm11{%k1}
+   1acb9:	vpxor  %xmm12,%xmm12,%xmm12
+   1acbe:	vpermd %zmm0,%zmm14,%zmm12
+   1acc4:	vpsrld $0x4,%zmm14,%zmm14
+   1accb:	vprolvd %zmm14,%zmm12,%zmm12
+   1acd1:	vpxor  %xmm14,%xmm14,%xmm14
+   1acd6:	kxnorw %k0,%k0,%k1
+   1acda:	vpgatherdd (%rcx,%zmm13,4),%zmm14{%k1}
+   1ace1:	vpxor  %xmm13,%xmm13,%xmm13
+   1ace6:	vpermd %zmm0,%zmm15,%zmm13
+   1acec:	vpsrld $0x4,%zmm15,%zmm15
+   1acf3:	vprolvd %zmm15,%zmm13,%zmm13
+   1acf9:	vpxor  %xmm15,%xmm15,%xmm15
+   1acfe:	kxnorw %k0,%k0,%k1
+   1ad02:	vpgatherdd (%rcx,%zmm9,4),%zmm15{%k1}
+   1ad09:	vpxor  %xmm9,%xmm9,%xmm9
+   1ad0e:	vpermd %zmm0,%zmm16,%zmm9
+   1ad14:	vpsrld $0x4,%zmm16,%zmm16
+   1ad1b:	vprolvd %zmm16,%zmm9,%zmm9
+   1ad21:	vpandd %zmm10,%zmm17,%zmm16
+   1ad27:	vpcmpeqd %zmm10,%zmm16,%k1
+   1ad2d:	vpandd %zmm12,%zmm11,%zmm10
+   1ad33:	vpcmpeqd %zmm12,%zmm10,%k1{%k1}
+   1ad39:	vpandd %zmm13,%zmm14,%zmm10
+   1ad3f:	vpcmpeqd %zmm13,%zmm10,%k1{%k1}
+   1ad45:	vpandd %zmm9,%zmm15,%zmm10
+   1ad4b:	vpcmpeqd %zmm9,%zmm10,%k0{%k1}
+   1ad51:	vpmovm2d %k0,%zmm9
+   1ad57:	vpsrld $0x1f,%zmm9,%zmm9
+   1ad5e:	vmovdqu64 %zmm9,(%rax,%rdi,4)
+   1ad65:	add    $0x10,%rdi
+   1ad69:	add    $0x20,%r9
+   1ad6d:	cmp    %rdx,%r9
+   1ad70:	jbe    1abd0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x15b0>
+   1ad76:	cmp    %rdx,%rdi
+   1ad79:	jae    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1ad7f:	sub    %edi,%edx
+   1ad81:	mov    $0xffffffff,%r9d
+   1ad87:	shlx   %edx,%r9d,%edx
+   1ad8c:	movzwl %dx,%r9d
+   1ad90:	not    %edx
+   1ad92:	kmovd  %edx,%k1
+   1ad96:	vmovdqu64 (%rsi,%rdi,8),%zmm2{%k1}{z}
+   1ad9d:	vpxor  %xmm1,%xmm1,%xmm1
+   1ada1:	vpxor  %xmm3,%xmm3,%xmm3
+   1ada5:	cmp    $0xfeff,%r9d
+   1adac:	ja     1adc5 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x17a5>
+   1adae:	lea    (%rsi,%rdi,8),%rsi
+   1adb2:	mov    %edx,%r9d
+   1adb5:	shr    $0x8,%r9d
+   1adb9:	kmovd  %r9d,%k1
+   1adbe:	vmovdqu64 0x40(%rsi),%zmm3{%k1}{z}
+   1adc5:	vmovdqa64 -0x1348f(%rip),%zmm4        # 7940 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x280>
+   1adcf:	vpermi2d %zmm3,%zmm2,%zmm4
+   1add5:	vmovdqa64 -0x1345f(%rip),%zmm5        # 7980 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x2c0>
+   1addf:	vpermi2d %zmm3,%zmm2,%zmm5
+   1ade5:	vpsrld $0x8,%zmm5,%zmm2
+   1adec:	vpbroadcastd %r8d,%zmm3
+   1adf2:	vpmuludq %zmm3,%zmm2,%zmm2
+   1adf8:	vpsrlq $0x18,%zmm2,%zmm2
+   1adff:	vpsrlq $0x28,%zmm5,%zmm6
+   1ae06:	vpmuludq %zmm3,%zmm6,%zmm3
+   1ae0c:	vpshufb -0x13456(%rip),%zmm3,%zmm3        # 79c0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x300>
+   1ae16:	vpord  %zmm2,%zmm3,%zmm2
+   1ae1c:	vpslld $0x4,%zmm2,%zmm2
+   1ae23:	vpbroadcastd -0x13af1(%rip),%zmm3        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   1ae2d:	vpternlogd $0xf8,%zmm3,%zmm5,%zmm2
+   1ae34:	vpsrld $0x2,%zmm5,%zmm6
+   1ae3b:	vpandd %zmm3,%zmm6,%zmm6
+   1ae41:	vpternlogd $0x36,-0x13b40(%rip){1to16},%zmm2,%zmm6        # 730c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xcf>
+   1ae4c:	vpsrld $0x4,%zmm5,%zmm7
+   1ae53:	vpandd %zmm3,%zmm7,%zmm7
+   1ae59:	vpternlogd $0x36,-0x13b04(%rip){1to16},%zmm2,%zmm7        # 7360 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x123>
+   1ae64:	vpsrld $0x6,%zmm5,%zmm5
+   1ae6b:	vpandd %zmm3,%zmm5,%zmm3
+   1ae71:	kmovd  %edx,%k1
+   1ae75:	vpxor  %xmm5,%xmm5,%xmm5
+   1ae79:	kmovq  %k1,%k2
+   1ae7e:	vpgatherdd (%rcx,%zmm2,4),%zmm5{%k2}
+   1ae85:	vpternlogd $0x36,-0x13b78(%rip){1to16},%zmm2,%zmm3        # 7318 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xdb>
+   1ae90:	vprold $0x18,%zmm4,%zmm2
+   1ae97:	vprold $0x10,%zmm4,%zmm8
+   1ae9e:	vpxor  %xmm9,%xmm9,%xmm9
+   1aea3:	kmovq  %k1,%k2
+   1aea8:	vpgatherdd (%rcx,%zmm6,4),%zmm9{%k2}
+   1aeaf:	vprold $0x8,%zmm4,%zmm6
+   1aeb6:	vpxor  %xmm10,%xmm10,%xmm10
+   1aebb:	vpermd %zmm0,%zmm4,%zmm10
+   1aec1:	vpsrld $0x4,%zmm4,%zmm4
+   1aec8:	vprolvd %zmm4,%zmm10,%zmm4
+   1aece:	vpxor  %xmm10,%xmm10,%xmm10
+   1aed3:	kmovq  %k1,%k2
+   1aed8:	vpgatherdd (%rcx,%zmm7,4),%zmm10{%k2}
+   1aedf:	vpxor  %xmm7,%xmm7,%xmm7
+   1aee3:	vpermd %zmm0,%zmm2,%zmm7
+   1aee9:	vpsrld $0x4,%zmm2,%zmm2
+   1aef0:	vprolvd %zmm2,%zmm7,%zmm2
+   1aef6:	vpxor  %xmm7,%xmm7,%xmm7
+   1aefa:	vpermd %zmm0,%zmm8,%zmm7
+   1af00:	vpsrld $0x4,%zmm8,%zmm8
+   1af07:	vpgatherdd (%rcx,%zmm3,4),%zmm1{%k1}
+   1af0e:	vprolvd %zmm8,%zmm7,%zmm3
+   1af14:	vpermd %zmm0,%zmm6,%zmm0
+   1af1a:	vpsrld $0x4,%zmm6,%zmm6
+   1af21:	vprolvd %zmm6,%zmm0,%zmm0
+   1af27:	vpandd %zmm4,%zmm5,%zmm5
+   1af2d:	vpcmpeqd %zmm4,%zmm5,%k1
+   1af33:	vpandd %zmm2,%zmm9,%zmm4
+   1af39:	vpcmpeqd %zmm2,%zmm4,%k1{%k1}
+   1af3f:	vpandd %zmm3,%zmm10,%zmm2
+   1af45:	vpcmpeqd %zmm3,%zmm2,%k1{%k1}
+   1af4b:	vpandd %zmm0,%zmm1,%zmm1
+   1af51:	jmp    1b10a <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1aea>
+   1af56:	cmp    %rdi,%rdx
+   1af59:	jbe    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1af5f:	sub    %edi,%edx
+   1af61:	mov    $0xffffffff,%r8d
+   1af67:	shlx   %edx,%r8d,%edx
+   1af6c:	movzwl %dx,%r8d
+   1af70:	not    %edx
+   1af72:	kmovd  %edx,%k1
+   1af76:	vmovdqu64 (%rsi,%rdi,8),%zmm6{%k1}{z}
+   1af7d:	vpxor  %xmm5,%xmm5,%xmm5
+   1af81:	vpxor  %xmm7,%xmm7,%xmm7
+   1af85:	cmp    $0xfeff,%r8d
+   1af8c:	ja     1afa2 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1982>
+   1af8e:	mov    %edx,%r8d
+   1af91:	shr    $0x8,%r8d
+   1af95:	kmovd  %r8d,%k1
+   1af9a:	vmovdqu64 0x40(%rsi,%rdi,8),%zmm7{%k1}{z}
+   1afa2:	vpermi2d %zmm7,%zmm6,%zmm1
+   1afa8:	vpermi2d %zmm7,%zmm6,%zmm2
+   1afae:	vpsrld $0x8,%zmm2,%zmm6
+   1afb5:	vpmuludq %zmm4,%zmm6,%zmm6
+   1afbb:	vpsrlq $0x18,%zmm6,%zmm6
+   1afc2:	vpsrlq $0x28,%zmm2,%zmm7
+   1afc9:	vpmuludq %zmm4,%zmm7,%zmm4
+   1afcf:	vpshufb -0x13619(%rip),%zmm4,%zmm4        # 79c0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x300>
+   1afd9:	vpord  %zmm6,%zmm4,%zmm4
+   1afdf:	vpslld $0x4,%zmm4,%zmm4
+   1afe6:	vpternlogd $0xf8,%zmm3,%zmm2,%zmm4
+   1afed:	vpsrld $0x2,%zmm2,%zmm6
+   1aff4:	vpandd %zmm3,%zmm6,%zmm6
+   1affa:	vpternlogd $0x36,-0x13cf9(%rip){1to16},%zmm4,%zmm6        # 730c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xcf>
+   1b005:	vpsrld $0x4,%zmm2,%zmm7
+   1b00c:	vpandd %zmm3,%zmm7,%zmm7
+   1b012:	vpternlogd $0x36,-0x13cbd(%rip){1to16},%zmm4,%zmm7        # 7360 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0x123>
+   1b01d:	vpsrld $0x6,%zmm2,%zmm2
+   1b024:	vpandd %zmm3,%zmm2,%zmm2
+   1b02a:	kmovd  %edx,%k1
+   1b02e:	vpxor  %xmm3,%xmm3,%xmm3
+   1b032:	kmovq  %k1,%k2
+   1b037:	vpgatherdd (%rcx,%zmm4,4),%zmm3{%k2}
+   1b03e:	vpternlogd $0x36,-0x13d31(%rip){1to16},%zmm4,%zmm2        # 7318 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xdb>
+   1b049:	vprold $0x18,%zmm1,%zmm4
+   1b050:	vprold $0x10,%zmm1,%zmm8
+   1b057:	vpxor  %xmm9,%xmm9,%xmm9
+   1b05c:	kmovq  %k1,%k2
+   1b061:	vpgatherdd (%rcx,%zmm6,4),%zmm9{%k2}
+   1b068:	vprold $0x8,%zmm1,%zmm6
+   1b06f:	vpxor  %xmm10,%xmm10,%xmm10
+   1b074:	vpermd %zmm0,%zmm1,%zmm10
+   1b07a:	vpsrld $0x4,%zmm1,%zmm1
+   1b081:	vprolvd %zmm1,%zmm10,%zmm1
+   1b087:	vpxor  %xmm10,%xmm10,%xmm10
+   1b08c:	kmovq  %k1,%k2
+   1b091:	vpgatherdd (%rcx,%zmm7,4),%zmm10{%k2}
+   1b098:	vpxor  %xmm7,%xmm7,%xmm7
+   1b09c:	vpermd %zmm0,%zmm4,%zmm7
+   1b0a2:	vpsrld $0x4,%zmm4,%zmm4
+   1b0a9:	vprolvd %zmm4,%zmm7,%zmm4
+   1b0af:	vpxor  %xmm7,%xmm7,%xmm7
+   1b0b3:	vpermd %zmm0,%zmm8,%zmm7
+   1b0b9:	vpsrld $0x4,%zmm8,%zmm8
+   1b0c0:	vpgatherdd (%rcx,%zmm2,4),%zmm5{%k1}
+   1b0c7:	vprolvd %zmm8,%zmm7,%zmm2
+   1b0cd:	vpermd %zmm0,%zmm6,%zmm0
+   1b0d3:	vpsrld $0x4,%zmm6,%zmm6
+   1b0da:	vprolvd %zmm6,%zmm0,%zmm0
+   1b0e0:	vpandd %zmm1,%zmm3,%zmm3
+   1b0e6:	vpcmpeqd %zmm1,%zmm3,%k1
+   1b0ec:	vpandd %zmm4,%zmm9,%zmm1
+   1b0f2:	vpcmpeqd %zmm4,%zmm1,%k1{%k1}
+   1b0f8:	vpandd %zmm2,%zmm10,%zmm1
+   1b0fe:	vpcmpeqd %zmm2,%zmm1,%k1{%k1}
+   1b104:	vpandd %zmm0,%zmm5,%zmm1
+   1b10a:	vpcmpeqd %zmm0,%zmm1,%k0{%k1}
+   1b110:	vpmovm2d %k0,%zmm0
+   1b116:	vpsrld $0x1f,%zmm0,%zmm0
+   1b11d:	kmovd  %edx,%k1
+   1b121:	vmovdqu32 %zmm0,(%rax,%rdi,4){%k1}
+   1b128:	add    $0x48,%rsp
+   1b12c:	pop    %rbx
+   1b12d:	pop    %r12
+   1b12f:	pop    %r13
+   1b131:	pop    %r14
+   1b133:	pop    %r15
+   1b135:	pop    %rbp
+   1b136:	vzeroupper
+   1b139:	ret
+   1b13a:	mov    0x8(%rdi),%rcx
+   1b13e:	vmovdqa64 -0x13248(%rip),%zmm0        # 7f00 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x50>
+   1b148:	vpbroadcastd %r8d,%zmm1
+   1b14e:	xor    %edi,%edi
+   1b150:	mov    $0xffffffff,%r8d
+   1b156:	vbroadcasti64x4 -0x13c60(%rip),%zmm2        # 7500 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0xb0>
+   1b160:	vbroadcasti64x4 -0x13b6a(%rip),%zmm3        # 7600 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.863.llvm.15448142832521594973+0x1b0>
+   1b16a:	vmovdqa64 -0x13774(%rip),%zmm4        # 7a00 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x340>
+   1b174:	vmovdqa64 -0x137be(%rip),%zmm5        # 79c0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x300>
+   1b17e:	vpbroadcastd -0x13e4c(%rip),%zmm6        # 733c <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.19.llvm.3671060894988460240+0xff>
+   1b188:	vmovdqa64 -0x13752(%rip),%zmm7        # 7a40 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x380>
+   1b192:	vmovdqa64 -0x1371c(%rip),%zmm8        # 7a80 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x3c0>
+   1b19c:	vmovdqa64 -0x136e6(%rip),%zmm9        # 7ac0 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x400>
+   1b1a6:	vmovdqa64 -0x136b0(%rip),%zmm10        # 7b00 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x440>
+   1b1b0:	vmovdqa64 -0x1367a(%rip),%zmm11        # 7b40 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x480>
+   1b1ba:	mov    %rdx,%r9
+   1b1bd:	jmp    1b30f <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1cef>
+   1b1c2:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   1b1d0:	kmovd  %r10d,%k1
+   1b1d5:	vmovdqu64 (%rsi,%rdi,8),%zmm12{%k1}{z}
+   1b1dc:	vpxor  %xmm13,%xmm13,%xmm13
+   1b1e1:	vpermd %zmm12,%zmm3,%zmm13
+   1b1e7:	vpsrld $0x8,%zmm13,%zmm14
+   1b1ee:	vpmuludq %zmm1,%zmm14,%zmm14
+   1b1f4:	vpsrlq $0x18,%zmm14,%zmm14
+   1b1fb:	vpsrlq $0x28,%zmm13,%zmm15
+   1b202:	vpmuludq %zmm1,%zmm15,%zmm15
+   1b208:	vpshufb %zmm5,%zmm15,%zmm15
+   1b20e:	vpord  %zmm14,%zmm15,%zmm14
+   1b214:	vpslld $0x4,%zmm14,%zmm14
+   1b21b:	vpternlogd $0xf8,%zmm6,%zmm13,%zmm14
+   1b222:	vpsrld $0x2,%zmm13,%zmm15
+   1b229:	vpandd %zmm7,%zmm15,%zmm15
+   1b22f:	vpternlogd $0x36,%zmm8,%zmm14,%zmm15
+   1b236:	mov    %r10d,%r11d
+   1b239:	shl    $0x8,%r11d
+   1b23d:	add    %r10d,%r11d
+   1b240:	kmovd  %r11d,%k1
+   1b245:	vpxord %xmm16,%xmm16,%xmm16
+   1b24b:	kmovq  %k1,%k2
+   1b250:	vpgatherdd (%rcx,%zmm15,4),%zmm16{%k2}
+   1b257:	vpermd %zmm12,%zmm2,%zmm12
+   1b25d:	vprorvd %zmm4,%zmm12,%zmm15
+   1b263:	vpxord %xmm17,%xmm17,%xmm17
+   1b269:	vpermd %zmm0,%zmm15,%zmm17
+   1b26f:	vpsrld $0x4,%zmm15,%zmm15
+   1b276:	vprolvd %zmm15,%zmm17,%zmm15
+   1b27c:	vpsrlvd %zmm9,%zmm13,%zmm13
+   1b282:	vpandd %zmm6,%zmm13,%zmm13
+   1b288:	vpternlogd $0x36,%zmm10,%zmm14,%zmm13
+   1b28f:	vpxor  %xmm14,%xmm14,%xmm14
+   1b294:	vpgatherdd (%rcx,%zmm13,4),%zmm14{%k1}
+   1b29b:	vprolvd %zmm11,%zmm12,%zmm12
+   1b2a1:	vpxor  %xmm13,%xmm13,%xmm13
+   1b2a6:	vpermd %zmm0,%zmm12,%zmm13
+   1b2ac:	vpsrld $0x4,%zmm12,%zmm12
+   1b2b3:	vprolvd %zmm12,%zmm13,%zmm12
+   1b2b9:	vpandd %zmm16,%zmm15,%zmm13
+   1b2bf:	vpcmpeqd %zmm15,%zmm13,%k1
+   1b2c5:	vpandd %zmm14,%zmm12,%zmm13
+   1b2cb:	vpcmpeqd %zmm12,%zmm13,%k0{%k1}
+   1b2d1:	kmovw  %k0,%r11d
+   1b2d5:	kmovd  %k0,%ebx
+   1b2d9:	shr    $0x8,%r11d
+   1b2dd:	and    %ebx,%r11d
+   1b2e0:	kmovd  %r11d,%k0
+   1b2e5:	vpmovm2d %k0,%zmm12
+   1b2eb:	vpsrld $0x1f,%zmm12,%zmm12
+   1b2f2:	kmovd  %r10d,%k1
+   1b2f7:	vmovdqu32 %zmm12,(%rax,%rdi,4){%k1}
+   1b2fe:	add    $0x8,%rdi
+   1b302:	add    $0xfffffffffffffff8,%r9
+   1b306:	cmp    %rdx,%rdi
+   1b309:	jae    1b128 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1b08>
+   1b30f:	cmp    $0x8,%r9
+   1b313:	mov    $0x8,%r10d
+   1b319:	cmovb  %r9,%r10
+   1b31d:	shlx   %r10d,%r8d,%r10d
+   1b322:	not    %r10d
+   1b325:	jb     1b1d0 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1bb0>
+   1b32b:	vmovdqu64 (%rsi,%rdi,8),%zmm12
+   1b332:	jmp    1b1dc <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_hashes+0x1bbc>
+   1b337:	lea    0x52272(%rip),%rax        # 6d5b0 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x130>
+   1b33e:	mov    %rax,0x18(%rsp)
+   1b343:	movq   $0x1,0x20(%rsp)
+   1b34c:	movq   $0x8,0x28(%rsp)
+   1b355:	vxorps %xmm0,%xmm0,%xmm0
+   1b359:	vmovups %xmm0,0x30(%rsp)
+   1b35f:	lea    0x522a2(%rip),%r8        # 6d608 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x188>
+   1b366:	lea    0x8(%rsp),%rsi
+   1b36b:	lea    0x10(%rsp),%rdx
+   1b370:	lea    0x18(%rsp),%rcx
+   1b375:	xor    %edi,%edi
+   1b377:	call   *0x553c3(%rip)        # 70740 <_DYNAMIC+0x2c0>
+   1b37d:	lea    0x52214(%rip),%rax        # 6d598 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x118>
+   1b384:	mov    %rcx,%rdi
+   1b387:	mov    %rdx,%rsi
+   1b38a:	mov    %rax,%rdx
+   1b38d:	vzeroupper
+   1b390:	call   *0x5530a(%rip)        # 706a0 <_DYNAMIC+0x220>
+   1b396:	lea    0x5219b(%rip),%rax        # 6d538 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0xb8>
+   1b39d:	mov    %rdx,%rsi
+   1b3a0:	mov    %rax,%rdx
+   1b3a3:	vzeroupper
+   1b3a6:	call   *0x552f4(%rip)        # 706a0 <_DYNAMIC+0x220>
+   1b3ac:	lea    0x5220d(%rip),%rdx        # 6d5c0 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x140>
+   1b3b3:	mov    %r8,%rsi
+   1b3b6:	call   *0x552e4(%rip)        # 706a0 <_DYNAMIC+0x220>
+   1b3bc:	lea    0x521bd(%rip),%rax        # 6d580 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x100>
+   1b3c3:	mov    %r8,%rdi
+   1b3c6:	mov    %rdx,%rsi
+   1b3c9:	mov    %rax,%rdx
+   1b3cc:	vzeroupper
+   1b3cf:	call   *0x552cb(%rip)        # 706a0 <_DYNAMIC+0x220>
+   1b3d5:	lea    0x521e4(%rip),%rdx        # 6d5c0 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x140>
+   1b3dc:	mov    %r9,%rsi
+   1b3df:	vzeroupper
+   1b3e2:	call   *0x552b8(%rip)        # 706a0 <_DYNAMIC+0x220>
+   1b3e8:	lea    0x52201(%rip),%rdx        # 6d5f0 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x170>
+   1b3ef:	mov    %r8,%rdi
+   1b3f2:	mov    %rcx,%rsi
+   1b3f5:	vzeroupper
+   1b3f8:	call   *0x552a2(%rip)        # 706a0 <_DYNAMIC+0x220>

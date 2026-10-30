@@ -1,0 +1,61 @@
+{
+  "status": "Correctness passed; accuracy remains unrun until committed source and explicit lease",
+  "filters": [
+    "Split64Range",
+    "CyclicSplit64Range",
+    "MultiplyCodeSplit64Range"
+  ],
+  "key_powers": [
+    16,
+    25
+  ],
+  "actual_bpk": [
+    16,
+    24,
+    28,
+    32
+  ],
+  "seed": 42,
+  "calibration_power": 24,
+  "batch": 4096,
+  "rows": 24,
+  "fixed_multiplier": "0x9e3779b97f4a7c15",
+  "code": "uint64_t(uint32_t(hash))*fixed_multiplier modulo2^64",
+  "positions": "sector j takes(code>>(8*j))&63, j=0..7",
+  "address": "floor(high32*line_count/2^32)",
+  "byte_rule": "real inserted n; byte budget=n*actual_bpk/8; whole64B cache lines with actual vector backing reported and required equal here",
+  "stream": {
+    "common_hash": "x^=x>>32; x*=0xd6e8feb86659fd93; repeated; return x^(x>>32)",
+    "salt": "seed*0x9e3779b97f4a7c15 modulo2^64",
+    "insert_raw": "counter XOR salt, counters[0,n)",
+    "negative_raw": "counter XOR salt, counters[n+2^24,n+2^25)",
+    "disjointness": "XOR salt and common64 hash are both bijections; these raw counter intervals are unique and disjoint",
+    "parent_reuse": "Split64Range/Cyclic streams exactly repeat parent pilot; these are reproduction controls, not additional independent samples"
+  },
+  "correctness": [
+    "independentu128 multiply and explicit six-bit extraction",
+    "65536 low16 inputs plus16384 full32 random masks",
+    "high32 independence of probe mask",
+    "full bitmaps for three mappings and range boundaries",
+    "duplicates/collisions/noFN/essential sector bits",
+    "dense tails0..131/4096/4097/4127 and output offsets",
+    "actual backing caps/alignment/invalid constructors",
+    "native/AVX2/scalar each with and without ASan+UBSan"
+  ],
+  "quality": {
+    "fpr_ceilings": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "bound": "Pointwise two-sided95% Wilson upper endpoint; no simultaneous guarantee",
+    "selection": "No salt, multiplier, capacity or seed tuning after data; preserve every row and failure",
+    "samples": "One count per filter/size/capacity/seed; reused controls and reruns are not pooled"
+  },
+  "timing": false,
+  "rust_port": false,
+  "production_changed": false,
+  "cpu": 3,
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "authorization": "Correctness-only CPU3/socket1 lease completed. Accuracy requires reviewed committed source and a later explicit lease; no performance or promotion before quality."
+}

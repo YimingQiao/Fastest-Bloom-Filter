@@ -1,0 +1,126 @@
+{
+  "status": "Source-only paired confirmation proposal; no timings before reviewed source commit and CPU2 lease",
+  "base_adapter_commit": "9c5820f0529efeaa37f896f6f8ce269a2e940afb",
+  "native_production_changes": false,
+  "filters": [
+    "ByteSplitBloomFilter",
+    "ByteLeafInlineV1",
+    "BloomsdayPinned"
+  ],
+  "public_methods": {
+    "native": "contains_hash",
+    "Fastbloom017": "BloomFilter::contains_hash",
+    "BloomsdayPinned": "BlockedBloomFilter::may_match_hash",
+    "SbbfSafePinned": "sbbf_rs_safe::Filter::contains_hash; retain upstream trait object"
+  },
+  "query_modes": [
+    "old_prehashed",
+    "old_hash_staged",
+    "visible_prehashed",
+    "visible_hash_fused"
+  ],
+  "schedule": [
+    [
+      0,
+      1,
+      3,
+      2
+    ],
+    [
+      1,
+      2,
+      0,
+      3
+    ],
+    [
+      2,
+      3,
+      1,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      1
+    ]
+  ],
+  "label_permutation": "SplitMix64(seed xor 0x6a09e667f3bcc909), same shuffle as the shared workload",
+  "repeats": 8,
+  "key_powers": [
+    16,
+    25
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "query_power": 22,
+  "hit_percent": 50,
+  "seeds": [
+    131071,
+    524287,
+    999983
+  ],
+  "insert_batch": "whole input",
+  "calibration_power": 24,
+  "expected_initial_workloads": 48,
+  "expected_initial_rows": 108,
+  "performance_authorization": "Requires committed source freeze and explicit CPU2/socket0 lease. Same executable and code layout as initial CPU3 screen; never pool timings across CPUs.",
+  "correctness_requirements": [
+    "normal",
+    "disable-avx512",
+    "ASan",
+    "clippy",
+    "exact frozen baseline parity",
+    "every timed-mode tail corruption rejected",
+    "balanced phase-order evidence",
+    "public-only generated-code audit"
+  ],
+  "preflight_cpu": 3,
+  "proposed_performance_cpu": 2,
+  "compiler_flags": "-C target-cpu=native -C symbol-mangling-version=v0",
+  "purpose": "Confirm unchanged Byte annotation candidate against original and shortlisted public singleton rival, retaining initial regression",
+  "cpu": 2,
+  "numa_node": 0,
+  "socket_lock": "/tmp/fastest-bf-socket0.lock",
+  "binary": "/tmp/fastest-bf-rust-leaf-inline/release/compare_benchmark",
+  "binary_sha256": "0caf0d3ff982ffdc295b6bb7010ae148bd5ffa240426573429e2ae2e92036926",
+  "workloads": 48,
+  "rows": 108,
+  "ranking": {
+    "memory_caps_bpk": [
+      16,
+      32
+    ],
+    "allocation_slack_bytes": 0,
+    "fpr_ceilings": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "fpr_bound": "Pointwise two-sided 95% Wilson upper endpoint; no simultaneous selection guarantee",
+    "metrics": [
+      "lookup_ns",
+      "hash_lookup_ns",
+      "inline_lookup_ns",
+      "inline_hash_lookup_ns"
+    ],
+    "track_rule": "Batch1 only: original Byte, experimental Byte, and Bloomsday separately; batches3/31/4096 are paired native regression guards. All four modes remain separate.",
+    "within_family_ratios": "Retain every original/visible ratio including regressions; descriptive medians only",
+    "quality_deduplication": "One calibration record per original family, size and seed; no repeated-batch/clone/mode pooling. Eligibility across seeds requires every pointwise Wilson upper endpoint under the ceiling; report worst endpoint and each seed. No simultaneous-selection guarantee."
+  },
+  "batches": [
+    1,
+    3,
+    31,
+    4096
+  ],
+  "base_visible_source_commit": "4004e3f50e85385e5a3c7752d62b7a8797f15146",
+  "scope_by_batch": {
+    "1": "Byte original + unchanged Byte annotation + shortlisted Bloomsday; no claim over all Rust/C++ externals",
+    "3,31,4096": "Byte original + annotation only; regression controls, no external ranking"
+  },
+  "parent_source_commit": "9011d5228118373f89786d3a1a304f83ea689a85",
+  "filter_order": "Unchanged producer seeded job shuffle after input generation; exact derived row order checked and recorded. Query phase positions/predecessors are balanced, filter row order is seed-varied but not promised balanced."
+}

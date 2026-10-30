@@ -1,0 +1,157 @@
+--- parent.h
++++ fast_pattern_range.h
+@@ -1,3 +1,4 @@
++// SOURCE-ONLY: isolated direct-word range-address prototype; not validated or measured.
+ #pragma once
+ 
+ #include <algorithm>
+@@ -15,19 +16,27 @@
+ 
+ // Two 32-bit sectors in one cache line, with 32 cyclic mask patterns per sector.
+ // Six probes below 12 actual bits/key, eight otherwise; uniformly prehashed input.
+-// High hash bits select the first sector; disjoint low fields select masks and
++// Unsigned multiply-high maps high32 into the complete u32 word count.
++// Both sectors remain in one complete64-byte line. Low fields select masks and
+ // the second sector. Single-writer construction; read-only lookups can be shared.
+-class FastPatternBF {
++struct FastPatternRangeBytes { size_t bytes; };
++class FastPatternRange {
+ public:
+-	explicit FastPatternBF(size_t keys, uint32_t bits_per_key) {
+-		const size_t words = WordCount(keys, bits_per_key);
+-		blocks_.resize(words);
+-		block_mask_ = static_cast<uint32_t>(words - 1);
+-		patterns_ = keys > words * 32 / 12 ? sparse_patterns_ : dense_patterns_;
+-	}
+-	size_t SizeInBytes() const {
+-		return blocks_.size() * sizeof(uint32_t);
+-	}
++    explicit FastPatternRange(size_t keys, FastPatternRangeBytes budget) {
++        const size_t words = WordCountFromBudget(budget.bytes);
++        blocks_.resize(words);
++        word_count_ = static_cast<uint32_t>(words);
++        patterns_ = keys > words * 32 / 12 ? sparse_patterns_ : dense_patterns_;
++        if (SizeInBytes() > budget.bytes)
++            throw std::length_error("actual range allocation exceeds byte ceiling");
++    }
++    explicit FastPatternRange(size_t keys, uint32_t bits_per_key)
++        : FastPatternRange(keys, FastPatternRangeBytes{BudgetBytes(keys, bits_per_key)}) {}
++    size_t SizeInBytes() const { return blocks_.capacity() * sizeof(uint32_t); }
++    size_t LogicalBytes() const { return blocks_.size() * sizeof(uint32_t); }
++    const void *Data() const { return blocks_.data(); }
++    unsigned NumProbes() const { return patterns_ == sparse_patterns_ ? 6 : 8; }
++
+ 	void Insert(uint32_t num, const uint64_t *keys) {
+ 		if (SizeInBytes() > (1u << 21))
+ 			InsertImpl<true>(num, keys);
+@@ -53,19 +62,42 @@
+ 	}
+ 
+ private:
+-	friend class ParallelFastPatternBF;
+-	friend class AtomicFastPatternBF;
+-	static size_t WordCount(size_t keys, uint32_t bits_per_key) {
+-		if (!bits_per_key || keys > std::numeric_limits<size_t>::max() / bits_per_key)
+-			throw std::invalid_argument("invalid Bloom filter size");
+-		const size_t bits = std::max<size_t>(512, keys * bits_per_key);
+-		if (bits >= (size_t {1} << 31))
+-			throw std::length_error("sectorized layout supports at most 256 MiB");
+-		size_t words = 32;
+-		while (words <= bits / 32)
+-			words *= 2;
+-		return words;
+-	}
++    static size_t BudgetBytes(size_t keys, uint32_t bpk) {
++        if (!keys || !bpk || keys > SIZE_MAX / bpk)
++            throw std::invalid_argument("zero or overflowing range size");
++        return keys * bpk / 8;
++    }
++    static size_t WordCountFromBudget(size_t bytes) {
++        if (bytes < 128 || bytes > (size_t{1} << 28))
++            throw std::length_error("range byte ceiling must be in 128..256 MiB");
++        return bytes / 64 * 16;
++    }
++#if defined(__AVX512F__)
++    __m512i RangePair512(__m512i hashes) const {
++        const __m512i hi = _mm512_shuffle_epi32(hashes, static_cast<_MM_PERM_ENUM>(0xf5));
++        const __m512i products = _mm512_mul_epu32(hi, _mm512_set1_epi32(word_count_));
++        return _mm512_shuffle_epi32(products, static_cast<_MM_PERM_ENUM>(0xf5));
++    }
++    __m512i RangeWords512(__m512i high_words) const {
++        const __m512i count = _mm512_set1_epi32(word_count_);
++        const __m512i even = _mm512_mul_epu32(high_words, count);
++        const __m512i odd = _mm512_mul_epu32(_mm512_srli_epi64(high_words, 32), count);
++        return _mm512_mask_blend_epi32(0xaaaa, _mm512_srli_epi64(even, 32), odd);
++    }
++#endif
++#if defined(__AVX2__)
++    __m256i RangePair256(__m256i hashes) const {
++        const __m256i hi = _mm256_shuffle_epi32(hashes, 0xf5);
++        const __m256i products = _mm256_mul_epu32(hi, _mm256_set1_epi32(word_count_));
++        return _mm256_shuffle_epi32(products, 0xf5);
++    }
++    __m256i RangeWords256(__m256i high_words) const {
++        const __m256i count = _mm256_set1_epi32(word_count_);
++        const __m256i even = _mm256_mul_epu32(high_words, count);
++        const __m256i odd = _mm256_mul_epu32(_mm256_srli_epi64(high_words, 32), count);
++        return _mm256_blend_epi32(_mm256_srli_epi64(even, 32), odd, 0xaa);
++    }
++#endif
+ 
+ #if defined(__AVX512F__)
+ 	struct Probe {
+@@ -74,8 +106,7 @@
+ 	Probe Prepare(const uint64_t *keys) const {
+ 		const __m512i h = _mm512_loadu_si512(keys);
+ 		// Insert preparation keeps the two sectors of each key in adjacent lanes.
+-		const __m512i a =
+-		    _mm512_and_si512(_mm512_shuffle_epi32(h, static_cast<_MM_PERM_ENUM>(0xf5)), _mm512_set1_epi32(block_mask_));
++		const __m512i a = RangePair512(h);
+ 		const __m512i delta =
+ 		    _mm512_or_si512(_mm512_set1_epi64(uint64_t {8} << 32),
+ 			                _mm512_and_si512(_mm512_slli_epi64(h, 12), _mm512_set1_epi64(uint64_t {7} << 32)));
+@@ -117,7 +148,7 @@
+ 						__builtin_prefetch(blocks_.data() + Block(keys[i + 64 + j]), 1, 1);
+ 			}
+ 			const __m256i h = _mm256_loadu_si256(reinterpret_cast<const __m256i *>(keys + i));
+-			const __m256i a = _mm256_and_si256(_mm256_shuffle_epi32(h, 0xf5), _mm256_set1_epi32(block_mask_));
++			const __m256i a = RangePair256(h);
+ 			const __m256i delta =
+ 			    _mm256_or_si256(_mm256_set1_epi64x(uint64_t {8} << 32),
+ 				                _mm256_and_si256(_mm256_slli_epi64(h, 12), _mm256_set1_epi64x(uint64_t {7} << 32)));
+@@ -159,7 +190,7 @@
+ 			const __m512i x = _mm512_loadu_si512(keys + i), y = _mm512_loadu_si512(keys + i + 8);
+ 			const __m512i lo = _mm512_permutex2var_epi32(x, even, y);
+ 			const __m512i hi = _mm512_permutex2var_epi32(x, odd, y);
+-			const __m512i a = _mm512_and_si512(hi, _mm512_set1_epi32(block_mask_));
++			const __m512i a = RangeWords512(hi);
+ 			const __m512i b =
+ 			    _mm512_xor_si512(a, _mm512_or_si512(_mm512_set1_epi32(8),
+ 				                                    _mm512_and_si512(_mm512_srli_epi32(lo, 20), _mm512_set1_epi32(7))));
+@@ -198,7 +229,7 @@
+ 			    _mm256_permutevar8x32_epi32(_mm256_loadu_si256(reinterpret_cast<const __m256i *>(keys + i + 4)), order);
+ 			const __m256i lo = _mm256_permute2x128_si256(x, y, 0x20);
+ 			const __m256i hi = _mm256_permute2x128_si256(x, y, 0x31);
+-			const __m256i a = _mm256_and_si256(hi, _mm256_set1_epi32(block_mask_));
++			const __m256i a = RangeWords256(hi);
+ 			const __m256i b =
+ 			    _mm256_xor_si256(a, _mm256_or_si256(_mm256_set1_epi32(8),
+ 				                                    _mm256_and_si256(_mm256_srli_epi32(lo, 20), _mm256_set1_epi32(7))));
+@@ -226,7 +257,7 @@
+ 		}
+ 	}
+ 	uint32_t Block(uint64_t h) const {
+-		return (h >> 32) & block_mask_;
++		return (uint64_t(static_cast<uint32_t>(h >> 32)) * word_count_) >> 32;
+ 	}
+ 	static uint32_t Rotate(uint32_t v, uint32_t r) {
+ 		return (v << (r & 31)) | (v >> ((-r) & 31));
+@@ -243,7 +274,7 @@
+ 	    0x22009u, 0x210201u, 0x53u,    0x40103u, 0x2205u,  0x100121u, 0x80803u, 0x41201u,  0x20811u, 0x10805u, 0x81005u,
+ 	    0x641u,   0x3101u,   0x24041u, 0x4085u,  0x12401u, 0x202011u, 0x2a1u,   0xc09u,    0x20007u, 0x80421u};
+ 	const uint32_t *patterns_;
+-	uint32_t block_mask_;
++	uint32_t word_count_;
+ 	std::vector<uint32_t, AlignedAllocator<uint32_t, 64>> blocks_;
+ };
+ } // namespace bloom_filters

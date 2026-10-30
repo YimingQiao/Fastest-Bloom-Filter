@@ -1,0 +1,51 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000052de0 <_Z13lookup_kernelIN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRT_mPKT0_Pj>:
+   52de0:	test   %esi,%esi
+   52de2:	je     52e98 <_Z13lookup_kernelIN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRT_mPKT0_Pj+0xb8>
+   52de8:	cmp    $0x1,%esi
+   52deb:	jne    52e78 <_Z13lookup_kernelIN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock64ILm8EEELm0EEEmEvRT_mPKT0_Pj+0x98>
+   52df1:	mov    (%rdx),%rdx
+   52df4:	or     $0x1,%rdx
+   52df8:	mov    0x20(%rdi),%rax
+   52dfc:	mulx   0x10(%rdi),%rsi,%rsi
+   52e02:	movabs $0xf1357aea2e62a9c5,%rdi
+   52e0c:	imul   %rdx,%rdi
+   52e10:	shl    $0x6,%rsi
+   52e14:	prefetcht0 (%rax,%rsi,1)
+   52e18:	vmovdqa (%rax,%rsi,1),%ymm0
+   52e1d:	vmovdqa 0x20(%rax,%rsi,1),%ymm1
+   52e23:	vpbroadcastq %rdi,%ymm2
+   52e29:	vpsllvq -0x4e952(%rip),%ymm2,%ymm2        # 44e0 <_IO_stdin_used+0x25e8>
+   52e32:	vpsrld $0x1a,%ymm2,%ymm2
+   52e37:	vpmovzxdq %xmm2,%ymm3
+   52e3c:	vpbroadcastq -0x50ec5(%rip),%ymm4        # 1f80 <_IO_stdin_used+0x88>
+   52e45:	vpsllvq %ymm3,%ymm4,%ymm3
+   52e4a:	vextracti128 $0x1,%ymm2,%xmm2
+   52e50:	vpmovzxdq %xmm2,%ymm2
+   52e55:	vpsllvq %ymm2,%ymm4,%ymm2
+   52e5a:	vptest %ymm3,%ymm0
+   52e5f:	setb   %al
+   52e62:	vptest %ymm2,%ymm1
+   52e67:	setb   %dl
+   52e6a:	xor    %esi,%esi
+   52e6c:	test   %al,%dl
+   52e6e:	setne  %sil
+   52e72:	mov    %esi,(%rcx)
+   52e74:	vzeroupper
+   52e77:	ret
+   52e78:	push   %rax
+   52e79:	add    $0x8,%rdi
+   52e7d:	mov    %esi,%eax
+   52e7f:	mov    %rcx,(%rsp)
+   52e83:	mov    %rsp,%r8
+   52e86:	mov    %rdi,%rsi
+   52e89:	mov    %rax,%rcx
+   52e8c:	mov    %rdx,%r9
+   52e8f:	call   53a90 <_ZNK5boost5bloom6detail11filter_coreILm1ENS0_17fast_multiblock64ILm8EEELm0EN14boost_baseline17CountingAllocatorIhEEE16bulk_may_containIZNKS0_6filterImLm1ES4_Lm0ENS5_12IdentityHashES7_E11may_containIPKmZNKS5_7AdapterILm1ES4_Lm0EE6LookupEjSF_PjEUlRSE_bE_EEvT_SL_T0_EUlvE_ZNKSD_ISF_SK_EEvSL_SL_SM_EUlbE_EEvSL_mSM_>
+   52e94:	add    $0x8,%rsp
+   52e98:	ret

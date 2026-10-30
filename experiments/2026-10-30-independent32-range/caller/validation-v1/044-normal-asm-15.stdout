@@ -1,0 +1,78 @@
+
+/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002d880 <_Z20inline_single_kernelILb0EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj>:
+   2d880:	test   %rsi,%rsi
+   2d883:	je     2d9b9 <_Z20inline_single_kernelILb0EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x139>
+   2d889:	push   %rbx
+   2d88a:	mov    %rdx,%rax
+   2d88d:	movabs $0xf1357aea2e62a9c5,%r9
+   2d897:	cmp    $0x1,%rsi
+   2d89b:	jne    2d8a5 <_Z20inline_single_kernelILb0EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x25>
+   2d89d:	xor    %r8d,%r8d
+   2d8a0:	jmp    2d965 <_Z20inline_single_kernelILb0EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0xe5>
+   2d8a5:	mov    %rsi,%r10
+   2d8a8:	and    $0xfffffffffffffffe,%r10
+   2d8ac:	xor    %r8d,%r8d
+   2d8af:	vmovdqa -0x2bf17(%rip),%ymm0        # 19a0 <_IO_stdin_used+0x2c0>
+   2d8b7:	vpbroadcastd -0x2c1ec(%rip),%ymm1        # 16d4 <__abi_tag+0x1410>
+   2d8c0:	mov    (%rax,%r8,8),%rdx
+   2d8c4:	or     $0x1,%rdx
+   2d8c8:	mov    0x20(%rdi),%r11
+   2d8cc:	mulx   0x10(%rdi),%rbx,%rbx
+   2d8d2:	imul   %r9,%rdx
+   2d8d6:	shl    $0x5,%rbx
+   2d8da:	prefetcht0 (%r11,%rbx,1)
+   2d8df:	vmovdqa (%r11,%rbx,1),%ymm2
+   2d8e5:	vpbroadcastq %rdx,%ymm3
+   2d8eb:	vpsllvq %ymm0,%ymm3,%ymm3
+   2d8f0:	vpsrld $0x1b,%ymm3,%ymm3
+   2d8f5:	vpsllvd %ymm3,%ymm1,%ymm3
+   2d8fa:	xor    %edx,%edx
+   2d8fc:	vptest %ymm3,%ymm2
+   2d901:	setb   %dl
+   2d904:	mov    %edx,(%rcx,%r8,4)
+   2d908:	mov    0x8(%rax,%r8,8),%rdx
+   2d90d:	or     $0x1,%rdx
+   2d911:	mov    0x20(%rdi),%r11
+   2d915:	mulx   0x10(%rdi),%rbx,%rbx
+   2d91b:	imul   %r9,%rdx
+   2d91f:	shl    $0x5,%rbx
+   2d923:	prefetcht0 (%r11,%rbx,1)
+   2d928:	vmovdqa (%r11,%rbx,1),%ymm2
+   2d92e:	vpbroadcastq %rdx,%ymm3
+   2d934:	vpsllvq %ymm0,%ymm3,%ymm3
+   2d939:	vpsrld $0x1b,%ymm3,%ymm3
+   2d93e:	vpsllvd %ymm3,%ymm1,%ymm3
+   2d943:	xor    %edx,%edx
+   2d945:	vptest %ymm3,%ymm2
+   2d94a:	setb   %dl
+   2d94d:	mov    %edx,0x4(%rcx,%r8,4)
+   2d952:	add    $0x2,%r8
+   2d956:	cmp    %r8,%r10
+   2d959:	jne    2d8c0 <_Z20inline_single_kernelILb0EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x40>
+   2d95f:	test   $0x1,%sil
+   2d963:	je     2d9b8 <_Z20inline_single_kernelILb0EN14boost_baseline7AdapterILm1EN5boost5bloom17fast_multiblock32ILm8EEELm0EEEmEvRKT0_mPKmPj+0x138>
+   2d965:	mov    (%rax,%r8,8),%rdx
+   2d969:	or     $0x1,%rdx
+   2d96d:	mov    0x20(%rdi),%rax
+   2d971:	mulx   0x10(%rdi),%rsi,%rsi
+   2d977:	imul   %r9,%rdx
+   2d97b:	shl    $0x5,%rsi
+   2d97f:	prefetcht0 (%rax,%rsi,1)
+   2d983:	vmovdqa (%rax,%rsi,1),%ymm0
+   2d988:	vpbroadcastq %rdx,%ymm1
+   2d98e:	vpsllvq -0x2bff7(%rip),%ymm1,%ymm1        # 19a0 <_IO_stdin_used+0x2c0>
+   2d997:	vpsrld $0x1b,%ymm1,%ymm1
+   2d99c:	vpbroadcastd -0x2c2d1(%rip),%ymm2        # 16d4 <__abi_tag+0x1410>
+   2d9a5:	vpsllvd %ymm1,%ymm2,%ymm1
+   2d9aa:	xor    %eax,%eax
+   2d9ac:	vptest %ymm1,%ymm0
+   2d9b1:	setb   %al
+   2d9b4:	mov    %eax,(%rcx,%r8,4)
+   2d9b8:	pop    %rbx
+   2d9b9:	vzeroupper
+   2d9bc:	ret

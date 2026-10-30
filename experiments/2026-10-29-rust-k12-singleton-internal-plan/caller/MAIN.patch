@@ -1,0 +1,149 @@
+--- frozen/main.rs
++++ internal/main.rs
+@@ -1,13 +1,10 @@
+-//! Bounded actual public caller; check-only CLI, no formal measurement mode.
++//! Fixed internal caller; explicit bounded proof and immutable formal grid.
+ mod query;
+ use query::PublicFilter;
+ use std::hint::black_box;
+ use std::time::Instant;
+ 
+-const N:usize=256;
+-const Q:usize=4096;
+ const BPK:u32=24;
+-const REPEATS:usize=4;
+ const GUARD:u32=0xdead_beef;
+ const POISON:u32=0xffff_fffe;
+ const FOUR:[[usize;4];4]=[[0,1,3,2],[1,2,0,3],[2,3,1,0],[3,0,2,1]];
+@@ -47,8 +44,10 @@
+ 
+ struct Data { raw:Vec<u64>, hashes:Vec<u64>, keys:Vec<u64>, words:Vec<u32>, answers:Vec<u32> }
+ impl Data {
+-    fn new(hit:usize)->Self {
+-        let mut state=74381;
++    #[allow(non_snake_case)]
++    fn new(config:&Config)->Self {
++        let N=config.n;let Q=config.q;let hit=config.hit;
++        let mut state=config.seed;
+         let base=mix(&mut state)%((1u64<<32)-N as u64-Q as u64);
+         let keys:Vec<_>=(0..N).map(|i|hash(base+i as u64)).collect();
+         let raw:Vec<_>=(0..Q).map(|i|if i%100<hit {base+mix(&mut state)%N as u64}else{base+N as u64+i as u64}).collect();
+@@ -72,7 +71,9 @@
+ }
+ 
+ // Two finite post-warmup faulty producers; the skipped final output stays poison.
++#[allow(non_snake_case)]
+ fn timed_work<F:PublicFilter>(filter:&F,mode:usize,data:&Data,out:&mut[u32],scratch:&mut[u64],batch:usize,fault:Option<&str>) {
++    let Q=data.raw.len();
+     let skip=fault==Some("generic-skip")&&mode==0;
+     let end=if skip{Q-1}else{Q};
+     query::execute(filter,mode,&data.raw[..end],&data.hashes[..end],&mut out[..end],scratch,batch);
+@@ -80,7 +81,10 @@
+ }
+ 
+ #[inline(never)]
+-fn run<F:PublicFilter>(data:&Data,batch:usize,hit:usize,fault:Option<&str>)->Result<String,String> {
++#[allow(non_snake_case)]
++fn run<F:PublicFilter>(data:&Data,config:&Config)->Result<String,String> {
++    let N=config.n;let Q=config.q;let REPEATS=config.repeats;
++    let batch=config.batch;let hit=config.hit;let fault=config.fault.as_deref();
+     let mut filter=F::new(N,BPK);
+     if filter.bytes()!=N*BPK as usize/8 {return Err("allocation mismatch".into());}
+     filter.insert(&data.keys);
+@@ -98,7 +102,7 @@
+     let mut trials=vec![Vec::<f64>::new();modes];
+     let mut order=Vec::new();
+     for rep in 0..REPEATS {
+-        let phases:Vec<_>=if batch==1 {FOUR[rep].to_vec()}else{TWO[rep].to_vec()};
++        let phases:Vec<_>=if batch==1 {FOUR[rep%4].to_vec()}else{TWO[rep%4].to_vec()};
+         order.push(phases.clone());
+         for mode in phases {
+             out[1..Q+1].fill(POISON);
+@@ -113,36 +117,66 @@
+         return Err("input mutation".into());
+     }
+     if filter.words()!=data.words {return Err("query changed bitmap".into());}
+-    let row=format!("{{\"filter\":{:?},\"keys\":{},\"queries\":{},\"batch\":{},\"hit\":{},\"seed\":74381,\"repeats\":4,\"filter_bytes\":{},\"backend\":{:?},\"input_digest\":{},\"insert_digest\":{},\"bitmap_digest\":{},\"output_digest\":{},\"scratch_bytes\":{},\"phase_order\":{:?},\"trials_ns\":{:?},\"calibration_queries\":0}}",
+-        F::NAME,N,Q,batch,hit,filter.bytes(),filter.backend(),digest(data.raw.iter().copied()),
++    let row=format!("{{\"filter\":{:?},\"keys\":{},\"queries\":{},\"batch\":{},\"hit\":{},\"seed\":{},\"repeats\":{},\"filter_bytes\":{},\"backend\":{:?},\"input_digest\":{},\"insert_digest\":{},\"bitmap_digest\":{},\"output_digest\":{},\"scratch_bytes\":{},\"phase_order\":{:?},\"trials_ns\":{:?},\"round\":{},\"stage\":{:?},\"calibration_queries\":0}}",
++        F::NAME,N,Q,batch,hit,config.seed,REPEATS,filter.bytes(),filter.backend(),digest(data.raw.iter().copied()),
+         digest(data.keys.iter().copied()),digest(data.words.iter().map(|&x|x as u64)),
+-        digest(data.answers.iter().map(|&x|x as u64)),scratch.len()*8,order,trials);
++        digest(data.answers.iter().map(|&x|x as u64)),scratch.len()*8,order,trials,config.round,if config.measure{"measure"}else{"check"});
+     Ok(row)
+ }
+ 
+-fn parse()->Result<(usize,usize,Option<String>),String> {
++#[derive(Clone)]
++struct Config { n:usize, q:usize, hit:usize, batch:usize, seed:u64, repeats:usize,
++                round:usize, measure:bool, fault:Option<String> }
++
++fn parse()->Result<Config,String> {
+     let args:Vec<_>=std::env::args().skip(1).collect();
+-    if args.len()!=4&&args.len()!=6 {return Err("expected --check HIT BATCH SEED [--fault NAME]".into());}
+-    if args[0]!="--check"||args[3]!="74381" {return Err("only fixed check seed74381 is permitted".into());}
+-    let hit=args[1].parse::<usize>().map_err(|_|"invalid hit".to_string())?;
+-    let batch=args[2].parse::<usize>().map_err(|_|"invalid batch".to_string())?;
+-    if ![0,50,100].contains(&hit)||![1,3,31,4096].contains(&batch) {return Err("outside fixed check grid".into());}
+-    let fault=if args.len()==6 {
+-        if args[4]!="--fault"||!["generic-skip","visible-wrong"].contains(&args[5].as_str())||batch!=1||hit!=50 {
+-            return Err("invalid fixed fault case".into());
++    if args.is_empty() {return Err("expected explicit --check or --measure".into());}
++    let number=|i:usize|->Result<u64,String> {
++        args.get(i).ok_or_else(||"missing argument".to_string())?
++            .parse::<u64>().map_err(|_|"invalid integer".to_string())
++    };
++    if args[0]=="--check" {
++        if ![4,5,6].contains(&args.len()) {return Err("invalid check arguments".into());}
++        let hit=number(1)?;let batch=number(2)?;let seed=number(3)?;
++        if hit!=50||![1,3,31,4096].contains(&batch)||seed!=74381 {
++            return Err("outside fixed check grid".into());
+         }
+-        Some(args[5].clone())
+-    }else{None};
+-    Ok((hit,batch,fault))
++        let mut round=1;let mut fault=None;
++        if args.len()==5 {
++            if args[4]!="--reverse"||batch!=1 {return Err("invalid check reverse".into());}
++            round=2;
++        }
++        if args.len()==6 {
++            if args[4]!="--fault"||!["generic-skip","visible-wrong"].contains(&args[5].as_str())||batch!=1 {
++                return Err("invalid fixed fault case".into());
++            }
++            fault=Some(args[5].clone());
++        }
++        return Ok(Config{n:256,q:4096,hit:50,batch:batch as usize,seed,repeats:4,round,measure:false,fault});
++    }
++    if args[0]!="--measure"||args.len()!=6 {return Err("invalid formal arguments".into());}
++    let power=number(1)?;let hit=number(2)?;let batch=number(3)?;let seed=number(4)?;let round=number(5)?;
++    if ![16,25].contains(&power)||![6812364731,9517218469].contains(&seed)||![1,2].contains(&round)
++        ||!((hit==50&&[1,3,31,4096].contains(&batch))||([0,100].contains(&hit)&&batch==1)) {
++        return Err("outside fixed formal grid".into());
++    }
++    Ok(Config{n:1usize<<(power as u32),q:1usize<<22,hit:hit as usize,batch:batch as usize,
++              seed,repeats:8,round:round as usize,measure:true,fault:None})
+ }
++
+ fn main() {
+     let result=(||{
+-        let (hit,batch,fault)=parse()?;
+-        let data=Data::new(hit);
+-        let a=run::<control_native::FourSectorRange12BloomFilter>(&data,batch,hit,fault.as_deref())?;
+-        let b=run::<candidate_native::FourSectorRange12BloomFilter>(&data,batch,hit,fault.as_deref())?;
+-        // Do not print partial success if either arm or a deliberate fault fails.
+-        println!("{a}\n{b}");
++        let config=parse()?;
++        let data=Data::new(&config);
++        let rows=if config.round==1 {
++            vec![run::<control_native::FourSectorRange12BloomFilter>(&data,&config)?,
++                 run::<candidate_native::FourSectorRange12BloomFilter>(&data,&config)?]
++        }else{
++            vec![run::<candidate_native::FourSectorRange12BloomFilter>(&data,&config)?,
++                 run::<control_native::FourSectorRange12BloomFilter>(&data,&config)?]
++        };
++        // Both complete before any stdout, including reverse/fault checks.
++        for row in rows {println!("{row}");}
+         Ok::<(),String>(())
+     })();
+     if let Err(error)=result {eprintln!("{error}");std::process::exit(1);}

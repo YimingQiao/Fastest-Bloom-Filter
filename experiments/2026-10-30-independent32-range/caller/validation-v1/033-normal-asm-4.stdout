@@ -1,0 +1,107 @@
+
+/tmp/fastest-bf-independent32-range-caller-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000027400 <_Z13lookup_kernelIN13bloom_filters24Independent32BloomFilterEmEvRT_mPKT0_Pj>:
+   27400:	mov    $0xffffffff,%r8d
+   27406:	and    %rsi,%r8
+   27409:	je     275c8 <_Z13lookup_kernelIN13bloom_filters24Independent32BloomFilterEmEvRT_mPKT0_Pj+0x1c8>
+   2740f:	mov    %esi,%eax
+   27411:	and    $0x3,%eax
+   27414:	cmp    $0x4,%r8d
+   27418:	jae    27422 <_Z13lookup_kernelIN13bloom_filters24Independent32BloomFilterEmEvRT_mPKT0_Pj+0x22>
+   2741a:	xor    %r8d,%r8d
+   2741d:	jmp    27558 <_Z13lookup_kernelIN13bloom_filters24Independent32BloomFilterEmEvRT_mPKT0_Pj+0x158>
+   27422:	and    $0xfffffffc,%esi
+   27425:	xor    %r8d,%r8d
+   27428:	vpbroadcastq -0x25a59(%rip),%xmm0        # 19d8 <_IO_stdin_used+0x2f8>
+   27431:	vpbroadcastd -0x25d66(%rip),%ymm1        # 16d4 <__abi_tag+0x1410>
+   2743a:	nopw   0x0(%rax,%rax,1)
+   27440:	mov    (%rdx,%r8,8),%r9
+   27444:	vpbroadcastq %r9,%xmm2
+   2744a:	shr    $0x29,%r9
+   2744e:	and    0x18(%rdi),%r9d
+   27452:	mov    (%rdi),%r10
+   27455:	shl    $0x5,%r9d
+   27459:	vmovdqa (%r10,%r9,1),%ymm3
+   2745f:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   27465:	vpmovzxbd %xmm2,%ymm2
+   2746a:	vprolvd %ymm2,%ymm1,%ymm2
+   27470:	xor    %r9d,%r9d
+   27473:	vptest %ymm2,%ymm3
+   27478:	setb   %r9b
+   2747c:	mov    %r9d,(%rcx,%r8,4)
+   27480:	mov    0x8(%rdx,%r8,8),%r9
+   27485:	vpbroadcastq %r9,%xmm2
+   2748b:	shr    $0x29,%r9
+   2748f:	and    0x18(%rdi),%r9d
+   27493:	mov    (%rdi),%r10
+   27496:	shl    $0x5,%r9d
+   2749a:	vmovdqa (%r10,%r9,1),%ymm3
+   274a0:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   274a6:	vpmovzxbd %xmm2,%ymm2
+   274ab:	vprolvd %ymm2,%ymm1,%ymm2
+   274b1:	xor    %r9d,%r9d
+   274b4:	vptest %ymm2,%ymm3
+   274b9:	setb   %r9b
+   274bd:	mov    %r9d,0x4(%rcx,%r8,4)
+   274c2:	mov    0x10(%rdx,%r8,8),%r9
+   274c7:	vpbroadcastq %r9,%xmm2
+   274cd:	shr    $0x29,%r9
+   274d1:	and    0x18(%rdi),%r9d
+   274d5:	mov    (%rdi),%r10
+   274d8:	shl    $0x5,%r9d
+   274dc:	vmovdqa (%r10,%r9,1),%ymm3
+   274e2:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   274e8:	vpmovzxbd %xmm2,%ymm2
+   274ed:	vprolvd %ymm2,%ymm1,%ymm2
+   274f3:	xor    %r9d,%r9d
+   274f6:	vptest %ymm2,%ymm3
+   274fb:	setb   %r9b
+   274ff:	mov    %r9d,0x8(%rcx,%r8,4)
+   27504:	mov    0x18(%rdx,%r8,8),%r9
+   27509:	vpbroadcastq %r9,%xmm2
+   2750f:	shr    $0x29,%r9
+   27513:	and    0x18(%rdi),%r9d
+   27517:	mov    (%rdi),%r10
+   2751a:	shl    $0x5,%r9d
+   2751e:	vmovdqa (%r10,%r9,1),%ymm3
+   27524:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   2752a:	vpmovzxbd %xmm2,%ymm2
+   2752f:	vprolvd %ymm2,%ymm1,%ymm2
+   27535:	xor    %r9d,%r9d
+   27538:	vptest %ymm2,%ymm3
+   2753d:	setb   %r9b
+   27541:	mov    %r9d,0xc(%rcx,%r8,4)
+   27546:	add    $0x4,%r8
+   2754a:	cmp    %r8,%rsi
+   2754d:	jne    27440 <_Z13lookup_kernelIN13bloom_filters24Independent32BloomFilterEmEvRT_mPKT0_Pj+0x40>
+   27553:	test   %rax,%rax
+   27556:	je     275c8 <_Z13lookup_kernelIN13bloom_filters24Independent32BloomFilterEmEvRT_mPKT0_Pj+0x1c8>
+   27558:	lea    (%rcx,%r8,4),%rcx
+   2755c:	lea    (%rdx,%r8,8),%rdx
+   27560:	xor    %esi,%esi
+   27562:	vpbroadcastq -0x25b93(%rip),%xmm0        # 19d8 <_IO_stdin_used+0x2f8>
+   2756b:	vpbroadcastd -0x25ea0(%rip),%ymm1        # 16d4 <__abi_tag+0x1410>
+   27574:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   27580:	mov    (%rdx,%rsi,8),%r8
+   27584:	vpbroadcastq %r8,%xmm2
+   2758a:	shr    $0x29,%r8
+   2758e:	and    0x18(%rdi),%r8d
+   27592:	mov    (%rdi),%r9
+   27595:	shl    $0x5,%r8d
+   27599:	vmovdqa (%r9,%r8,1),%ymm3
+   2759f:	vpmultishiftqb %xmm2,%xmm0,%xmm2
+   275a5:	vpmovzxbd %xmm2,%ymm2
+   275aa:	vprolvd %ymm2,%ymm1,%ymm2
+   275b0:	xor    %r8d,%r8d
+   275b3:	vptest %ymm2,%ymm3
+   275b8:	setb   %r8b
+   275bc:	mov    %r8d,(%rcx,%rsi,4)
+   275c0:	inc    %rsi
+   275c3:	cmp    %rsi,%rax
+   275c6:	jne    27580 <_Z13lookup_kernelIN13bloom_filters24Independent32BloomFilterEmEvRT_mPKT0_Pj+0x180>
+   275c8:	vzeroupper
+   275cb:	ret

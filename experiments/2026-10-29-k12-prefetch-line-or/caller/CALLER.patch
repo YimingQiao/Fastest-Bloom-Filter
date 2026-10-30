@@ -1,0 +1,43 @@
+--- order-v3/compare_benchmark.cpp
++++ conditional/compare_benchmark.cpp
+@@ -319,9 +319,9 @@
+ 		    batch > (1u << qp) || !insert_batch || insert_batch > (1u << 26) ||
+ 		    (calibration_power && (calibration_power < 12 || calibration_power > 27)) || !repeats)
+ 			throw std::invalid_argument("unsupported benchmark arguments");
+-        const std::string filter_order = argc > 13 ? argv[13] : "original";
+-        if (filter_order != "original" && filter_order != "reverse")
+-            throw std::invalid_argument("filter order must be original or reverse");
++        const std::string filter_order = argc > 13 ? argv[13] : "latin0";
++        if (filter_order != "latin0" && filter_order != "latin1" && filter_order != "latin2")
++            throw std::invalid_argument("filter order must be latin0, latin1 or latin2");
+ 		size_t n = size_t {1} << power, q = size_t {1} << qp;
+ 		(void)exact_budget::Bytes(n, bpk);
+ 		std::string selection = argc > 8 ? argv[8] : "";
+@@ -353,10 +353,12 @@
+ 	    [&] { run<T, H>(#T, ins, query, bpk, hit, batch, repeats, seed, key_base, insert_batch, calibration_power, build_repeats); }); }
+ 
+ 		ADD(K12ScalarOrControl, uint64_t);
+-		ADD(K12LineOrCandidate, uint64_t);
++		ADD(K12PrefetchLineOrCandidate, uint64_t);
++		ADD(Split64RangeBloomFilter, uint64_t);
+ #undef ADD
+ 		if (!unmatched.empty())
+ 			throw std::invalid_argument("unknown filter name: " + *unmatched.begin());
++        if (jobs.size() != 3) throw std::invalid_argument("Latin caller requires all three registered filters");
+ 		if (jobs.empty())
+ 			throw std::invalid_argument("no matching filters");
+ 		// Permuted unique integers give disjoint hit/miss sets; hashing is separately timed.
+@@ -376,8 +378,11 @@
+ 		             "lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives,"
+                      "budget_mode,measurement_mode,query_repeats,build_repeats,lookup_trials_ns,hash_lookup_trials_ns,query_phase_order,insert_trials_ns,allocate_insert_trials_ns,hash_insert_trials_ns,allocate_hash_insert_trials_ns,"
+                   << exact_budget::GeometryHeader() << '\n';
+-		shuffle(jobs, rng);
+-        if (filter_order == "reverse") std::reverse(jobs.begin(), jobs.end());
++        const auto registration_order = jobs;
++		shuffle(jobs, rng); // Keep the ordinary three-job shuffle after workload generation.
++        const size_t rotation = static_cast<size_t>(filter_order.back() - '0');
++        for (size_t i = 0; i < jobs.size(); ++i)
++            jobs[i] = registration_order[(i + rotation) % jobs.size()];
+ 		for (auto &job : jobs)
+ 			job();
+ 	} catch (const std::exception &e) {

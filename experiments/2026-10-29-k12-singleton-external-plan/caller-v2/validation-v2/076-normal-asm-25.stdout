@@ -1,0 +1,115 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000061340 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj>:
+   61340:	test   %rsi,%rsi
+   61343:	je     6155e <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x21e>
+   61349:	push   %rbx
+   6134a:	movabs $0x3fffffffc0,%r8
+   61354:	cmp    $0x1,%rsi
+   61358:	jne    61361 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x21>
+   6135a:	xor    %eax,%eax
+   6135c:	jmp    614bf <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x17f>
+   61361:	mov    %rsi,%r9
+   61364:	and    $0xfffffffffffffffe,%r9
+   61368:	xor    %eax,%eax
+   6136a:	vbroadcasti32x4 -0x5cd64(%rip),%zmm0        # 4610 <_IO_stdin_used+0x2718>
+   61374:	vpbroadcastd -0x5f4a2(%rip),%zmm1        # 1edc <__abi_tag+0x1c18>
+   6137e:	vbroadcasti32x4 -0x5cd08(%rip),%zmm2        # 4680 <_IO_stdin_used+0x2788>
+   61388:	vbroadcasti32x4 -0x5cd42(%rip),%zmm3        # 4650 <_IO_stdin_used+0x2758>
+   61392:	vmovdqa64 -0x5de1c(%rip),%zmm4        # 3580 <_IO_stdin_used+0x1688>
+   6139c:	nopl   0x0(%rax)
+   613a0:	mov    (%rdx,%rax,8),%r10
+   613a4:	mov    %r10,%r11
+   613a7:	vpbroadcastd %r10d,%zmm5
+   613ad:	shr    $0x20,%r10
+   613b1:	vpbroadcastd %r10d,%zmm6
+   613b7:	vpsrlvd %zmm0,%zmm6,%zmm7
+   613bd:	vpxord %zmm7,%zmm6,%zmm6
+   613c3:	mov    (%rdi),%r10
+   613c6:	shr    $0x28,%r11
+   613ca:	mov    0x18(%rdi),%ebx
+   613cd:	imul   %r11,%rbx
+   613d1:	shr    $0x12,%rbx
+   613d5:	and    %r8,%rbx
+   613d8:	vpternlogd $0xec,%zmm1,%zmm2,%zmm6
+   613df:	vpermd (%r10,%rbx,1),%zmm6,%zmm6
+   613e6:	vprorvd %zmm3,%zmm5,%zmm5
+   613ec:	vpxor  %xmm7,%xmm7,%xmm7
+   613f0:	vpermd %zmm4,%zmm5,%zmm7
+   613f6:	vpsrld $0x4,%zmm5,%zmm5
+   613fd:	vprolvd %zmm5,%zmm7,%zmm5
+   61403:	vpandd %zmm6,%zmm5,%zmm6
+   61409:	vpcmpneqd %zmm5,%zmm6,%k0
+   61410:	kmovd  %k0,%r10d
+   61414:	xor    %r11d,%r11d
+   61417:	test   $0xf,%r10b
+   6141b:	sete   %r11b
+   6141f:	mov    %r11d,(%rcx,%rax,4)
+   61423:	mov    0x8(%rdx,%rax,8),%r10
+   61428:	mov    %r10,%r11
+   6142b:	vpbroadcastd %r10d,%zmm5
+   61431:	shr    $0x20,%r10
+   61435:	vpbroadcastd %r10d,%zmm6
+   6143b:	vpsrlvd %zmm0,%zmm6,%zmm7
+   61441:	vpxord %zmm7,%zmm6,%zmm6
+   61447:	mov    (%rdi),%r10
+   6144a:	shr    $0x28,%r11
+   6144e:	mov    0x18(%rdi),%ebx
+   61451:	imul   %r11,%rbx
+   61455:	shr    $0x12,%rbx
+   61459:	and    %r8,%rbx
+   6145c:	vpternlogd $0xec,%zmm1,%zmm2,%zmm6
+   61463:	vpermd (%r10,%rbx,1),%zmm6,%zmm6
+   6146a:	vprorvd %zmm3,%zmm5,%zmm5
+   61470:	vpxor  %xmm7,%xmm7,%xmm7
+   61474:	vpermd %zmm4,%zmm5,%zmm7
+   6147a:	vpsrld $0x4,%zmm5,%zmm5
+   61481:	vprolvd %zmm5,%zmm7,%zmm5
+   61487:	vpandd %zmm6,%zmm5,%zmm6
+   6148d:	vpcmpneqd %zmm5,%zmm6,%k0
+   61494:	kmovd  %k0,%r10d
+   61498:	xor    %r11d,%r11d
+   6149b:	test   $0xf,%r10b
+   6149f:	sete   %r11b
+   614a3:	mov    %r11d,0x4(%rcx,%rax,4)
+   614a8:	add    $0x2,%rax
+   614ac:	cmp    %rax,%r9
+   614af:	jne    613a0 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x60>
+   614b5:	test   $0x1,%sil
+   614b9:	je     6155d <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x21d>
+   614bf:	mov    (%rdx,%rax,8),%rdx
+   614c3:	mov    %rdx,%rsi
+   614c6:	vpbroadcastd %edx,%zmm0
+   614cc:	shr    $0x20,%rdx
+   614d0:	vpbroadcastd %edx,%zmm1
+   614d6:	vpsrlvd -0x5df20(%rip),%zmm1,%zmm2        # 35c0 <_IO_stdin_used+0x16c8>
+   614e0:	vpxord %zmm2,%zmm1,%zmm1
+   614e6:	mov    (%rdi),%rdx
+   614e9:	shr    $0x28,%rsi
+   614ed:	mov    0x18(%rdi),%edi
+   614f0:	imul   %rsi,%rdi
+   614f4:	shr    $0x12,%rdi
+   614f8:	and    %r8,%rdi
+   614fb:	vbroadcasti32x4 -0x5ce85(%rip),%zmm2        # 4680 <_IO_stdin_used+0x2788>
+   61505:	vpternlogd $0xf8,-0x5f634(%rip){1to16},%zmm1,%zmm2        # 1edc <__abi_tag+0x1c18>
+   61510:	vpxor  %xmm1,%xmm1,%xmm1
+   61514:	vpermd (%rdx,%rdi,1),%zmm2,%zmm1
+   6151b:	vprorvd -0x5dee5(%rip),%zmm0,%zmm0        # 3640 <_IO_stdin_used+0x1748>
+   61525:	vpxor  %xmm2,%xmm2,%xmm2
+   61529:	vpermd -0x5dfb3(%rip),%zmm0,%zmm2        # 3580 <_IO_stdin_used+0x1688>
+   61533:	vpsrld $0x4,%zmm0,%zmm0
+   6153a:	vprolvd %zmm0,%zmm2,%zmm0
+   61540:	vpandd %zmm1,%zmm0,%zmm1
+   61546:	vpcmpneqd %zmm0,%zmm1,%k0
+   6154d:	kmovd  %k0,%edx
+   61551:	xor    %esi,%esi
+   61553:	test   $0xf,%dl
+   61556:	sete   %sil
+   6155a:	mov    %esi,(%rcx,%rax,4)
+   6155d:	pop    %rbx
+   6155e:	vzeroupper
+   61561:	ret

@@ -1,0 +1,138 @@
+{
+  "status": "Correctness and generated-code preflight complete; source/binary freeze prepared, no performance executed",
+  "base_adapter_commit": "9c5820f0529efeaa37f896f6f8ce269a2e940afb",
+  "native_production_changes": false,
+  "filters": [
+    "FastPatternBF",
+    "ByteSplitBloomFilter",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter",
+    "Fastbloom017",
+    "BloomsdayPinned",
+    "SbbfSafePinned",
+    "ByteLeafInlineV1",
+    "FourSectorLeafInlineV1",
+    "Split64LeafInlineV1",
+    "Independent32BloomFilter"
+  ],
+  "public_methods": {
+    "native": "contains_hash",
+    "Fastbloom017": "BloomFilter::contains_hash",
+    "BloomsdayPinned": "BlockedBloomFilter::may_match_hash",
+    "SbbfSafePinned": "sbbf_rs_safe::Filter::contains_hash; retain upstream trait object"
+  },
+  "query_modes": [
+    "old_prehashed",
+    "old_hash_staged",
+    "visible_prehashed",
+    "visible_hash_fused"
+  ],
+  "schedule": [
+    [
+      0,
+      1,
+      3,
+      2
+    ],
+    [
+      1,
+      2,
+      0,
+      3
+    ],
+    [
+      2,
+      3,
+      1,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      1
+    ]
+  ],
+  "label_permutation": "SplitMix64(seed xor 0x6a09e667f3bcc909), same shuffle as the shared workload",
+  "repeats": 8,
+  "key_powers": [
+    16,
+    25
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "query_power": 22,
+  "hit_percent": 50,
+  "seeds": [
+    42
+  ],
+  "insert_batch": "whole input",
+  "calibration_power": 24,
+  "expected_initial_workloads": 12,
+  "expected_initial_rows": 132,
+  "performance_authorization": "Correctness/ASM complete. The132-row screen requires a separate explicit whole-matrix CPU3/socket1 lease after review and commit of this source/binary freeze.",
+  "correctness_requirements": [
+    "normal",
+    "disable-avx512",
+    "ASan",
+    "clippy",
+    "exact frozen baseline parity",
+    "every timed-mode tail corruption rejected",
+    "balanced phase-order evidence",
+    "public-only generated-code audit",
+    "Exact11-row selection at every batch",
+    "All10 retained original/leaf semantic records match frozen leaf binary",
+    "Independent32 native module/C++fullword parity freeze remains unchanged"
+  ],
+  "preflight_cpu": 3,
+  "proposed_performance_cpu": 3,
+  "compiler_flags": "-C target-cpu=native -C symbol-mangling-version=v0",
+  "purpose": "Native Independent32 versus frozen original7 and leaf3 controls; all public APIs, no changed timer or private kernel shortcut",
+  "cpu": 3,
+  "numa_node": 1,
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "binary": "/tmp/fastest-bf-independent32-rust-screen/release/compare_benchmark",
+  "binary_sha256": "5e7d08133b4404fcfe8090a482c55256eb7dc91fba7533a7a02f9ffed0f4305c",
+  "workloads": 12,
+  "rows": 132,
+  "ranking": {
+    "memory_caps_bpk": [
+      16,
+      32
+    ],
+    "allocation_slack_bytes": 0,
+    "fpr_ceilings": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "fpr_bound": "Pointwise two-sided 95% Wilson upper endpoint; no simultaneous selection guarantee",
+    "metrics": [
+      "lookup_ns",
+      "hash_lookup_ns",
+      "inline_lookup_ns",
+      "inline_hash_lookup_ns"
+    ],
+    "track_rule": "Everybatch: four modes separately, original/native_experimental/external ownership explicit. CandidateIndependent32 must qualify by its own FPR; strongest external and all feasible allocations under each cap compete. All individual losses retained.",
+    "within_family_ratios": "Retain every original/visible ratio including regressions; descriptive medians only",
+    "quality_deduplication": "One mapping/size/requestedbpk/seed stream; leaf clones share their originals. Independent32 has a distinct mapping. Batch/mode repeats never add independent negatives. No confidence pooling across mappings."
+  },
+  "batches": [
+    1,
+    31,
+    4096
+  ],
+  "base_visible_source_commit": "4004e3f50e85385e5a3c7752d62b7a8797f15146",
+  "scope_by_batch": {
+    "1,31,4096": "All11 configurations; four separately reported query contracts at every batch. Visible singleton modes always process the full array regardless of the original batch setting."
+  },
+  "native_independent32_freeze_sha256": "017472ab09e7430bca03ee219a5b7e0f412e30fadef21159fc8c84cee65a050d",
+  "leaf_source_freeze_sha256": "d4a49251faf7fde20ca8bb83c5473c0e60ba432b7b332b30adee401d933f3735",
+  "reference_binary": "/tmp/fastest-bf-rust-leaf-inline/release/compare_benchmark",
+  "reference_binary_sha256": "0caf0d3ff982ffdc295b6bb7010ae148bd5ffa240426573429e2ae2e92036926",
+  "calibration_raw_interval": "[key_base + keys + queries, key_base + keys + queries + 2^24), disjoint from inserted and timed negative intervals; generated only after query timing.",
+  "quality_unique_records": 32,
+  "numa_policy": "CPU3/socket1 affinity; allocation uses process first-touch. No explicit NUMA memory binding."
+}

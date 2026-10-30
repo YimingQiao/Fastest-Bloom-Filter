@@ -47,6 +47,9 @@ public:
         std::cout << "BF Size: " << num_blocks * 8 * 8 / 1024 << " KiB\n";  // Output the size of the filter
     }
 
+public:
+    size_t SizeInBytes() const { return blocks.size() * sizeof(blocks[0]); }
+
     inline void Insert(size_t num, uint64_t* key) {
         InsertInternal(num, key, blocks.data());
     }

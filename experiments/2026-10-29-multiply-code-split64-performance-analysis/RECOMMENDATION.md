@@ -1,0 +1,11 @@
+# Follow-up recommendation; no execution authority
+
+The new mask improves small equal-space Split64Range queries by about8–10% in this training screen, but current-seed leaders are faster in all20 comparable primary retained-project views. That count is conditional: the small cap16/0.1% FourSector16 leader already failed a held-out quality bound. Excluding known failures makes Multiply16 faster than the remaining measured production/original-range/external controls at this one small-size gate. The separate sensitivity preserves this opportunity without erasing the primary losses.
+
+Root's stronger source-only confirmation proposal is appropriate: n=2^16, exact cap16, target0.1%, batches1/31/4096, q22/cal24, six balanced pure/raw repetitions and full-input single construction. Keep eight APIs: Multiply16, native Split64, original Range16, FourSector16 as historical-failure diagnostic, Fixed64, BoostMulti64K8, RocksK8 and RocksK8Batch32. All allocated bytes must fit16bpk; use the unchanged frozen76 binary and public APIs. Do not import old latency.
+
+Choose six fresh seeds solely from the committed source-derived job order before any new filter outputs: three place Multiply first and three last. This controls candidate-relative order, not all eight absolute positions, and must be described that way. Six seeds ×three batches ×eight APIs give144 rows. The final selected seed list/protocol must be frozen separately by root before execution.
+
+Require the candidate's pointwise Wilson upper endpoint to pass0.1% separately for every new seed, with no false negatives or output/guard failure. Reused batch rows and known Range/Fixed64 or Rocks direct/batch aliases are not new independent calibration samples and must not be pooled. FourSector16 stays outside the robust-leader set because of its known earlier failure even if all fresh rows pass; show current qualification and diagnostic speed separately.
+
+Report all per-seed, batch, pure/raw and first/last-order ratios, including regressions and trial ranges. Do not infer an overall or global lead from a selected successful batch. Existing large-size losses and stronger32bpk-cap rivals remain in the training report. Any production decision follows the reviewed fresh comparison, not this recommendation. No performance run is authorized by this file.

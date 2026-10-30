@@ -1,0 +1,104 @@
+{
+  "status": "Source-only thin wrapper proposal; no compiler/BF execution or performance authority",
+  "candidate_count": 1,
+  "threshold_selection": "Fixed from native60 small-table observation before any new workload data; no parameter search",
+  "policy": {
+    "batch_max_inclusive": 65536,
+    "actual_bitmap_bytes_max_inclusive": 262144,
+    "effective_build_request_inside": 1,
+    "effective_build_request_else": "original requested threads, including automatic0",
+    "query_policy": "original requested threads unchanged"
+  },
+  "native_source_commit": "5fd487fe3381ce05be2ba823a6137107f4108854",
+  "controls": [
+    "SplitControl",
+    "SplitBounded",
+    "RangeControl",
+    "RangeBounded"
+  ],
+  "languages": [
+    "cpp",
+    "rust"
+  ],
+  "public_api": "Thin typed wrapper delegates complete InsertParallel/insert_hashes_parallel; original native sources unchanged",
+  "accounting": "core_budget/requestedT separate from effective_build_request and actualW; public scratch estimator receives effective request; W1 reports0",
+  "correctness": {
+    "input_lengths": [
+      0,
+      1,
+      16383,
+      16384,
+      65535,
+      65536,
+      65537
+    ],
+    "requested_threads": [
+      0,
+      1,
+      4,
+      8
+    ],
+    "actual_bytes_by_family": {
+      "Split64": [
+        131072,
+        262144,
+        524288,
+        67108864
+      ],
+      "Split64Range": [
+        131072,
+        262144,
+        262208,
+        67108864,
+        100663296
+      ]
+    },
+    "states": [
+      "empty",
+      "prepopulated via unchanged public serial insertion"
+    ],
+    "distributions": [
+      "uniform full64 hashes",
+      "deterministic high32=0 hotspot with independently varied low32"
+    ],
+    "prepopulation": "For dense-state workload, stream exactly actual_bitmap_bytes/2 deterministic uniformly hashed existing keys through public serial insertion outside all timers; preserve equal prehistory for every fresh control/candidate trial.",
+    "retained_history": "Check every inserted new key and every prehistory key once in the correctness stage; mixed full dense outputs and guards must agree with unchanged serial and disabled-wrapper controls.",
+    "query_guard": "Full dense outputs including nonmultiples/tails; public parallel query receives original T regardless of effective build request.",
+    "no_bitmap_private_access": "Immutable-source proof plus full public output equality; do not claim direct backing-byte comparison without a public observation API.",
+    "focus": "Build-policy forwarding/count/scratch plus public semantic equality only; reuse native kernel proofs, no whole backend revalidation without a concrete change.",
+    "combination_policy": "This is a finite boundary/catalog proposal, not authorization for its Cartesian product. The later focused preflight must freeze a minimal explicit ledger: cheap request-forwarding boundary checks first, then full-output public-filter cases that cover small/large footprint and prefilled/hotspot conditions. No compiler or filter has run here."
+  },
+  "incremental_contract": "batch_n is the current insertion length, never constructor real_n. Large bitmaps and prefilled histories are mandatory even at the same64K input length.",
+  "future_measurement": {
+    "status": "Detailed paired runner must be reviewed/frozen separately; no performance start from this proposal",
+    "fixed_requested_T": [
+      4,
+      8
+    ],
+    "fixed_batch_lengths": [
+      65536,
+      65537
+    ],
+    "required_footprints_bytes": [
+      131072,
+      262144,
+      262208,
+      524288,
+      67108864,
+      100663296
+    ],
+    "geometry_support": "Range supports262208 and96MiB; Split uses nearest above-bound512KiB and64MiB. Never relabel rounded allocations.",
+    "required_state_distribution_controls": [
+      "empty uniform",
+      "empty hotspot",
+      "prepopulated uniform",
+      "prepopulated hotspot"
+    ],
+    "minimal_control_selection": "Use uniform boundary cases for all supported exact footprints; use both other state/distribution dimensions at256KiB and64/96MiB. Freeze exact finite ledger before any throughput.",
+    "timing": "Same public complete calls and allowed-core/first-touch rules as native60; paired disabled/enabled wrappers in one process per language. Fresh independent filters/histories at each timing boundary. No private worker/partition shortcut.",
+    "insertion_only": "Prepopulation remains outside incremental-insert timer, identical on both sides.",
+    "allocation_inclusive": "Only empty-start full allocation+build is directly comparable with native60. For populated incremental scenarios do not label allocation+prefill+increment as a64K allocation+build or derive it by subtraction.",
+    "queries": "Unchanged native query API can serve correctness plus a limited regression control; never attribute unchanged query code to a new kernel improvement.",
+    "success": "Preserve all individual losses. Large-bitmap and above-bound controls must remain semantically identical and show no material regression before considering production. Independent fresh input seeds/order confirmation follows any training gains."
+  }
+}

@@ -1,0 +1,50 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000054ec0 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj>:
+   54ec0:	cmp    $0x1,%esi
+   54ec3:	jne    54f06 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x46>
+   54ec5:	mov    (%rdx),%rax
+   54ec8:	vmovd  %eax,%xmm0
+   54ecc:	shr    $0x20,%rax
+   54ed0:	and    0x18(%rdi),%eax
+   54ed3:	mov    (%rdi),%rdx
+   54ed6:	shl    $0x4,%rax
+   54eda:	vpbroadcastd %xmm0,%xmm0
+   54edf:	vpmulhw -0x52eb7(%rip),%xmm0,%xmm0        # 2030 <_IO_stdin_used+0x138>
+   54ee7:	vmovdqa (%rdx,%rax,1),%xmm1
+   54eec:	vmovdqa -0x52ed4(%rip),%xmm2        # 2020 <_IO_stdin_used+0x128>
+   54ef4:	vpshufb %xmm0,%xmm2,%xmm0
+   54ef9:	xor    %eax,%eax
+   54efb:	vptest %xmm0,%xmm1
+   54f00:	setb   %al
+   54f03:	mov    %eax,(%rcx)
+   54f05:	ret
+   54f06:	test   %esi,%esi
+   54f08:	je     54f64 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0xa4>
+   54f0a:	mov    %esi,%eax
+   54f0c:	xor    %esi,%esi
+   54f0e:	vmovdqa -0x52ee6(%rip),%xmm0        # 2030 <_IO_stdin_used+0x138>
+   54f16:	vmovdqa -0x52efe(%rip),%xmm1        # 2020 <_IO_stdin_used+0x128>
+   54f1e:	xchg   %ax,%ax
+   54f20:	mov    (%rdx,%rsi,8),%r8
+   54f24:	vmovd  %r8d,%xmm2
+   54f29:	shr    $0x20,%r8
+   54f2d:	and    0x18(%rdi),%r8d
+   54f31:	mov    (%rdi),%r9
+   54f34:	shl    $0x4,%r8
+   54f38:	vmovdqa (%r9,%r8,1),%xmm3
+   54f3e:	vpbroadcastd %xmm2,%xmm2
+   54f43:	vpmulhw %xmm0,%xmm2,%xmm2
+   54f47:	vpshufb %xmm2,%xmm1,%xmm2
+   54f4c:	xor    %r8d,%r8d
+   54f4f:	vptest %xmm2,%xmm3
+   54f54:	setb   %r8b
+   54f58:	mov    %r8d,(%rcx,%rsi,4)
+   54f5c:	inc    %rsi
+   54f5f:	cmp    %rsi,%rax
+   54f62:	jne    54f20 <_Z13lookup_kernelIN13bloom_filters20ByteSplitBloomFilterEmEvRT_mPKT0_Pj+0x60>
+   54f64:	ret

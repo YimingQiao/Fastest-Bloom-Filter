@@ -1,0 +1,49 @@
+--- frozen336/guard.py
++++ preflight/subset_guard.py
+@@ -53,34 +53,21 @@
+ 
+ 
+ def selected_names(cap, source):
+-    return [name for name in source_registry(source) if cap != 24 or name not in NATIVE]
++    require(cap == 24, 'This confirmation is limited to actual cap24')
++    return [name for name in source_registry(source) if name in {RANGE, 'Fastbloom017K7'}]
+ 
+ 
+ def validate_protocol(protocol, registry, source):
+-    require(__debug__, 'Run without Python -O')
+-    require(protocol['key_powers'] == [16, 25] and protocol['budget_bpk'] == [16, 24, 32]
+-            and protocol['batches'] == [1, 31, 4096] and protocol['seeds'] == [42], 'Changed training grid')
+-    require(protocol['query_power'] == 22 and protocol['hit_percent'] == 50
+-            and protocol['calibration_power'] == 24 and protocol['repeats'] == 8
+-            and protocol['query_repeats'] == 8 and protocol['build_repeats'] == 8, 'Changed trial contract')
+-    require(protocol['filters'] == source_registry(source) == list(registry), 'Changed registry/source order')
+-    for name, info in registry.items():
+-        owner = 'production_native' if name in NATIVE else 'external' if name in EXTERNAL else 'native_experimental'
+-        policy = 'largest_fitting_native_pow2' if name in NATIVE else 'exact_blocks'
+-        api = 'may_match_hash' if name == 'BloomsdayPinned' else 'contains_hash'
+-        if name in FIXED:
+-            k = int(name.removeprefix('Fastbloom017K'))
+-            expected = dict(owner='external', public_api='contains_hash', constructor='with_num_bits(exact_bits).hashes(K)',
+-                fixed_K=k, capacity_policy='exact_words', mapping_family='Fastbloom017',
+-                calibration_alias='Fastbloom017 default at16bpk only' if k == 11 else None)
+-        else:
+-            expected = dict(owner=owner, public_api=api, capacity_policy=policy, mapping_family=name)
+-        require(info == expected, 'Wrong registry metadata')
+-    cases = [dict(key_power=n, budget_bpk=cap, batch=batch, seed=seed, filters=selected_names(cap, source))
+-             for n, cap, batch, seed in itertools.product(protocol['key_powers'], protocol['budget_bpk'], protocol['batches'], protocol['seeds'])]
+-    require(protocol['cases'] == cases and len(cases) == protocol['expected_cases'] == 18, 'Changed exact case/order selection')
+-    require(sum(len(case['filters']) for case in cases) == protocol['expected_rows'] == 336, 'Wrong expected rows')
+-    require(protocol['quality_records'] == 112 and protocol['known_mapping_records'] == 110, 'Wrong family/geometry/size/seed record count')
++    import json
++    from pathlib import Path
++    here = Path(__file__).resolve().parent
++    root = here.parents[2]
++    expected = json.loads((here / 'runtime-protocol.json').read_text())
++    original_registry = json.loads((root / 'experiments/2026-10-29-rust-fastbloom-fixed-probes/registry.json').read_text())
++    require(__debug__ and protocol == expected, 'Changed fixed12-case held-out protocol')
++    require(registry == original_registry and source_registry(source) == list(registry), 'Changed underlying20-public-API registry')
++    require(protocol['filters'] == selected_names(24, source), 'Changed fixed training-derived shortlist')
++    require(len(protocol['cases']) == 12 and sum(len(c['filters']) for c in protocol['cases']) == 24, 'Wrong finite scope')
+ 
+ 
+ def expected_order(case, protocol, source):

@@ -1,0 +1,15 @@
+[package]
+name="fastest-bloom-filter-rust-split-short"
+version="0.1.0"
+edition="2021"
+publish=false
+[[bin]]
+name="compare_benchmark"
+path="src/main.rs"
+[features]
+disable-avx512=["fastest-bloom-filter/disable-avx512"]
+[dependencies]
+fastest-bloom-filter={path="../../../rust"}
+[profile.release]
+lto="thin"
+codegen-units=1

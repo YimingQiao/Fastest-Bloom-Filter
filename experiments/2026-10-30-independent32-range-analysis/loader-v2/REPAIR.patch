@@ -1,0 +1,50 @@
+--- loader/run.py@f692681654ea68c31870d9684c8c90c839a629f6
++++ loader-v2/run.py
+@@ -63,7 +63,7 @@
+     return data
+ 
+ 
+-def manifest_files(stage, commit, expected=None):
++def manifest_files(stage, commit, expected=None, proof_python=()):
+     manifest = stage / 'PREPARATION.json'
+     values = json.loads(committed(commit, manifest, expected), object_pairs_hook=unique)
+     need(type(values['files']) is dict and values['files'], 'empty source inventory')
+@@ -75,7 +75,11 @@
+              'escaped or duplicate source path')
+         committed(commit, path, record['sha256'], record['bytes'])
+         paths.add(path.resolve())
+-    need({p.resolve() for p in stage.glob('*.py')} <= paths, 'uninventoried local Python source')
++    proof_python = set(proof_python)
++    need(not proof_python or (stage.resolve() == CALLER.resolve() and
++         proof_python == {(CALLER / 'seal.py').resolve()}), 'unexpected proof Python allowance')
++    need({p.resolve() for p in stage.glob('*.py')} <= paths | proof_python,
++         'uninventoried local Python source')
+     return paths
+ 
+ 
+@@ -111,7 +115,10 @@
+          len(proof['compiler_consumed_input_sha256']) == 570, 'actual caller proof gate differs')
+     executable = proof['normal_executable']
+     need(proof['all_binary_sha256'].get(executable['path']) == executable['sha256'], 'normal binary absent from proof')
+-    return proof
++    python_names = {name for name in archive['files']
++                    if Path(name).parent == Path('.') and Path(name).suffix == '.py'}
++    need(python_names == {'seal.py'}, 'unexpected caller proof Python inventory')
++    return proof, {(CALLER / name).resolve() for name in python_names}
+ 
+ 
+ def validate_anchor(anchor, binding):
+@@ -218,11 +225,11 @@
+     validate_binding(binding)
+     producer_paths = manifest_files(PRODUCER, binding['producer_commit'], binding['producer_manifest_sha256'])
+     analysis_paths = manifest_files(ANALYSIS, binding['analysis_commit'], binding['analysis_manifest_sha256'])
+-    manifest_files(CALLER, binding['caller_commit'], binding['caller_manifest_sha256'])
++    proof, proof_python = verify_proof(binding)
++    manifest_files(CALLER, binding['caller_commit'], binding['caller_manifest_sha256'], proof_python)
+     source_inputs = read(ANALYSIS / 'source-binding.json')
+     need(source_inputs['caller']['commit'] == binding['caller_commit'] and
+          source_inputs['caller']['sha256'] == binding['caller_manifest_sha256'], 'analysis caller ancestry differs')
+-    proof = verify_proof(binding)
+     for name in ('audit.py', 'pins.py', 'screen_contract.py', 'row_guard.py', 'placement.py'):
+         need((PRODUCER / name).resolve() in producer_paths, 'missing producer import source')
+     need((ANALYSIS / 'summarize.py').resolve() in analysis_paths, 'missing analysis implementation')

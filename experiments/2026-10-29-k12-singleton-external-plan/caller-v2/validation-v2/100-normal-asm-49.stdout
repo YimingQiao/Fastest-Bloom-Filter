@@ -1,0 +1,111 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000057a00 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj>:
+   57a00:	test   %rsi,%rsi
+   57a03:	je     57ba2 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj+0x1a2>
+   57a09:	push   %rbx
+   57a0a:	movabs $0xd6e8feb86659fd93,%r8
+   57a14:	cmp    $0x1,%rsi
+   57a18:	jne    57a21 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj+0x21>
+   57a1a:	xor    %eax,%eax
+   57a1c:	jmp    57b2d <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj+0x12d>
+   57a21:	mov    %rsi,%r9
+   57a24:	and    $0xfffffffffffffffe,%r9
+   57a28:	xor    %eax,%eax
+   57a2a:	vmovdqa -0x537f2(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   57a32:	vpbroadcastd -0x55b53(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   57a3b:	nopl   0x0(%rax,%rax,1)
+   57a40:	mov    (%rdx,%rax,8),%r10
+   57a44:	mov    %r10,%r11
+   57a47:	shr    $0x20,%r11
+   57a4b:	xor    %r10,%r11
+   57a4e:	imul   %r8,%r11
+   57a52:	mov    %r11,%r10
+   57a55:	shr    $0x20,%r10
+   57a59:	xor    %r11,%r10
+   57a5c:	imul   %r8,%r10
+   57a60:	mov    %r10,%r11
+   57a63:	shr    $0x20,%r11
+   57a67:	xor    %r10,%r11
+   57a6a:	mov    0x4(%rdi),%r10d
+   57a6e:	and    %r11d,%r10d
+   57a71:	movzbl (%rdi),%ebx
+   57a74:	shrx   %rbx,%r11,%r11
+   57a79:	vpbroadcastd %r11d,%ymm2
+   57a7f:	vpmulld %ymm0,%ymm2,%ymm2
+   57a84:	vpsrld $0x1b,%ymm2,%ymm2
+   57a89:	vpsllvd %ymm2,%ymm1,%ymm2
+   57a8e:	mov    0x8(%rdi),%r11
+   57a92:	shl    $0x5,%r10
+   57a96:	vmovdqa (%r11,%r10,1),%ymm3
+   57a9c:	xor    %r10d,%r10d
+   57a9f:	vptest %ymm2,%ymm3
+   57aa4:	setb   %r10b
+   57aa8:	mov    %r10d,(%rcx,%rax,4)
+   57aac:	mov    0x8(%rdx,%rax,8),%r10
+   57ab1:	mov    %r10,%r11
+   57ab4:	shr    $0x20,%r11
+   57ab8:	xor    %r10,%r11
+   57abb:	imul   %r8,%r11
+   57abf:	mov    %r11,%r10
+   57ac2:	shr    $0x20,%r10
+   57ac6:	xor    %r11,%r10
+   57ac9:	imul   %r8,%r10
+   57acd:	mov    %r10,%r11
+   57ad0:	shr    $0x20,%r11
+   57ad4:	xor    %r10,%r11
+   57ad7:	mov    0x4(%rdi),%r10d
+   57adb:	and    %r11d,%r10d
+   57ade:	movzbl (%rdi),%ebx
+   57ae1:	shrx   %rbx,%r11,%r11
+   57ae6:	vpbroadcastd %r11d,%ymm2
+   57aec:	vpmulld %ymm0,%ymm2,%ymm2
+   57af1:	vpsrld $0x1b,%ymm2,%ymm2
+   57af6:	vpsllvd %ymm2,%ymm1,%ymm2
+   57afb:	mov    0x8(%rdi),%r11
+   57aff:	shl    $0x5,%r10
+   57b03:	vmovdqa (%r11,%r10,1),%ymm3
+   57b09:	xor    %r10d,%r10d
+   57b0c:	vptest %ymm2,%ymm3
+   57b11:	setb   %r10b
+   57b15:	mov    %r10d,0x4(%rcx,%rax,4)
+   57b1a:	add    $0x2,%rax
+   57b1e:	cmp    %rax,%r9
+   57b21:	jne    57a40 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj+0x40>
+   57b27:	test   $0x1,%sil
+   57b2b:	je     57ba1 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj+0x1a1>
+   57b2d:	mov    (%rdx,%rax,8),%rdx
+   57b31:	mov    %rdx,%rsi
+   57b34:	shr    $0x20,%rsi
+   57b38:	xor    %rdx,%rsi
+   57b3b:	imul   %r8,%rsi
+   57b3f:	mov    %rsi,%rdx
+   57b42:	shr    $0x20,%rdx
+   57b46:	xor    %rsi,%rdx
+   57b49:	imul   %r8,%rdx
+   57b4d:	mov    %rdx,%rsi
+   57b50:	shr    $0x20,%rsi
+   57b54:	xor    %rdx,%rsi
+   57b57:	mov    0x4(%rdi),%edx
+   57b5a:	and    %esi,%edx
+   57b5c:	movzbl (%rdi),%r8d
+   57b60:	shrx   %r8,%rsi,%rsi
+   57b65:	vpbroadcastd %esi,%ymm0
+   57b6b:	vpmulld -0x53934(%rip),%ymm0,%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   57b74:	vpsrld $0x1b,%ymm0,%ymm0
+   57b79:	vpbroadcastd -0x55c9a(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   57b82:	vpsllvd %ymm0,%ymm1,%ymm0
+   57b87:	mov    0x8(%rdi),%rsi
+   57b8b:	shl    $0x5,%rdx
+   57b8f:	vmovdqa (%rsi,%rdx,1),%ymm1
+   57b94:	xor    %edx,%edx
+   57b96:	vptest %ymm0,%ymm1
+   57b9b:	setb   %dl
+   57b9e:	mov    %edx,(%rcx,%rax,4)
+   57ba1:	pop    %rbx
+   57ba2:	vzeroupper
+   57ba5:	ret

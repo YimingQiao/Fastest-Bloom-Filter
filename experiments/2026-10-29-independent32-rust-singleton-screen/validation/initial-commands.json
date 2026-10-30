@@ -1,0 +1,199 @@
+{
+  "lease": {
+    "cpu": 2,
+    "lease": "socket0",
+    "lock_path": "/tmp/fastest-bf-socket0.lock",
+    "inherited_lock_descriptors": [
+      3
+    ]
+  },
+  "timings_claimed": false,
+  "completed": [
+    {
+      "name": "format-new-tests",
+      "command": [
+        "rustfmt",
+        "--edition",
+        "2021",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/native/src/independent32/singleton_tests.rs"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "source-copy",
+      "command": [
+        "/usr/bin/python3",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/verify_source.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "native-normal",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-normal",
+        "RUST_TEST_THREADS=1",
+        "cargo",
+        "test",
+        "--locked",
+        "--lib",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/native/Cargo.toml"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "harness-normal",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-normal",
+        "RUST_TEST_THREADS=1",
+        "cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/benchmark/Cargo.toml"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "parity-normal",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-normal",
+        "RUST_TEST_THREADS=1",
+        "cargo",
+        "run",
+        "--quiet",
+        "--locked",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/native/Cargo.toml",
+        "--features",
+        "validation",
+        "--bin",
+        "independent32-parity",
+        "--",
+        "--parity"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "native-disable",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-disable",
+        "RUST_TEST_THREADS=1",
+        "cargo",
+        "test",
+        "--locked",
+        "--lib",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/native/Cargo.toml",
+        "--features",
+        "disable-avx512",
+        "independent32::tests"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "harness-disable",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-disable",
+        "RUST_TEST_THREADS=1",
+        "cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/benchmark/Cargo.toml",
+        "--features",
+        "disable-avx512"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "parity-disable",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-disable",
+        "RUST_TEST_THREADS=1",
+        "cargo",
+        "run",
+        "--quiet",
+        "--locked",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/native/Cargo.toml",
+        "--features",
+        "validation,disable-avx512",
+        "--bin",
+        "independent32-parity",
+        "--",
+        "--parity"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "native-asan",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-asan",
+        "RUST_TEST_THREADS=1",
+        "RUSTFLAGS=-Zsanitizer=address",
+        "cargo",
+        "+nightly",
+        "test",
+        "--locked",
+        "--lib",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/native/Cargo.toml",
+        "independent32::tests"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "harness-asan",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-asan",
+        "RUST_TEST_THREADS=1",
+        "RUSTFLAGS=-Zsanitizer=address",
+        "cargo",
+        "+nightly",
+        "test",
+        "--locked",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/benchmark/Cargo.toml"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "parity-asan",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/tmp/fastest-bf-independent32-rust-singleton-asan",
+        "RUST_TEST_THREADS=1",
+        "RUSTFLAGS=-Zsanitizer=address",
+        "cargo",
+        "+nightly",
+        "run",
+        "--quiet",
+        "--locked",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "--manifest-path",
+        "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-independent32-rust-singleton-screen/native/Cargo.toml",
+        "--features",
+        "validation",
+        "--bin",
+        "independent32-parity",
+        "--",
+        "--parity"
+      ],
+      "returncode": 0
+    }
+  ]
+}

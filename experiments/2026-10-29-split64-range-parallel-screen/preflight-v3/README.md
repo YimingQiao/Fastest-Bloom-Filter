@@ -1,0 +1,9 @@
+# MT preflight V3: dependency-path guard repair
+
+V1 failed fixture compilation; V2 completed every native target but stopped before executing filters because absolute dependency paths containing `..` did not match canonical prepared keys. The10 FastFilter/PageBloom headers in a different existing cache directory match the immutable parent's exact bytes. All V1/V2 source and failure records remain unchanged.
+
+V3 changes only Python source/dependency validation and versioned execution paths. C++ sources, compile flags, APIs, timer, executor and fixture bodies remain exactly the committed `preflight-v2` files. The completed V2 native build is reused: `native-v2-build.json` pins all9 executables, original compile commands, CMake cache, every .o.d file and prior configure/build logs. It does not claim any V2 test execution. Other modes configure fresh build directories from that same V2 CMake source. No algorithm or native source is patched.
+
+The parent dependency descriptor still binds every header SHA. `bindings.json` additionally names the10 actual cache paths and their equal-content parent entries. Paths are canonicalized only for lookups; all original .o.d path spellings are retained in V3 evidence. Both earlier prepared source sets are tied to their immutable commits. Compiler CPU3, child `taskset3,5,7` before libnuma/membind1, inherited whole-socket lock, all25 public configurations and the complete correctness/350-allocation/142-selection plan are unchanged. See the committed V2 README for the full checks. New outputs go to `validation-v3`.
+
+No BF/compiler execution has occurred in V3 yet. After review/commit and an explicit lease, run `flock /tmp/fastest-bf-socket1.lock taskset -c 3 env BF_SOCKET_LEASE=socket1-cpu3 python3 experiments/2026-10-29-split64-range-parallel-screen/preflight-v3/validate.py --source-commit FULL_COMMIT --execute-correctness`.

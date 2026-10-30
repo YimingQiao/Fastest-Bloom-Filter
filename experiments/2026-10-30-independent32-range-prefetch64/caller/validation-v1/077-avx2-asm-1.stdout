@@ -1,0 +1,111 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/avx2/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002a810 <_Z13lookup_kernelIN13bloom_filters18Split64BloomFilterEmEvRT_mPKT0_Pj>:
+   2a810:	cmp    $0x1,%esi
+   2a813:	jne    2a886 <_Z13lookup_kernelIN13bloom_filters18Split64BloomFilterEmEvRT_mPKT0_Pj+0x76>
+   2a815:	mov    (%rdx),%rax
+   2a818:	vmovd  %eax,%xmm0
+   2a81c:	shr    $0x20,%rax
+   2a820:	and    0x18(%rdi),%eax
+   2a823:	vpbroadcastd %xmm0,%ymm0
+   2a828:	vpmulld -0x29071(%rip),%ymm0,%ymm0        # 17c0 <_IO_stdin_used+0xd0>
+   2a831:	mov    (%rdi),%rdx
+   2a834:	shl    $0x6,%rax
+   2a838:	vpsrld $0x1a,%ymm0,%ymm0
+   2a83d:	vpmovzxdq %xmm0,%ymm1
+   2a842:	vpbroadcastq -0x28e13(%rip),%ymm2        # 1a38 <_IO_stdin_used+0x348>
+   2a84b:	vpsllvq %ymm1,%ymm2,%ymm1
+   2a850:	vextracti128 $0x1,%ymm0,%xmm0
+   2a856:	vpmovzxdq %xmm0,%ymm0
+   2a85b:	vpsllvq %ymm0,%ymm2,%ymm0
+   2a860:	vmovdqa (%rdx,%rax,1),%ymm2
+   2a865:	vptest %ymm1,%ymm2
+   2a86a:	vmovdqa 0x20(%rdx,%rax,1),%ymm1
+   2a870:	setb   %al
+   2a873:	vptest %ymm0,%ymm1
+   2a878:	setb   %dl
+   2a87b:	and    %al,%dl
+   2a87d:	movzbl %dl,%eax
+   2a880:	mov    %eax,(%rcx)
+   2a882:	vzeroupper
+   2a885:	ret
+   2a886:	mov    %esi,%eax
+   2a888:	cmp    $0x21,%esi
+   2a88b:	jb     2a948 <_Z13lookup_kernelIN13bloom_filters18Split64BloomFilterEmEvRT_mPKT0_Pj+0x138>
+   2a891:	lea    -0x20(%rax),%rsi
+   2a895:	xor    %r8d,%r8d
+   2a898:	vmovdqa -0x290e0(%rip),%ymm0        # 17c0 <_IO_stdin_used+0xd0>
+   2a8a0:	vpbroadcastq -0x28e71(%rip),%ymm1        # 1a38 <_IO_stdin_used+0x348>
+   2a8a9:	nopl   0x0(%rax)
+   2a8b0:	mov    0x18(%rdi),%r9d
+   2a8b4:	mov    0x104(%rdx,%r8,8),%r10d
+   2a8bc:	and    %r9d,%r10d
+   2a8bf:	mov    (%rdi),%r11
+   2a8c2:	shl    $0x6,%r10
+   2a8c6:	prefetcht0 (%r11,%r10,1)
+   2a8cb:	mov    (%rdx,%r8,8),%r10
+   2a8cf:	vmovd  %r10d,%xmm2
+   2a8d4:	shr    $0x20,%r10
+   2a8d8:	and    %r9d,%r10d
+   2a8db:	vpbroadcastd %xmm2,%ymm2
+   2a8e0:	vpmulld %ymm0,%ymm2,%ymm2
+   2a8e5:	shl    $0x6,%r10
+   2a8e9:	vpsrld $0x1a,%ymm2,%ymm2
+   2a8ee:	vpmovzxdq %xmm2,%ymm3
+   2a8f3:	vpsllvq %ymm3,%ymm1,%ymm3
+   2a8f8:	vextracti128 $0x1,%ymm2,%xmm2
+   2a8fe:	vpmovzxdq %xmm2,%ymm2
+   2a903:	vpsllvq %ymm2,%ymm1,%ymm2
+   2a908:	vmovdqa (%r11,%r10,1),%ymm4
+   2a90e:	vmovdqa 0x20(%r11,%r10,1),%ymm5
+   2a915:	vptest %ymm3,%ymm4
+   2a91a:	setb   %r9b
+   2a91e:	vptest %ymm2,%ymm5
+   2a923:	setb   %r10b
+   2a927:	and    %r9b,%r10b
+   2a92a:	movzbl %r10b,%r9d
+   2a92e:	mov    %r9d,(%rcx,%r8,4)
+   2a932:	inc    %r8
+   2a935:	cmp    %r8,%rsi
+   2a938:	jne    2a8b0 <_Z13lookup_kernelIN13bloom_filters18Split64BloomFilterEmEvRT_mPKT0_Pj+0xa0>
+   2a93e:	cmp    %rax,%rsi
+   2a941:	jb     2a953 <_Z13lookup_kernelIN13bloom_filters18Split64BloomFilterEmEvRT_mPKT0_Pj+0x143>
+   2a943:	jmp    2a9e3 <_Z13lookup_kernelIN13bloom_filters18Split64BloomFilterEmEvRT_mPKT0_Pj+0x1d3>
+   2a948:	xor    %esi,%esi
+   2a94a:	cmp    %rax,%rsi
+   2a94d:	jae    2a9e3 <_Z13lookup_kernelIN13bloom_filters18Split64BloomFilterEmEvRT_mPKT0_Pj+0x1d3>
+   2a953:	vmovdqa -0x2919b(%rip),%ymm0        # 17c0 <_IO_stdin_used+0xd0>
+   2a95b:	vpbroadcastq -0x28f2c(%rip),%ymm1        # 1a38 <_IO_stdin_used+0x348>
+   2a964:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   2a970:	mov    (%rdx,%rsi,8),%r8
+   2a974:	vmovd  %r8d,%xmm2
+   2a979:	shr    $0x20,%r8
+   2a97d:	and    0x18(%rdi),%r8d
+   2a981:	mov    (%rdi),%r9
+   2a984:	vpbroadcastd %xmm2,%ymm2
+   2a989:	vpmulld %ymm0,%ymm2,%ymm2
+   2a98e:	shl    $0x6,%r8
+   2a992:	vpsrld $0x1a,%ymm2,%ymm2
+   2a997:	vpmovzxdq %xmm2,%ymm3
+   2a99c:	vpsllvq %ymm3,%ymm1,%ymm3
+   2a9a1:	vextracti128 $0x1,%ymm2,%xmm2
+   2a9a7:	vpmovzxdq %xmm2,%ymm2
+   2a9ac:	vpsllvq %ymm2,%ymm1,%ymm2
+   2a9b1:	vmovdqa (%r9,%r8,1),%ymm4
+   2a9b7:	vmovdqa 0x20(%r9,%r8,1),%ymm5
+   2a9be:	vptest %ymm3,%ymm4
+   2a9c3:	setb   %r8b
+   2a9c7:	vptest %ymm2,%ymm5
+   2a9cc:	setb   %r9b
+   2a9d0:	and    %r8b,%r9b
+   2a9d3:	movzbl %r9b,%r8d
+   2a9d7:	mov    %r8d,(%rcx,%rsi,4)
+   2a9db:	inc    %rsi
+   2a9de:	cmp    %rsi,%rax
+   2a9e1:	jne    2a970 <_Z13lookup_kernelIN13bloom_filters18Split64BloomFilterEmEvRT_mPKT0_Pj+0x160>
+   2a9e3:	vzeroupper
+   2a9e6:	ret

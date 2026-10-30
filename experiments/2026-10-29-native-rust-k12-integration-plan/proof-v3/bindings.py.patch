@@ -1,0 +1,22 @@
+--- proof-v2/bindings.py
++++ proof-v3/bindings.py
+@@ -12,16 +12,9 @@
+ def blob(commit,name):return subprocess.check_output(['git','show',commit+':'+name],cwd=ROOT)
+ def source_files(root):return sorted(p for p in root.rglob('*')if p.is_file()and'__pycache__'not in p.parts and'target'not in p.parts)
+ def inherited():
+- from repair import check_repair
+- files,anchors=check_repair(ROOT,HERE)
+- for commit,prefix,actual in [(NATIVE,'rust',WORK/'rust'),(REFERENCE,str(REF.relative_to(ROOT)),REF)]:
+-  names=subprocess.check_output(['git','ls-tree','-r','--name-only',commit,'--',prefix],cwd=ROOT).decode().splitlines()
+-  for name in names:
+-   p=actual/Path(name).relative_to(prefix);need(p.is_file(),'Missing pinned package file');need(p.read_bytes()==blob(commit,name),'Native/reference source drift')
+-   files[str(p.resolve())]=sha(p);anchors[str(p.resolve())]=dict(commit=commit,git_path=name)
+- for name,old in [('dependencies.py','caller/preflight/dependencies.py'),('source_guard.py','caller/preflight/source_guard.py')]:
+-  need((HERE/name).read_bytes()==blob(PROVEN,'experiments/2026-10-29-rust-k12-single-line/'+old),'Reused guard changed')
+- return files,anchors
++ from preserved import inherited_v2
++ return inherited_v2(ROOT,HERE)
++
+ def make_freeze():
+  files,anchors=inherited();local=[p for p in source_files(HERE)if p.name!='PREPARATION.json'and not any(x.startswith('validation-')for x in p.parts)]
+  return dict(status='Source-only actual native K12 packaging proof; no throughput or FPR workload',native_commit=NATIVE,native_base=BASE,reference_commit=REFERENCE,passed_isolated_proof=PROVEN,inherited_sources=files,inherited_anchors=anchors,local={str(p.relative_to(HERE)):dict(sha256=sha(p),bytes=p.stat().st_size)for p in local})

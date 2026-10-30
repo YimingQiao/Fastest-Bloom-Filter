@@ -1,0 +1,712 @@
+--- 79351bc/rust/src/four_sector.rs
++++ native/src/four_sector_range12.rs
+@@ -1,11 +1,11 @@
+ //! Four-sector Bloom filter with a register-resident 16-entry rotation dictionary.
+-//! Eight bits are set across four independently selected words in one cache line.
++//! Twelve bits across four words; top24 address and eight offset bits are disjoint.
+ 
+ use crate::{layout_parallel, SizeError};
+ 
+ const PATTERNS: [u32; 16] = [
+-    0x3, 0x5, 0x9, 0x11, 0x21, 0x41, 0x81, 0x101, 0x201, 0x401, 0x801, 0x1001, 0x2001, 0x4001,
+-    0x8001, 0x10001,
++    0xb, 0x211, 0x2041, 0x40101, 0x1003, 0x8005, 0x10011, 0x109,
++    0x8041, 0x40081, 0x403, 0x25, 0x411, 0x8081, 0x2003, 0x4009,
+ ];
+ const PREFETCH_THRESHOLD: usize = 1 << 21;
+ 
+@@ -13,35 +13,41 @@
+ #[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
+ struct Line([u32; 16]);
+ 
+-/// Append-only Bloom filter setting two bits in each of four words per cache line.
++/// Append-only Bloom filter setting three bits in each of four words per cache line.
+ /// Writes require exclusive access; immutable filters support concurrent reads.
+ #[derive(Clone)]
+-pub struct FourSectorBloomFilter {
++pub struct FourSectorRange12BloomFilter {
+     lines: Vec<Line>,
+-    word_mask: u32,
++    line_count: u32,
+     avx512: bool,
+     avx2: bool,
+ }
+ 
+-impl FourSectorBloomFilter {
+-    fn line_count(n: usize, bpk: u32) -> Result<usize, SizeError> {
+-        layout_parallel::line_count(n, bpk)
++impl FourSectorRange12BloomFilter {
++    #[inline]
++    fn base(hi: u32, count: u32) -> u32 {
++        ((((hi >> 8) as u64 * count as u64) >> 24) as u32 * 16) | (hi & 3)
++    }
++    /// Physical cache line. Address bits40..63 never overlap offset/mask bits.
++    #[inline]
++    pub fn line_index(&self, hash: u64) -> usize {
++        Self::base((hash >> 32) as u32, self.line_count) as usize >> 4
+     }
+ 
+     #[inline]
+     fn probe(&self, hash: u64) -> ([u32; 4], [u32; 4]) {
+-        Self::probe_mask(hash, self.word_mask)
+-    }
+-    #[inline]
+-    fn probe_mask(hash: u64, word_mask: u32) -> ([u32; 4], [u32; 4]) {
++        Self::probe_mask(hash, self.line_count)
++    }
++    #[inline]
++    fn probe_mask(hash: u64, line_count: u32) -> ([u32; 4], [u32; 4]) {
+         let hi = (hash >> 32) as u32;
+         let lo = hash as u32;
+-        let a = hi & word_mask;
++        let a = Self::base(hi, line_count);
+         let indices = [
+             a,
+-            a ^ 4 ^ ((hi >> 26) & 3),
+-            a ^ 8 ^ ((hi >> 28) & 3),
+-            a ^ 12 ^ ((hi >> 30) & 3),
++            a ^ 4 ^ ((hi >> 2) & 3),
++            a ^ 8 ^ ((hi >> 4) & 3),
++            a ^ 12 ^ ((hi >> 6) & 3),
+         ];
+         let masks = std::array::from_fn(|j| {
+             let code = lo.rotate_right(j as u32 * 8);
+@@ -51,8 +57,8 @@
+     }
+ 
+     #[inline]
+-    fn insert_one_scalar(lines: &mut [Line], begin: usize, word_mask: u32, hash: u64) {
+-        let (indices, masks) = Self::probe_mask(hash, word_mask);
++    fn insert_one_scalar(lines: &mut [Line], begin: usize, line_count: u32, hash: u64) {
++        let (indices, masks) = Self::probe_mask(hash, line_count);
+         for (index, mask) in indices.into_iter().zip(masks) {
+             lines[(index as usize >> 4) - begin].0[index as usize & 15] |= mask;
+         }
+@@ -60,7 +66,7 @@
+     /// Insert one uniformly distributed hash; duplicates are idempotent.
+     #[inline]
+     pub fn insert_hash(&mut self, hash: u64) {
+-        Self::insert_one_scalar(&mut self.lines, 0, self.word_mask, hash);
++        Self::insert_one_scalar(&mut self.lines, 0, self.line_count, hash);
+     }
+     /// False means absent, true means possibly present.
+     #[inline]
+@@ -82,13 +88,13 @@
+     }
+     /// Exclusive cache-line-partitioned build, including partitioning and thread launch.
+     pub fn insert_hashes_parallel(&mut self, hashes: &[u64], requested: usize) {
+-        let mask = self.word_mask;
++        let mask = self.line_count;
+         let (avx512, avx2) = (self.avx512, self.avx2);
+         layout_parallel::insert(
+             &mut self.lines,
+             hashes,
+             requested,
+-            |h| (((h >> 32) as u32 & mask) >> 4) as usize,
++            |h| (Self::base((h >> 32) as u32, mask) >> 4) as usize,
+             |lines, begin, input| Self::insert_into(lines, begin, mask, avx512, avx2, input),
+         );
+     }
+@@ -107,28 +113,37 @@
+     }
+ }
+ 
+-impl FourSectorBloomFilter {
+-    /// Requests a bitmap up to 256 MiB using native strict-next-power-of-two sizing.
++impl FourSectorRange12BloomFilter {
++    /// Complete64-byte lines within128bytes..256MiB inclusive; no pow2 rounding.
++    pub fn with_byte_budget(bytes: usize) -> Result<Self, SizeError> {
++        if bytes < 128 { return Err(SizeError::InvalidSize); }
++        if bytes > 1 << 28 { return Err(SizeError::CapacityExceeded); }
++        let count = bytes / 64;
++        let lines = vec![Line::default(); count];
++        if lines.capacity().checked_mul(64).ok_or(SizeError::CapacityExceeded)? > bytes {
++            return Err(SizeError::CapacityExceeded);
++        }
++        let (avx512, avx2) = layout_parallel::backends();
++        Ok(Self { lines, line_count: count as u32, avx512, avx2 })
++    }
++    /// floor(n*bpk/8) byte ceiling; real n, no synthetic sizing value.
+     pub fn new(n: usize, bpk: u32) -> Result<Self, SizeError> {
+-        let count = Self::line_count(n, bpk)?;
+-        let (avx512, avx2) = layout_parallel::backends();
+-        Ok(Self {
+-            lines: vec![Line::default(); count],
+-            word_mask: (count * 16 - 1) as u32,
+-            avx512,
+-            avx2,
+-        })
+-    }
+-
+-    /// Bitmap allocation size, excluding object fields and allocator metadata.
+-    pub fn size_in_bytes(&self) -> usize {
+-        self.lines.len() * 64
++        if n == 0 || bpk == 0 { return Err(SizeError::InvalidSize); }
++        let bits = n.checked_mul(bpk as usize).ok_or(SizeError::InvalidSize)?;
++        Self::with_byte_budget(bits / 8)
++    }
++    /// Actual bitmap backing allocation, excluding allocator metadata.
++    pub fn size_in_bytes(&self) -> usize { self.lines.capacity() * 64 }
++    /// Read-only logical bitmap words for exact cross-language fixture validation.
++    pub fn bitmap_words(&self) -> &[u32] {
++        // SAFETY: Line is repr(C,align64), exactly16 contiguous initialized u32s.
++        unsafe { std::slice::from_raw_parts(self.lines.as_ptr().cast(), self.lines.len()*16) }
+     }
+ 
+     fn insert_into(
+         lines: &mut [Line],
+         begin: usize,
+-        word_mask: u32,
++        line_count: u32,
+         avx512: bool,
+         avx2: bool,
+         hashes: &[u64],
+@@ -139,9 +154,9 @@
+                 // SAFETY: detected CPU backend; only hashes owned by these complete lines are passed.
+                 unsafe {
+                     if lines.len() * 64 > PREFETCH_THRESHOLD {
+-                        Self::insert_avx512::<true>(lines, begin, word_mask, hashes);
++                        Self::insert_avx512::<true>(lines, begin, line_count, hashes);
+                     } else {
+-                        Self::insert_avx512::<false>(lines, begin, word_mask, hashes);
++                        Self::insert_avx512::<false>(lines, begin, line_count, hashes);
+                     }
+                 }
+                 return;
+@@ -150,9 +165,9 @@
+                 // SAFETY: detected CPU backend; slice is exclusive and all rebased indices belong to it.
+                 unsafe {
+                     if lines.len() * 64 > PREFETCH_THRESHOLD {
+-                        Self::insert_avx2::<true>(lines, begin, word_mask, hashes);
++                        Self::insert_avx2::<true>(lines, begin, line_count, hashes);
+                     } else {
+-                        Self::insert_avx2::<false>(lines, begin, word_mask, hashes);
++                        Self::insert_avx2::<false>(lines, begin, line_count, hashes);
+                     }
+                 }
+                 return;
+@@ -161,7 +176,7 @@
+         #[cfg(not(target_arch = "x86_64"))]
+         let _ = (avx512, avx2);
+         for &hash in hashes {
+-            Self::insert_one_scalar(lines, begin, word_mask, hash);
++            Self::insert_one_scalar(lines, begin, line_count, hash);
+         }
+     }
+     /// Exclusive append-only insertion; duplicates and colliding hashes are safe.
+@@ -169,7 +184,7 @@
+         Self::insert_into(
+             &mut self.lines,
+             0,
+-            self.word_mask,
++            self.line_count,
+             self.avx512,
+             self.avx2,
+             hashes,
+@@ -188,7 +203,7 @@
+                     if large {
+                         use std::arch::x86_64::*;
+                         for &hash in hashes {
+-                            let index = ((hash >> 32) as u32 & self.word_mask) as usize;
++                            let index = Self::base((hash >> 32) as u32, self.line_count) as usize;
+                             _mm_prefetch::<_MM_HINT_T0>(
+                                 self.lines.as_ptr().cast::<u32>().add(index).cast(),
+                             );
+@@ -222,12 +237,35 @@
+ }
+ 
+ #[cfg(target_arch = "x86_64")]
+-impl FourSectorBloomFilter {
++impl FourSectorRange12BloomFilter {
++    #[inline]
++    #[target_feature(enable = "avx2,avx512f")]
++    unsafe fn base512(hi: std::arch::x86_64::__m512i, count: u32) -> std::arch::x86_64::__m512i {
++        use std::arch::x86_64::*;
++        let address = _mm512_srli_epi32::<8>(hi);
++        let counts = _mm512_set1_epi32(count as i32);
++        let even = _mm512_srli_epi64::<24>(_mm512_mul_epu32(address, counts));
++        let odd = _mm512_srli_epi64::<24>(_mm512_mul_epu32(_mm512_srli_epi64::<32>(address), counts));
++        let blocks = _mm512_or_si512(even, _mm512_slli_epi64::<32>(odd));
++        _mm512_or_si512(_mm512_slli_epi32::<4>(blocks), _mm512_and_si512(hi, _mm512_set1_epi32(3)))
++    }
++    #[inline]
++    #[target_feature(enable = "avx2")]
++    unsafe fn base256(hi: std::arch::x86_64::__m256i, count: u32) -> std::arch::x86_64::__m256i {
++        use std::arch::x86_64::*;
++        let address = _mm256_srli_epi32::<8>(hi);
++        let counts = _mm256_set1_epi32(count as i32);
++        let even = _mm256_srli_epi64::<24>(_mm256_mul_epu32(address, counts));
++        let odd = _mm256_srli_epi64::<24>(_mm256_mul_epu32(_mm256_srli_epi64::<32>(address), counts));
++        let blocks = _mm256_or_si256(even, _mm256_slli_epi64::<32>(odd));
++        _mm256_or_si256(_mm256_slli_epi32::<4>(blocks), _mm256_and_si256(hi, _mm256_set1_epi32(3)))
++    }
++
+     #[target_feature(enable = "avx2,avx512f")]
+     unsafe fn insert_avx512<const PREFETCH: bool>(
+         lines: &mut [Line],
+         begin: usize,
+-        word_mask: u32,
++        line_count: u32,
+         hashes: &[u64],
+     ) {
+         use std::arch::x86_64::*;
+@@ -236,7 +274,7 @@
+         let rotations = _mm512_setr_epi32(0, 8, 16, 24, 0, 8, 16, 24, 0, 8, 16, 24, 0, 8, 16, 24);
+         let quarters = _mm512_setr_epi32(0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12, 0, 4, 8, 12);
+         let offset_shifts = _mm512_setr_epi32(
+-            26, 26, 28, 30, 26, 26, 28, 30, 26, 26, 28, 30, 26, 26, 28, 30,
++            2, 2, 4, 6, 2, 2, 4, 6, 2, 2, 4, 6, 2, 2, 4, 6,
+         );
+         let offset_masks = _mm512_setr_epi32(0, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3, 0, 3, 3, 3);
+         let table = _mm512_loadu_si512(PATTERNS.as_ptr().cast());
+@@ -246,7 +284,7 @@
+             if PREFETCH && i + 68 <= hashes.len() {
+                 for j in 0..4 {
+                     let index =
+-                        ((hashes[i + 64 + j] >> 32) as u32 & word_mask) as usize - begin * 16;
++                        Self::base((hashes[i + 64 + j] >> 32) as u32, line_count) as usize - begin * 16;
+                     debug_assert!(index < lines.len() * 16);
+                     _mm_prefetch::<_MM_HINT_T0>(words.add(index).cast());
+                 }
+@@ -261,7 +299,7 @@
+             );
+             let offsets = _mm512_and_si512(_mm512_srlv_epi32(hi, offset_shifts), offset_masks);
+             let indices = _mm512_xor_si512(
+-                _mm512_and_si512(hi, _mm512_set1_epi32(word_mask as i32)),
++                Self::base512(hi, line_count),
+                 _mm512_xor_si512(quarters, offsets),
+             );
+             let mut index = [0u32; 16];
+@@ -279,7 +317,7 @@
+             i += 4;
+         }
+         for &hash in &hashes[i..] {
+-            Self::insert_one_scalar(lines, begin, word_mask, hash);
++            Self::insert_one_scalar(lines, begin, line_count, hash);
+         }
+     }
+ 
+@@ -312,26 +350,26 @@
+         };
+         let lo = _mm512_permutex2var_epi32(x, even, y);
+         let hi = _mm512_permutex2var_epi32(x, odd, y);
+-        let a = _mm512_and_si512(hi, _mm512_set1_epi32(self.word_mask as i32));
++        let a = Self::base512(hi, self.line_count);
+         let b = _mm512_xor_si512(
+             a,
+             _mm512_or_si512(
+                 _mm512_set1_epi32(4),
+-                _mm512_and_si512(_mm512_srli_epi32::<26>(hi), _mm512_set1_epi32(3)),
++                _mm512_and_si512(_mm512_srli_epi32::<2>(hi), _mm512_set1_epi32(3)),
+             ),
+         );
+         let c = _mm512_xor_si512(
+             a,
+             _mm512_or_si512(
+                 _mm512_set1_epi32(8),
+-                _mm512_and_si512(_mm512_srli_epi32::<28>(hi), _mm512_set1_epi32(3)),
++                _mm512_and_si512(_mm512_srli_epi32::<4>(hi), _mm512_set1_epi32(3)),
+             ),
+         );
+         let d = _mm512_xor_si512(
+             a,
+             _mm512_or_si512(
+                 _mm512_set1_epi32(12),
+-                _mm512_and_si512(_mm512_srli_epi32::<30>(hi), _mm512_set1_epi32(3)),
++                _mm512_and_si512(_mm512_srli_epi32::<6>(hi), _mm512_set1_epi32(3)),
+             ),
+         );
+         let code2 = _mm512_ror_epi32::<8>(lo);
+@@ -382,7 +420,7 @@
+         let quarters = _mm512_setr_epi32(0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4);
+         let offset_mask = _mm512_setr_epi32(0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3);
+         let shifts2 = _mm512_setr_epi32(
+-            28, 28, 28, 28, 28, 28, 28, 28, 30, 30, 30, 30, 30, 30, 30, 30,
++            4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6,
+         );
+         let table = _mm512_loadu_si512(PATTERNS.as_ptr().cast());
+         let zero = _mm512_setzero_si512();
+@@ -403,8 +441,8 @@
+                 _mm512_permutexvar_epi32(code, table),
+                 _mm512_srli_epi32::<4>(code),
+             );
+-            let base = _mm512_and_si512(hi, _mm512_set1_epi32(self.word_mask as i32));
+-            let offsets = _mm512_and_si512(_mm512_srli_epi32::<26>(hi), offset_mask);
++            let base = Self::base512(hi, self.line_count);
++            let offsets = _mm512_and_si512(_mm512_srli_epi32::<2>(hi), offset_mask);
+             let index = _mm512_xor_si512(base, _mm512_xor_si512(quarters, offsets));
+             let lanes = valid * 0x101;
+             let values = _mm512_mask_i32gather_epi32::<4>(zero, lanes, index, words);
+@@ -439,7 +477,7 @@
+         while i + 16 <= hashes.len() {
+             if PREFETCH && i + 80 <= hashes.len() {
+                 for j in 0..16 {
+-                    let index = ((hashes[i + 64 + j] >> 32) as u32 & self.word_mask) as usize;
++                    let index = Self::base((hashes[i + 64 + j] >> 32) as u32, self.line_count) as usize;
+                     _mm_prefetch::<_MM_HINT_T0>(
+                         self.lines.as_ptr().cast::<u32>().add(index).cast(),
+                     );
+@@ -465,7 +503,7 @@
+ }
+ 
+ #[cfg(target_arch = "x86_64")]
+-impl FourSectorBloomFilter {
++impl FourSectorRange12BloomFilter {
+     #[inline]
+     #[target_feature(enable = "avx2")]
+     unsafe fn mask_avx2(
+@@ -490,7 +528,7 @@
+     unsafe fn insert_avx2<const PREFETCH: bool>(
+         lines: &mut [Line],
+         begin: usize,
+-        word_mask: u32,
++        line_count: u32,
+         hashes: &[u64],
+     ) {
+         use std::arch::x86_64::*;
+@@ -499,7 +537,7 @@
+         let rotations = _mm256_setr_epi32(0, 8, 16, 24, 0, 8, 16, 24);
+         let reverse = _mm256_sub_epi32(_mm256_set1_epi32(32), rotations);
+         let quarters = _mm256_setr_epi32(0, 4, 8, 12, 0, 4, 8, 12);
+-        let shifts = _mm256_setr_epi32(26, 26, 28, 30, 26, 26, 28, 30);
++        let shifts = _mm256_setr_epi32(2, 2, 4, 6, 2, 2, 4, 6);
+         let offset_masks = _mm256_setr_epi32(0, 3, 3, 3, 0, 3, 3, 3);
+         let t0 = _mm256_loadu_si256(PATTERNS.as_ptr().cast());
+         let t1 = _mm256_loadu_si256(PATTERNS.as_ptr().add(8).cast());
+@@ -509,7 +547,7 @@
+             if PREFETCH && i + 66 <= hashes.len() {
+                 for j in 0..2 {
+                     let index =
+-                        ((hashes[i + 64 + j] >> 32) as u32 & word_mask) as usize - begin * 16;
++                        Self::base((hashes[i + 64 + j] >> 32) as u32, line_count) as usize - begin * 16;
+                     debug_assert!(index < lines.len() * 16);
+                     _mm_prefetch::<_MM_HINT_T0>(words.add(index).cast());
+                 }
+@@ -524,7 +562,7 @@
+             let offsets = _mm256_and_si256(_mm256_srlv_epi32(hi, shifts), offset_masks);
+             let indices = _mm256_sub_epi32(
+                 _mm256_xor_si256(
+-                    _mm256_and_si256(hi, _mm256_set1_epi32(word_mask as i32)),
++                    Self::base256(hi, line_count),
+                     _mm256_xor_si256(quarters, offsets),
+                 ),
+                 _mm256_set1_epi32((begin * 16) as i32),
+@@ -540,7 +578,7 @@
+             i += 2;
+         }
+         for &h in &hashes[i..] {
+-            Self::insert_one_scalar(lines, begin, word_mask, h);
++            Self::insert_one_scalar(lines, begin, line_count, h);
+         }
+     }
+     #[target_feature(enable = "avx2")]
+@@ -554,7 +592,7 @@
+         while i + 8 <= hashes.len() {
+             if PREFETCH && i + 72 <= hashes.len() {
+                 for j in 0..8 {
+-                    let index = ((hashes[i + 64 + j] >> 32) as u32 & self.word_mask) as usize;
++                    let index = Self::base((hashes[i + 64 + j] >> 32) as u32, self.line_count) as usize;
+                     _mm_prefetch::<_MM_HINT_T0>(words.add(index).cast());
+                 }
+             }
+@@ -568,26 +606,26 @@
+             );
+             let lo = _mm256_permute2x128_si256::<0x20>(x, y);
+             let hi = _mm256_permute2x128_si256::<0x31>(x, y);
+-            let a = _mm256_and_si256(hi, _mm256_set1_epi32(self.word_mask as i32));
++            let a = Self::base256(hi, self.line_count);
+             let b = _mm256_xor_si256(
+                 a,
+                 _mm256_or_si256(
+                     _mm256_set1_epi32(4),
+-                    _mm256_and_si256(_mm256_srli_epi32::<26>(hi), _mm256_set1_epi32(3)),
++                    _mm256_and_si256(_mm256_srli_epi32::<2>(hi), _mm256_set1_epi32(3)),
+                 ),
+             );
+             let c = _mm256_xor_si256(
+                 a,
+                 _mm256_or_si256(
+                     _mm256_set1_epi32(8),
+-                    _mm256_and_si256(_mm256_srli_epi32::<28>(hi), _mm256_set1_epi32(3)),
++                    _mm256_and_si256(_mm256_srli_epi32::<4>(hi), _mm256_set1_epi32(3)),
+                 ),
+             );
+             let d = _mm256_xor_si256(
+                 a,
+                 _mm256_or_si256(
+                     _mm256_set1_epi32(12),
+-                    _mm256_and_si256(_mm256_srli_epi32::<30>(hi), _mm256_set1_epi32(3)),
++                    _mm256_and_si256(_mm256_srli_epi32::<6>(hi), _mm256_set1_epi32(3)),
+                 ),
+             );
+             let code2 = _mm256_or_si256(_mm256_srli_epi32::<8>(lo), _mm256_slli_epi32::<24>(lo));
+@@ -620,266 +658,7 @@
+     }
+ }
+ 
++
+ #[cfg(test)]
+-mod tests {
+-    use super::*;
+-    use crate::hash64;
+-
+-    #[test]
+-    fn sizing_alignment_and_distinct_sector_words() {
+-        for (n, bpk, bytes) in [
+-            (0, 1, 128),
+-            (64, 8, 128),
+-            (64, 16, 256),
+-            (1024, 8, 2048),
+-            (1024, 16, 4096),
+-        ] {
+-            let bf = FourSectorBloomFilter::new(n, bpk).unwrap();
+-            assert_eq!(bf.size_in_bytes(), bytes);
+-            assert_eq!(bf.lines.as_ptr() as usize % 64, 0);
+-            for h in (0..4096).map(hash64) {
+-                let (indices, masks) = bf.probe(h);
+-                for j in 0..4 {
+-                    assert_eq!(masks[j].count_ones(), 2);
+-                    assert_eq!(indices[j] / 16, indices[0] / 16);
+-                    for k in 0..j {
+-                        assert_ne!(indices[j], indices[k]);
+-                    }
+-                }
+-            }
+-        }
+-        assert_eq!(
+-            FourSectorBloomFilter::line_count(1, 0),
+-            Err(SizeError::InvalidSize)
+-        );
+-        assert_eq!(
+-            FourSectorBloomFilter::line_count(usize::MAX, 2),
+-            Err(SizeError::InvalidSize)
+-        );
+-        assert_eq!(
+-            FourSectorBloomFilter::line_count(1 << 27, 16),
+-            Err(SizeError::CapacityExceeded)
+-        );
+-    }
+-
+-    #[test]
+-    fn scalar_runtime_collision_and_tail_parity() {
+-        for n in [0, 1, 3, 4, 15, 16, 17, 64, 65, 4099] {
+-            for hot in [false, true] {
+-                let inserted: Vec<_> = (0..n)
+-                    .map(|i| {
+-                        if hot {
+-                            hash64(i) & 0xffff_ffff
+-                        } else {
+-                            hash64(i)
+-                        }
+-                    })
+-                    .collect();
+-                let mut scalar = FourSectorBloomFilter::new(n as usize, 8).unwrap();
+-                scalar.avx512 = false;
+-                scalar.avx2 = false;
+-                scalar.insert_hashes(&inserted);
+-                let mut runtime = FourSectorBloomFilter::new(n as usize, 8).unwrap();
+-                for batch in [1, 3, 4, 7, 16, 17, 65, 4096] {
+-                    runtime.lines.fill(Line::default());
+-                    for chunk in inserted.chunks(batch) {
+-                        runtime.insert_hashes(chunk);
+-                    }
+-                    assert_eq!(scalar.lines, runtime.lines);
+-                    runtime.insert_hashes(&inserted);
+-                    assert_eq!(scalar.lines, runtime.lines);
+-                }
+-                let mut present = vec![0; inserted.len()];
+-                runtime.lookup_hashes(&inserted, &mut present);
+-                assert!(present.iter().all(|&x| x == 1));
+-                let q: Vec<_> = (0..8192).map(hash64).collect();
+-                for len in 0..=145 {
+-                    for offset in 0..8 {
+-                        let mut actual = vec![0xfeed; len + 2];
+-                        runtime.lookup_hashes(&q[offset..offset + len], &mut actual[1..1 + len]);
+-                        assert_eq!(actual[0], 0xfeed);
+-                        assert_eq!(actual[len + 1], 0xfeed);
+-                        for (&h, &v) in q[offset..offset + len].iter().zip(&actual[1..1 + len]) {
+-                            assert_eq!(v, scalar.contains_scalar(h) as u32);
+-                        }
+-                    }
+-                }
+-            }
+-        }
+-    }
+-
+-    #[test]
+-    fn large_prefetch_path_matches_scalar() {
+-        let inserted: Vec<_> = (0..8195).map(hash64).collect();
+-        let mut scalar = FourSectorBloomFilter::new(1 << 20, 16).unwrap();
+-        scalar.avx512 = false;
+-        scalar.avx2 = false;
+-        scalar.insert_hashes(&inserted);
+-        let mut runtime = FourSectorBloomFilter::new(1 << 20, 16).unwrap();
+-        assert!(runtime.size_in_bytes() > PREFETCH_THRESHOLD);
+-        runtime.insert_hashes(&inserted);
+-        assert_eq!(scalar.lines, runtime.lines);
+-        let q: Vec<_> = (0..16401).map(hash64).collect();
+-        let mut out = vec![0; q.len()];
+-        runtime.lookup_hashes(&q, &mut out);
+-        for (&h, &v) in q.iter().zip(&out) {
+-            assert_eq!(v, scalar.contains_scalar(h) as u32);
+-        }
+-    }
+-
+-    #[test]
+-    #[should_panic(expected = "one output is required per input")]
+-    fn rejects_mismatched_output_before_writing() {
+-        let bf = FourSectorBloomFilter::new(1, 8).unwrap();
+-        bf.lookup_hashes(&[hash64(1)], &mut []);
+-    }
+-    #[test]
+-    fn all_backends_parallel_match_serial() {
+-        fn shareable<T: Send + Sync>() {}
+-        shareable::<FourSectorBloomFilter>();
+-        for backend in 0..3 {
+-            for hot in [false, true] {
+-                let mut inserted: Vec<_> = (0..65539)
+-                    .map(|i| {
+-                        if hot {
+-                            (7u64 << 32) | (hash64(i) & 0xffff_ffff)
+-                        } else {
+-                            hash64(i)
+-                        }
+-                    })
+-                    .collect();
+-                inserted[0] = 0;
+-                inserted[1] = u64::MAX;
+-                for bpk in [4, 16] {
+-                    let mut serial = FourSectorBloomFilter::new(65539, bpk).unwrap();
+-                    serial.avx512 = false;
+-                    serial.avx2 = false;
+-                    serial.insert_hashes(&inserted);
+-                    for workers in [1, 2, 3, 7, 8] {
+-                        let mut parallel = FourSectorBloomFilter::new(65539, bpk).unwrap();
+-                        if backend < 2 {
+-                            parallel.avx512 = false;
+-                        }
+-                        if backend == 0 {
+-                            parallel.avx2 = false;
+-                        }
+-                        parallel.insert_hashes_parallel(&inserted, workers);
+-                        assert_eq!(serial.lines, parallel.lines);
+-                        parallel.insert_hashes_parallel(&inserted, workers);
+-                        assert_eq!(serial.lines, parallel.lines);
+-                        for &h in &inserted {
+-                            assert!(parallel.contains_hash(h));
+-                        }
+-                        let query: Vec<_> = (0..131083).map(hash64).collect();
+-                        let mut out = vec![0; query.len()];
+-                        parallel.lookup_hashes_parallel(&query, &mut out, workers);
+-                        assert!(query
+-                            .iter()
+-                            .zip(&out)
+-                            .all(|(&h, &v)| v == serial.contains_hash(h) as u32));
+-                        assert_eq!(parallel.build_scratch_bytes(inserted.len(), 1), 0);
+-                        if workers > 1 {
+-                            assert!(
+-                                parallel.build_scratch_bytes(inserted.len(), workers)
+-                                    >= inserted.len() * 8
+-                            );
+-                        }
+-                    }
+-                }
+-            }
+-        }
+-    }
+-
+-    #[test]
+-    fn empty_small_and_large_owned_slices() {
+-        for n in [0usize, 1, 3, 4, 7, 8, 15, 16, 17, 31, 32, 33] {
+-            let hashes: Vec<_> = (0..n as u64).map(hash64).collect();
+-            let mut bf = FourSectorBloomFilter::new(n, 8).unwrap();
+-            bf.insert_hashes_parallel(&hashes, 0);
+-            let mut out = vec![0; n];
+-            bf.lookup_hashes_parallel(&hashes, &mut out, 8);
+-            assert!(out.iter().all(|&v| v == 1));
+-            assert_eq!(bf.build_workers(n, 8), 1);
+-        }
+-        let hashes: Vec<_> = (0..65539).map(hash64).collect();
+-        for backend in 0..3 {
+-            let mut serial = FourSectorBloomFilter::new(1 << 21, 16).unwrap();
+-            serial.avx512 = false;
+-            serial.avx2 = false;
+-            serial.insert_hashes(&hashes);
+-            let mut parallel = FourSectorBloomFilter::new(1 << 21, 16).unwrap();
+-            if backend < 2 {
+-                parallel.avx512 = false;
+-            }
+-            if backend == 0 {
+-                parallel.avx2 = false;
+-            }
+-            parallel.insert_hashes_parallel(&hashes, 2);
+-            assert_eq!(serial.lines, parallel.lines);
+-        }
+-        let mut bf = FourSectorBloomFilter::new(1, 8).unwrap();
+-        bf.insert_hash(0);
+-        bf.insert_hash(u64::MAX);
+-        assert!(bf.contains_hash(0) && bf.contains_hash(u64::MAX));
+-        if cfg!(feature = "disable-avx512") {
+-            assert_ne!(bf.backend(), "avx512");
+-        }
+-    }
+-    #[test]
+-    fn short_dispatch_matches_scalar_and_previous_vector_kernel() {
+-        let mut inserted: Vec<_> = (0..65539).map(hash64).collect();
+-        inserted[0] = 0;
+-        inserted[1] = u64::MAX;
+-        // Below, exactly at, and above the strict 2 MiB dispatch threshold.
+-        for (keys, bpk) in [(65539, 8), (1 << 19, 16), (1 << 20, 16)] {
+-            let mut filter = FourSectorBloomFilter::new(keys, bpk).unwrap();
+-            filter.insert_hashes(&inserted);
+-            let bitmap = filter.lines.clone();
+-            let mut present = vec![0; inserted.len()];
+-            filter.lookup_hashes(&inserted, &mut present);
+-            assert!(present.iter().all(|&x| x == 1));
+-            for len in 0..=131 {
+-                for offset in 0..16 {
+-                    // The logical tail is also the allocation tail, so sanitizer
+-                    // builds can catch an accidental full load for <8 keys.
+-                    let input: Vec<_> = (0..len + offset)
+-                        .map(|j| {
+-                            if j % 11 == 0 {
+-                                0
+-                            } else if j % 13 == 0 {
+-                                u64::MAX
+-                            } else if j % 2 == 0 {
+-                                inserted[(j * 71) % inserted.len()]
+-                            } else {
+-                                hash64(1_000_000 + j as u64)
+-                            }
+-                        })
+-                        .collect();
+-                    let query = &input[offset..];
+-                    let mut actual = vec![0xfeed; len + 2];
+-                    filter.lookup_hashes(query, &mut actual[1..len + 1]);
+-                    assert_eq!(actual[0], 0xfeed);
+-                    assert_eq!(actual[len + 1], 0xfeed);
+-                    for (&h, &v) in query.iter().zip(&actual[1..len + 1]) {
+-                        assert_eq!(v, filter.contains_scalar(h) as u32);
+-                    }
+-                    #[cfg(target_arch = "x86_64")]
+-                    if filter.avx512 {
+-                        let mut previous = vec![0xfeed; len + 2];
+-                        // SAFETY: the filter detected AVX2/AVX512F; both slices
+-                        // have exactly len entries. This invokes the old kernel.
+-                        unsafe {
+-                            if filter.size_in_bytes() > PREFETCH_THRESHOLD {
+-                                filter.lookup_avx512::<true>(query, &mut previous[1..len + 1]);
+-                            } else {
+-                                filter.lookup_avx512::<false>(query, &mut previous[1..len + 1]);
+-                            }
+-                        }
+-                        assert_eq!(actual, previous);
+-                    }
+-                }
+-            }
+-            assert_eq!(bitmap, filter.lines);
+-        }
+-    }
+-}
++#[path = "tests.rs"]
++mod tests;

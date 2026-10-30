@@ -1,0 +1,29 @@
+[package]
+name = "independent32-singleton-experiment"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+license = "MIT AND Apache-2.0"
+publish = false
+autobins = false
+
+[features]
+disable-avx512 = []
+validation = []
+
+[lib]
+name = "independent32_singleton_experiment"
+
+[[bin]]
+name = "independent32-parity"
+path = "src/bin/parity.rs"
+required-features = ["validation"]
+
+[[bin]]
+name = "independent32-codegen"
+path = "src/bin/codegen.rs"
+required-features = ["validation"]
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

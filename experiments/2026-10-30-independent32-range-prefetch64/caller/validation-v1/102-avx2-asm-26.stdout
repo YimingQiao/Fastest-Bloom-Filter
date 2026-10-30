@@ -1,0 +1,44 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/avx2/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002b3c0 <_Z20inline_single_kernelILb1EN14external_bloom7Fixed16EmEvRKT0_mPKmPj>:
+   2b3c0:	test   %rsi,%rsi
+   2b3c3:	je     2b45e <_Z20inline_single_kernelILb1EN14external_bloom7Fixed16EmEvRKT0_mPKmPj+0x9e>
+   2b3c9:	movabs $0xd6e8feb86659fd93,%rax
+   2b3d3:	xor    %r8d,%r8d
+   2b3d6:	vmovdqa -0x298ae(%rip),%xmm0        # 1b30 <_IO_stdin_used+0x440>
+   2b3de:	vpbroadcastq -0x299cf(%rip),%xmm1        # 1a18 <_IO_stdin_used+0x328>
+   2b3e7:	nopw   0x0(%rax,%rax,1)
+   2b3f0:	mov    (%rdx,%r8,8),%r9
+   2b3f4:	mov    %r9,%r10
+   2b3f7:	shr    $0x20,%r10
+   2b3fb:	xor    %r9,%r10
+   2b3fe:	imul   %rax,%r10
+   2b402:	mov    %r10,%r9
+   2b405:	shr    $0x20,%r9
+   2b409:	xor    %r10,%r9
+   2b40c:	imul   %rax,%r9
+   2b410:	mov    %r9,%r10
+   2b413:	shr    $0x20,%r10
+   2b417:	xor    %r10d,%r9d
+   2b41a:	mov    (%rdi),%r11d
+   2b41d:	imul   %r10,%r11
+   2b421:	vmovd  %r9d,%xmm2
+   2b426:	vpbroadcastd %xmm2,%xmm2
+   2b42b:	vpmulhw %xmm0,%xmm2,%xmm2
+   2b42f:	vpshufb %xmm2,%xmm1,%xmm2
+   2b434:	mov    0x8(%rdi),%r9
+   2b438:	shr    $0x1c,%r11
+   2b43c:	and    $0xfffffffffffffff0,%r11
+   2b440:	vmovdqu (%r9,%r11,1),%xmm3
+   2b446:	xor    %r9d,%r9d
+   2b449:	vptest %xmm2,%xmm3
+   2b44e:	setb   %r9b
+   2b452:	mov    %r9d,(%rcx,%r8,4)
+   2b456:	inc    %r8
+   2b459:	cmp    %r8,%rsi
+   2b45c:	jne    2b3f0 <_Z20inline_single_kernelILb1EN14external_bloom7Fixed16EmEvRKT0_mPKmPj+0x30>
+   2b45e:	ret

@@ -1,0 +1,76 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000056de0 <_Z13lookup_kernelIN14external_bloom9SimdBlockEmEvRT_mPKT0_Pj>:
+   56de0:	mov    $0xffffffff,%eax
+   56de5:	and    %rsi,%rax
+   56de8:	je     56f11 <_Z13lookup_kernelIN14external_bloom9SimdBlockEmEvRT_mPKT0_Pj+0x131>
+   56dee:	cmp    $0x1,%eax
+   56df1:	jne    56dfa <_Z13lookup_kernelIN14external_bloom9SimdBlockEmEvRT_mPKT0_Pj+0x1a>
+   56df3:	xor    %eax,%eax
+   56df5:	jmp    56ec3 <_Z13lookup_kernelIN14external_bloom9SimdBlockEmEvRT_mPKT0_Pj+0xe3>
+   56dfa:	mov    %esi,%r8d
+   56dfd:	and    $0xfffffffe,%r8d
+   56e01:	xor    %eax,%eax
+   56e03:	vmovdqa -0x52bcb(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   56e0b:	vpbroadcastd -0x54f2c(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   56e14:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   56e20:	mov    (%rdx,%rax,8),%r9
+   56e24:	mov    0x4(%rdi),%r10d
+   56e28:	and    %r9d,%r10d
+   56e2b:	movzbl (%rdi),%r11d
+   56e2f:	shrx   %r11,%r9,%r9
+   56e34:	vpbroadcastd %r9d,%ymm2
+   56e3a:	vpmulld %ymm0,%ymm2,%ymm2
+   56e3f:	vpsrld $0x1b,%ymm2,%ymm2
+   56e44:	vpsllvd %ymm2,%ymm1,%ymm2
+   56e49:	mov    0x8(%rdi),%r9
+   56e4d:	shl    $0x5,%r10
+   56e51:	vmovdqa (%r9,%r10,1),%ymm3
+   56e57:	xor    %r9d,%r9d
+   56e5a:	vptest %ymm2,%ymm3
+   56e5f:	setb   %r9b
+   56e63:	mov    %r9d,(%rcx,%rax,4)
+   56e67:	mov    0x8(%rdx,%rax,8),%r9
+   56e6c:	mov    0x4(%rdi),%r10d
+   56e70:	and    %r9d,%r10d
+   56e73:	movzbl (%rdi),%r11d
+   56e77:	shrx   %r11,%r9,%r9
+   56e7c:	vpbroadcastd %r9d,%ymm2
+   56e82:	vpmulld %ymm0,%ymm2,%ymm2
+   56e87:	vpsrld $0x1b,%ymm2,%ymm2
+   56e8c:	vpsllvd %ymm2,%ymm1,%ymm2
+   56e91:	mov    0x8(%rdi),%r9
+   56e95:	shl    $0x5,%r10
+   56e99:	vmovdqa (%r9,%r10,1),%ymm3
+   56e9f:	xor    %r9d,%r9d
+   56ea2:	vptest %ymm2,%ymm3
+   56ea7:	setb   %r9b
+   56eab:	mov    %r9d,0x4(%rcx,%rax,4)
+   56eb0:	add    $0x2,%rax
+   56eb4:	cmp    %rax,%r8
+   56eb7:	jne    56e20 <_Z13lookup_kernelIN14external_bloom9SimdBlockEmEvRT_mPKT0_Pj+0x40>
+   56ebd:	test   $0x1,%sil
+   56ec1:	je     56f11 <_Z13lookup_kernelIN14external_bloom9SimdBlockEmEvRT_mPKT0_Pj+0x131>
+   56ec3:	mov    (%rdx,%rax,8),%rdx
+   56ec7:	mov    0x4(%rdi),%esi
+   56eca:	and    %edx,%esi
+   56ecc:	movzbl (%rdi),%r8d
+   56ed0:	shrx   %r8,%rdx,%rdx
+   56ed5:	vpbroadcastd %edx,%ymm0
+   56edb:	vpmulld -0x52ca4(%rip),%ymm0,%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   56ee4:	vpsrld $0x1b,%ymm0,%ymm0
+   56ee9:	vpbroadcastd -0x5500a(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   56ef2:	vpsllvd %ymm0,%ymm1,%ymm0
+   56ef7:	mov    0x8(%rdi),%rdx
+   56efb:	shl    $0x5,%rsi
+   56eff:	vmovdqa (%rdx,%rsi,1),%ymm1
+   56f04:	xor    %edx,%edx
+   56f06:	vptest %ymm0,%ymm1
+   56f0b:	setb   %dl
+   56f0e:	mov    %edx,(%rcx,%rax,4)
+   56f11:	vzeroupper
+   56f14:	ret

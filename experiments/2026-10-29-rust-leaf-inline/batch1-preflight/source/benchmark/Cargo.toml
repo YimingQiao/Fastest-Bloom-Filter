@@ -1,0 +1,24 @@
+[package]
+name = "fastest-bloom-filter-leaf-inline-harness"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "compare_benchmark"
+path = "src/main.rs"
+
+[features]
+disable-avx512 = ["fastest-bloom-filter/disable-avx512", "leaf_inline_native/disable-avx512"]
+
+[dependencies]
+leaf_inline_native = { package = "fastest-bloom-filter-leaf-inline", path = "../native" }
+fastest-bloom-filter = { path = "../../../rust" }
+bloomsday = { git = "https://github.com/sidd-27/Bloomsday.git", rev = "11f16a91a1c8a20344cd263e908f957dac7cf5d0" }
+fastbloom = { version = "=0.17.0", default-features = false, features = ["std"] }
+sbbf-rs = "=0.2.8"
+sbbf-rs-safe = "=0.3.2"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

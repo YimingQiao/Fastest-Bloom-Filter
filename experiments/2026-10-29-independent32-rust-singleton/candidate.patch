@@ -1,0 +1,13 @@
+--- before.rs
++++ candidate.rs
+@@ -154,6 +154,10 @@
+     /// Writes one dense 0/1 result per input. Length mismatch panics before writes.
+     pub fn lookup_hashes(&self, hashes: &[u64], out: &mut [u32]) {
+         assert_eq!(hashes.len(), out.len(), "one output is required per input");
++        if hashes.len() == 1 {
++            out[0] = self.contains_hash(hashes[0]) as u32;
++            return;
++        }
+         #[cfg(target_arch = "x86_64")]
+         {
+             if self.vbmi {

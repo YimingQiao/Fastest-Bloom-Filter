@@ -1,0 +1,113 @@
+{
+  "utc": "2026-10-28T18:37:00.789560+00:00",
+  "socket_lock": "flock /tmp/fastest-bf-socket1.lock held for each complete heavy command",
+  "representative_types": 14,
+  "native": {
+    "compiler": "Clang 23.0.0",
+    "ctest": "2/2 passed",
+    "cli": "six cases / 84 rows passed"
+  },
+  "asan_ubsan": {
+    "compiler": "Clang 23.0.0",
+    "ctest": "2/2 passed",
+    "cli": "six cases / 84 rows passed"
+  },
+  "tsan": {
+    "compiler": "GCC 12.2.0",
+    "ctest": "2/2 passed",
+    "cli": "six cases / 84 rows passed"
+  },
+  "fault_cases": [
+    "Late spawn exception after three workers were started",
+    "Single worker affinity failure",
+    "Simultaneous affinity failures with zero query-work calls",
+    "Caller-worker query exception",
+    "Spawned-worker query exception",
+    "All previously created threads joined before rethrow"
+  ],
+  "full_registration": "All 56 configs passed T=1/3 full-output/FPR/calibration parity (112 correctness-only rows)",
+  "runner_smoke": "Five representative rows at T=1/3 (10 correctness-only rows), source/executable drift checks passed",
+  "benchmark_status": "No performance matrix or ranking; CLI/runner times are correctness-only smoke values.",
+  "binaries": {
+    "build/external-parallel-query/benchmark": "1f34c9bcfe25cca70d18c74b11dc8e09e73fc283fb5712d4cb7a53fa4e06ca87",
+    "build/external-parallel-query/check_adapters": "3ee40518cbfdfb0a243574b434a90cc44b6f1465b44399b99922eb989d91e30a",
+    "build/external-parallel-query/check_executor": "e9a1fbb826bd81b883a109eeeeaee0665e8d47bdbbd0e5f328d8e3af9c87c30f",
+    "build/external-parallel-query-asan/benchmark": "9987b0e7b4ce5e216a73f089df7eaa1a9933c56adead4582013849c5f7d455ef",
+    "build/external-parallel-query-asan/check_adapters": "c46b8792dae8889f1d964d6beb891dc3c4968fb84b5603c579ccae39d9a76888",
+    "build/external-parallel-query-asan/check_executor": "2357f955480ec8451416a077002662e5b63ef125a6cf1bc8048cd9e241e899da",
+    "build/external-parallel-query-tsan/benchmark": "8e573991c8c533a183f2ee3a17719e8bbd0391afee21560f7c0ff76c295d1f9f",
+    "build/external-parallel-query-tsan/check_adapters": "700e1f30640a3f83ca27876dab2f8e3e5e8787b47b1df469cd25f98d9aa1f97f",
+    "build/external-parallel-query-tsan/check_executor": "0a42e0d9c470fdc1e1d88afe0aa791fb75cc3e491e56c5f19a35a7463e49a58f",
+    "build/external-parallel-query-full/benchmark": "f39ddeab1538c812bea663110a4b1eba14eaf29694014533e3e9b08cacd3cbdb"
+  },
+  "compile_commands": {
+    "external-parallel-query": [
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/benchmark.dir/benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/check_adapters.dir/check_adapters.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/check_executor.dir/check_executor.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp"
+      }
+    ],
+    "external-parallel-query-asan": [
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-asan",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -fsanitize=address,undefined -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/benchmark.dir/benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-asan",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -fsanitize=address,undefined -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/check_adapters.dir/check_adapters.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-asan",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -fsanitize=address,undefined -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/check_executor.dir/check_executor.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp"
+      }
+    ],
+    "external-parallel-query-tsan": [
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-tsan",
+        "command": "/usr/bin/g++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -fsanitize=thread -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/benchmark.dir/benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-tsan",
+        "command": "/usr/bin/g++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -fsanitize=thread -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/check_adapters.dir/check_adapters.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-tsan",
+        "command": "/usr/bin/g++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_MT_REPRESENTATIVE=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -fsanitize=thread -fno-omit-frame-pointer -std=gnu++17 -o CMakeFiles/check_executor.dir/check_executor.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp"
+      }
+    ],
+    "external-parallel-query-full": [
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/benchmark.dir/benchmark.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/benchmark.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/check_adapters.dir/check_adapters.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_adapters.cpp"
+      },
+      {
+        "directory": "/home/yiming/projects/fastest-bf-lab/build/external-parallel-query-full",
+        "command": "/usr/bin/clang++ -DBF_EXTERNAL_HEADER=\\\"adapters.hpp\\\" -DBF_EXTERNAL_ONLY=1 -DBF_NATIVE_LAYOUTS=1 -DBF_ROCKSDB=1 -DOS_LINUX -DROCKSDB_PLATFORM_POSIX -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query -I/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/snapshot/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/cpp-external/../../include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/fastfilter-src/src -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/include -I/home/yiming/projects/fastest-bf-lab/build/cpp-external/_deps/pagebloom-src/src -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0 -I/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/vendor/include -I/home/yiming/projects/fastest-bf-lab/benchmarks/rocksdb-external/../../include -O3 -DNDEBUG -march=native -fno-strict-aliasing -std=gnu++17 -o CMakeFiles/check_executor.dir/check_executor.cpp.o -c /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp",
+        "file": "/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-external-parallel-query/check_executor.cpp"
+      }
+    ]
+  }
+}

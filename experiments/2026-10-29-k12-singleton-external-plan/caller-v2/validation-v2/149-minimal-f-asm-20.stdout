@@ -1,0 +1,36 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000054870 <_Z20inline_single_kernelILb0EN13bloom_filters18Split64BloomFilterEmEvRKT0_mPKmPj>:
+   54870:	test   %rsi,%rsi
+   54873:	je     548ea <_Z20inline_single_kernelILb0EN13bloom_filters18Split64BloomFilterEmEvRKT0_mPKmPj+0x7a>
+   54875:	xor    %eax,%eax
+   54877:	vmovdqa -0x500ff(%rip),%ymm0        # 4780 <_IO_stdin_used+0x2888>
+   5487f:	vpbroadcastq -0x52921(%rip),%zmm1        # 1f68 <_IO_stdin_used+0x70>
+   54889:	nopl   0x0(%rax)
+   54890:	mov    (%rdx,%rax,8),%r8
+   54894:	vmovd  %r8d,%xmm2
+   54899:	shr    $0x20,%r8
+   5489d:	and    0x18(%rdi),%r8d
+   548a1:	mov    (%rdi),%r9
+   548a4:	shl    $0x6,%r8
+   548a8:	vmovdqa64 (%r9,%r8,1),%zmm3
+   548af:	vpbroadcastd %xmm2,%ymm2
+   548b4:	vpmulld %ymm0,%ymm2,%ymm2
+   548b9:	vpsrld $0x1a,%ymm2,%ymm2
+   548be:	vpmovzxdq %ymm2,%zmm2
+   548c4:	vpsrlvq %zmm2,%zmm3,%zmm2
+   548ca:	vptestnmq %zmm1,%zmm2,%k0
+   548d0:	kmovw  %k0,%r8d
+   548d4:	xor    %r9d,%r9d
+   548d7:	test   %r8b,%r8b
+   548da:	sete   %r9b
+   548de:	mov    %r9d,(%rcx,%rax,4)
+   548e2:	inc    %rax
+   548e5:	cmp    %rax,%rsi
+   548e8:	jne    54890 <_Z20inline_single_kernelILb0EN13bloom_filters18Split64BloomFilterEmEvRKT0_mPKmPj+0x20>
+   548ea:	vzeroupper
+   548ed:	ret

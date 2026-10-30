@@ -1,0 +1,259 @@
+{
+  "status": "source-only proposal; no compile, accuracy or timing authorization implied",
+  "hypothesis": "Independent32 at12bpk can close the large loose-FPR memory gap using unchanged independent probes and disjoint range addressing",
+  "candidate": {
+    "name": "Independent32RangeBloomFilter",
+    "probe_bits": [
+      0,
+      39
+    ],
+    "address_bits": [
+      40,
+      63
+    ],
+    "bucket_bytes": 32,
+    "line_bytes": 64,
+    "capacity": "2*floor(byte_budget/64) buckets; actual capacity charged and checked <=budget",
+    "budget_min": 128,
+    "budget_max": 268435456,
+    "mapping_id": "independent32/high24-range/low40-independent8-v1",
+    "parallel_api": false,
+    "pilot_equal_byte_control_mappings_distinct": true,
+    "maximum_256MiB_exception": "C=2^23; both old/new address equalhash>>41"
+  },
+  "proof": {
+    "profiles": [
+      "native",
+      "avx2",
+      "scalar-source",
+      "native-asan-ubsan"
+    ],
+    "expected_backends": [
+      "avx512vbmi-vl",
+      "avx2",
+      "scalar-source",
+      "avx512vbmi-vl"
+    ],
+    "candidate_line_counts": [
+      2,
+      3,
+      7,
+      1025
+    ],
+    "old_control_actual_bpk": [
+      16,
+      32
+    ],
+    "tail_offset_calls_per_profile": 324,
+    "required_bit_cases_per_profile": 1024,
+    "invalid_size_cases_per_profile": 5,
+    "large_geometry_arithmetic_only": true,
+    "native_parent_commit": "967c0056f855298fd8ac53057d24ca3fcf3b8784"
+  },
+  "accuracy": {
+    "key_powers": [
+      16,
+      25
+    ],
+    "candidate_actual_bpk": [
+      12,
+      16,
+      20,
+      24,
+      28,
+      32
+    ],
+    "old_control_actual_bpk": [
+      16,
+      32
+    ],
+    "seed": 42,
+    "seed_is_seen": true,
+    "rows": 16,
+    "queries": 4096,
+    "hit_percent": 50,
+    "calibration_power": 26,
+    "query_repeats": 0,
+    "build_repeats": 0,
+    "full_n_build": true,
+    "validate_every_inserted": true,
+    "timing_fields": "absent or strictly unavailable; no timer invocation",
+    "quality_rule": "pointwise two-sided95% Wilson upper endpoint, z=1.959963984540054; no pooling",
+    "primary_gate": {
+      "candidate_actual_bpk": 12,
+      "ceiling_fraction": 0.01,
+      "require_both_sizes": true
+    },
+    "secondary_prespecified_quality_targets": [
+      {
+        "actual_bpk": 20,
+        "ceiling_fraction": 0.001
+      },
+      {
+        "actual_bpk": 28,
+        "ceiling_fraction": 0.0001
+      }
+    ],
+    "all_reporting_ceilings": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "stop": "Primary12 fails either size => stop before timing; no alternate capacity replaces it",
+    "all_rows_and_failures_retained": true
+  },
+  "model_only": {
+    "assumptions": "uniform independent64-bit hash and Poisson bucket occupancy; not measured FPR or guarantee",
+    "formula": "E[(1-(31/32)^X)^8], X~Poisson(256/bpk)",
+    "bpk_to_predicted_percent": {
+      "12": 0.54196,
+      "16": 0.13156,
+      "20": 0.041997,
+      "24": 0.016269,
+      "28": 0.0072653,
+      "32": 0.0036146
+    }
+  },
+  "conditional_timing_proposal": {
+    "requires_new_source_freeze_and_explicit_lease": true,
+    "primary_accuracy_gate_must_pass": true,
+    "key_powers": [
+      16,
+      25
+    ],
+    "batches": [
+      1,
+      31,
+      4096
+    ],
+    "hit_percent": 50,
+    "queries": 4194304,
+    "query_repeats": 8,
+    "build_repeats": 0,
+    "canonical_build": "one complete untimed construction and inserted/full-output validation per filter/process",
+    "seeds": [
+      982451653,
+      961748941
+    ],
+    "seeds_are_seen_cpp616_constructions": true,
+    "rounds": [
+      1,
+      2
+    ],
+    "order": "second round reverses complete first-round process ledger and API order, without extra RNG",
+    "contracts_batch1": [
+      "generic_pure",
+      "generic_staged_common_hash",
+      "visible_public_pure",
+      "visible_public_fused_common_hash"
+    ],
+    "contracts_other_batches": [
+      "generic_pure",
+      "generic_staged_common_hash"
+    ],
+    "calibration_power": 26,
+    "primary_cap_bpk": 16,
+    "primary_fpr_ceiling": 0.01,
+    "qualification": "same exact geometry must pass pointwise upper endpoint in both seeds; repeat batch/round samples are aliases, never pooled",
+    "common_native_panel": [
+      {
+        "filter": "Independent32RangeBloomFilter",
+        "actual_bpk": 12
+      },
+      {
+        "filter": "Independent32RangeBloomFilter",
+        "actual_bpk": 16
+      },
+      {
+        "filter": "Independent32BloomFilter",
+        "actual_bpk": 16,
+        "legacy_constructor_bpk": 8
+      },
+      {
+        "filter": "FastPatternBF",
+        "actual_bpk": 16
+      },
+      {
+        "filter": "FourSectorBloomFilter",
+        "actual_bpk": 16
+      },
+      {
+        "filter": "ByteSplitBloomFilter",
+        "actual_bpk": 16
+      },
+      {
+        "filter": "Split64BloomFilter",
+        "actual_bpk": 16
+      }
+    ],
+    "external_panels": {
+      "65536": [
+        {
+          "filter": "FastFilterFixed16",
+          "filter_bytes": 131072
+        },
+        {
+          "filter": "FastFilterFixed16SingleV1",
+          "filter_bytes": 131072
+        },
+        {
+          "filter": "FastFilterFixed16SingleV1",
+          "filter_bytes": 114688
+        }
+      ],
+      "33554432": [
+        {
+          "filter": "Boost192Multi32K8",
+          "filter_bytes": 50331647,
+          "logical_bytes": 50331584
+        }
+      ]
+    },
+    "counts": {
+      "small_points": 10,
+      "large_points": 8,
+      "processes": 24,
+      "rows": 216,
+      "metric_vectors": 576,
+      "trial_values": 4608
+    },
+    "same_execution_only": true,
+    "keep_all_losses": true,
+    "no_historical_latency_or_quality_import": true,
+    "no_new_build_mt_or_rust_claim": true
+  },
+  "complete_evidence_inputs": {
+    "cpp616_report_commit": "d14adb451856322e5f6ff90d1008dfc456727445",
+    "cpp616_report": "experiments/2026-10-29-k12-singleton-external-analysis/report-v2",
+    "bulk_leaders": "experiments/2026-10-29-four-sector-range12-analysis/report/leaders.json",
+    "byte_range_accuracy": "experiments/2026-10-29-exact-budget-range/screen/results.csv",
+    "old_independent_quality": "experiments/2026-10-29-independent32-rust-analysis/FINDINGS.md"
+  },
+  "future_falsification": "If primary quality passes, large-table gap closure requires all4 seed/round ratios<1 versus strongest eligible external AND production native in both visible singleton and both b4096 contracts; every small/b31/generic-singleton loss remains. No automatic promotion.",
+  "complete_evidence_blobs": [
+    {
+      "commit": "d14adb451856322e5f6ff90d1008dfc456727445",
+      "path": "experiments/2026-10-29-k12-singleton-external-analysis/report-v2/primary-summary.csv",
+      "sha256": "2a92e360fb7f1b4bd7402f9adae2ab81531ab4ae15ee34b7ef241f0dba1eb4cc",
+      "scope": "completed prior evidence only; no latency or calibration imported into future measurements"
+    },
+    {
+      "commit": "cf8642c5e0d0f5800a1cd316f89c312b333c772a",
+      "path": "experiments/2026-10-29-four-sector-range12-analysis/report/leaders.json",
+      "sha256": "1a507f5239d585555dd933899cab0eecc0053a80a6a31b446687f2854920d404",
+      "scope": "completed prior evidence only; no latency or calibration imported into future measurements"
+    },
+    {
+      "commit": "758499c63c5397cd64c9d67cdecab7e0388e774a",
+      "path": "experiments/2026-10-29-exact-budget-range/screen/results.csv",
+      "sha256": "8b9302968b3e44f013407c7817db3f25b76591e1dbf0d8467a1016c83a6a46e5",
+      "scope": "completed prior evidence only; no latency or calibration imported into future measurements"
+    },
+    {
+      "commit": "494153f7f363e8d091088ffe44ee78d6d94c322c",
+      "path": "experiments/2026-10-29-independent32-rust-analysis/FINDINGS.md",
+      "sha256": "b816d71066bdebb8886816bfab2ee35dae1379595d59b5af87bf1581ccaaaa02",
+      "scope": "completed prior evidence only; no latency or calibration imported into future measurements"
+    }
+  ]
+}

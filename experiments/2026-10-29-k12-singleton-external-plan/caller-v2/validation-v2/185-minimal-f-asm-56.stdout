@@ -1,0 +1,56 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000510f0 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj>:
+   510f0:	test   %rsi,%rsi
+   510f3:	je     511c4 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0xd4>
+   510f9:	push   %rbx
+   510fa:	movabs $0xd6e8feb86659fd93,%rax
+   51104:	xor    %r8d,%r8d
+   51107:	vmovdqa -0x4c6cf(%rip),%ymm0        # 4a40 <_IO_stdin_used+0x2b48>
+   5110f:	vmovdqa -0x4c8d7(%rip),%ymm1        # 4840 <_IO_stdin_used+0x2948>
+   51117:	vpbroadcastd -0x4f238(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   51120:	mov    (%rdx,%r8,8),%r9
+   51124:	mov    %r9,%r10
+   51127:	shr    $0x20,%r10
+   5112b:	xor    %r9,%r10
+   5112e:	imul   %rax,%r10
+   51132:	mov    %r10,%r9
+   51135:	shr    $0x20,%r9
+   51139:	xor    %r10,%r9
+   5113c:	imul   %rax,%r9
+   51140:	mov    %r9d,%r10d
+   51143:	shr    $0x20,%r9
+   51147:	mov    0x18(%rdi),%r11d
+   5114b:	mov    (%rdi),%rbx
+   5114e:	shr    $0x6,%r11d
+   51152:	xor    %r9,%r10
+   51155:	imul   %r11,%r10
+   51159:	shr    $0x1a,%r10
+   5115d:	and    $0xffffffc0,%r10d
+   51161:	prefetcht2 (%rbx,%r10,1)
+   51166:	vmovd  %r9d,%xmm3
+   5116b:	vpbroadcastd %xmm3,%ymm3
+   51170:	vpmulld %ymm0,%ymm3,%ymm4
+   51175:	vpsrld $0x1c,%ymm4,%ymm5
+   5117a:	vpermd (%rbx,%r10,1),%ymm5,%ymm6
+   51180:	prefetcht2 0x3f(%rbx,%r10,1)
+   51186:	vpermd 0x20(%rbx,%r10,1),%ymm5,%ymm5
+   5118d:	vpsrad $0x1f,%ymm4,%ymm4
+   51192:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   51198:	vpmulld %ymm1,%ymm3,%ymm3
+   5119d:	vpsrld $0x1b,%ymm3,%ymm3
+   511a2:	vpsllvd %ymm3,%ymm2,%ymm3
+   511a7:	xor    %r9d,%r9d
+   511aa:	vptest %ymm3,%ymm4
+   511af:	setb   %r9b
+   511b3:	mov    %r9d,(%rcx,%r8,4)
+   511b7:	inc    %r8
+   511ba:	cmp    %r8,%rsi
+   511bd:	jne    51120 <_Z20inline_single_kernelILb1EN16rocksdb_external16FastLocalBloom64ILi8ELb1EEEmEvRKT0_mPKmPj+0x30>
+   511c3:	pop    %rbx
+   511c4:	vzeroupper
+   511c7:	ret

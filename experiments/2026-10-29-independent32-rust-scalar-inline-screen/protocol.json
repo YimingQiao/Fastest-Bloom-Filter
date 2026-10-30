@@ -1,0 +1,142 @@
+{
+  "status": "Correctness and actual assembly checked;208-row training matrix not run",
+  "base_adapter_commit": "9c5820f0529efeaa37f896f6f8ce269a2e940afb",
+  "native_production_changes": false,
+  "filters": [
+    "FastPatternBF",
+    "ByteSplitBloomFilter",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter",
+    "Fastbloom017",
+    "BloomsdayPinned",
+    "SbbfSafePinned",
+    "ByteLeafInlineV1",
+    "FourSectorLeafInlineV1",
+    "Split64LeafInlineV1",
+    "Independent32BloomFilter",
+    "Independent32SingletonV1",
+    "Independent32ScalarInlineV2"
+  ],
+  "public_methods": {
+    "native": "contains_hash",
+    "Fastbloom017": "BloomFilter::contains_hash",
+    "BloomsdayPinned": "BlockedBloomFilter::may_match_hash",
+    "SbbfSafePinned": "sbbf_rs_safe::Filter::contains_hash; retain upstream trait object"
+  },
+  "query_modes": [
+    "old_prehashed",
+    "old_hash_staged",
+    "visible_prehashed",
+    "visible_hash_fused"
+  ],
+  "schedule": [
+    [
+      0,
+      1,
+      3,
+      2
+    ],
+    [
+      1,
+      2,
+      0,
+      3
+    ],
+    [
+      2,
+      3,
+      1,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      1
+    ]
+  ],
+  "label_permutation": "SplitMix64(seed xor 0x6a09e667f3bcc909), same shuffle as the shared workload",
+  "repeats": 4,
+  "key_powers": [
+    16,
+    25
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "query_power": 22,
+  "hit_percent": 50,
+  "seeds": [
+    42
+  ],
+  "insert_batch": "whole input",
+  "calibration_power": 24,
+  "expected_initial_workloads": 16,
+  "expected_initial_rows": 208,
+  "performance_authorization": "Freeze and review all source, binaries and evidence in a committed revision before208-row screen",
+  "correctness_requirements": [
+    "normal",
+    "disable-avx512",
+    "ASan",
+    "36 full native tests",
+    "9 C++ full bitmap/output fixture rows eachmode",
+    "all13 public APIs",
+    "216 exact retained-reference semantic rows",
+    "four-mode corruption and phase tests",
+    "26visible loops and3generic/public pairs",
+    "all5bulkloop normalized instructions match original;changed frame/codesize recorded"
+  ],
+  "preflight_cpu": 3,
+  "proposed_performance_cpu": 3,
+  "compiler_flags": "-C target-cpu=native -C symbol-mangling-version=v0",
+  "purpose": "One private scalar-helper inline annotation versus unchanged Independent32 and rejectedV1 in same process, with all12 retained controls",
+  "cpu": 3,
+  "numa_node": 1,
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "binary": "/tmp/fastest-bf-independent32-rust-scalar-inline/release/compare_benchmark",
+  "binary_sha256": "1243cbea0869852cc1d7eda969f1a1c38cded9daedf7afd9ac57858aa82dcb27",
+  "workloads": 16,
+  "rows": 208,
+  "ranking": {
+    "memory_caps_bpk": [
+      16,
+      32
+    ],
+    "allocation_slack_bytes": 0,
+    "fpr_ceilings": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "fpr_bound": "Pointwise two-sided 95% Wilson upper endpoint; no simultaneous selection guarantee",
+    "metrics": [
+      "lookup_ns",
+      "hash_lookup_ns",
+      "inline_lookup_ns",
+      "inline_hash_lookup_ns"
+    ],
+    "track_rule": "All13 configurations and four query contracts; before/V1/V2 compare within this executable. All losses retained. Training only.",
+    "within_family_ratios": "Retain every original/visible ratio including regressions; descriptive medians only",
+    "quality_deduplication": "One mapping/size/requestedbpk/seed stream; leaf clones share their originals. Independent32 has a distinct mapping. Batch/mode repeats never add independent negatives. No confidence pooling across mappings."
+  },
+  "batches": [
+    1,
+    2,
+    31,
+    4096
+  ],
+  "base_visible_source_commit": "4004e3f50e85385e5a3c7752d62b7a8797f15146",
+  "scope_by_batch": {
+    "1,2,31,4096": "All13 configurations and four contracts; visible loops process whole array at every batch tag."
+  },
+  "native_independent32_freeze_sha256": "017472ab09e7430bca03ee219a5b7e0f412e30fadef21159fc8c84cee65a050d",
+  "leaf_source_freeze_sha256": "d4a49251faf7fde20ca8bb83c5473c0e60ba432b7b332b30adee401d933f3735",
+  "reference_binary": "/tmp/fastest-bf-independent32-rust-singleton/release/compare_benchmark",
+  "reference_binary_sha256": "4f2395141ed9a893f74abed06aa3548c33d958117f5ec56aab6cb3b7e29fe16c",
+  "calibration_raw_interval": "[key_base+keys+queries,key_base+keys+queries+2^24); disjoint from inserted/timed negatives",
+  "quality_unique_records": 32,
+  "numa_policy": "CPU3/socket1 affinity; no explicit NUMA memory binding.",
+  "before_screen_source_commit": "aad7dda8b473be5020b34505cf3faad2bda9fc02",
+  "current_correctness_lease": "CPU3/socket1 whole flock; complete"
+}

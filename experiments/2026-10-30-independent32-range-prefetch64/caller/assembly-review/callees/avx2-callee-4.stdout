@@ -1,0 +1,97 @@
+
+/tmp/fastest-bf-independent32-prefetch64-caller-v1-cpu3/avx2/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000029150 <_ZNK13bloom_filters21FourSectorBloomFilter12LookupScalarEjPKmPj>:
+   29150:	push   %rbp
+   29151:	push   %r15
+   29153:	push   %r14
+   29155:	push   %r13
+   29157:	push   %r12
+   29159:	push   %rbx
+   2915a:	mov    %esi,-0xc(%rsp)
+   2915e:	test   %esi,%esi
+   29160:	je     2925a <_ZNK13bloom_filters21FourSectorBloomFilter12LookupScalarEjPKmPj+0x10a>
+   29166:	mov    %rcx,%r10
+   29169:	mov    -0xc(%rsp),%eax
+   2916d:	mov    %rax,-0x8(%rsp)
+   29172:	xor    %r11d,%r11d
+   29175:	lea    -0x2660c(%rip),%rbx        # 2b70 <_ZN13bloom_filters21FourSectorBloomFilter9patterns2E>
+   2917c:	nopl   0x0(%rax)
+   29180:	mov    (%rdx,%r11,8),%r8
+   29184:	mov    %r8,%r14
+   29187:	shr    $0x20,%r14
+   2918b:	and    0x18(%rdi),%r14d
+   2918f:	mov    %r8,%r15
+   29192:	shr    $0x3a,%r15
+   29196:	and    $0x3,%r15d
+   2919a:	or     $0x4,%r15d
+   2919e:	xor    %r14d,%r15d
+   291a1:	mov    %r8,%r12
+   291a4:	shr    $0x3c,%r12
+   291a8:	and    $0x3,%r12d
+   291ac:	or     $0x8,%r12d
+   291b0:	xor    %r14d,%r12d
+   291b3:	mov    %r8,%r13
+   291b6:	shr    $0x3e,%r13
+   291ba:	mov    %r8d,%eax
+   291bd:	and    $0xf,%eax
+   291c0:	mov    (%rbx,%rax,4),%ebp
+   291c3:	mov    %r8d,%ecx
+   291c6:	shr    $0x4,%ecx
+   291c9:	rol    %cl,%ebp
+   291cb:	or     $0xc,%r13d
+   291cf:	mov    %r8d,%eax
+   291d2:	shr    $0x6,%eax
+   291d5:	and    $0x3c,%eax
+   291d8:	mov    (%rax,%rbx,1),%esi
+   291db:	mov    %r8d,%ecx
+   291de:	shr    $0xc,%ecx
+   291e1:	rol    %cl,%esi
+   291e3:	mov    %r8d,%eax
+   291e6:	shr    $0xe,%eax
+   291e9:	and    $0x3c,%eax
+   291ec:	mov    (%rax,%rbx,1),%eax
+   291ef:	rorx   $0x18,%r8d,%r9d
+   291f5:	shr    $0x14,%r8d
+   291f9:	mov    %r8d,%ecx
+   291fc:	rol    %cl,%eax
+   291fe:	xor    %r14d,%r13d
+   29201:	mov    %r9d,%ecx
+   29204:	and    $0xf,%ecx
+   29207:	mov    (%rbx,%rcx,4),%r8d
+   2920b:	shr    $0x4,%r9d
+   2920f:	mov    %r9d,%ecx
+   29212:	rol    %cl,%r8d
+   29215:	mov    (%rdi),%rcx
+   29218:	mov    (%rcx,%r14,4),%r9d
+   2921c:	and    %ebp,%r9d
+   2921f:	xor    %ebp,%r9d
+   29222:	mov    (%rcx,%r15,4),%ebp
+   29226:	and    %esi,%ebp
+   29228:	xor    %esi,%ebp
+   2922a:	mov    (%rcx,%r12,4),%esi
+   2922e:	and    %eax,%esi
+   29230:	xor    %eax,%esi
+   29232:	mov    (%rcx,%r13,4),%eax
+   29236:	and    %r8d,%eax
+   29239:	xor    %r8d,%eax
+   2923c:	or     %esi,%eax
+   2923e:	or     %ebp,%eax
+   29240:	xor    %ecx,%ecx
+   29242:	or     %r9d,%eax
+   29245:	sete   %cl
+   29248:	mov    %ecx,(%r10,%r11,4)
+   2924c:	inc    %r11
+   2924f:	cmp    %r11,-0x8(%rsp)
+   29254:	jne    29180 <_ZNK13bloom_filters21FourSectorBloomFilter12LookupScalarEjPKmPj+0x30>
+   2925a:	mov    -0xc(%rsp),%eax
+   2925e:	pop    %rbx
+   2925f:	pop    %r12
+   29261:	pop    %r13
+   29263:	pop    %r14
+   29265:	pop    %r15
+   29267:	pop    %rbp
+   29268:	ret

@@ -1,0 +1,117 @@
+{
+  "status": "source preparation; no Stage3 build or BF execution",
+  "parent_stage2": "ec21cf239ae01acd658b6cfae24a1464fa8f6c5a",
+  "modern_geometry_source": "d70077b28fb3cd5821ae471f185e98393423ec64",
+  "compiler": "GCC12.2.0",
+  "worker_boost": {
+    "legacy": "1.83",
+    "modern": "1.92"
+  },
+  "modern_external": [
+    "Boost192ClassicK11",
+    "Boost192Multi32K4",
+    "Boost192Multi32K8",
+    "Boost192Multi64K8",
+    "FastFilterFixed16",
+    "FastFilterFixed16SingleV1",
+    "FastFilterFixed32",
+    "FastFilterFixed32Bulk",
+    "FastFilterFixed64",
+    "FastFilterSimdBlock",
+    "FastFilterSimdBlockSingleV1",
+    "RocksDBFastLocalBloom64K8",
+    "RocksDBFastLocalBloom64K8Batch32",
+    "PageBloom4Default",
+    "PageBloom4Compact",
+    "PageBloom6Default",
+    "PageBloom6Compact",
+    "PageBloom8Default",
+    "PageBloom8Compact"
+  ],
+  "screen": {
+    "key_powers": [
+      16,
+      25
+    ],
+    "bitmap_cap_bpk": [
+      12,
+      16,
+      24,
+      32
+    ],
+    "query_power": 22,
+    "calibration_power": 24,
+    "hit_percent": 50,
+    "seeds": [
+      42
+    ],
+    "query_modes": [
+      "public_single",
+      "dense_batch1",
+      "dense_batch4096"
+    ],
+    "query_repeats": 6,
+    "launch_rounds": 2,
+    "worker_orders": [
+      [
+        "legacy",
+        "modern"
+      ],
+      [
+        "modern",
+        "legacy"
+      ]
+    ],
+    "build_repeats": 0,
+    "fpr_caps": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "deduplicate_actual_geometry": true,
+    "pool_alias_calibration": false,
+    "context_shift_correction": false
+  },
+  "preflight": {
+    "backends": [
+      "native",
+      "native-asan"
+    ],
+    "native_worker_cases": 158,
+    "asan_worker_cases": 48,
+    "accounting_processes": 6,
+    "accounting_rows": 18,
+    "accounting_geometry_keys": 33554432,
+    "accounting_inserted_fixture_keys": 65536,
+    "accounting_query_fixture": 4096,
+    "timing_permitted": false
+  },
+  "shared_compiler_policy": {
+    "native": [
+      "-O3",
+      "-march=native",
+      "-fno-strict-aliasing"
+    ],
+    "native-asan": [
+      "-O1",
+      "-march=native",
+      "-fno-strict-aliasing",
+      "-fsanitize=address,undefined",
+      "-fno-sanitize-recover=all",
+      "-fno-omit-frame-pointer"
+    ]
+  },
+  "screen_rows_per_round": {
+    "legacy": 192,
+    "modern": 172
+  },
+  "screen_total_rows": 728,
+  "screen_quality_identities": 166,
+  "notes": [
+    "Original archives retain their recorded original flags; the no-strict-aliasing policy above applies identically to the two new harnesses.",
+    "Separate executables avoid mixed Boost ODR; shared native controls are reported, never used to subtract a context correction.",
+    "Bitmap budgets exclude separately reported object/control/tuner and temporary scratch; no total-RSS claim.",
+    "PageBloom consumes four raw bytes; other modern/native APIs include common Murmur64 hashing of the zero-extended u32.",
+    "Both launch orders are fixed before data. Every API/round calibration is checked for parity and never pooled."
+  ]
+}

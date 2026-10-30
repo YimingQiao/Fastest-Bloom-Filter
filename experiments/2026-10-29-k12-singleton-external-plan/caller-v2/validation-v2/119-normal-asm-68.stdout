@@ -1,0 +1,2688 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000002f250 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input>:
+   2f250:	push   %rbp
+   2f251:	push   %r15
+   2f253:	push   %r14
+   2f255:	push   %r13
+   2f257:	push   %r12
+   2f259:	push   %rbx
+   2f25a:	sub    $0x10158,%rsp
+   2f261:	mov    %rsi,0x70(%rsp)
+   2f266:	mov    %rdi,%r15
+   2f269:	mov    0x30(%rdx),%rax
+   2f26d:	mov    0x38(%rdx),%r13
+   2f271:	mov    %r13,0xd8(%rsp)
+   2f279:	mov    %rax,0xe0(%rsp)
+   2f281:	sub    %rax,%r13
+   2f284:	mov    %r13,%r12
+   2f287:	sar    $0x3,%r12
+   2f28b:	mov    0x50(%rdx),%r14
+   2f28f:	mov    %rdx,(%rsp)
+   2f293:	mov    0x48(%rdx),%rbp
+   2f297:	mov    0x20(%rdi),%ebx
+   2f29a:	lea    0x150(%rsp),%rdi
+   2f2a2:	mov    %r12,%rsi
+   2f2a5:	mov    %ebx,%edx
+   2f2a7:	call   57200 <_ZN12exact_budget6TraitsIN14external_bloom9SimdBlockEE4PlanEmj>
+   2f2ac:	lea    0x28(%rsp),%rdi
+   2f2b1:	mov    %r12,0x20(%rsp)
+   2f2b6:	mov    %r12,%rsi
+   2f2b9:	mov    %ebx,%edx
+   2f2bb:	call   57390 <_ZN14external_bloom9SimdBlockC2Emj>
+   2f2c0:	lea    0x28(%rsp),%rdi
+   2f2c5:	mov    %r15,0x100(%rsp)
+   2f2cd:	mov    %r15,%rsi
+   2f2d0:	call   57580 <_Z13GeometryCheckIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRKT_RK5Point>
+   2f2d5:	mov    %r14,%r15
+   2f2d8:	mov    %rbp,0x78(%rsp)
+   2f2dd:	sub    %rbp,%r15
+   2f2e0:	mov    %r15,%rax
+   2f2e3:	sar    $0x3,%rax
+   2f2e7:	mov    %rax,0x10(%rsp)
+   2f2ec:	shr    $0x3,%r13
+   2f2f0:	test   %r13d,%r13d
+   2f2f3:	mov    0x70(%rsp),%rbp
+   2f2f8:	je     2f48c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x23c>
+   2f2fe:	mov    (%rsp),%rax
+   2f302:	mov    0x30(%rax),%rdi
+   2f306:	mov    0x20(%rsp),%r9
+   2f30b:	mov    %r9d,%r8d
+   2f30e:	mov    0x28(%rsp),%eax
+   2f312:	mov    0x2c(%rsp),%ecx
+   2f316:	mov    0x30(%rsp),%rdx
+   2f31b:	dec    %r8
+   2f31e:	mov    %r9d,%esi
+   2f321:	and    $0x3,%esi
+   2f324:	cmp    $0x3,%r8
+   2f328:	jae    2f332 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xe2>
+   2f32a:	xor    %r8d,%r8d
+   2f32d:	jmp    2f42c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1dc>
+   2f332:	and    $0xfffffffc,%r9d
+   2f336:	xor    %r8d,%r8d
+   2f339:	vmovdqa -0x2b101(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   2f341:	vpbroadcastd -0x2d462(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   2f34a:	nopw   0x0(%rax,%rax,1)
+   2f350:	mov    (%rdi,%r8,8),%r10
+   2f354:	mov    %ecx,%r11d
+   2f357:	and    %r10d,%r11d
+   2f35a:	shrx   %rax,%r10,%r10
+   2f35f:	vpbroadcastd %r10d,%ymm2
+   2f365:	vpmulld %ymm0,%ymm2,%ymm2
+   2f36a:	vpsrld $0x1b,%ymm2,%ymm2
+   2f36f:	vpsllvd %ymm2,%ymm1,%ymm2
+   2f374:	shl    $0x5,%r11
+   2f378:	vpor   (%rdx,%r11,1),%ymm2,%ymm2
+   2f37e:	vmovdqa %ymm2,(%rdx,%r11,1)
+   2f384:	mov    0x8(%rdi,%r8,8),%r10
+   2f389:	shrx   %rax,%r10,%r11
+   2f38e:	and    %ecx,%r10d
+   2f391:	vpbroadcastd %r11d,%ymm2
+   2f397:	vpmulld %ymm0,%ymm2,%ymm2
+   2f39c:	vpsrld $0x1b,%ymm2,%ymm2
+   2f3a1:	vpsllvd %ymm2,%ymm1,%ymm2
+   2f3a6:	shl    $0x5,%r10
+   2f3aa:	vpor   (%rdx,%r10,1),%ymm2,%ymm2
+   2f3b0:	vmovdqa %ymm2,(%rdx,%r10,1)
+   2f3b6:	mov    0x10(%rdi,%r8,8),%r10
+   2f3bb:	shrx   %rax,%r10,%r11
+   2f3c0:	vpbroadcastd %r11d,%ymm2
+   2f3c6:	vpmulld %ymm0,%ymm2,%ymm2
+   2f3cb:	and    %ecx,%r10d
+   2f3ce:	vpsrld $0x1b,%ymm2,%ymm2
+   2f3d3:	vpsllvd %ymm2,%ymm1,%ymm2
+   2f3d8:	shl    $0x5,%r10
+   2f3dc:	vpor   (%rdx,%r10,1),%ymm2,%ymm2
+   2f3e2:	vmovdqa %ymm2,(%rdx,%r10,1)
+   2f3e8:	mov    0x18(%rdi,%r8,8),%r10
+   2f3ed:	shrx   %rax,%r10,%r11
+   2f3f2:	and    %ecx,%r10d
+   2f3f5:	vpbroadcastd %r11d,%ymm2
+   2f3fb:	vpmulld %ymm0,%ymm2,%ymm2
+   2f400:	vpsrld $0x1b,%ymm2,%ymm2
+   2f405:	vpsllvd %ymm2,%ymm1,%ymm2
+   2f40a:	shl    $0x5,%r10
+   2f40e:	vpor   (%rdx,%r10,1),%ymm2,%ymm2
+   2f414:	vmovdqa %ymm2,(%rdx,%r10,1)
+   2f41a:	add    $0x4,%r8
+   2f41e:	cmp    %r8,%r9
+   2f421:	jne    2f350 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x100>
+   2f427:	test   %rsi,%rsi
+   2f42a:	je     2f48c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x23c>
+   2f42c:	lea    (%rdi,%r8,8),%rdi
+   2f430:	xor    %r8d,%r8d
+   2f433:	vmovdqa -0x2b1fb(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   2f43b:	vpbroadcastd -0x2d55c(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   2f444:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   2f450:	mov    (%rdi,%r8,8),%r9
+   2f454:	mov    %ecx,%r10d
+   2f457:	and    %r9d,%r10d
+   2f45a:	shrx   %rax,%r9,%r9
+   2f45f:	vpbroadcastd %r9d,%ymm2
+   2f465:	vpmulld %ymm0,%ymm2,%ymm2
+   2f46a:	vpsrld $0x1b,%ymm2,%ymm2
+   2f46f:	vpsllvd %ymm2,%ymm1,%ymm2
+   2f474:	shl    $0x5,%r10
+   2f478:	vpor   (%rdx,%r10,1),%ymm2,%ymm2
+   2f47e:	vmovdqa %ymm2,(%rdx,%r10,1)
+   2f484:	inc    %r8
+   2f487:	cmp    %r8,%rsi
+   2f48a:	jne    2f450 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x200>
+   2f48c:	mov    %r14,0x80(%rsp)
+   2f494:	movabs $0x1ffffffffffffff8,%rcx
+   2f49e:	mov    0xc(%rbp),%r12d
+   2f4a2:	mov    0x10(%rsp),%rax
+   2f4a7:	cmp    %r12,%rax
+   2f4aa:	mov    %r12,%r14
+   2f4ad:	cmova  %rax,%r14
+   2f4b1:	lea    0x20(%r14),%r13
+   2f4b5:	lea    0x7(%rcx),%rax
+   2f4b9:	cmp    %rax,%r13
+   2f4bc:	ja     31ffa <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2daa>
+   2f4c2:	vpxor  %xmm0,%xmm0,%xmm0
+   2f4c6:	vmovdqa %xmm0,0x40(%rsp)
+   2f4cc:	movq   $0x0,0x50(%rsp)
+   2f4d5:	test   %r13,%r13
+   2f4d8:	je     2f517 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2c7>
+   2f4da:	lea    0x0(,%r13,4),%rbx
+   2f4e2:	mov    %rbx,%rdi
+   2f4e5:	vzeroupper
+   2f4e8:	call   650b0 <_Znwm@plt>
+   2f4ed:	mov    %rax,0x40(%rsp)
+   2f4f2:	lea    (%rax,%r13,4),%rcx
+   2f4f6:	mov    %rcx,0x50(%rsp)
+   2f4fb:	add    %rax,%rbx
+   2f4fe:	lea    0x1f(%r14),%rcx
+   2f502:	mov    $0x3e,%dl
+   2f504:	bzhi   %rdx,%rcx,%rdx
+   2f509:	cmp    $0x7,%rdx
+   2f50d:	jae    2f51e <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2ce>
+   2f50f:	mov    %rax,%rdx
+   2f512:	jmp    2f5c0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x370>
+   2f517:	xor    %ebx,%ebx
+   2f519:	jmp    2f5cf <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x37f>
+   2f51e:	lea    0x1(%rdx),%rcx
+   2f522:	cmp    $0x1f,%rdx
+   2f526:	jae    2f52c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2dc>
+   2f528:	xor    %esi,%esi
+   2f52a:	jmp    2f57a <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x32a>
+   2f52c:	movabs $0x7ffffffffffffff8,%rdx
+   2f536:	lea    -0x18(%rdx),%rsi
+   2f53a:	and    %rcx,%rsi
+   2f53d:	lea    (%rax,%rsi,4),%rdx
+   2f541:	xor    %edi,%edi
+   2f543:	vpbroadcastd -0x2d65c(%rip),%ymm0        # 1ef0 <__abi_tag+0x1c2c>
+   2f54c:	nopl   0x0(%rax)
+   2f550:	vmovdqu %ymm0,(%rax,%rdi,4)
+   2f555:	vmovdqu %ymm0,0x20(%rax,%rdi,4)
+   2f55b:	vmovdqu %ymm0,0x40(%rax,%rdi,4)
+   2f561:	vmovdqu %ymm0,0x60(%rax,%rdi,4)
+   2f567:	add    $0x20,%rdi
+   2f56b:	cmp    %rdi,%rsi
+   2f56e:	jne    2f550 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x300>
+   2f570:	cmp    %rsi,%rcx
+   2f573:	je     2f5cf <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x37f>
+   2f575:	test   $0x18,%cl
+   2f578:	je     2f5c0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x370>
+   2f57a:	mov    %rcx,%rdi
+   2f57d:	movabs $0x7ffffffffffffff8,%rdx
+   2f587:	and    %rdx,%rdi
+   2f58a:	lea    (%rax,%rdi,4),%rdx
+   2f58e:	vpbroadcastd -0x2d6a7(%rip),%ymm0        # 1ef0 <__abi_tag+0x1c2c>
+   2f597:	nopw   0x0(%rax,%rax,1)
+   2f5a0:	vmovdqu %ymm0,(%rax,%rsi,4)
+   2f5a5:	add    $0x8,%rsi
+   2f5a9:	cmp    %rsi,%rdi
+   2f5ac:	jne    2f5a0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x350>
+   2f5ae:	cmp    %rdi,%rcx
+   2f5b1:	je     2f5cf <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x37f>
+   2f5b3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   2f5c0:	movl   $0xfeed1234,(%rdx)
+   2f5c6:	add    $0x4,%rdx
+   2f5ca:	cmp    %rbx,%rdx
+   2f5cd:	jne    2f5c0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x370>
+   2f5cf:	mov    0x20(%rsp),%rcx
+   2f5d4:	mov    %rbx,0x48(%rsp)
+   2f5d9:	mov    %r14,0x58(%rsp)
+   2f5de:	test   %r12d,%r12d
+   2f5e1:	je     2f653 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x403>
+   2f5e3:	lea    0x0(,%r12,8),%rdi
+   2f5eb:	vzeroupper
+   2f5ee:	call   650b0 <_Znwm@plt>
+   2f5f3:	mov    %rax,%r14
+   2f5f6:	lea    (%rax,%r12,8),%rax
+   2f5fa:	mov    %rax,0xd0(%rsp)
+   2f602:	movq   $0x0,(%r14)
+   2f609:	mov    %r14,%r13
+   2f60c:	add    $0x8,%r13
+   2f610:	mov    %r12,%rbx
+   2f613:	dec    %rbx
+   2f616:	je     2f62f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3df>
+   2f618:	lea    0x0(,%rbx,8),%rdx
+   2f620:	mov    %r13,%rdi
+   2f623:	xor    %esi,%esi
+   2f625:	call   65060 <memset@plt>
+   2f62a:	lea    0x0(%r13,%rbx,8),%r13
+   2f62f:	mov    0x20(%rsp),%rcx
+   2f634:	mov    %r13,0x108(%rsp)
+   2f63c:	mov    0xd8(%rsp),%rax
+   2f644:	cmp    0xe0(%rsp),%rax
+   2f64c:	jne    2f683 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x433>
+   2f64e:	jmp    2f862 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x612>
+   2f653:	movq   $0x0,0xd0(%rsp)
+   2f65f:	xor    %r14d,%r14d
+   2f662:	xor    %r13d,%r13d
+   2f665:	mov    %r13,0x108(%rsp)
+   2f66d:	mov    0xd8(%rsp),%rax
+   2f675:	cmp    0xe0(%rsp),%rax
+   2f67d:	je     2f862 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x612>
+   2f683:	xor    %r13d,%r13d
+   2f686:	lea    0x28(%rsp),%rbx
+   2f68b:	vpbroadcastd -0x2d7bc(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   2f694:	jmp    2f6c3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x473>
+   2f696:	cs nopw 0x0(%rax,%rax,1)
+   2f6a0:	mov    0x70(%rsp),%rbp
+   2f6a5:	mov    0xc(%rbp),%r12d
+   2f6a9:	add    %r12,%r13
+   2f6ac:	mov    0x20(%rsp),%rcx
+   2f6b1:	cmp    %rcx,%r13
+   2f6b4:	vpbroadcastd -0x2d7e5(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   2f6bd:	jae    2f862 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x612>
+   2f6c3:	mov    %r12d,%eax
+   2f6c6:	mov    %rcx,%r12
+   2f6c9:	sub    %r13,%r12
+   2f6cc:	cmp    %rax,%r12
+   2f6cf:	cmovae %rax,%r12
+   2f6d3:	mov    0x40(%rsp),%rcx
+   2f6d8:	test   %r12,%r12
+   2f6db:	je     2f7b4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x564>
+   2f6e1:	lea    0x40(%rcx),%rax
+   2f6e5:	lea    -0x4(,%r12,4),%rdx
+   2f6ed:	cmp    $0x1c,%rdx
+   2f6f1:	jae    2f700 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x4b0>
+   2f6f3:	mov    %rax,%rdx
+   2f6f6:	jmp    2f793 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x543>
+   2f6fb:	nopl   0x0(%rax,%rax,1)
+   2f700:	mov    %rdx,%rsi
+   2f703:	shr    $0x2,%rsi
+   2f707:	inc    %rsi
+   2f70a:	cmp    $0x7c,%rdx
+   2f70e:	jae    2f714 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x4c4>
+   2f710:	xor    %edi,%edi
+   2f712:	jmp    2f766 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x516>
+   2f714:	movabs $0x7ffffffffffffff8,%rdx
+   2f71e:	lea    -0x18(%rdx),%rdi
+   2f722:	and    %rsi,%rdi
+   2f725:	lea    (%rax,%rdi,4),%rdx
+   2f729:	xor    %r8d,%r8d
+   2f72c:	nopl   0x0(%rax)
+   2f730:	vmovdqu %ymm0,0x40(%rcx,%r8,4)
+   2f737:	vmovdqu %ymm0,0x60(%rcx,%r8,4)
+   2f73e:	vmovdqu %ymm0,0x80(%rcx,%r8,4)
+   2f748:	vmovdqu %ymm0,0xa0(%rcx,%r8,4)
+   2f752:	add    $0x20,%r8
+   2f756:	cmp    %r8,%rdi
+   2f759:	jne    2f730 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x4e0>
+   2f75b:	cmp    %rdi,%rsi
+   2f75e:	je     2f7af <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x55f>
+   2f760:	test   $0x18,%sil
+   2f764:	je     2f793 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x543>
+   2f766:	mov    %rsi,%r8
+   2f769:	movabs $0x7ffffffffffffff8,%rdx
+   2f773:	and    %rdx,%r8
+   2f776:	lea    (%rax,%r8,4),%rdx
+   2f77a:	nopw   0x0(%rax,%rax,1)
+   2f780:	vmovdqu %ymm0,(%rax,%rdi,4)
+   2f785:	add    $0x8,%rdi
+   2f789:	cmp    %rdi,%r8
+   2f78c:	jne    2f780 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x530>
+   2f78e:	cmp    %r8,%rsi
+   2f791:	je     2f7af <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x55f>
+   2f793:	lea    0x40(%rcx,%r12,4),%rax
+   2f798:	nopl   0x0(%rax,%rax,1)
+   2f7a0:	movl   $0x2,(%rdx)
+   2f7a6:	add    $0x4,%rdx
+   2f7aa:	cmp    %rax,%rdx
+   2f7ad:	jne    2f7a0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x550>
+   2f7af:	mov    0x40(%rsp),%rcx
+   2f7b4:	lea    0x0(,%r13,8),%rbp
+   2f7bc:	mov    (%rsp),%rax
+   2f7c0:	mov    0x30(%rax),%rdx
+   2f7c4:	add    %rbp,%rdx
+   2f7c7:	add    $0x40,%rcx
+   2f7cb:	mov    %rbx,%rdi
+   2f7ce:	mov    %r12,%rsi
+   2f7d1:	vzeroupper
+   2f7d4:	call   57740 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj>
+   2f7d9:	test   %r12,%r12
+   2f7dc:	vmovdqa -0x2b5a4(%rip),%ymm2        # 4240 <_IO_stdin_used+0x2348>
+   2f7e4:	vpbroadcastd -0x2d905(%rip),%ymm3        # 1ee8 <__abi_tag+0x1c24>
+   2f7ed:	je     2f6a0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x450>
+   2f7f3:	mov    0x40(%rsp),%rax
+   2f7f8:	mov    (%rsp),%rcx
+   2f7fc:	add    0x30(%rcx),%rbp
+   2f800:	mov    0x28(%rsp),%ecx
+   2f804:	mov    0x2c(%rsp),%edx
+   2f808:	mov    0x30(%rsp),%rsi
+   2f80d:	xor    %edi,%edi
+   2f80f:	nop
+   2f810:	cmpl   $0x1,0x40(%rax,%rdi,4)
+   2f815:	jne    31ee3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2c93>
+   2f81b:	mov    0x0(%rbp,%rdi,8),%r8
+   2f820:	mov    %edx,%r9d
+   2f823:	and    %r8d,%r9d
+   2f826:	shrx   %rcx,%r8,%r8
+   2f82b:	vpbroadcastd %r8d,%ymm0
+   2f831:	vpmulld %ymm2,%ymm0,%ymm0
+   2f836:	vpsrld $0x1b,%ymm0,%ymm0
+   2f83b:	vpsllvd %ymm0,%ymm3,%ymm0
+   2f840:	shl    $0x5,%r9
+   2f844:	vmovdqa (%rsi,%r9,1),%ymm1
+   2f84a:	vptest %ymm0,%ymm1
+   2f84f:	jae    31ee3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2c93>
+   2f855:	inc    %rdi
+   2f858:	cmp    %rdi,%r12
+   2f85b:	jne    2f810 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x5c0>
+   2f85d:	jmp    2f6a0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x450>
+   2f862:	movabs $0x1ffffffffffffff8,%rax
+   2f86c:	add    $0x7,%rax
+   2f870:	mov    %rax,0x120(%rsp)
+   2f878:	cmp    %rax,0x10(%rsp)
+   2f87d:	ja     32009 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2db9>
+   2f883:	mov    0x78(%rsp),%rax
+   2f888:	cmp    %rax,0x80(%rsp)
+   2f890:	mov    (%rsp),%r13
+   2f894:	je     2f9da <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x78a>
+   2f89a:	mov    %r15,%rdi
+   2f89d:	sar    %rdi
+   2f8a0:	vzeroupper
+   2f8a3:	call   650b0 <_Znwm@plt>
+   2f8a8:	mov    %rax,%rbx
+   2f8ab:	mov    %rax,0xa0(%rsp)
+   2f8b3:	mov    0x10(%rsp),%r12
+   2f8b8:	lea    (%rax,%r12,4),%rax
+   2f8bc:	mov    %rax,0xb0(%rsp)
+   2f8c4:	movl   $0x0,(%rbx)
+   2f8ca:	add    $0x4,%rbx
+   2f8ce:	dec    %r12
+   2f8d1:	je     2f8e9 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x699>
+   2f8d3:	lea    0x0(,%r12,4),%rdx
+   2f8db:	mov    %rbx,%rdi
+   2f8de:	xor    %esi,%esi
+   2f8e0:	call   65060 <memset@plt>
+   2f8e5:	lea    (%rbx,%r12,4),%rbx
+   2f8e9:	mov    %rbx,0xa8(%rsp)
+   2f8f1:	test   %r12,%r12
+   2f8f4:	je     2fa05 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x7b5>
+   2f8fa:	movabs $0x1ffffffffffffff8,%rax
+   2f904:	lea    0x6(%rax),%rcx
+   2f908:	and    0x10(%rsp),%rcx
+   2f90d:	xor    %eax,%eax
+   2f90f:	vmovdqa -0x2b6d7(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   2f917:	vpbroadcastd -0x2da38(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   2f920:	mov    0x48(%r13),%rdx
+   2f924:	mov    (%rdx,%rax,8),%rdx
+   2f928:	mov    0x2c(%rsp),%esi
+   2f92c:	and    %edx,%esi
+   2f92e:	movzbl 0x28(%rsp),%edi
+   2f933:	shrx   %rdi,%rdx,%rdx
+   2f938:	vpbroadcastd %edx,%ymm2
+   2f93e:	vpmulld %ymm0,%ymm2,%ymm2
+   2f943:	vpsrld $0x1b,%ymm2,%ymm2
+   2f948:	vpsllvd %ymm2,%ymm1,%ymm2
+   2f94d:	mov    0x30(%rsp),%rdx
+   2f952:	shl    $0x5,%rsi
+   2f956:	vmovdqa (%rdx,%rsi,1),%ymm3
+   2f95b:	xor    %edx,%edx
+   2f95d:	vptest %ymm2,%ymm3
+   2f962:	setb   %dl
+   2f965:	mov    0xa0(%rsp),%rsi
+   2f96d:	mov    %edx,(%rsi,%rax,4)
+   2f970:	mov    0x48(%r13),%rdx
+   2f974:	mov    0x8(%rdx,%rax,8),%rdx
+   2f979:	mov    0x2c(%rsp),%esi
+   2f97d:	and    %edx,%esi
+   2f97f:	movzbl 0x28(%rsp),%edi
+   2f984:	shrx   %rdi,%rdx,%rdx
+   2f989:	vpbroadcastd %edx,%ymm2
+   2f98f:	vpmulld %ymm0,%ymm2,%ymm2
+   2f994:	vpsrld $0x1b,%ymm2,%ymm2
+   2f999:	vpsllvd %ymm2,%ymm1,%ymm2
+   2f99e:	mov    0x30(%rsp),%rdx
+   2f9a3:	shl    $0x5,%rsi
+   2f9a7:	vmovdqa (%rdx,%rsi,1),%ymm3
+   2f9ac:	xor    %edx,%edx
+   2f9ae:	vptest %ymm2,%ymm3
+   2f9b3:	setb   %dl
+   2f9b6:	mov    0xa0(%rsp),%rsi
+   2f9be:	mov    %edx,0x4(%rsi,%rax,4)
+   2f9c2:	add    $0x2,%rax
+   2f9c6:	cmp    %rax,%rcx
+   2f9c9:	jne    2f920 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x6d0>
+   2f9cf:	test   $0x8,%r15b
+   2f9d3:	jne    2fa07 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x7b7>
+   2f9d5:	jmp    2fa64 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x814>
+   2f9da:	vpxor  %xmm0,%xmm0,%xmm0
+   2f9de:	vmovdqa %xmm0,0xa0(%rsp)
+   2f9e7:	movq   $0x0,0xb0(%rsp)
+   2f9f3:	xor    %ebx,%ebx
+   2f9f5:	xor    %r11d,%r11d
+   2f9f8:	xor    %r10d,%r10d
+   2f9fb:	mov    0x10(%rsp),%r12
+   2fa00:	jmp    2face <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x87e>
+   2fa05:	xor    %eax,%eax
+   2fa07:	mov    0x48(%r13),%rcx
+   2fa0b:	mov    (%rcx,%rax,8),%rcx
+   2fa0f:	mov    0x2c(%rsp),%edx
+   2fa13:	and    %ecx,%edx
+   2fa15:	movzbl 0x28(%rsp),%esi
+   2fa1a:	shrx   %rsi,%rcx,%rcx
+   2fa1f:	vpbroadcastd %ecx,%ymm0
+   2fa25:	vpmulld -0x2b7ee(%rip),%ymm0,%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   2fa2e:	vpsrld $0x1b,%ymm0,%ymm0
+   2fa33:	vpbroadcastd -0x2db54(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   2fa3c:	vpsllvd %ymm0,%ymm1,%ymm0
+   2fa41:	mov    0x30(%rsp),%rcx
+   2fa46:	shl    $0x5,%rdx
+   2fa4a:	vmovdqa (%rcx,%rdx,1),%ymm1
+   2fa4f:	xor    %ecx,%ecx
+   2fa51:	vptest %ymm0,%ymm1
+   2fa56:	setb   %cl
+   2fa59:	mov    0xa0(%rsp),%rdx
+   2fa61:	mov    %ecx,(%rdx,%rax,4)
+   2fa64:	mov    0xa0(%rsp),%rax
+   2fa6c:	mov    0x18(%r13),%rcx
+   2fa70:	mov    0x60(%r13),%rdx
+   2fa74:	mov    0x20(%rsp),%rsi
+   2fa79:	add    %rdx,%rsi
+   2fa7c:	xor    %r10d,%r10d
+   2fa7f:	xor    %edi,%edi
+   2fa81:	xor    %r11d,%r11d
+   2fa84:	xor    %ebx,%ebx
+   2fa86:	mov    0x10(%rsp),%r12
+   2fa8b:	jmp    2fa9e <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x84e>
+   2fa8d:	nopl   (%rax)
+   2fa90:	inc    %r11
+   2fa93:	add    %r8,%r10
+   2fa96:	inc    %rdi
+   2fa99:	cmp    %rdi,%r12
+   2fa9c:	je     2face <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x87e>
+   2fa9e:	mov    (%rax,%rdi,4),%r8d
+   2faa2:	cmp    $0x2,%r8
+   2faa6:	jae    31f6f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d1f>
+   2faac:	mov    (%rcx,%rdi,8),%r9
+   2fab0:	cmp    %rdx,%r9
+   2fab3:	jb     2fa90 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x840>
+   2fab5:	cmp    %rsi,%r9
+   2fab8:	jae    2fa90 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x840>
+   2faba:	test   %r8,%r8
+   2fabd:	je     31f90 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d40>
+   2fac3:	inc    %rbx
+   2fac6:	inc    %rdi
+   2fac9:	cmp    %rdi,%r12
+   2facc:	jne    2fa9e <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x84e>
+   2face:	mov    %rbx,0xf8(%rsp)
+   2fad6:	mov    %r11,0xf0(%rsp)
+   2fade:	mov    %r10,0xe8(%rsp)
+   2fae6:	movabs $0xd6e8feb86659fd93,%r13
+   2faf0:	movabs $0xcbf29ce484222325,%r15
+   2fafa:	mov    0x18(%rbp),%eax
+   2fafd:	test   %rax,%rax
+   2fb00:	je     301d4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xf84>
+   2fb06:	mov    $0x1,%ecx
+   2fb0b:	shlx   %rax,%rcx,%rbx
+   2fb10:	lea    0x150(%rsp),%rdi
+   2fb18:	movq   $0x0,0x98(%rsp)
+   2fb24:	mov    $0x8000,%edx
+   2fb29:	xor    %esi,%esi
+   2fb2b:	vzeroupper
+   2fb2e:	call   65060 <memset@plt>
+   2fb33:	lea    0x8158(%rsp),%rdi
+   2fb3b:	mov    $0x8000,%edx
+   2fb40:	xor    %esi,%esi
+   2fb42:	call   65060 <memset@plt>
+   2fb47:	mov    0x20(%rsp),%rax
+   2fb4c:	lea    (%r12,%rax,1),%r8
+   2fb50:	mov    %rbx,%r12
+   2fb53:	mov    (%rsp),%rax
+   2fb57:	add    0x60(%rax),%r8
+   2fb5b:	mov    0x28(%rsp),%ecx
+   2fb5f:	mov    0x2c(%rsp),%edx
+   2fb63:	mov    0x30(%rsp),%rsi
+   2fb68:	vmovdqa -0x2b930(%rip),%ymm0        # 4240 <_IO_stdin_used+0x2348>
+   2fb70:	vpbroadcastd -0x2dc91(%rip),%ymm1        # 1ee8 <__abi_tag+0x1c24>
+   2fb79:	vmovdqa -0x2b941(%rip),%ymm2        # 4240 <_IO_stdin_used+0x2348>
+   2fb81:	vpbroadcastq -0x2dc7a(%rip),%ymm3        # 1f10 <_IO_stdin_used+0x18>
+   2fb8a:	vmovdqa -0x2b752(%rip),%ymm4        # 4440 <_IO_stdin_used+0x2548>
+   2fb92:	vpbroadcastq -0x2dba3(%rip),%ymm5        # 1ff8 <_IO_stdin_used+0x100>
+   2fb9b:	vpbroadcastq -0x2dca4(%rip),%ymm6        # 1f00 <_IO_stdin_used+0x8>
+   2fba4:	vpbroadcastq -0x2dca5(%rip),%ymm7        # 1f08 <_IO_stdin_used+0x10>
+   2fbad:	vmovdqa -0x2b775(%rip),%ymm8        # 4440 <_IO_stdin_used+0x2548>
+   2fbb5:	vpbroadcastq -0x2dbbe(%rip),%ymm9        # 2000 <_IO_stdin_used+0x108>
+   2fbbe:	mov    %r8,0x68(%rsp)
+   2fbc3:	mov    %rbx,%rdi
+   2fbc6:	xor    %r9d,%r9d
+   2fbc9:	mov    %r15,0xc0(%rsp)
+   2fbd1:	mov    %rbx,0xc8(%rsp)
+   2fbd9:	jmp    2fc25 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x9d5>
+   2fbdb:	nopl   0x0(%rax,%rax,1)
+   2fbe0:	mov    %r10,0xc0(%rsp)
+   2fbe8:	mov    %rdi,0x98(%rsp)
+   2fbf0:	mov    0x8(%rsp),%r9
+   2fbf5:	add    $0x1000,%r9
+   2fbfc:	mov    0x18(%rsp),%rdi
+   2fc01:	add    $0xfffffffffffff000,%rdi
+   2fc08:	add    $0x1000,%r8
+   2fc0f:	mov    0xc8(%rsp),%r12
+   2fc17:	cmp    %r12,%r9
+   2fc1a:	mov    0x70(%rsp),%rbp
+   2fc1f:	jae    30184 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xf34>
+   2fc25:	cmp    $0x1,%rdi
+   2fc29:	mov    %rdi,%r11
+   2fc2c:	adc    $0x0,%r11
+   2fc30:	cmp    $0x1000,%r11
+   2fc37:	mov    $0x1000,%eax
+   2fc3c:	cmovae %rax,%r11
+   2fc40:	mov    %r11d,%ebx
+   2fc43:	and    $0x1ffc,%ebx
+   2fc49:	cmp    $0x1000,%rdi
+   2fc50:	mov    $0x1000,%r15d
+   2fc56:	cmovb  %rdi,%r15
+   2fc5a:	cmp    %r9,%r12
+   2fc5d:	je     2fd64 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb14>
+   2fc63:	cmp    $0x4,%rdi
+   2fc67:	jae    2fc80 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xa30>
+   2fc69:	xor    %r12d,%r12d
+   2fc6c:	jmp    2fd50 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb00>
+   2fc71:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   2fc80:	mov    0x68(%rsp),%rax
+   2fc85:	add    %r9,%rax
+   2fc88:	vpbroadcastq %rax,%ymm10
+   2fc8e:	cmp    $0x10,%rdi
+   2fc92:	jae    2fc99 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xa49>
+   2fc94:	xor    %r12d,%r12d
+   2fc97:	jmp    2fd17 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xac7>
+   2fc99:	mov    %r11d,%eax
+   2fc9c:	and    $0x1ff0,%eax
+   2fca1:	mov    %r11d,%r12d
+   2fca4:	and    $0x1ff0,%r12d
+   2fcab:	vpaddq %ymm5,%ymm10,%ymm11
+   2fcaf:	vpaddq %ymm6,%ymm10,%ymm12
+   2fcb3:	vpaddq %ymm7,%ymm10,%ymm13
+   2fcb7:	xor    %ebp,%ebp
+   2fcb9:	vmovdqa %ymm8,%ymm14
+   2fcbe:	xchg   %ax,%ax
+   2fcc0:	vpaddq %ymm10,%ymm14,%ymm15
+   2fcc5:	vpaddq %ymm11,%ymm14,%ymm16
+   2fccb:	vpaddq %ymm12,%ymm14,%ymm17
+   2fcd1:	vmovdqu %ymm15,0x150(%rsp,%rbp,8)
+   2fcda:	vmovdqu64 %ymm16,0x170(%rsp,%rbp,8)
+   2fce5:	vmovdqu64 %ymm17,0x190(%rsp,%rbp,8)
+   2fcf0:	vpaddq %ymm13,%ymm14,%ymm15
+   2fcf5:	vmovdqu %ymm15,0x1b0(%rsp,%rbp,8)
+   2fcfe:	add    $0x10,%rbp
+   2fd02:	vpaddq %ymm9,%ymm14,%ymm14
+   2fd07:	cmp    %rbp,%rax
+   2fd0a:	jne    2fcc0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xa70>
+   2fd0c:	cmp    %r12,%r11
+   2fd0f:	je     2fd64 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb14>
+   2fd11:	test   $0xc,%r11b
+   2fd15:	je     2fd50 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb00>
+   2fd17:	mov    %r12,%rax
+   2fd1a:	mov    %r11d,%r12d
+   2fd1d:	and    $0x1ffc,%r12d
+   2fd24:	vpbroadcastq %rax,%ymm11
+   2fd2a:	vpor   %ymm4,%ymm11,%ymm11
+   2fd2e:	xchg   %ax,%ax
+   2fd30:	vpaddq %ymm10,%ymm11,%ymm12
+   2fd35:	vmovdqu %ymm12,0x150(%rsp,%rax,8)
+   2fd3e:	add    $0x4,%rax
+   2fd42:	vpaddq %ymm5,%ymm11,%ymm11
+   2fd46:	cmp    %rax,%rbx
+   2fd49:	jne    2fd30 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xae0>
+   2fd4b:	jmp    2fd5f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb0f>
+   2fd4d:	nopl   (%rax)
+   2fd50:	lea    (%r8,%r12,1),%rax
+   2fd54:	mov    %rax,0x150(%rsp,%r12,8)
+   2fd5c:	inc    %r12
+   2fd5f:	cmp    %r12,%r11
+   2fd62:	jne    2fd50 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb00>
+   2fd64:	cmp    $0x4,%rdi
+   2fd68:	jae    2fd80 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb30>
+   2fd6a:	xor    %r12d,%r12d
+   2fd6d:	jmp    30149 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xef9>
+   2fd72:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   2fd80:	cmp    $0x10,%rdi
+   2fd84:	jae    2fd90 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb40>
+   2fd86:	xor    %r12d,%r12d
+   2fd89:	jmp    2fed4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xc84>
+   2fd8e:	xchg   %ax,%ax
+   2fd90:	mov    %r15d,%ebp
+   2fd93:	and    $0x1ff0,%ebp
+   2fd99:	mov    %r15d,%r12d
+   2fd9c:	and    $0x1ff0,%r12d
+   2fda3:	xor    %eax,%eax
+   2fda5:	data16 cs nopw 0x0(%rax,%rax,1)
+   2fdb0:	vmovdqu 0x150(%rsp,%rax,8),%ymm10
+   2fdb9:	vmovdqu 0x170(%rsp,%rax,8),%ymm11
+   2fdc2:	vmovdqu 0x190(%rsp,%rax,8),%ymm12
+   2fdcb:	vmovdqu 0x1b0(%rsp,%rax,8),%ymm13
+   2fdd4:	vpsrlq $0x20,%ymm10,%ymm14
+   2fdda:	vpsrlq $0x20,%ymm11,%ymm15
+   2fde0:	vpsrlq $0x20,%ymm12,%ymm16
+   2fde7:	vpsrlq $0x20,%ymm13,%ymm17
+   2fdee:	vpxor  %ymm10,%ymm14,%ymm10
+   2fdf3:	vpxor  %ymm11,%ymm15,%ymm11
+   2fdf8:	vpxorq %ymm12,%ymm16,%ymm12
+   2fdfe:	vpmullq %ymm3,%ymm10,%ymm10
+   2fe04:	vpmullq %ymm3,%ymm11,%ymm11
+   2fe0a:	vpmullq %ymm3,%ymm12,%ymm12
+   2fe10:	vpxorq %ymm13,%ymm17,%ymm13
+   2fe16:	vpmullq %ymm3,%ymm13,%ymm13
+   2fe1c:	vpsrlq $0x20,%ymm10,%ymm14
+   2fe22:	vpsrlq $0x20,%ymm11,%ymm15
+   2fe28:	vpsrlq $0x20,%ymm12,%ymm16
+   2fe2f:	vpsrlq $0x20,%ymm13,%ymm17
+   2fe36:	vpxor  %ymm10,%ymm14,%ymm10
+   2fe3b:	vpxor  %ymm11,%ymm15,%ymm11
+   2fe40:	vpxorq %ymm12,%ymm16,%ymm12
+   2fe46:	vpxorq %ymm13,%ymm17,%ymm13
+   2fe4c:	vpmullq %ymm3,%ymm10,%ymm10
+   2fe52:	vpmullq %ymm3,%ymm11,%ymm11
+   2fe58:	vpmullq %ymm3,%ymm12,%ymm12
+   2fe5e:	vpmullq %ymm3,%ymm13,%ymm13
+   2fe64:	vpsrlq $0x20,%ymm10,%ymm14
+   2fe6a:	vpsrlq $0x20,%ymm11,%ymm15
+   2fe70:	vpsrlq $0x20,%ymm12,%ymm16
+   2fe77:	vpsrlq $0x20,%ymm13,%ymm17
+   2fe7e:	vpxor  %ymm10,%ymm14,%ymm10
+   2fe83:	vpxor  %ymm11,%ymm15,%ymm11
+   2fe88:	vpxorq %ymm12,%ymm16,%ymm12
+   2fe8e:	vpxorq %ymm13,%ymm17,%ymm13
+   2fe94:	vmovdqu %ymm10,0x8158(%rsp,%rax,8)
+   2fe9d:	vmovdqu %ymm11,0x8178(%rsp,%rax,8)
+   2fea6:	vmovdqu %ymm12,0x8198(%rsp,%rax,8)
+   2feaf:	vmovdqu %ymm13,0x81b8(%rsp,%rax,8)
+   2feb8:	add    $0x10,%rax
+   2febc:	cmp    %rax,%rbp
+   2febf:	jne    2fdb0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xb60>
+   2fec5:	cmp    %r12,%r15
+   2fec8:	je     2ff40 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xcf0>
+   2feca:	test   $0xc,%r15b
+   2fece:	je     30149 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xef9>
+   2fed4:	mov    %r12,%rax
+   2fed7:	mov    %r15d,%ebp
+   2feda:	and    $0x1ffc,%ebp
+   2fee0:	mov    %r15d,%r12d
+   2fee3:	and    $0x1ffc,%r12d
+   2feea:	nopw   0x0(%rax,%rax,1)
+   2fef0:	vmovdqu 0x150(%rsp,%rax,8),%ymm10
+   2fef9:	vpsrlq $0x20,%ymm10,%ymm11
+   2feff:	vpxor  %ymm10,%ymm11,%ymm10
+   2ff04:	vpmullq %ymm3,%ymm10,%ymm10
+   2ff0a:	vpsrlq $0x20,%ymm10,%ymm11
+   2ff10:	vpxor  %ymm10,%ymm11,%ymm10
+   2ff15:	vpmullq %ymm3,%ymm10,%ymm10
+   2ff1b:	vpsrlq $0x20,%ymm10,%ymm11
+   2ff21:	vpxor  %ymm10,%ymm11,%ymm10
+   2ff26:	vmovdqu %ymm10,0x8158(%rsp,%rax,8)
+   2ff2f:	add    $0x4,%rax
+   2ff33:	cmp    %rax,%rbp
+   2ff36:	jne    2fef0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xca0>
+   2ff38:	jmp    30140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xef0>
+   2ff3d:	nopl   (%rax)
+   2ff40:	mov    %r9,0x8(%rsp)
+   2ff45:	mov    %rdi,0x18(%rsp)
+   2ff4a:	xor    %r15d,%r15d
+   2ff4d:	cmp    $0x4,%rdi
+   2ff51:	jae    2ff80 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xd30>
+   2ff53:	mov    0x98(%rsp),%rdi
+   2ff5b:	mov    0xc0(%rsp),%r10
+   2ff63:	movabs $0x100000001b3,%r9
+   2ff6d:	jmp    300ca <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xe7a>
+   2ff72:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   2ff80:	mov    0x98(%rsp),%rdi
+   2ff88:	mov    0xc0(%rsp),%r10
+   2ff90:	movabs $0x100000001b3,%r9
+   2ff9a:	nopw   0x0(%rax,%rax,1)
+   2ffa0:	mov    0x8158(%rsp,%r15,8),%rax
+   2ffa8:	mov    %edx,%r12d
+   2ffab:	and    %eax,%r12d
+   2ffae:	shrx   %rcx,%rax,%rax
+   2ffb3:	vpbroadcastd %eax,%ymm10
+   2ffb9:	vpmulld %ymm2,%ymm10,%ymm10
+   2ffbe:	vpsrld $0x1b,%ymm10,%ymm10
+   2ffc4:	vpsllvd %ymm10,%ymm1,%ymm10
+   2ffc9:	shl    $0x5,%r12
+   2ffcd:	vmovdqa (%rsi,%r12,1),%ymm11
+   2ffd3:	xor    %eax,%eax
+   2ffd5:	vptest %ymm10,%ymm11
+   2ffda:	setb   %al
+   2ffdd:	mov    0x8160(%rsp,%r15,8),%r12
+   2ffe5:	add    %rax,%rdi
+   2ffe8:	xor    %rax,%r10
+   2ffeb:	imul   %r9,%r10
+   2ffef:	shrx   %rcx,%r12,%rax
+   2fff4:	and    %edx,%r12d
+   2fff7:	vpbroadcastd %eax,%ymm10
+   2fffd:	vpmulld %ymm2,%ymm10,%ymm10
+   30002:	vpsrld $0x1b,%ymm10,%ymm10
+   30008:	vpsllvd %ymm10,%ymm1,%ymm10
+   3000d:	shl    $0x5,%r12
+   30011:	vmovdqa (%rsi,%r12,1),%ymm11
+   30017:	xor    %eax,%eax
+   30019:	vptest %ymm10,%ymm11
+   3001e:	setb   %al
+   30021:	xor    %rax,%r10
+   30024:	imul   %r9,%r10
+   30028:	mov    0x8168(%rsp,%r15,8),%r12
+   30030:	shrx   %rcx,%r12,%rbp
+   30035:	and    %edx,%r12d
+   30038:	vpbroadcastd %ebp,%ymm10
+   3003e:	vpmulld %ymm2,%ymm10,%ymm10
+   30043:	vpsrld $0x1b,%ymm10,%ymm10
+   30049:	vpsllvd %ymm10,%ymm1,%ymm10
+   3004e:	shl    $0x5,%r12
+   30052:	vmovdqa (%rsi,%r12,1),%ymm11
+   30058:	xor    %r12d,%r12d
+   3005b:	vptest %ymm10,%ymm11
+   30060:	setb   %r12b
+   30064:	add    %r12,%rax
+   30067:	add    %rax,%rdi
+   3006a:	xor    %r12,%r10
+   3006d:	imul   %r9,%r10
+   30071:	mov    0x8170(%rsp,%r15,8),%rax
+   30079:	shrx   %rcx,%rax,%r12
+   3007e:	and    %edx,%eax
+   30080:	vpbroadcastd %r12d,%ymm10
+   30086:	vpmulld %ymm2,%ymm10,%ymm10
+   3008b:	vpsrld $0x1b,%ymm10,%ymm10
+   30091:	vpsllvd %ymm10,%ymm1,%ymm10
+   30096:	shl    $0x5,%rax
+   3009a:	vmovdqa (%rsi,%rax,1),%ymm11
+   3009f:	xor    %eax,%eax
+   300a1:	vptest %ymm10,%ymm11
+   300a6:	setb   %al
+   300a9:	add    %rax,%rdi
+   300ac:	xor    %rax,%r10
+   300af:	imul   %r9,%r10
+   300b3:	add    $0x4,%r15
+   300b7:	cmp    %r15,%rbx
+   300ba:	jne    2ffa0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xd50>
+   300c0:	test   $0x3,%r11b
+   300c4:	je     2fbe0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x990>
+   300ca:	and    $0x3,%r11d
+   300ce:	lea    0x8158(%rsp,%r15,8),%rax
+   300d6:	xor    %ebx,%ebx
+   300d8:	nopl   0x0(%rax,%rax,1)
+   300e0:	mov    (%rax,%rbx,8),%r15
+   300e4:	mov    %edx,%r12d
+   300e7:	and    %r15d,%r12d
+   300ea:	shrx   %rcx,%r15,%r15
+   300ef:	vpbroadcastd %r15d,%ymm10
+   300f5:	vpmulld %ymm0,%ymm10,%ymm10
+   300fa:	vpsrld $0x1b,%ymm10,%ymm10
+   30100:	vpsllvd %ymm10,%ymm1,%ymm10
+   30105:	shl    $0x5,%r12
+   30109:	vmovdqa (%rsi,%r12,1),%ymm11
+   3010f:	xor    %r15d,%r15d
+   30112:	vptest %ymm10,%ymm11
+   30117:	setb   %r15b
+   3011b:	add    %r15,%rdi
+   3011e:	xor    %r15,%r10
+   30121:	imul   %r9,%r10
+   30125:	inc    %rbx
+   30128:	cmp    %rbx,%r11
+   3012b:	jne    300e0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xe90>
+   3012d:	jmp    2fbe0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x990>
+   30132:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   30140:	cmp    %r12,%r15
+   30143:	je     2ff40 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xcf0>
+   30149:	mov    0x150(%rsp,%r12,8),%rax
+   30151:	mov    %rax,%rbp
+   30154:	shr    $0x20,%rbp
+   30158:	xor    %rax,%rbp
+   3015b:	imul   %r13,%rbp
+   3015f:	mov    %rbp,%rax
+   30162:	shr    $0x20,%rax
+   30166:	xor    %rbp,%rax
+   30169:	imul   %r13,%rax
+   3016d:	mov    %rax,%rbp
+   30170:	shr    $0x20,%rbp
+   30174:	xor    %rax,%rbp
+   30177:	mov    %rbp,0x8158(%rsp,%r12,8)
+   3017f:	inc    %r12
+   30182:	jmp    30140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xef0>
+   30184:	mov    0x10(%rsp),%r12
+   30189:	mov    0x98(%rsp),%r10
+   30191:	cmpb   $0x1,0x29(%rbp)
+   30195:	jne    301a3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xf53>
+   30197:	mov    0xa8(%rsp),%rax
+   3019f:	xorl   $0x1,-0x4(%rax)
+   301a3:	mov    0x58(%rsp),%rax
+   301a8:	test   %rax,%rax
+   301ab:	je     302bf <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x106f>
+   301b1:	mov    0x40(%rsp),%rcx
+   301b6:	lea    0x40(%rcx),%rdx
+   301ba:	lea    0x0(,%rax,4),%rdi
+   301c2:	add    $0xfffffffffffffffc,%rdi
+   301c6:	cmp    $0x1c,%rdi
+   301ca:	jae    301f3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xfa3>
+   301cc:	mov    %rdx,%rdi
+   301cf:	jmp    302a4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1054>
+   301d4:	movq   $0x0,0xc8(%rsp)
+   301e0:	xor    %r10d,%r10d
+   301e3:	mov    %r15,0xc0(%rsp)
+   301eb:	cmpb   $0x1,0x29(%rbp)
+   301ef:	je     30197 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xf47>
+   301f1:	jmp    301a3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xf53>
+   301f3:	mov    %rdi,%rsi
+   301f6:	shr    $0x2,%rsi
+   301fa:	inc    %rsi
+   301fd:	cmp    $0x7c,%rdi
+   30201:	jae    30208 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xfb8>
+   30203:	xor    %r8d,%r8d
+   30206:	jmp    30266 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1016>
+   30208:	movabs $0x7ffffffffffffff8,%rdi
+   30212:	lea    -0x18(%rdi),%r8
+   30216:	and    %rsi,%r8
+   30219:	lea    (%rdx,%r8,4),%rdi
+   3021d:	xor    %r9d,%r9d
+   30220:	vpbroadcastd -0x2e351(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   30229:	nopl   0x0(%rax)
+   30230:	vmovdqu %ymm0,0x40(%rcx,%r9,4)
+   30237:	vmovdqu %ymm0,0x60(%rcx,%r9,4)
+   3023e:	vmovdqu %ymm0,0x80(%rcx,%r9,4)
+   30248:	vmovdqu %ymm0,0xa0(%rcx,%r9,4)
+   30252:	add    $0x20,%r9
+   30256:	cmp    %r9,%r8
+   30259:	jne    30230 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0xfe0>
+   3025b:	cmp    %r8,%rsi
+   3025e:	je     302bf <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x106f>
+   30260:	test   $0x18,%sil
+   30264:	je     302a4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1054>
+   30266:	mov    %rsi,%r9
+   30269:	movabs $0x7ffffffffffffff8,%rdi
+   30273:	and    %rdi,%r9
+   30276:	lea    (%rdx,%r9,4),%rdi
+   3027a:	vpbroadcastd -0x2e3ab(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   30283:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   30290:	vmovdqu %ymm0,(%rdx,%r8,4)
+   30296:	add    $0x8,%r8
+   3029a:	cmp    %r8,%r9
+   3029d:	jne    30290 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1040>
+   3029f:	cmp    %r9,%rsi
+   302a2:	je     302bf <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x106f>
+   302a4:	lea    0x40(%rcx,%rax,4),%rax
+   302a9:	nopl   0x0(%rax)
+   302b0:	movl   $0x2,(%rdi)
+   302b6:	add    $0x4,%rdi
+   302ba:	cmp    %rax,%rdi
+   302bd:	jne    302b0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1060>
+   302bf:	mov    %r10,0x98(%rsp)
+   302c7:	mov    0x78(%rsp),%rax
+   302cc:	cmp    %rax,0x80(%rsp)
+   302d4:	je     3031f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x10cf>
+   302d6:	mov    0xc(%rbp),%eax
+   302d9:	xor    %ebx,%ebx
+   302db:	lea    0x28(%rsp),%r15
+   302e0:	mov    %eax,%eax
+   302e2:	mov    %r12,%rsi
+   302e5:	sub    %rbx,%rsi
+   302e8:	cmp    %rax,%rsi
+   302eb:	cmovae %rax,%rsi
+   302ef:	lea    0x0(,%rbx,8),%rdx
+   302f7:	mov    (%rsp),%rax
+   302fb:	add    0x48(%rax),%rdx
+   302ff:	mov    0x40(%rsp),%rax
+   30304:	lea    0x40(%rax,%rbx,4),%rcx
+   30309:	mov    %r15,%rdi
+   3030c:	vzeroupper
+   3030f:	call   57740 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj>
+   30314:	mov    0xc(%rbp),%eax
+   30317:	add    %rax,%rbx
+   3031a:	cmp    %r12,%rbx
+   3031d:	jb     302e0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1090>
+   3031f:	lea    0x40(%rsp),%rdi
+   30324:	lea    0xa0(%rsp),%rsi
+   3032c:	vzeroupper
+   3032f:	call   517f0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   30334:	mov    0x58(%rsp),%rax
+   30339:	test   %rax,%rax
+   3033c:	je     3042f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x11df>
+   30342:	mov    0x40(%rsp),%rcx
+   30347:	lea    0x40(%rcx),%rdx
+   3034b:	lea    0x0(,%rax,4),%rdi
+   30353:	add    $0xfffffffffffffffc,%rdi
+   30357:	cmp    $0x1c,%rdi
+   3035b:	jae    30365 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1115>
+   3035d:	mov    %rdx,%rdi
+   30360:	jmp    30414 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x11c4>
+   30365:	mov    %rdi,%rsi
+   30368:	shr    $0x2,%rsi
+   3036c:	inc    %rsi
+   3036f:	cmp    $0x7c,%rdi
+   30373:	jae    3037a <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x112a>
+   30375:	xor    %r8d,%r8d
+   30378:	jmp    303d6 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1186>
+   3037a:	movabs $0x7ffffffffffffff8,%rdi
+   30384:	lea    -0x18(%rdi),%r8
+   30388:	and    %rsi,%r8
+   3038b:	lea    (%rdx,%r8,4),%rdi
+   3038f:	xor    %r9d,%r9d
+   30392:	vpbroadcastd -0x2e4c3(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   3039b:	nopl   0x0(%rax,%rax,1)
+   303a0:	vmovdqu %ymm0,0x40(%rcx,%r9,4)
+   303a7:	vmovdqu %ymm0,0x60(%rcx,%r9,4)
+   303ae:	vmovdqu %ymm0,0x80(%rcx,%r9,4)
+   303b8:	vmovdqu %ymm0,0xa0(%rcx,%r9,4)
+   303c2:	add    $0x20,%r9
+   303c6:	cmp    %r9,%r8
+   303c9:	jne    303a0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1150>
+   303cb:	cmp    %r8,%rsi
+   303ce:	je     3042f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x11df>
+   303d0:	test   $0x18,%sil
+   303d4:	je     30414 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x11c4>
+   303d6:	mov    %rsi,%r9
+   303d9:	movabs $0x7ffffffffffffff8,%rdi
+   303e3:	and    %rdi,%r9
+   303e6:	lea    (%rdx,%r9,4),%rdi
+   303ea:	vpbroadcastd -0x2e51b(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   303f3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   30400:	vmovdqu %ymm0,(%rdx,%r8,4)
+   30406:	add    $0x8,%r8
+   3040a:	cmp    %r8,%r9
+   3040d:	jne    30400 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x11b0>
+   3040f:	cmp    %r9,%rsi
+   30412:	je     3042f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x11df>
+   30414:	lea    0x40(%rcx,%rax,4),%rax
+   30419:	nopl   0x0(%rax)
+   30420:	movl   $0x2,(%rdi)
+   30426:	add    $0x4,%rdi
+   3042a:	cmp    %rax,%rdi
+   3042d:	jne    30420 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x11d0>
+   3042f:	mov    0x78(%rsp),%rax
+   30434:	cmp    %rax,0x80(%rsp)
+   3043c:	je     30789 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1539>
+   30442:	mov    0xc(%rbp),%eax
+   30445:	xor    %ebx,%ebx
+   30447:	lea    0x28(%rsp),%r15
+   3044c:	vpbroadcastq -0x2e545(%rip),%ymm8        # 1f10 <_IO_stdin_used+0x18>
+   30455:	data16 cs nopw 0x0(%rax,%rax,1)
+   30460:	mov    %eax,%eax
+   30462:	mov    %r12,%rsi
+   30465:	sub    %rbx,%rsi
+   30468:	cmp    %rax,%rsi
+   3046b:	cmovae %rax,%rsi
+   3046f:	test   %rsi,%rsi
+   30472:	je     305cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x137b>
+   30478:	mov    (%rsp),%rax
+   3047c:	mov    0x18(%rax),%rax
+   30480:	lea    (%rax,%rbx,8),%rcx
+   30484:	cmp    $0x4,%rsi
+   30488:	jb     3049d <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x124d>
+   3048a:	mov    %r14,%rdx
+   3048d:	sub    %rcx,%rdx
+   30490:	cmp    $0x80,%rdx
+   30497:	jae    30605 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x13b5>
+   3049d:	xor    %edx,%edx
+   3049f:	mov    %rsi,%r8
+   304a2:	mov    %rdx,%rdi
+   304a5:	and    $0x3,%r8
+   304a9:	je     304e6 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1296>
+   304ab:	mov    %rdx,%rdi
+   304ae:	xchg   %ax,%ax
+   304b0:	mov    (%rcx,%rdi,8),%r9
+   304b4:	mov    %r9,%r10
+   304b7:	shr    $0x20,%r10
+   304bb:	xor    %r9,%r10
+   304be:	imul   %r13,%r10
+   304c2:	mov    %r10,%r9
+   304c5:	shr    $0x20,%r9
+   304c9:	xor    %r10,%r9
+   304cc:	imul   %r13,%r9
+   304d0:	mov    %r9,%r10
+   304d3:	shr    $0x20,%r10
+   304d7:	xor    %r9,%r10
+   304da:	mov    %r10,(%r14,%rdi,8)
+   304de:	inc    %rdi
+   304e1:	dec    %r8
+   304e4:	jne    304b0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1260>
+   304e6:	sub    %rsi,%rdx
+   304e9:	cmp    $0xfffffffffffffffc,%rdx
+   304ed:	ja     305cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x137b>
+   304f3:	lea    0x18(%rax,%rbx,8),%rax
+   304f8:	nopl   0x0(%rax,%rax,1)
+   30500:	mov    -0x18(%rax,%rdi,8),%rcx
+   30505:	mov    %rcx,%rdx
+   30508:	shr    $0x20,%rdx
+   3050c:	xor    %rcx,%rdx
+   3050f:	imul   %r13,%rdx
+   30513:	mov    %rdx,%rcx
+   30516:	shr    $0x20,%rcx
+   3051a:	xor    %rdx,%rcx
+   3051d:	imul   %r13,%rcx
+   30521:	mov    %rcx,%rdx
+   30524:	shr    $0x20,%rdx
+   30528:	xor    %rcx,%rdx
+   3052b:	mov    %rdx,(%r14,%rdi,8)
+   3052f:	mov    -0x10(%rax,%rdi,8),%rcx
+   30534:	mov    %rcx,%rdx
+   30537:	shr    $0x20,%rdx
+   3053b:	xor    %rcx,%rdx
+   3053e:	imul   %r13,%rdx
+   30542:	mov    %rdx,%rcx
+   30545:	shr    $0x20,%rcx
+   30549:	xor    %rdx,%rcx
+   3054c:	imul   %r13,%rcx
+   30550:	mov    %rcx,%rdx
+   30553:	shr    $0x20,%rdx
+   30557:	xor    %rcx,%rdx
+   3055a:	mov    %rdx,0x8(%r14,%rdi,8)
+   3055f:	mov    -0x8(%rax,%rdi,8),%rcx
+   30564:	mov    %rcx,%rdx
+   30567:	shr    $0x20,%rdx
+   3056b:	xor    %rcx,%rdx
+   3056e:	imul   %r13,%rdx
+   30572:	mov    %rdx,%rcx
+   30575:	shr    $0x20,%rcx
+   30579:	xor    %rdx,%rcx
+   3057c:	imul   %r13,%rcx
+   30580:	mov    %rcx,%rdx
+   30583:	shr    $0x20,%rdx
+   30587:	xor    %rcx,%rdx
+   3058a:	mov    %rdx,0x10(%r14,%rdi,8)
+   3058f:	mov    (%rax,%rdi,8),%rcx
+   30593:	mov    %rcx,%rdx
+   30596:	shr    $0x20,%rdx
+   3059a:	xor    %rcx,%rdx
+   3059d:	imul   %r13,%rdx
+   305a1:	mov    %rdx,%rcx
+   305a4:	shr    $0x20,%rcx
+   305a8:	xor    %rdx,%rcx
+   305ab:	imul   %r13,%rcx
+   305af:	mov    %rcx,%rdx
+   305b2:	shr    $0x20,%rdx
+   305b6:	xor    %rcx,%rdx
+   305b9:	mov    %rdx,0x18(%r14,%rdi,8)
+   305be:	add    $0x4,%rdi
+   305c2:	cmp    %rdi,%rsi
+   305c5:	jne    30500 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x12b0>
+   305cb:	mov    0x40(%rsp),%rax
+   305d0:	lea    0x40(%rax,%rbx,4),%rcx
+   305d5:	mov    %r15,%rdi
+   305d8:	mov    %r14,%rdx
+   305db:	vzeroupper
+   305de:	call   57740 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj>
+   305e3:	mov    0xc(%rbp),%eax
+   305e6:	add    %rax,%rbx
+   305e9:	mov    0x10(%rsp),%r12
+   305ee:	cmp    %r12,%rbx
+   305f1:	vpbroadcastq -0x2e6ea(%rip),%ymm8        # 1f10 <_IO_stdin_used+0x18>
+   305fa:	jb     30460 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1210>
+   30600:	jmp    30789 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1539>
+   30605:	cmp    $0x10,%rsi
+   30609:	jae    30612 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x13c2>
+   3060b:	xor    %edx,%edx
+   3060d:	jmp    30732 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x14e2>
+   30612:	lea    0x0(,%rbx,8),%r8
+   3061a:	mov    %esi,%edx
+   3061c:	and    $0xfffffff0,%edx
+   3061f:	lea    0x0(,%rsi,8),%rdi
+   30627:	and    $0xffffffffffffff80,%rdi
+   3062b:	lea    0x60(%rax,%r8,1),%r8
+   30630:	xor    %r9d,%r9d
+   30633:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   30640:	vmovdqu -0x60(%r8,%r9,1),%ymm0
+   30647:	vmovdqu -0x40(%r8,%r9,1),%ymm1
+   3064e:	vmovdqu -0x20(%r8,%r9,1),%ymm2
+   30655:	vmovdqu (%r8,%r9,1),%ymm3
+   3065b:	vpsrlq $0x20,%ymm0,%ymm4
+   30660:	vpsrlq $0x20,%ymm1,%ymm5
+   30665:	vpsrlq $0x20,%ymm2,%ymm6
+   3066a:	vpsrlq $0x20,%ymm3,%ymm7
+   3066f:	vpxor  %ymm0,%ymm4,%ymm0
+   30673:	vpxor  %ymm1,%ymm5,%ymm1
+   30677:	vpxor  %ymm2,%ymm6,%ymm2
+   3067b:	vpmullq %ymm8,%ymm0,%ymm0
+   30681:	vpmullq %ymm8,%ymm1,%ymm1
+   30687:	vpmullq %ymm8,%ymm2,%ymm2
+   3068d:	vpxor  %ymm3,%ymm7,%ymm3
+   30691:	vpmullq %ymm8,%ymm3,%ymm3
+   30697:	vpsrlq $0x20,%ymm0,%ymm4
+   3069c:	vpsrlq $0x20,%ymm1,%ymm5
+   306a1:	vpsrlq $0x20,%ymm2,%ymm6
+   306a6:	vpsrlq $0x20,%ymm3,%ymm7
+   306ab:	vpxor  %ymm0,%ymm4,%ymm0
+   306af:	vpxor  %ymm1,%ymm5,%ymm1
+   306b3:	vpxor  %ymm2,%ymm6,%ymm2
+   306b7:	vpxor  %ymm3,%ymm7,%ymm3
+   306bb:	vpmullq %ymm8,%ymm0,%ymm0
+   306c1:	vpmullq %ymm8,%ymm1,%ymm1
+   306c7:	vpmullq %ymm8,%ymm2,%ymm2
+   306cd:	vpmullq %ymm8,%ymm3,%ymm3
+   306d3:	vpsrlq $0x20,%ymm0,%ymm4
+   306d8:	vpsrlq $0x20,%ymm1,%ymm5
+   306dd:	vpsrlq $0x20,%ymm2,%ymm6
+   306e2:	vpsrlq $0x20,%ymm3,%ymm7
+   306e7:	vpxor  %ymm0,%ymm4,%ymm0
+   306eb:	vpxor  %ymm1,%ymm5,%ymm1
+   306ef:	vpxor  %ymm2,%ymm6,%ymm2
+   306f3:	vpxor  %ymm3,%ymm7,%ymm3
+   306f7:	vmovdqu %ymm0,(%r14,%r9,1)
+   306fd:	vmovdqu %ymm1,0x20(%r14,%r9,1)
+   30704:	vmovdqu %ymm2,0x40(%r14,%r9,1)
+   3070b:	vmovdqu %ymm3,0x60(%r14,%r9,1)
+   30712:	sub    $0xffffffffffffff80,%r9
+   30716:	cmp    %r9,%rdi
+   30719:	jne    30640 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x13f0>
+   3071f:	cmp    %rdx,%rsi
+   30722:	je     305cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x137b>
+   30728:	test   $0xc,%sil
+   3072c:	je     3049f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x124f>
+   30732:	mov    %rdx,%rdi
+   30735:	mov    %esi,%edx
+   30737:	and    $0xfffffffc,%edx
+   3073a:	nopw   0x0(%rax,%rax,1)
+   30740:	vmovdqu (%rcx,%rdi,8),%ymm0
+   30745:	vpsrlq $0x20,%ymm0,%ymm1
+   3074a:	vpxor  %ymm0,%ymm1,%ymm0
+   3074e:	vpmullq %ymm8,%ymm0,%ymm0
+   30754:	vpsrlq $0x20,%ymm0,%ymm1
+   30759:	vpxor  %ymm0,%ymm1,%ymm0
+   3075d:	vpmullq %ymm8,%ymm0,%ymm0
+   30763:	vpsrlq $0x20,%ymm0,%ymm1
+   30768:	vpxor  %ymm0,%ymm1,%ymm0
+   3076c:	vmovdqu %ymm0,(%r14,%rdi,8)
+   30772:	add    $0x4,%rdi
+   30776:	cmp    %rdi,%rdx
+   30779:	jne    30740 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x14f0>
+   3077b:	cmp    %rdx,%rsi
+   3077e:	je     305cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x137b>
+   30784:	jmp    3049f <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x124f>
+   30789:	lea    0x40(%rsp),%rdi
+   3078e:	lea    0xa0(%rsp),%rsi
+   30796:	vzeroupper
+   30799:	call   517f0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   3079e:	mov    %r12,%rbx
+   307a1:	cmpl   $0x1,0xc(%rbp)
+   307a5:	jne    307d8 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1588>
+   307a7:	mov    0x40(%rsp),%rcx
+   307ac:	mov    0x58(%rsp),%rax
+   307b1:	test   %rax,%rax
+   307b4:	je     308b4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1664>
+   307ba:	lea    0x40(%rcx),%rdx
+   307be:	lea    0x0(,%rax,4),%rdi
+   307c6:	add    $0xfffffffffffffffc,%rdi
+   307ca:	cmp    $0x1c,%rdi
+   307ce:	jae    307e8 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1598>
+   307d0:	mov    %rdx,%rdi
+   307d3:	jmp    30894 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1644>
+   307d8:	movl   $0x0,0x94(%rsp)
+   307e3:	jmp    30a20 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x17d0>
+   307e8:	mov    %rdi,%rsi
+   307eb:	shr    $0x2,%rsi
+   307ef:	inc    %rsi
+   307f2:	cmp    $0x7c,%rdi
+   307f6:	jae    307fd <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x15ad>
+   307f8:	xor    %r8d,%r8d
+   307fb:	jmp    30856 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1606>
+   307fd:	movabs $0x7ffffffffffffff8,%rdi
+   30807:	lea    -0x18(%rdi),%r8
+   3080b:	and    %rsi,%r8
+   3080e:	lea    (%rdx,%r8,4),%rdi
+   30812:	xor    %r9d,%r9d
+   30815:	vpbroadcastd -0x2e946(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   3081e:	xchg   %ax,%ax
+   30820:	vmovdqu %ymm0,0x40(%rcx,%r9,4)
+   30827:	vmovdqu %ymm0,0x60(%rcx,%r9,4)
+   3082e:	vmovdqu %ymm0,0x80(%rcx,%r9,4)
+   30838:	vmovdqu %ymm0,0xa0(%rcx,%r9,4)
+   30842:	add    $0x20,%r9
+   30846:	cmp    %r9,%r8
+   30849:	jne    30820 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x15d0>
+   3084b:	cmp    %r8,%rsi
+   3084e:	je     308af <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x165f>
+   30850:	test   $0x18,%sil
+   30854:	je     30894 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1644>
+   30856:	mov    %rsi,%r9
+   30859:	movabs $0x7ffffffffffffff8,%rdi
+   30863:	and    %rdi,%r9
+   30866:	lea    (%rdx,%r9,4),%rdi
+   3086a:	vpbroadcastd -0x2e99b(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   30873:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   30880:	vmovdqu %ymm0,(%rdx,%r8,4)
+   30886:	add    $0x8,%r8
+   3088a:	cmp    %r8,%r9
+   3088d:	jne    30880 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1630>
+   3088f:	cmp    %r9,%rsi
+   30892:	je     308af <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x165f>
+   30894:	lea    0x40(%rcx,%rax,4),%rax
+   30899:	nopl   0x0(%rax)
+   308a0:	movl   $0x2,(%rdi)
+   308a6:	add    $0x4,%rdi
+   308aa:	cmp    %rax,%rdi
+   308ad:	jne    308a0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1650>
+   308af:	mov    0x40(%rsp),%rcx
+   308b4:	mov    (%rsp),%rax
+   308b8:	mov    0x48(%rax),%rdx
+   308bc:	add    $0x40,%rcx
+   308c0:	lea    0x28(%rsp),%rdi
+   308c5:	mov    %rbx,%rsi
+   308c8:	vzeroupper
+   308cb:	call   578d0 <_Z20inline_single_kernelILb0EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj>
+   308d0:	lea    0x40(%rsp),%rdi
+   308d5:	lea    0xa0(%rsp),%rsi
+   308dd:	call   517f0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   308e2:	mov    0x40(%rsp),%rcx
+   308e7:	mov    0x58(%rsp),%rax
+   308ec:	test   %rax,%rax
+   308ef:	je     309e4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1794>
+   308f5:	lea    0x40(%rcx),%rdx
+   308f9:	lea    0x0(,%rax,4),%rdi
+   30901:	add    $0xfffffffffffffffc,%rdi
+   30905:	cmp    $0x1c,%rdi
+   30909:	jae    30913 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x16c3>
+   3090b:	mov    %rdx,%rdi
+   3090e:	jmp    309c4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1774>
+   30913:	mov    %rdi,%rsi
+   30916:	shr    $0x2,%rsi
+   3091a:	inc    %rsi
+   3091d:	cmp    $0x7c,%rdi
+   30921:	jae    30928 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x16d8>
+   30923:	xor    %r8d,%r8d
+   30926:	jmp    30986 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1736>
+   30928:	movabs $0x7ffffffffffffff8,%rdi
+   30932:	lea    -0x18(%rdi),%r8
+   30936:	and    %rsi,%r8
+   30939:	lea    (%rdx,%r8,4),%rdi
+   3093d:	xor    %r9d,%r9d
+   30940:	vpbroadcastd -0x2ea71(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   30949:	nopl   0x0(%rax)
+   30950:	vmovdqu %ymm0,0x40(%rcx,%r9,4)
+   30957:	vmovdqu %ymm0,0x60(%rcx,%r9,4)
+   3095e:	vmovdqu %ymm0,0x80(%rcx,%r9,4)
+   30968:	vmovdqu %ymm0,0xa0(%rcx,%r9,4)
+   30972:	add    $0x20,%r9
+   30976:	cmp    %r9,%r8
+   30979:	jne    30950 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1700>
+   3097b:	cmp    %r8,%rsi
+   3097e:	je     309df <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x178f>
+   30980:	test   $0x18,%sil
+   30984:	je     309c4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1774>
+   30986:	mov    %rsi,%r9
+   30989:	movabs $0x7ffffffffffffff8,%rdi
+   30993:	and    %rdi,%r9
+   30996:	lea    (%rdx,%r9,4),%rdi
+   3099a:	vpbroadcastd -0x2eacb(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   309a3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   309b0:	vmovdqu %ymm0,(%rdx,%r8,4)
+   309b6:	add    $0x8,%r8
+   309ba:	cmp    %r8,%r9
+   309bd:	jne    309b0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1760>
+   309bf:	cmp    %r9,%rsi
+   309c2:	je     309df <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x178f>
+   309c4:	lea    0x40(%rcx,%rax,4),%rax
+   309c9:	nopl   0x0(%rax)
+   309d0:	movl   $0x2,(%rdi)
+   309d6:	add    $0x4,%rdi
+   309da:	cmp    %rax,%rdi
+   309dd:	jne    309d0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1780>
+   309df:	mov    0x40(%rsp),%rcx
+   309e4:	mov    (%rsp),%rax
+   309e8:	mov    0x18(%rax),%rdx
+   309ec:	add    $0x40,%rcx
+   309f0:	lea    0x28(%rsp),%rdi
+   309f5:	mov    %rbx,%rsi
+   309f8:	vzeroupper
+   309fb:	call   57a00 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj>
+   30a00:	lea    0x40(%rsp),%rdi
+   30a05:	lea    0xa0(%rsp),%rsi
+   30a0d:	call   517f0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   30a12:	cmpl   $0x1,0xc(%rbp)
+   30a16:	sete   %al
+   30a19:	mov    %eax,0x94(%rsp)
+   30a20:	vpxor  %xmm0,%xmm0,%xmm0
+   30a24:	vmovdqu %ymm0,0x190(%rsp)
+   30a2d:	vmovdqu %ymm0,0x170(%rsp)
+   30a36:	vmovdqu %ymm0,0x150(%rsp)
+   30a3f:	xor    %ecx,%ecx
+   30a41:	cmpl   $0x0,0x10(%rbp)
+   30a45:	je     312f3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x20a3>
+   30a4b:	vcvtsi2sd %rbx,%xmm31,%xmm0
+   30a51:	vmovsd %xmm0,0x138(%rsp)
+   30a5a:	movzbl 0x94(%rsp),%eax
+   30a62:	lea    0x2(%rax,%rax,1),%rax
+   30a67:	mov    %rax,0x130(%rsp)
+   30a6f:	movabs $0x7ffffffffffffff8,%rax
+   30a79:	add    $0x4,%rax
+   30a7d:	mov    %rax,0x118(%rsp)
+   30a85:	lea    0x28(%rsp),%r12
+   30a8a:	movq   $0x0,0x8(%rsp)
+   30a93:	movq   $0x0,0x18(%rsp)
+   30a9c:	movq   $0x0,0x88(%rsp)
+   30aa8:	nopl   0x0(%rax,%rax,1)
+   30ab0:	mov    %rcx,0x110(%rsp)
+   30ab8:	mov    %ecx,%eax
+   30aba:	and    $0x3,%eax
+   30abd:	lea    -0x2c964(%rip),%rcx        # 4160 <_IO_stdin_used+0x2268>
+   30ac4:	lea    (%rcx,%rax,8),%rdx
+   30ac8:	shl    $0x4,%eax
+   30acb:	lea    -0x2ca52(%rip),%rcx        # 4080 <_IO_stdin_used+0x2188>
+   30ad2:	add    %rcx,%rax
+   30ad5:	cmpb   $0x0,0x94(%rsp)
+   30add:	cmovne %rax,%rdx
+   30ae1:	mov    %rdx,0x140(%rsp)
+   30ae9:	xor    %r10d,%r10d
+   30aec:	mov    0x8(%rsp),%rbp
+   30af1:	mov    0x18(%rsp),%r15
+   30af6:	cs nopw 0x0(%rax,%rax,1)
+   30b00:	mov    0x140(%rsp),%rax
+   30b08:	mov    (%rax,%r10,4),%ebx
+   30b0c:	cmp    0x88(%rsp),%r15
+   30b14:	mov    %r15,0x18(%rsp)
+   30b19:	mov    %r10,0x148(%rsp)
+   30b21:	je     30b40 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x18f0>
+   30b23:	mov    %ebx,(%r15)
+   30b26:	mov    %rbp,0x8(%rsp)
+   30b2b:	mov    0x58(%rsp),%rax
+   30b30:	test   %rax,%rax
+   30b33:	jne    30bfe <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x19ae>
+   30b39:	jmp    30cff <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1aaf>
+   30b3e:	xchg   %ax,%ax
+   30b40:	sub    %rbp,%r15
+   30b43:	cmp    0x118(%rsp),%r15
+   30b4b:	je     31f54 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d04>
+   30b51:	mov    %rbx,0x68(%rsp)
+   30b56:	mov    %r15,%rax
+   30b59:	sar    $0x2,%rax
+   30b5d:	cmp    $0x1,%rax
+   30b61:	mov    %rax,%rcx
+   30b64:	adc    $0x0,%rcx
+   30b68:	lea    (%rcx,%rax,1),%rbx
+   30b6c:	movabs $0x1fffffffffffffff,%rdx
+   30b76:	cmp    %rdx,%rbx
+   30b79:	cmovae %rdx,%rbx
+   30b7d:	add    %rax,%rcx
+   30b80:	cmovb  0x120(%rsp),%rbx
+   30b89:	lea    0x0(,%rbx,4),%rdi
+   30b91:	vzeroupper
+   30b94:	call   650b0 <_Znwm@plt>
+   30b99:	mov    %rax,%r12
+   30b9c:	mov    0x68(%rsp),%rax
+   30ba1:	mov    %eax,(%r12,%r15,1)
+   30ba5:	test   %r15,%r15
+   30ba8:	jle    30bb8 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1968>
+   30baa:	mov    %r12,%rdi
+   30bad:	mov    %rbp,%rsi
+   30bb0:	mov    %r15,%rdx
+   30bb3:	call   65170 <memmove@plt>
+   30bb8:	mov    %r12,0x8(%rsp)
+   30bbd:	test   %rbp,%rbp
+   30bc0:	je     30bcd <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x197d>
+   30bc2:	mov    %rbp,%rdi
+   30bc5:	mov    %r15,%rsi
+   30bc8:	call   650c0 <_ZdlPvm@plt>
+   30bcd:	mov    0x8(%rsp),%rax
+   30bd2:	add    %rax,%r15
+   30bd5:	lea    (%rax,%rbx,4),%rax
+   30bd9:	mov    %rax,0x88(%rsp)
+   30be1:	mov    %r15,0x18(%rsp)
+   30be6:	lea    0x28(%rsp),%r12
+   30beb:	mov    0x68(%rsp),%rbx
+   30bf0:	mov    0x58(%rsp),%rax
+   30bf5:	test   %rax,%rax
+   30bf8:	je     30cff <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1aaf>
+   30bfe:	mov    0x40(%rsp),%rcx
+   30c03:	lea    0x40(%rcx),%rdx
+   30c07:	lea    0x0(,%rax,4),%rsi
+   30c0f:	add    $0xfffffffffffffffc,%rsi
+   30c13:	cmp    $0x1c,%rsi
+   30c17:	jae    30c30 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x19e0>
+   30c19:	mov    %rdx,%rsi
+   30c1c:	jmp    30ce4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1a94>
+   30c21:	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   30c30:	mov    %rsi,%rdi
+   30c33:	shr    $0x2,%rdi
+   30c37:	inc    %rdi
+   30c3a:	cmp    $0x7c,%rsi
+   30c3e:	jae    30c45 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x19f5>
+   30c40:	xor    %r8d,%r8d
+   30c43:	jmp    30ca6 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1a56>
+   30c45:	movabs $0x7ffffffffffffff8,%rsi
+   30c4f:	lea    -0x18(%rsi),%r8
+   30c53:	and    %rdi,%r8
+   30c56:	lea    (%rdx,%r8,4),%rsi
+   30c5a:	xor    %r9d,%r9d
+   30c5d:	vbroadcastss -0x2ed8e(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   30c66:	cs nopw 0x0(%rax,%rax,1)
+   30c70:	vmovupd %ymm0,0x40(%rcx,%r9,4)
+   30c77:	vmovupd %ymm0,0x60(%rcx,%r9,4)
+   30c7e:	vmovupd %ymm0,0x80(%rcx,%r9,4)
+   30c88:	vmovupd %ymm0,0xa0(%rcx,%r9,4)
+   30c92:	add    $0x20,%r9
+   30c96:	cmp    %r9,%r8
+   30c99:	jne    30c70 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1a20>
+   30c9b:	cmp    %r8,%rdi
+   30c9e:	je     30cff <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1aaf>
+   30ca0:	test   $0x18,%dil
+   30ca4:	je     30ce4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1a94>
+   30ca6:	mov    %rdi,%r9
+   30ca9:	movabs $0x7ffffffffffffff8,%rsi
+   30cb3:	and    %rsi,%r9
+   30cb6:	lea    (%rdx,%r9,4),%rsi
+   30cba:	vbroadcastss -0x2edeb(%rip),%ymm0        # 1ed8 <__abi_tag+0x1c14>
+   30cc3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   30cd0:	vmovupd %ymm0,(%rdx,%r8,4)
+   30cd6:	add    $0x8,%r8
+   30cda:	cmp    %r8,%r9
+   30cdd:	jne    30cd0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1a80>
+   30cdf:	cmp    %r9,%rdi
+   30ce2:	je     30cff <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1aaf>
+   30ce4:	lea    0x40(%rcx,%rax,4),%rax
+   30ce9:	nopl   0x0(%rax)
+   30cf0:	movl   $0x2,(%rsi)
+   30cf6:	add    $0x4,%rsi
+   30cfa:	cmp    %rax,%rsi
+   30cfd:	jne    30cf0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1aa0>
+   30cff:	vzeroupper
+   30d02:	call   65190 <_ZNSt6chrono3_V212steady_clock3nowEv@plt>
+   30d07:	mov    %rax,0x68(%rsp)
+   30d0c:	mov    %rbx,%rbp
+   30d0f:	cmp    $0x3,%ebx
+   30d12:	ja     31140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1ef0>
+   30d18:	mov    %ebp,%eax
+   30d1a:	lea    -0x2c5b1(%rip),%rcx        # 4770 <_IO_stdin_used+0x2878>
+   30d21:	movslq (%rcx,%rax,4),%rax
+   30d25:	add    %rcx,%rax
+   30d28:	jmp    *%rax
+   30d2a:	mov    0x78(%rsp),%rax
+   30d2f:	cmp    %rax,0x80(%rsp)
+   30d37:	mov    0x10(%rsp),%r15
+   30d3c:	je     31140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1ef0>
+   30d42:	mov    0x70(%rsp),%rax
+   30d47:	mov    0xc(%rax),%eax
+   30d4a:	xor    %ebx,%ebx
+   30d4c:	nopl   0x0(%rax)
+   30d50:	mov    %eax,%eax
+   30d52:	mov    %r15,%rsi
+   30d55:	sub    %rbx,%rsi
+   30d58:	cmp    %rax,%rsi
+   30d5b:	cmovae %rax,%rsi
+   30d5f:	lea    0x0(,%rbx,8),%rdx
+   30d67:	mov    (%rsp),%rax
+   30d6b:	add    0x48(%rax),%rdx
+   30d6f:	mov    0x40(%rsp),%rax
+   30d74:	lea    0x40(%rax,%rbx,4),%rcx
+   30d79:	mov    %r12,%rdi
+   30d7c:	call   57740 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj>
+   30d81:	mov    0x70(%rsp),%rax
+   30d86:	mov    0xc(%rax),%eax
+   30d89:	add    %rax,%rbx
+   30d8c:	cmp    %r15,%rbx
+   30d8f:	jb     30d50 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1b00>
+   30d91:	jmp    31140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1ef0>
+   30d96:	mov    (%rsp),%rax
+   30d9a:	mov    0x48(%rax),%rdx
+   30d9e:	mov    0x40(%rsp),%rcx
+   30da3:	add    $0x40,%rcx
+   30da7:	mov    %r12,%rdi
+   30daa:	mov    0x10(%rsp),%rsi
+   30daf:	call   578d0 <_Z20inline_single_kernelILb0EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj>
+   30db4:	jmp    31140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1ef0>
+   30db9:	mov    (%rsp),%rax
+   30dbd:	mov    0x18(%rax),%rdx
+   30dc1:	mov    0x40(%rsp),%rcx
+   30dc6:	add    $0x40,%rcx
+   30dca:	mov    %r12,%rdi
+   30dcd:	mov    0x10(%rsp),%rsi
+   30dd2:	call   57a00 <_Z20inline_single_kernelILb1EN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRKT0_mPKmPj>
+   30dd7:	jmp    31140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1ef0>
+   30ddc:	mov    0x78(%rsp),%rax
+   30de1:	cmp    %rax,0x80(%rsp)
+   30de9:	mov    0x10(%rsp),%rsi
+   30dee:	je     31140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1ef0>
+   30df4:	mov    0x70(%rsp),%rax
+   30df9:	mov    0xc(%rax),%eax
+   30dfc:	xor    %r15d,%r15d
+   30dff:	nop
+   30e00:	mov    %eax,%eax
+   30e02:	sub    %r15,%rsi
+   30e05:	cmp    %rax,%rsi
+   30e08:	cmovae %rax,%rsi
+   30e0c:	test   %rsi,%rsi
+   30e0f:	je     30f6b <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1d1b>
+   30e15:	mov    (%rsp),%rax
+   30e19:	mov    0x18(%rax),%rax
+   30e1d:	lea    (%rax,%r15,8),%rcx
+   30e21:	cmp    $0x4,%rsi
+   30e25:	jb     30e3a <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1bea>
+   30e27:	mov    %r14,%rdx
+   30e2a:	sub    %rcx,%rdx
+   30e2d:	cmp    $0x80,%rdx
+   30e34:	jae    30fa1 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1d51>
+   30e3a:	xor    %edx,%edx
+   30e3c:	mov    %rsi,%r8
+   30e3f:	mov    %rdx,%rdi
+   30e42:	and    $0x3,%r8
+   30e46:	je     30e86 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1c36>
+   30e48:	mov    %rdx,%rdi
+   30e4b:	nopl   0x0(%rax,%rax,1)
+   30e50:	mov    (%rcx,%rdi,8),%r9
+   30e54:	mov    %r9,%r10
+   30e57:	shr    $0x20,%r10
+   30e5b:	xor    %r9,%r10
+   30e5e:	imul   %r13,%r10
+   30e62:	mov    %r10,%r9
+   30e65:	shr    $0x20,%r9
+   30e69:	xor    %r10,%r9
+   30e6c:	imul   %r13,%r9
+   30e70:	mov    %r9,%r10
+   30e73:	shr    $0x20,%r10
+   30e77:	xor    %r9,%r10
+   30e7a:	mov    %r10,(%r14,%rdi,8)
+   30e7e:	inc    %rdi
+   30e81:	dec    %r8
+   30e84:	jne    30e50 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1c00>
+   30e86:	sub    %rsi,%rdx
+   30e89:	cmp    $0xfffffffffffffffc,%rdx
+   30e8d:	ja     30f6b <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1d1b>
+   30e93:	lea    0x18(%rax,%r15,8),%rax
+   30e98:	nopl   0x0(%rax,%rax,1)
+   30ea0:	mov    -0x18(%rax,%rdi,8),%rcx
+   30ea5:	mov    %rcx,%rdx
+   30ea8:	shr    $0x20,%rdx
+   30eac:	xor    %rcx,%rdx
+   30eaf:	imul   %r13,%rdx
+   30eb3:	mov    %rdx,%rcx
+   30eb6:	shr    $0x20,%rcx
+   30eba:	xor    %rdx,%rcx
+   30ebd:	imul   %r13,%rcx
+   30ec1:	mov    %rcx,%rdx
+   30ec4:	shr    $0x20,%rdx
+   30ec8:	xor    %rcx,%rdx
+   30ecb:	mov    %rdx,(%r14,%rdi,8)
+   30ecf:	mov    -0x10(%rax,%rdi,8),%rcx
+   30ed4:	mov    %rcx,%rdx
+   30ed7:	shr    $0x20,%rdx
+   30edb:	xor    %rcx,%rdx
+   30ede:	imul   %r13,%rdx
+   30ee2:	mov    %rdx,%rcx
+   30ee5:	shr    $0x20,%rcx
+   30ee9:	xor    %rdx,%rcx
+   30eec:	imul   %r13,%rcx
+   30ef0:	mov    %rcx,%rdx
+   30ef3:	shr    $0x20,%rdx
+   30ef7:	xor    %rcx,%rdx
+   30efa:	mov    %rdx,0x8(%r14,%rdi,8)
+   30eff:	mov    -0x8(%rax,%rdi,8),%rcx
+   30f04:	mov    %rcx,%rdx
+   30f07:	shr    $0x20,%rdx
+   30f0b:	xor    %rcx,%rdx
+   30f0e:	imul   %r13,%rdx
+   30f12:	mov    %rdx,%rcx
+   30f15:	shr    $0x20,%rcx
+   30f19:	xor    %rdx,%rcx
+   30f1c:	imul   %r13,%rcx
+   30f20:	mov    %rcx,%rdx
+   30f23:	shr    $0x20,%rdx
+   30f27:	xor    %rcx,%rdx
+   30f2a:	mov    %rdx,0x10(%r14,%rdi,8)
+   30f2f:	mov    (%rax,%rdi,8),%rcx
+   30f33:	mov    %rcx,%rdx
+   30f36:	shr    $0x20,%rdx
+   30f3a:	xor    %rcx,%rdx
+   30f3d:	imul   %r13,%rdx
+   30f41:	mov    %rdx,%rcx
+   30f44:	shr    $0x20,%rcx
+   30f48:	xor    %rdx,%rcx
+   30f4b:	imul   %r13,%rcx
+   30f4f:	mov    %rcx,%rdx
+   30f52:	shr    $0x20,%rdx
+   30f56:	xor    %rcx,%rdx
+   30f59:	mov    %rdx,0x18(%r14,%rdi,8)
+   30f5e:	add    $0x4,%rdi
+   30f62:	cmp    %rdi,%rsi
+   30f65:	jne    30ea0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1c50>
+   30f6b:	mov    0x40(%rsp),%rax
+   30f70:	lea    0x40(%rax,%r15,4),%rcx
+   30f75:	mov    %r12,%rdi
+   30f78:	mov    %r14,%rdx
+   30f7b:	vzeroupper
+   30f7e:	call   57740 <_Z13lookup_kernelIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEmEvRT_mPKT0_Pj>
+   30f83:	mov    0x70(%rsp),%rax
+   30f88:	mov    0xc(%rax),%eax
+   30f8b:	add    %rax,%r15
+   30f8e:	mov    0x10(%rsp),%rsi
+   30f93:	cmp    %rsi,%r15
+   30f96:	jb     30e00 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1bb0>
+   30f9c:	jmp    31140 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1ef0>
+   30fa1:	cmp    $0x10,%rsi
+   30fa5:	jae    30fae <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1d5e>
+   30fa7:	xor    %edx,%edx
+   30fa9:	jmp    310d2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1e82>
+   30fae:	lea    0x0(,%r15,8),%r8
+   30fb6:	mov    %esi,%edx
+   30fb8:	and    $0xfffffff0,%edx
+   30fbb:	lea    0x0(,%rsi,8),%rdi
+   30fc3:	and    $0xffffffffffffff80,%rdi
+   30fc7:	lea    0x60(%rax,%r8,1),%r8
+   30fcc:	xor    %r9d,%r9d
+   30fcf:	vpbroadcastq -0x2f0c8(%rip),%ymm8        # 1f10 <_IO_stdin_used+0x18>
+   30fd8:	nopl   0x0(%rax,%rax,1)
+   30fe0:	vmovdqu -0x60(%r8,%r9,1),%ymm0
+   30fe7:	vmovdqu -0x40(%r8,%r9,1),%ymm1
+   30fee:	vmovdqu -0x20(%r8,%r9,1),%ymm2
+   30ff5:	vmovdqu (%r8,%r9,1),%ymm3
+   30ffb:	vpsrlq $0x20,%ymm0,%ymm4
+   31000:	vpsrlq $0x20,%ymm1,%ymm5
+   31005:	vpsrlq $0x20,%ymm2,%ymm6
+   3100a:	vpsrlq $0x20,%ymm3,%ymm7
+   3100f:	vpxor  %ymm0,%ymm4,%ymm0
+   31013:	vpxor  %ymm1,%ymm5,%ymm1
+   31017:	vpxor  %ymm2,%ymm6,%ymm2
+   3101b:	vpmullq %ymm8,%ymm0,%ymm0
+   31021:	vpmullq %ymm8,%ymm1,%ymm1
+   31027:	vpmullq %ymm8,%ymm2,%ymm2
+   3102d:	vpxor  %ymm3,%ymm7,%ymm3
+   31031:	vpmullq %ymm8,%ymm3,%ymm3
+   31037:	vpsrlq $0x20,%ymm0,%ymm4
+   3103c:	vpsrlq $0x20,%ymm1,%ymm5
+   31041:	vpsrlq $0x20,%ymm2,%ymm6
+   31046:	vpsrlq $0x20,%ymm3,%ymm7
+   3104b:	vpxor  %ymm0,%ymm4,%ymm0
+   3104f:	vpxor  %ymm1,%ymm5,%ymm1
+   31053:	vpxor  %ymm2,%ymm6,%ymm2
+   31057:	vpxor  %ymm3,%ymm7,%ymm3
+   3105b:	vpmullq %ymm8,%ymm0,%ymm0
+   31061:	vpmullq %ymm8,%ymm1,%ymm1
+   31067:	vpmullq %ymm8,%ymm2,%ymm2
+   3106d:	vpmullq %ymm8,%ymm3,%ymm3
+   31073:	vpsrlq $0x20,%ymm0,%ymm4
+   31078:	vpsrlq $0x20,%ymm1,%ymm5
+   3107d:	vpsrlq $0x20,%ymm2,%ymm6
+   31082:	vpsrlq $0x20,%ymm3,%ymm7
+   31087:	vpxor  %ymm0,%ymm4,%ymm0
+   3108b:	vpxor  %ymm1,%ymm5,%ymm1
+   3108f:	vpxor  %ymm2,%ymm6,%ymm2
+   31093:	vpxor  %ymm3,%ymm7,%ymm3
+   31097:	vmovdqu %ymm0,(%r14,%r9,1)
+   3109d:	vmovdqu %ymm1,0x20(%r14,%r9,1)
+   310a4:	vmovdqu %ymm2,0x40(%r14,%r9,1)
+   310ab:	vmovdqu %ymm3,0x60(%r14,%r9,1)
+   310b2:	sub    $0xffffffffffffff80,%r9
+   310b6:	cmp    %r9,%rdi
+   310b9:	jne    30fe0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1d90>
+   310bf:	cmp    %rdx,%rsi
+   310c2:	je     30f6b <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1d1b>
+   310c8:	test   $0xc,%sil
+   310cc:	je     30e3c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1bec>
+   310d2:	mov    %rdx,%rdi
+   310d5:	mov    %esi,%edx
+   310d7:	and    $0xfffffffc,%edx
+   310da:	vpbroadcastq -0x2f1d3(%rip),%ymm2        # 1f10 <_IO_stdin_used+0x18>
+   310e3:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   310f0:	vmovdqu (%rcx,%rdi,8),%ymm0
+   310f5:	vpsrlq $0x20,%ymm0,%ymm1
+   310fa:	vpxor  %ymm0,%ymm1,%ymm0
+   310fe:	vpmullq %ymm2,%ymm0,%ymm0
+   31104:	vpsrlq $0x20,%ymm0,%ymm1
+   31109:	vpxor  %ymm0,%ymm1,%ymm0
+   3110d:	vpmullq %ymm2,%ymm0,%ymm0
+   31113:	vpsrlq $0x20,%ymm0,%ymm1
+   31118:	vpxor  %ymm0,%ymm1,%ymm0
+   3111c:	vmovdqu %ymm0,(%r14,%rdi,8)
+   31122:	add    $0x4,%rdi
+   31126:	cmp    %rdi,%rdx
+   31129:	jne    310f0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1ea0>
+   3112b:	cmp    %rdx,%rsi
+   3112e:	je     30f6b <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1d1b>
+   31134:	jmp    30e3c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1bec>
+   31139:	nopl   0x0(%rax)
+   31140:	call   65190 <_ZNSt6chrono3_V212steady_clock3nowEv@plt>
+   31145:	sub    0x68(%rsp),%rax
+   3114a:	vcvtsi2sd %rax,%xmm15,%xmm0
+   3114f:	vdivsd 0x138(%rsp),%xmm0,%xmm0
+   31158:	vmovq  %xmm0,%rax
+   3115d:	mov    $0x3f,%cl
+   3115f:	bzhi   %rcx,%rax,%rcx
+   31164:	movabs $0xfff0000000000000,%rdx
+   3116e:	add    %rdx,%rcx
+   31171:	shr    $0x35,%rcx
+   31175:	cmp    $0x3ff,%ecx
+   3117b:	setb   %cl
+   3117e:	test   %rax,%rax
+   31181:	setns  %dl
+   31184:	and    %cl,%dl
+   31186:	dec    %rax
+   31189:	movabs $0xfffffffffffff,%rcx
+   31193:	cmp    %rcx,%rax
+   31196:	setb   %al
+   31199:	or     %dl,%al
+   3119b:	je     31f1d <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2ccd>
+   311a1:	lea    0x0(%rbp,%rbp,2),%rax
+   311a6:	lea    0x150(%rsp,%rax,8),%rcx
+   311ae:	mov    0x158(%rsp,%rax,8),%rbp
+   311b6:	cmp    0x160(%rsp,%rax,8),%rbp
+   311be:	je     311e0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1f90>
+   311c0:	vmovsd %xmm0,0x0(%rbp)
+   311c5:	add    $0x8,%rbp
+   311c9:	mov    %rbp,0x8(%rcx)
+   311cd:	jmp    31291 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2041>
+   311d2:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   311e0:	mov    (%rcx),%rbx
+   311e3:	sub    %rbx,%rbp
+   311e6:	movabs $0x7ffffffffffffff8,%rax
+   311f0:	cmp    %rax,%rbp
+   311f3:	je     31f63 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d13>
+   311f9:	mov    %rcx,0x128(%rsp)
+   31201:	vmovsd %xmm0,0x68(%rsp)
+   31207:	mov    %rbp,%rax
+   3120a:	sar    $0x3,%rax
+   3120e:	cmp    $0x1,%rax
+   31212:	mov    %rax,%rcx
+   31215:	adc    $0x0,%rcx
+   31219:	lea    (%rcx,%rax,1),%r15
+   3121d:	movabs $0xfffffffffffffff,%rdx
+   31227:	cmp    %rdx,%r15
+   3122a:	cmovae %rdx,%r15
+   3122e:	add    %rax,%rcx
+   31231:	cmovb  %rdx,%r15
+   31235:	lea    0x0(,%r15,8),%rdi
+   3123d:	call   650b0 <_Znwm@plt>
+   31242:	mov    %rax,%r12
+   31245:	vmovsd 0x68(%rsp),%xmm0
+   3124b:	vmovsd %xmm0,(%rax,%rbp,1)
+   31250:	test   %rbp,%rbp
+   31253:	jle    31263 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2013>
+   31255:	mov    %r12,%rdi
+   31258:	mov    %rbx,%rsi
+   3125b:	mov    %rbp,%rdx
+   3125e:	call   65170 <memmove@plt>
+   31263:	test   %rbx,%rbx
+   31266:	je     31273 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2023>
+   31268:	mov    %rbx,%rdi
+   3126b:	mov    %rbp,%rsi
+   3126e:	call   650c0 <_ZdlPvm@plt>
+   31273:	add    %r12,%rbp
+   31276:	mov    0x128(%rsp),%rcx
+   3127e:	mov    %r12,(%rcx)
+   31281:	add    $0x8,%rbp
+   31285:	mov    %rbp,0x8(%rcx)
+   31289:	lea    (%r12,%r15,8),%rax
+   3128d:	mov    %rax,0x10(%rcx)
+   31291:	lea    0x40(%rsp),%rdi
+   31296:	lea    0xa0(%rsp),%rsi
+   3129e:	call   517f0 <_ZN6Output5CheckERKSt6vectorIjSaIjEE>
+   312a3:	mov    0x18(%rsp),%r15
+   312a8:	add    $0x4,%r15
+   312ac:	mov    0x148(%rsp),%r10
+   312b4:	inc    %r10
+   312b7:	mov    0x8(%rsp),%rbp
+   312bc:	cmp    0x130(%rsp),%r10
+   312c4:	mov    0x10(%rsp),%rbx
+   312c9:	lea    0x28(%rsp),%r12
+   312ce:	jne    30b00 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x18b0>
+   312d4:	mov    %r15,0x18(%rsp)
+   312d9:	mov    0x110(%rsp),%rcx
+   312e1:	inc    %ecx
+   312e3:	mov    0x70(%rsp),%rbp
+   312e8:	cmp    0x10(%rbp),%ecx
+   312eb:	jb     30ab0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x1860>
+   312f1:	jmp    31311 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x20c1>
+   312f3:	movq   $0x0,0x88(%rsp)
+   312ff:	movq   $0x0,0x18(%rsp)
+   31308:	movq   $0x0,0x8(%rsp)
+   31311:	movabs $0xcbf29ce484222325,%rcx
+   3131b:	mov    0xd8(%rsp),%rax
+   31323:	cmp    0xe0(%rsp),%rax
+   3132b:	mov    0x108(%rsp),%r12
+   31333:	mov    0x80(%rsp),%r8
+   3133b:	mov    0x78(%rsp),%r9
+   31340:	mov    (%rsp),%r10
+   31344:	je     313f0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x21a0>
+   3134a:	mov    (%r10),%rdx
+   3134d:	mov    0x20(%rsp),%rdi
+   31352:	mov    %edi,%eax
+   31354:	and    $0x7,%eax
+   31357:	cmp    $0x8,%rdi
+   3135b:	jae    3136b <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x211b>
+   3135d:	xor    %esi,%esi
+   3135f:	movabs $0x100000001b3,%r11
+   31369:	jmp    313d5 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2185>
+   3136b:	and    $0xfffffffffffffff8,%rdi
+   3136f:	xor    %esi,%esi
+   31371:	movabs $0x100000001b3,%r11
+   3137b:	nopl   0x0(%rax,%rax,1)
+   31380:	xor    (%rdx,%rsi,8),%rcx
+   31384:	imul   %r11,%rcx
+   31388:	xor    0x8(%rdx,%rsi,8),%rcx
+   3138d:	imul   %r11,%rcx
+   31391:	xor    0x10(%rdx,%rsi,8),%rcx
+   31396:	imul   %r11,%rcx
+   3139a:	xor    0x18(%rdx,%rsi,8),%rcx
+   3139f:	imul   %r11,%rcx
+   313a3:	xor    0x20(%rdx,%rsi,8),%rcx
+   313a8:	imul   %r11,%rcx
+   313ac:	xor    0x28(%rdx,%rsi,8),%rcx
+   313b1:	imul   %r11,%rcx
+   313b5:	xor    0x30(%rdx,%rsi,8),%rcx
+   313ba:	imul   %r11,%rcx
+   313be:	xor    0x38(%rdx,%rsi,8),%rcx
+   313c3:	imul   %r11,%rcx
+   313c7:	add    $0x8,%rsi
+   313cb:	cmp    %rsi,%rdi
+   313ce:	jne    31380 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2130>
+   313d0:	test   %rax,%rax
+   313d3:	je     313f0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x21a0>
+   313d5:	lea    (%rdx,%rsi,8),%rdx
+   313d9:	xor    %esi,%esi
+   313db:	nopl   0x0(%rax,%rax,1)
+   313e0:	xor    (%rdx,%rsi,8),%rcx
+   313e4:	imul   %r11,%rcx
+   313e8:	inc    %rsi
+   313eb:	cmp    %rsi,%rax
+   313ee:	jne    313e0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2190>
+   313f0:	cmp    0x68(%r10),%rcx
+   313f4:	jne    31fc5 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d75>
+   313fa:	movabs $0xcbf29ce484222325,%rcx
+   31404:	cmp    %r9,%r8
+   31407:	je     314d0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2280>
+   3140d:	mov    0x18(%r10),%rdx
+   31411:	mov    %ebx,%eax
+   31413:	and    $0x7,%eax
+   31416:	cmp    $0x8,%rbx
+   3141a:	jae    3142d <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x21dd>
+   3141c:	xor    %esi,%esi
+   3141e:	movabs $0x100000001b3,%r11
+   31428:	jmp    314b5 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2265>
+   3142d:	mov    %rbx,%rdi
+   31430:	movabs $0x1ffffffffffffff8,%rcx
+   3143a:	and    %rcx,%rdi
+   3143d:	xor    %esi,%esi
+   3143f:	movabs $0xcbf29ce484222325,%rcx
+   31449:	movabs $0x100000001b3,%r11
+   31453:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   31460:	xor    (%rdx,%rsi,8),%rcx
+   31464:	imul   %r11,%rcx
+   31468:	xor    0x8(%rdx,%rsi,8),%rcx
+   3146d:	imul   %r11,%rcx
+   31471:	xor    0x10(%rdx,%rsi,8),%rcx
+   31476:	imul   %r11,%rcx
+   3147a:	xor    0x18(%rdx,%rsi,8),%rcx
+   3147f:	imul   %r11,%rcx
+   31483:	xor    0x20(%rdx,%rsi,8),%rcx
+   31488:	imul   %r11,%rcx
+   3148c:	xor    0x28(%rdx,%rsi,8),%rcx
+   31491:	imul   %r11,%rcx
+   31495:	xor    0x30(%rdx,%rsi,8),%rcx
+   3149a:	imul   %r11,%rcx
+   3149e:	xor    0x38(%rdx,%rsi,8),%rcx
+   314a3:	imul   %r11,%rcx
+   314a7:	add    $0x8,%rsi
+   314ab:	cmp    %rsi,%rdi
+   314ae:	jne    31460 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2210>
+   314b0:	test   %rax,%rax
+   314b3:	je     314d0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2280>
+   314b5:	lea    (%rdx,%rsi,8),%rdx
+   314b9:	xor    %esi,%esi
+   314bb:	nopl   0x0(%rax,%rax,1)
+   314c0:	xor    (%rdx,%rsi,8),%rcx
+   314c4:	imul   %r11,%rcx
+   314c8:	inc    %rsi
+   314cb:	cmp    %rsi,%rax
+   314ce:	jne    314c0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2270>
+   314d0:	cmp    0x70(%r10),%rcx
+   314d4:	jne    31fc5 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d75>
+   314da:	movabs $0xcbf29ce484222325,%rcx
+   314e4:	mov    0xd8(%rsp),%rax
+   314ec:	cmp    0xe0(%rsp),%rax
+   314f4:	mov    0x20(%rsp),%rdi
+   314f9:	je     315a0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2350>
+   314ff:	mov    0x30(%r10),%rdx
+   31503:	mov    %edi,%eax
+   31505:	and    $0x7,%eax
+   31508:	cmp    $0x8,%rdi
+   3150c:	jae    3151c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x22cc>
+   3150e:	xor    %esi,%esi
+   31510:	movabs $0x100000001b3,%r11
+   3151a:	jmp    31585 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2335>
+   3151c:	and    $0xfffffffffffffff8,%rdi
+   31520:	xor    %esi,%esi
+   31522:	movabs $0x100000001b3,%r11
+   3152c:	nopl   0x0(%rax)
+   31530:	xor    (%rdx,%rsi,8),%rcx
+   31534:	imul   %r11,%rcx
+   31538:	xor    0x8(%rdx,%rsi,8),%rcx
+   3153d:	imul   %r11,%rcx
+   31541:	xor    0x10(%rdx,%rsi,8),%rcx
+   31546:	imul   %r11,%rcx
+   3154a:	xor    0x18(%rdx,%rsi,8),%rcx
+   3154f:	imul   %r11,%rcx
+   31553:	xor    0x20(%rdx,%rsi,8),%rcx
+   31558:	imul   %r11,%rcx
+   3155c:	xor    0x28(%rdx,%rsi,8),%rcx
+   31561:	imul   %r11,%rcx
+   31565:	xor    0x30(%rdx,%rsi,8),%rcx
+   3156a:	imul   %r11,%rcx
+   3156e:	xor    0x38(%rdx,%rsi,8),%rcx
+   31573:	imul   %r11,%rcx
+   31577:	add    $0x8,%rsi
+   3157b:	cmp    %rsi,%rdi
+   3157e:	jne    31530 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x22e0>
+   31580:	test   %rax,%rax
+   31583:	je     315a0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2350>
+   31585:	lea    (%rdx,%rsi,8),%rdx
+   31589:	xor    %esi,%esi
+   3158b:	nopl   0x0(%rax,%rax,1)
+   31590:	xor    (%rdx,%rsi,8),%rcx
+   31594:	imul   %r11,%rcx
+   31598:	inc    %rsi
+   3159b:	cmp    %rsi,%rax
+   3159e:	jne    31590 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2340>
+   315a0:	cmp    0x78(%r10),%rcx
+   315a4:	jne    31fc5 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d75>
+   315aa:	movabs $0xcbf29ce484222325,%rcx
+   315b4:	cmp    %r9,%r8
+   315b7:	je     31670 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2420>
+   315bd:	mov    0x48(%r10),%rdx
+   315c1:	mov    %ebx,%eax
+   315c3:	and    $0x7,%eax
+   315c6:	cmp    $0x8,%rbx
+   315ca:	jae    315dd <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x238d>
+   315cc:	xor    %esi,%esi
+   315ce:	movabs $0x100000001b3,%r8
+   315d8:	jmp    31655 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2405>
+   315dd:	movabs $0x1ffffffffffffff8,%rcx
+   315e7:	and    %rcx,%rbx
+   315ea:	xor    %esi,%esi
+   315ec:	movabs $0xcbf29ce484222325,%rcx
+   315f6:	movabs $0x100000001b3,%r8
+   31600:	xor    (%rdx,%rsi,8),%rcx
+   31604:	imul   %r8,%rcx
+   31608:	xor    0x8(%rdx,%rsi,8),%rcx
+   3160d:	imul   %r8,%rcx
+   31611:	xor    0x10(%rdx,%rsi,8),%rcx
+   31616:	imul   %r8,%rcx
+   3161a:	xor    0x18(%rdx,%rsi,8),%rcx
+   3161f:	imul   %r8,%rcx
+   31623:	xor    0x20(%rdx,%rsi,8),%rcx
+   31628:	imul   %r8,%rcx
+   3162c:	xor    0x28(%rdx,%rsi,8),%rcx
+   31631:	imul   %r8,%rcx
+   31635:	xor    0x30(%rdx,%rsi,8),%rcx
+   3163a:	imul   %r8,%rcx
+   3163e:	xor    0x38(%rdx,%rsi,8),%rcx
+   31643:	imul   %r8,%rcx
+   31647:	add    $0x8,%rsi
+   3164b:	cmp    %rsi,%rbx
+   3164e:	jne    31600 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x23b0>
+   31650:	test   %rax,%rax
+   31653:	je     31670 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2420>
+   31655:	lea    (%rdx,%rsi,8),%rdx
+   31659:	xor    %esi,%esi
+   3165b:	nopl   0x0(%rax,%rax,1)
+   31660:	xor    (%rdx,%rsi,8),%rcx
+   31664:	imul   %r8,%rcx
+   31668:	inc    %rsi
+   3166b:	cmp    %rsi,%rax
+   3166e:	jne    31660 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2410>
+   31670:	cmp    0x80(%r10),%rcx
+   31677:	jne    31fc5 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d75>
+   3167d:	mov    0x350e4(%rip),%rax        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31684:	mov    (%rax),%rcx
+   31687:	mov    -0x18(%rcx),%rcx
+   3168b:	movq   $0x11,0x8(%rax,%rcx,1)
+   31694:	movb   $0x7b,0x8158(%rsp)
+   3169c:	mov    (%rax),%rcx
+   3169f:	mov    -0x18(%rcx),%rcx
+   316a3:	cmpq   $0x0,0x10(%rax,%rcx,1)
+   316a9:	je     316c9 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2479>
+   316ab:	mov    0x350b6(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   316b2:	lea    0x8158(%rsp),%rsi
+   316ba:	mov    $0x1,%edx
+   316bf:	vzeroupper
+   316c2:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   316c7:	jmp    316dd <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x248d>
+   316c9:	mov    0x35098(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   316d0:	mov    $0x7b,%esi
+   316d5:	vzeroupper
+   316d8:	call   65130 <_ZNSo3putEc@plt>
+   316dd:	mov    0x100(%rsp),%rdi
+   316e5:	call   e100 <_Z11PointFieldsRK5Point>
+   316ea:	mov    0x35077(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   316f1:	lea    -0x2c294(%rip),%rsi        # 5464 <_IO_stdin_used+0x356c>
+   316f8:	mov    $0xb,%edx
+   316fd:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31702:	mov    0x3505f(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31709:	mov    0x10(%rsp),%rsi
+   3170e:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31713:	mov    %rax,%r15
+   31716:	lea    -0x2cd7b(%rip),%rsi        # 49a2 <_IO_stdin_used+0x2aaa>
+   3171d:	mov    $0x7,%edx
+   31722:	mov    %rax,%rdi
+   31725:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   3172a:	mov    0x4(%rbp),%esi
+   3172d:	mov    %r15,%rdi
+   31730:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31735:	mov    %rax,%r15
+   31738:	lea    -0x2be6d(%rip),%rsi        # 58d2 <_IO_stdin_used+0x39da>
+   3173f:	mov    $0x9,%edx
+   31744:	mov    %rax,%rdi
+   31747:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   3174c:	mov    0xc(%rbp),%esi
+   3174f:	mov    %r15,%rdi
+   31752:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31757:	mov    %rax,%r15
+   3175a:	lea    -0x2cc20(%rip),%rsi        # 4b41 <_IO_stdin_used+0x2c49>
+   31761:	mov    $0xb,%edx
+   31766:	mov    %rax,%rdi
+   31769:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   3176e:	mov    0x10(%rbp),%esi
+   31771:	mov    %r15,%rdi
+   31774:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31779:	mov    %rax,%r15
+   3177c:	lea    -0x2c875(%rip),%rsi        # 4f0e <_IO_stdin_used+0x3016>
+   31783:	mov    $0x8,%edx
+   31788:	mov    %rax,%rdi
+   3178b:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31790:	mov    0x20(%rbp),%rsi
+   31794:	mov    %r15,%rdi
+   31797:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   3179c:	mov    %rax,%r13
+   3179f:	lea    -0x2c149(%rip),%rsi        # 565d <_IO_stdin_used+0x3765>
+   317a6:	mov    $0x10,%edx
+   317ab:	mov    %rax,%rdi
+   317ae:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   317b3:	xor    %edx,%edx
+   317b5:	cmpl   $0x0,0x14(%rbp)
+   317b9:	sete   %dl
+   317bc:	lea    -0x2cf68(%rip),%rbx        # 485b <_IO_stdin_used+0x2963>
+   317c3:	lea    -0x2c7cc(%rip),%r15        # 4ffe <_IO_stdin_used+0x3106>
+   317ca:	mov    %r15,%rsi
+   317cd:	cmove  %rbx,%rsi
+   317d1:	or     $0x4,%rdx
+   317d5:	mov    %r13,%rdi
+   317d8:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   317dd:	lea    -0x2cd2b(%rip),%rsi        # 4ab9 <_IO_stdin_used+0x2bc1>
+   317e4:	mov    $0xb,%edx
+   317e9:	mov    %r13,%rdi
+   317ec:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   317f1:	movzbl 0x28(%rbp),%edx
+   317f5:	test   %rdx,%rdx
+   317f8:	cmove  %rbx,%r15
+   317fc:	xor    $0x5,%rdx
+   31800:	mov    %r13,%rdi
+   31803:	mov    %r15,%rsi
+   31806:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   3180b:	lea    -0x2c1a4(%rip),%rsi        # 566e <_IO_stdin_used+0x3776>
+   31812:	mov    $0xc,%edx
+   31817:	mov    %r13,%rdi
+   3181a:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   3181f:	mov    (%rsp),%rax
+   31823:	mov    0x60(%rax),%rsi
+   31827:	mov    %r13,%rdi
+   3182a:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   3182f:	mov    %rax,%r15
+   31832:	lea    -0x2ce5a(%rip),%rsi        # 49df <_IO_stdin_used+0x2ae7>
+   31839:	mov    $0x13,%edx
+   3183e:	mov    %rax,%rdi
+   31841:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31846:	mov    (%rsp),%rax
+   3184a:	mov    0x68(%rax),%rsi
+   3184e:	mov    %r15,%rdi
+   31851:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31856:	mov    %rax,%r15
+   31859:	lea    -0x2cbba(%rip),%rsi        # 4ca6 <_IO_stdin_used+0x2dae>
+   31860:	mov    $0x10,%edx
+   31865:	mov    %rax,%rdi
+   31868:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   3186d:	mov    (%rsp),%rax
+   31871:	mov    0x70(%rax),%rsi
+   31875:	mov    %r15,%rdi
+   31878:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   3187d:	mov    %rax,%r15
+   31880:	lea    -0x2ccc2(%rip),%rsi        # 4bc5 <_IO_stdin_used+0x2ccd>
+   31887:	mov    $0x18,%edx
+   3188c:	mov    %rax,%rdi
+   3188f:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31894:	mov    (%rsp),%rax
+   31898:	mov    0x78(%rax),%rsi
+   3189c:	mov    %r15,%rdi
+   3189f:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   318a4:	mov    %rax,%r15
+   318a7:	lea    -0x2c43e(%rip),%rsi        # 5470 <_IO_stdin_used+0x3578>
+   318ae:	mov    $0x15,%edx
+   318b3:	mov    %rax,%rdi
+   318b6:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   318bb:	mov    (%rsp),%rax
+   318bf:	mov    0x80(%rax),%rsi
+   318c6:	mov    %r15,%rdi
+   318c9:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   318ce:	mov    %rax,%r13
+   318d1:	lea    -0x2cb5d(%rip),%rsi        # 4d7b <_IO_stdin_used+0x2e83>
+   318d8:	mov    $0x11,%edx
+   318dd:	mov    %rax,%rdi
+   318e0:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   318e5:	mov    0x78(%rsp),%rax
+   318ea:	cmp    %rax,0x80(%rsp)
+   318f2:	je     31928 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x26d8>
+   318f4:	mov    0xa0(%rsp),%rcx
+   318fc:	mov    0x10(%rsp),%r8
+   31901:	mov    %r8d,%eax
+   31904:	and    $0x7,%eax
+   31907:	cmp    $0x8,%r8
+   3190b:	jae    31937 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x26e7>
+   3190d:	xor    %edx,%edx
+   3190f:	movabs $0x100000001b3,%r9
+   31919:	movabs $0xcbf29ce484222325,%rsi
+   31923:	jmp    319c7 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2777>
+   31928:	movabs $0xcbf29ce484222325,%rsi
+   31932:	jmp    319e2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2792>
+   31937:	movabs $0x1ffffffffffffff8,%rdx
+   31941:	and    %rdx,%r8
+   31944:	xor    %edx,%edx
+   31946:	movabs $0x100000001b3,%r9
+   31950:	movabs $0xcbf29ce484222325,%rsi
+   3195a:	nopw   0x0(%rax,%rax,1)
+   31960:	mov    (%rcx,%rdx,4),%r10d
+   31964:	mov    0x4(%rcx,%rdx,4),%edi
+   31968:	xor    %rsi,%r10
+   3196b:	imul   %r9,%r10
+   3196f:	xor    %r10,%rdi
+   31972:	imul   %r9,%rdi
+   31976:	mov    0x8(%rcx,%rdx,4),%esi
+   3197a:	xor    %rdi,%rsi
+   3197d:	imul   %r9,%rsi
+   31981:	mov    0xc(%rcx,%rdx,4),%edi
+   31985:	xor    %rsi,%rdi
+   31988:	imul   %r9,%rdi
+   3198c:	mov    0x10(%rcx,%rdx,4),%esi
+   31990:	xor    %rdi,%rsi
+   31993:	imul   %r9,%rsi
+   31997:	mov    0x14(%rcx,%rdx,4),%edi
+   3199b:	xor    %rsi,%rdi
+   3199e:	imul   %r9,%rdi
+   319a2:	mov    0x18(%rcx,%rdx,4),%r10d
+   319a7:	xor    %rdi,%r10
+   319aa:	imul   %r9,%r10
+   319ae:	mov    0x1c(%rcx,%rdx,4),%esi
+   319b2:	xor    %r10,%rsi
+   319b5:	imul   %r9,%rsi
+   319b9:	add    $0x8,%rdx
+   319bd:	cmp    %rdx,%r8
+   319c0:	jne    31960 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2710>
+   319c2:	test   %rax,%rax
+   319c5:	je     319e2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2792>
+   319c7:	lea    (%rcx,%rdx,4),%rcx
+   319cb:	xor    %edx,%edx
+   319cd:	nopl   (%rax)
+   319d0:	mov    (%rcx,%rdx,4),%edi
+   319d3:	xor    %rdi,%rsi
+   319d6:	imul   %r9,%rsi
+   319da:	inc    %rdx
+   319dd:	cmp    %rdx,%rax
+   319e0:	jne    319d0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2780>
+   319e2:	mov    %r13,%rdi
+   319e5:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   319ea:	mov    %rax,%r15
+   319ed:	lea    -0x2cb9e(%rip),%rsi        # 4e56 <_IO_stdin_used+0x2f5e>
+   319f4:	mov    $0xb,%edx
+   319f9:	mov    %rax,%rdi
+   319fc:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31a01:	mov    %r15,%rdi
+   31a04:	mov    0xf8(%rsp),%rsi
+   31a0c:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31a11:	mov    %rax,%r15
+   31a14:	lea    -0x2c0d8(%rip),%rsi        # 5943 <_IO_stdin_used+0x3a4b>
+   31a1b:	mov    $0xa,%edx
+   31a20:	mov    %rax,%rdi
+   31a23:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31a28:	mov    %r15,%rdi
+   31a2b:	mov    0xf0(%rsp),%rsi
+   31a33:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31a38:	mov    %rax,%r15
+   31a3b:	lea    -0x2c0f4(%rip),%rsi        # 594e <_IO_stdin_used+0x3a56>
+   31a42:	mov    $0x13,%edx
+   31a47:	mov    %rax,%rdi
+   31a4a:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31a4f:	mov    %r15,%rdi
+   31a52:	mov    0xe8(%rsp),%rsi
+   31a5a:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31a5f:	mov    %rax,%r15
+   31a62:	lea    -0x2d13c(%rip),%rsi        # 492d <_IO_stdin_used+0x2a35>
+   31a69:	mov    $0x19,%edx
+   31a6e:	mov    %rax,%rdi
+   31a71:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31a76:	mov    %r15,%rdi
+   31a79:	mov    0xc8(%rsp),%rsi
+   31a81:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31a86:	mov    %rax,%r15
+   31a89:	lea    -0x2cc2e(%rip),%rsi        # 4e62 <_IO_stdin_used+0x2f6a>
+   31a90:	mov    $0x12,%edx
+   31a95:	mov    %rax,%rdi
+   31a98:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31a9d:	mov    %r15,%rdi
+   31aa0:	mov    0x98(%rsp),%rsi
+   31aa8:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31aad:	lea    -0x2c2bc(%rip),%rsi        # 57f8 <_IO_stdin_used+0x3900>
+   31ab4:	mov    $0x16,%edx
+   31ab9:	mov    %rax,%rdi
+   31abc:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31ac1:	cmpq   $0x0,0xc8(%rsp)
+   31aca:	je     31ae2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2892>
+   31acc:	mov    0x34c95(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31ad3:	mov    0xc0(%rsp),%rsi
+   31adb:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31ae0:	jmp    31afa <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x28aa>
+   31ae2:	mov    0x34c7f(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31ae9:	lea    -0x2ce39(%rip),%rsi        # 4cb7 <_IO_stdin_used+0x2dbf>
+   31af0:	mov    $0x4,%edx
+   31af5:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31afa:	mov    0x34c67(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31b01:	lea    -0x2d115(%rip),%rsi        # 49f3 <_IO_stdin_used+0x2afb>
+   31b08:	mov    $0x11,%edx
+   31b0d:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31b12:	mov    0x34c4f(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31b19:	lea    -0x2ce69(%rip),%rsi        # 4cb7 <_IO_stdin_used+0x2dbf>
+   31b20:	mov    $0x4,%edx
+   31b25:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31b2a:	mov    0x34c37(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31b31:	lea    -0x2d133(%rip),%rsi        # 4a05 <_IO_stdin_used+0x2b0d>
+   31b38:	mov    $0x17,%edx
+   31b3d:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31b42:	sub    %r14,%r12
+   31b45:	mov    0x34c1c(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31b4c:	mov    %r12,%rsi
+   31b4f:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31b54:	lea    -0x2d214(%rip),%rsi        # 4947 <_IO_stdin_used+0x2a4f>
+   31b5b:	mov    $0x10,%edx
+   31b60:	mov    %rax,%rdi
+   31b63:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31b68:	mov    0x18(%rsp),%rax
+   31b6d:	sub    0x8(%rsp),%rax
+   31b72:	mov    %rax,0x18(%rsp)
+   31b77:	je     31c08 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x29b8>
+   31b7d:	mov    0x8(%rsp),%rax
+   31b82:	mov    (%rax),%esi
+   31b84:	mov    0x34bdd(%rip),%rbx        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31b8b:	mov    %rbx,%rdi
+   31b8e:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31b93:	cmpq   $0x4,0x18(%rsp)
+   31b99:	je     31c08 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x29b8>
+   31b9b:	sarq   $0x2,0x18(%rsp)
+   31ba1:	mov    $0x1,%r12d
+   31ba7:	lea    0x8158(%rsp),%r15
+   31baf:	nop
+   31bb0:	movb   $0x2c,0x8158(%rsp)
+   31bb8:	mov    (%rbx),%rax
+   31bbb:	mov    -0x18(%rax),%rax
+   31bbf:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   31bc5:	je     31be0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2990>
+   31bc7:	mov    $0x1,%edx
+   31bcc:	mov    %rbx,%rdi
+   31bcf:	mov    %r15,%rsi
+   31bd2:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31bd7:	jmp    31bed <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x299d>
+   31bd9:	nopl   0x0(%rax)
+   31be0:	mov    %rbx,%rdi
+   31be3:	mov    $0x2c,%esi
+   31be8:	call   65130 <_ZNSo3putEc@plt>
+   31bed:	mov    0x8(%rsp),%rax
+   31bf2:	mov    (%rax,%r12,4),%esi
+   31bf6:	mov    %rbx,%rdi
+   31bf9:	call   65110 <_ZNSo9_M_insertImEERSoT_@plt>
+   31bfe:	inc    %r12
+   31c01:	cmp    %r12,0x18(%rsp)
+   31c06:	jne    31bb0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2960>
+   31c08:	mov    0x34b59(%rip),%rbx        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31c0f:	lea    -0x2cb9e(%rip),%rsi        # 5078 <_IO_stdin_used+0x3180>
+   31c16:	mov    $0xd,%edx
+   31c1b:	mov    %rbx,%rdi
+   31c1e:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31c23:	xor    %r15d,%r15d
+   31c26:	jmp    31c4a <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x29fa>
+   31c28:	nopl   0x0(%rax,%rax,1)
+   31c30:	mov    %rbx,%rdi
+   31c33:	mov    $0x5d,%esi
+   31c38:	call   65130 <_ZNSo3putEc@plt>
+   31c3d:	inc    %r15
+   31c40:	cmp    $0x4,%r15
+   31c44:	je     31dc9 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2b79>
+   31c4a:	test   %r15,%r15
+   31c4d:	je     31c8d <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2a3d>
+   31c4f:	movb   $0x2c,0x8158(%rsp)
+   31c57:	mov    (%rbx),%rax
+   31c5a:	mov    -0x18(%rax),%rax
+   31c5e:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   31c64:	je     31c80 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2a30>
+   31c66:	mov    $0x1,%edx
+   31c6b:	mov    %rbx,%rdi
+   31c6e:	lea    0x8158(%rsp),%rsi
+   31c76:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31c7b:	jmp    31c8d <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2a3d>
+   31c7d:	nopl   (%rax)
+   31c80:	mov    %rbx,%rdi
+   31c83:	mov    $0x2c,%esi
+   31c88:	call   65130 <_ZNSo3putEc@plt>
+   31c8d:	movb   $0x22,0x8158(%rsp)
+   31c95:	mov    (%rbx),%rax
+   31c98:	mov    -0x18(%rax),%rax
+   31c9c:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   31ca2:	je     31cc0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2a70>
+   31ca4:	mov    $0x1,%edx
+   31ca9:	mov    %rbx,%rdi
+   31cac:	lea    0x8158(%rsp),%rsi
+   31cb4:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31cb9:	mov    %rax,%r13
+   31cbc:	jmp    31cd0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2a80>
+   31cbe:	xchg   %ax,%ax
+   31cc0:	mov    %rbx,%rdi
+   31cc3:	mov    $0x22,%esi
+   31cc8:	call   65130 <_ZNSo3putEc@plt>
+   31ccd:	mov    %rbx,%r13
+   31cd0:	lea    0x34879(%rip),%rax        # 66550 <_ZTIN3pbf14BloomFilterImpILj8EEE+0x20>
+   31cd7:	mov    (%rax,%r15,8),%rbp
+   31cdb:	mov    %rbp,%rdi
+   31cde:	call   650f0 <strlen@plt>
+   31ce3:	mov    %r13,%rdi
+   31ce6:	mov    %rbp,%rsi
+   31ce9:	mov    %rax,%rdx
+   31cec:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31cf1:	mov    $0x3,%edx
+   31cf6:	mov    %r13,%rdi
+   31cf9:	lea    -0x2cde9(%rip),%rsi        # 4f17 <_IO_stdin_used+0x301f>
+   31d00:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31d05:	lea    (%r15,%r15,2),%rax
+   31d09:	mov    0x150(%rsp,%rax,8),%r13
+   31d11:	mov    0x158(%rsp,%rax,8),%rbp
+   31d19:	sub    %r13,%rbp
+   31d1c:	je     31d94 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2b44>
+   31d1e:	vmovsd 0x0(%r13),%xmm0
+   31d24:	mov    %rbx,%rdi
+   31d27:	call   651a0 <_ZNSo9_M_insertIdEERSoT_@plt>
+   31d2c:	cmp    $0x8,%rbp
+   31d30:	je     31d94 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2b44>
+   31d32:	sar    $0x3,%rbp
+   31d36:	mov    $0x1,%r12d
+   31d3c:	nopl   0x0(%rax)
+   31d40:	movb   $0x2c,0x8158(%rsp)
+   31d48:	mov    (%rbx),%rax
+   31d4b:	mov    -0x18(%rax),%rax
+   31d4f:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   31d55:	je     31d70 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2b20>
+   31d57:	mov    $0x1,%edx
+   31d5c:	mov    %rbx,%rdi
+   31d5f:	lea    0x8158(%rsp),%rsi
+   31d67:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31d6c:	jmp    31d7d <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2b2d>
+   31d6e:	xchg   %ax,%ax
+   31d70:	mov    %rbx,%rdi
+   31d73:	mov    $0x2c,%esi
+   31d78:	call   65130 <_ZNSo3putEc@plt>
+   31d7d:	vmovsd 0x0(%r13,%r12,8),%xmm0
+   31d84:	mov    %rbx,%rdi
+   31d87:	call   651a0 <_ZNSo9_M_insertIdEERSoT_@plt>
+   31d8c:	inc    %r12
+   31d8f:	cmp    %r12,%rbp
+   31d92:	jne    31d40 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2af0>
+   31d94:	movb   $0x5d,0x8158(%rsp)
+   31d9c:	mov    (%rbx),%rax
+   31d9f:	mov    -0x18(%rax),%rax
+   31da3:	cmpq   $0x0,0x10(%rbx,%rax,1)
+   31da9:	je     31c30 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x29e0>
+   31daf:	mov    $0x1,%edx
+   31db4:	mov    %rbx,%rdi
+   31db7:	lea    0x8158(%rsp),%rsi
+   31dbf:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31dc4:	jmp    31c3d <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x29ed>
+   31dc9:	mov    0x34998(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31dd0:	lea    -0x2d576(%rip),%rsi        # 4861 <_IO_stdin_used+0x2969>
+   31dd7:	mov    $0x3,%edx
+   31ddc:	call   650e0 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   31de1:	mov    0x34980(%rip),%rdi        # 66768 <_ZSt4cout@GLIBCXX_3.4>
+   31de8:	call   651b0 <_ZNSo5flushEv@plt>
+   31ded:	mov    0x8(%rsp),%rdi
+   31df2:	test   %rdi,%rdi
+   31df5:	je     31e07 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2bb7>
+   31df7:	mov    0x88(%rsp),%rsi
+   31dff:	sub    %rdi,%rsi
+   31e02:	call   650c0 <_ZdlPvm@plt>
+   31e07:	mov    0x198(%rsp),%rdi
+   31e0f:	test   %rdi,%rdi
+   31e12:	je     31e24 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2bd4>
+   31e14:	mov    0x1a8(%rsp),%rsi
+   31e1c:	sub    %rdi,%rsi
+   31e1f:	call   650c0 <_ZdlPvm@plt>
+   31e24:	mov    0x180(%rsp),%rdi
+   31e2c:	test   %rdi,%rdi
+   31e2f:	je     31e41 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2bf1>
+   31e31:	mov    0x190(%rsp),%rsi
+   31e39:	sub    %rdi,%rsi
+   31e3c:	call   650c0 <_ZdlPvm@plt>
+   31e41:	mov    0x168(%rsp),%rdi
+   31e49:	test   %rdi,%rdi
+   31e4c:	je     31e5e <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2c0e>
+   31e4e:	mov    0x178(%rsp),%rsi
+   31e56:	sub    %rdi,%rsi
+   31e59:	call   650c0 <_ZdlPvm@plt>
+   31e5e:	mov    0x150(%rsp),%rdi
+   31e66:	test   %rdi,%rdi
+   31e69:	je     31e7b <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2c2b>
+   31e6b:	mov    0x160(%rsp),%rsi
+   31e73:	sub    %rdi,%rsi
+   31e76:	call   650c0 <_ZdlPvm@plt>
+   31e7b:	mov    0xa0(%rsp),%rdi
+   31e83:	test   %rdi,%rdi
+   31e86:	je     31e98 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2c48>
+   31e88:	mov    0xb0(%rsp),%rsi
+   31e90:	sub    %rdi,%rsi
+   31e93:	call   650c0 <_ZdlPvm@plt>
+   31e98:	test   %r14,%r14
+   31e9b:	je     31eb0 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2c60>
+   31e9d:	mov    0xd0(%rsp),%rsi
+   31ea5:	sub    %r14,%rsi
+   31ea8:	mov    %r14,%rdi
+   31eab:	call   650c0 <_ZdlPvm@plt>
+   31eb0:	mov    0x40(%rsp),%rdi
+   31eb5:	test   %rdi,%rdi
+   31eb8:	je     31ec7 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2c77>
+   31eba:	mov    0x50(%rsp),%rsi
+   31ebf:	sub    %rdi,%rsi
+   31ec2:	call   650c0 <_ZdlPvm@plt>
+   31ec7:	mov    0x30(%rsp),%rdi
+   31ecc:	call   65200 <free@plt>
+   31ed1:	add    $0x10158,%rsp
+   31ed8:	pop    %rbx
+   31ed9:	pop    %r12
+   31edb:	pop    %r13
+   31edd:	pop    %r14
+   31edf:	pop    %r15
+   31ee1:	pop    %rbp
+   31ee2:	ret
+   31ee3:	mov    $0x10,%edi
+   31ee8:	vzeroupper
+   31eeb:	call   651c0 <__cxa_allocate_exception@plt>
+   31ef0:	mov    %rax,%r15
+   31ef3:	lea    -0x2c9c8(%rip),%rsi        # 5532 <_IO_stdin_used+0x363a>
+   31efa:	mov    %rax,%rdi
+   31efd:	call   651d0 <_ZNSt13runtime_errorC1EPKc@plt>
+   31f02:	mov    0x34867(%rip),%rsi        # 66770 <_ZTISt13runtime_error@GLIBCXX_3.4>
+   31f09:	mov    0x34868(%rip),%rdx        # 66778 <_ZNSt13runtime_errorD1Ev@GLIBCXX_3.4>
+   31f10:	mov    %r15,%rdi
+   31f13:	call   651e0 <__cxa_throw@plt>
+   31f18:	jmp    31ffa <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2daa>
+   31f1d:	mov    $0x10,%edi
+   31f22:	call   651c0 <__cxa_allocate_exception@plt>
+   31f27:	mov    %rax,%r15
+   31f2a:	lea    -0x2c5fd(%rip),%rsi        # 5934 <_IO_stdin_used+0x3a3c>
+   31f31:	mov    %rax,%rdi
+   31f34:	call   651d0 <_ZNSt13runtime_errorC1EPKc@plt>
+   31f39:	mov    0x34830(%rip),%rsi        # 66770 <_ZTISt13runtime_error@GLIBCXX_3.4>
+   31f40:	mov    0x34831(%rip),%rdx        # 66778 <_ZNSt13runtime_errorD1Ev@GLIBCXX_3.4>
+   31f47:	mov    %r15,%rdi
+   31f4a:	call   651e0 <__cxa_throw@plt>
+   31f4f:	jmp    31ffa <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2daa>
+   31f54:	lea    -0x2d067(%rip),%rdi        # 4ef4 <_IO_stdin_used+0x2ffc>
+   31f5b:	vzeroupper
+   31f5e:	call   65180 <_ZSt20__throw_length_errorPKc@plt>
+   31f63:	lea    -0x2d076(%rip),%rdi        # 4ef4 <_IO_stdin_used+0x2ffc>
+   31f6a:	call   65180 <_ZSt20__throw_length_errorPKc@plt>
+   31f6f:	mov    $0x10,%edi
+   31f74:	vzeroupper
+   31f77:	call   651c0 <__cxa_allocate_exception@plt>
+   31f7c:	mov    %rax,%r15
+   31f7f:	lea    -0x2cc1d(%rip),%rsi        # 5369 <_IO_stdin_used+0x3471>
+   31f86:	mov    %rax,%rdi
+   31f89:	call   651d0 <_ZNSt13runtime_errorC1EPKc@plt>
+   31f8e:	jmp    31faf <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2d5f>
+   31f90:	mov    $0x10,%edi
+   31f95:	vzeroupper
+   31f98:	call   651c0 <__cxa_allocate_exception@plt>
+   31f9d:	mov    %rax,%r15
+   31fa0:	lea    -0x2c9fc(%rip),%rsi        # 55ab <_IO_stdin_used+0x36b3>
+   31fa7:	mov    %rax,%rdi
+   31faa:	call   651d0 <_ZNSt13runtime_errorC1EPKc@plt>
+   31faf:	mov    0x347ba(%rip),%rsi        # 66770 <_ZTISt13runtime_error@GLIBCXX_3.4>
+   31fb6:	mov    0x347bb(%rip),%rdx        # 66778 <_ZNSt13runtime_errorD1Ev@GLIBCXX_3.4>
+   31fbd:	mov    %r15,%rdi
+   31fc0:	call   651e0 <__cxa_throw@plt>
+   31fc5:	mov    $0x10,%edi
+   31fca:	vzeroupper
+   31fcd:	call   651c0 <__cxa_allocate_exception@plt>
+   31fd2:	mov    %rax,%r15
+   31fd5:	lea    -0x2cf72(%rip),%rsi        # 506a <_IO_stdin_used+0x3172>
+   31fdc:	mov    %rax,%rdi
+   31fdf:	call   651d0 <_ZNSt13runtime_errorC1EPKc@plt>
+   31fe4:	mov    0x34785(%rip),%rsi        # 66770 <_ZTISt13runtime_error@GLIBCXX_3.4>
+   31feb:	mov    0x34786(%rip),%rdx        # 66778 <_ZNSt13runtime_errorD1Ev@GLIBCXX_3.4>
+   31ff2:	mov    %r15,%rdi
+   31ff5:	call   651e0 <__cxa_throw@plt>
+   31ffa:	lea    -0x2c67b(%rip),%rdi        # 5986 <_IO_stdin_used+0x3a8e>
+   32001:	vzeroupper
+   32004:	call   65180 <_ZSt20__throw_length_errorPKc@plt>
+   32009:	lea    -0x2c68a(%rip),%rdi        # 5986 <_IO_stdin_used+0x3a8e>
+   32010:	vzeroupper
+   32013:	call   65180 <_ZSt20__throw_length_errorPKc@plt>
+   32018:	mov    %rax,%rbx
+   3201b:	mov    0x8(%rsp),%rdi
+   32020:	jmp    321f4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2fa4>
+   32025:	mov    %rax,%rbx
+   32028:	mov    0x40(%rsp),%rdi
+   3202d:	test   %rdi,%rdi
+   32030:	je     321e2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f92>
+   32036:	jmp    322d3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3083>
+   3203b:	jmp    3204e <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2dfe>
+   3203d:	mov    %rax,%rbx
+   32040:	test   %r14,%r14
+   32043:	je     321d4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f84>
+   32049:	jmp    322b2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3062>
+   3204e:	mov    %rax,%rbx
+   32051:	mov    0x30(%rsp),%rdi
+   32056:	call   65200 <free@plt>
+   3205b:	mov    %rbx,%rdi
+   3205e:	call   650d0 <_Unwind_Resume@plt>
+   32063:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   32068:	jmp    3212e <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2ede>
+   3206d:	mov    %rax,%rbx
+   32070:	mov    0xa0(%rsp),%rdi
+   32078:	test   %rdi,%rdi
+   3207b:	je     321cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f7b>
+   32081:	jmp    32299 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3049>
+   32086:	jmp    32088 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2e38>
+   32088:	mov    %rax,%rbx
+   3208b:	mov    %r15,%rdi
+   3208e:	call   651f0 <__cxa_free_exception@plt>
+   32093:	mov    0xa0(%rsp),%rdi
+   3209b:	test   %rdi,%rdi
+   3209e:	je     321cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f7b>
+   320a4:	jmp    32299 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3049>
+   320a9:	mov    %rax,%rbx
+   320ac:	mov    0xa0(%rsp),%rdi
+   320b4:	test   %rdi,%rdi
+   320b7:	je     321cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f7b>
+   320bd:	jmp    32299 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3049>
+   320c2:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   320c7:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   320cc:	mov    %rax,%rbx
+   320cf:	test   %r14,%r14
+   320d2:	je     321d4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f84>
+   320d8:	jmp    322b2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3062>
+   320dd:	mov    %rax,%rbx
+   320e0:	mov    0xa0(%rsp),%rdi
+   320e8:	test   %rdi,%rdi
+   320eb:	je     321cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f7b>
+   320f1:	jmp    32299 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3049>
+   320f6:	mov    %rax,%rbx
+   320f9:	mov    0xa0(%rsp),%rdi
+   32101:	test   %rdi,%rdi
+   32104:	je     321cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f7b>
+   3210a:	jmp    32299 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3049>
+   3210f:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   32111:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   32113:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   32115:	jmp    32117 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2ec7>
+   32117:	mov    %rax,%rbx
+   3211a:	mov    0x18(%rsp),%rax
+   3211f:	mov    %rax,0x88(%rsp)
+   32127:	mov    %rbp,0x8(%rsp)
+   3212c:	jmp    3216c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f1c>
+   3212e:	mov    %rax,%rbx
+   32131:	mov    %r15,%rdi
+   32134:	call   651f0 <__cxa_free_exception@plt>
+   32139:	jmp    3216c <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f1c>
+   3213b:	mov    %rax,%rbx
+   3213e:	test   %r14,%r14
+   32141:	je     321d4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f84>
+   32147:	jmp    322b2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3062>
+   3214c:	mov    %rax,%rbx
+   3214f:	mov    %r15,%rdi
+   32152:	call   651f0 <__cxa_free_exception@plt>
+   32157:	test   %r14,%r14
+   3215a:	je     321d4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f84>
+   3215c:	jmp    322b2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3062>
+   32161:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   32163:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   32165:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   32167:	jmp    32169 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f19>
+   32169:	mov    %rax,%rbx
+   3216c:	mov    0x8(%rsp),%rdi
+   32171:	test   %rdi,%rdi
+   32174:	jne    321f4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2fa4>
+   32176:	mov    0x198(%rsp),%rdi
+   3217e:	test   %rdi,%rdi
+   32181:	jne    32215 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2fc5>
+   32187:	mov    0x180(%rsp),%rdi
+   3218f:	test   %rdi,%rdi
+   32192:	jne    32236 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2fe6>
+   32198:	mov    0x168(%rsp),%rdi
+   321a0:	test   %rdi,%rdi
+   321a3:	jne    32257 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3007>
+   321a9:	mov    0x150(%rsp),%rdi
+   321b1:	test   %rdi,%rdi
+   321b4:	jne    32278 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3028>
+   321ba:	mov    0xa0(%rsp),%rdi
+   321c2:	test   %rdi,%rdi
+   321c5:	jne    32299 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3049>
+   321cb:	test   %r14,%r14
+   321ce:	jne    322b2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3062>
+   321d4:	mov    0x40(%rsp),%rdi
+   321d9:	test   %rdi,%rdi
+   321dc:	jne    322d3 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x3083>
+   321e2:	mov    0x30(%rsp),%rdi
+   321e7:	call   65200 <free@plt>
+   321ec:	mov    %rbx,%rdi
+   321ef:	call   650d0 <_Unwind_Resume@plt>
+   321f4:	mov    0x88(%rsp),%rsi
+   321fc:	sub    %rdi,%rsi
+   321ff:	call   650c0 <_ZdlPvm@plt>
+   32204:	mov    0x198(%rsp),%rdi
+   3220c:	test   %rdi,%rdi
+   3220f:	je     32187 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f37>
+   32215:	mov    0x1a8(%rsp),%rsi
+   3221d:	sub    %rdi,%rsi
+   32220:	call   650c0 <_ZdlPvm@plt>
+   32225:	mov    0x180(%rsp),%rdi
+   3222d:	test   %rdi,%rdi
+   32230:	je     32198 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f48>
+   32236:	mov    0x190(%rsp),%rsi
+   3223e:	sub    %rdi,%rsi
+   32241:	call   650c0 <_ZdlPvm@plt>
+   32246:	mov    0x168(%rsp),%rdi
+   3224e:	test   %rdi,%rdi
+   32251:	je     321a9 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f59>
+   32257:	mov    0x178(%rsp),%rsi
+   3225f:	sub    %rdi,%rsi
+   32262:	call   650c0 <_ZdlPvm@plt>
+   32267:	mov    0x150(%rsp),%rdi
+   3226f:	test   %rdi,%rdi
+   32272:	je     321ba <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f6a>
+   32278:	mov    0x160(%rsp),%rsi
+   32280:	sub    %rdi,%rsi
+   32283:	call   650c0 <_ZdlPvm@plt>
+   32288:	mov    0xa0(%rsp),%rdi
+   32290:	test   %rdi,%rdi
+   32293:	je     321cb <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f7b>
+   32299:	mov    0xb0(%rsp),%rsi
+   322a1:	sub    %rdi,%rsi
+   322a4:	call   650c0 <_ZdlPvm@plt>
+   322a9:	test   %r14,%r14
+   322ac:	je     321d4 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f84>
+   322b2:	mov    0xd0(%rsp),%rsi
+   322ba:	sub    %r14,%rsi
+   322bd:	mov    %r14,%rdi
+   322c0:	call   650c0 <_ZdlPvm@plt>
+   322c5:	mov    0x40(%rsp),%rdi
+   322ca:	test   %rdi,%rdi
+   322cd:	je     321e2 <_Z3RunIN14external_bloom16SingleShortcutV1INS0_9SimdBlockEEEEvRK5PointRK4CaseRK5Input+0x2f92>
+   322d3:	mov    0x50(%rsp),%rsi
+   322d8:	sub    %rdi,%rsi
+   322db:	call   650c0 <_ZdlPvm@plt>
+   322e0:	mov    0x30(%rsp),%rdi
+   322e5:	call   65200 <free@plt>
+   322ea:	mov    %rbx,%rdi
+   322ed:	call   650d0 <_Unwind_Resume@plt>

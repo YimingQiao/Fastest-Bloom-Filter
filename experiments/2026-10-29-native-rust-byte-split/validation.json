@@ -1,0 +1,102 @@
+{
+  "revision": "c4b6a08f41f0256ba6bf901d1701fffa2cd663b8",
+  "commands": [
+    {
+      "log": "normal-test.log",
+      "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-byte-native RUST_TEST_THREADS=1 cargo test --manifest-path rust/Cargo.toml --lib byte_split::tests -- --nocapture"
+    },
+    {
+      "log": "disable-test.log",
+      "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-byte-disable RUST_TEST_THREADS=1 cargo test --manifest-path rust/Cargo.toml --features disable-avx512 --lib byte_split::tests -- --nocapture"
+    },
+    {
+      "log": "asan-test.log",
+      "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-byte-asan RUST_TEST_THREADS=1 RUSTFLAGS=-Zsanitizer=address cargo +nightly test --target x86_64-unknown-linux-gnu --manifest-path rust/Cargo.toml --lib byte_split::tests -- --nocapture"
+    },
+    {
+      "log": "release-build.log",
+      "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-byte-native RUSTFLAGS='-C target-cpu=native' cargo build --release --manifest-path rust/Cargo.toml"
+    },
+    {
+      "log": "external-release-build.log",
+      "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-byte-external RUSTFLAGS='-C target-cpu=native' cargo build --release --locked --manifest-path benchmarks/rust-external/Cargo.toml"
+    },
+    {
+      "log": "clippy.log",
+      "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-byte-native cargo clippy --manifest-path rust/Cargo.toml --all-targets -- -D warnings"
+    },
+    {
+      "log": "external-clippy.log",
+      "command": "taskset -c 3 env CARGO_TARGET_DIR=/tmp/fastest-bf-rust-byte-external cargo clippy --manifest-path benchmarks/rust-external/Cargo.toml --all-targets -- -D warnings"
+    },
+    {
+      "log": "package-files.log",
+      "command": "cargo package --list --allow-dirty --manifest-path rust/Cargo.toml"
+    },
+    {
+      "log": "parity.log",
+      "command": "taskset -c 3 python3 experiments/2026-10-29-native-rust-byte-split/check_parity.py --output experiments/2026-10-29-native-rust-byte-split/parity.json"
+    },
+    {
+      "log": "cli.log",
+      "command": "taskset -c 3 python3 experiments/2026-10-29-native-rust-byte-split/check_cli.py --cpu 3 --native /tmp/fastest-bf-rust-byte-native/release/compare_benchmark --external /tmp/fastest-bf-rust-byte-external/release/compare_benchmark --parallel /tmp/fastest-bf-rust-byte-native/release/parallel_benchmark --output experiments/2026-10-29-native-rust-byte-split/cli-results.json"
+    },
+    {
+      "output": "byte_split_one.s",
+      "command": "taskset -c 3 rustc --edition 2021 --crate-type lib -C opt-level=3 -C target-cpu=native --emit asm --extern fastest_bloom_filter=/tmp/fastest-bf-rust-byte-native/release/libfastest_bloom_filter.rlib experiments/2026-10-29-native-rust-byte-split/assembly.rs -o experiments/2026-10-29-native-rust-byte-split/byte_split_one.s"
+    },
+    {
+      "command": "cargo fmt --manifest-path rust/Cargo.toml -- --check",
+      "result": "passed (empty output)"
+    },
+    {
+      "command": "cargo fmt --manifest-path benchmarks/rust-external/Cargo.toml -- --check",
+      "result": "passed (empty output)"
+    }
+  ],
+  "source_sha256": {
+    "rust/src/byte_split.rs": "27b505ece8af4e82b18d4bc56765d8a8e6e6eaf4c075e178de013cadaeb09bef",
+    "rust/src/lib.rs": "f424557873d2c3d27bb2132629a88a230a8ee23fe1221e3512f3ec5cf5fd72f6",
+    "rust/src/layout_parallel.rs": "6e3fe5d56304de040bfb1c72c3de62d12f497ebdd9972c3eee4ea3e32f062dd0",
+    "rust/src/bin/compare_benchmark.rs": "df2072a1f899e18a032f70b55b64d0e601fe004bfbdf3a1ce9940638309e715c",
+    "rust/src/bin/parallel_benchmark.rs": "34fe22cac785bac441080c829e97e3c4adb3920c3e3bea9e3cf9b6c0fba30509",
+    "rust/src/bin/support/filter_selection.rs": "42194dbae3711fc4af6dbca23c9fe80e04471c3c214e96c4939518e72aa39b3e",
+    "rust/src/bin/support/query_validation.rs": "117ad3dba9877d520640f4c1838171f373846b638c46cc9e20bd632353fe1873",
+    "benchmarks/rust-external/src/main.rs": "82820430359b1ede37e113db202d9a292bf0d33da5283e2ba08ee3830110c3fa",
+    "benchmarks/rust-external/src/four_sector.rs": "97ba991fe72769e90cae1c36420215ba1c986f4a9e2e669d32bcb3ede30abaee",
+    "benchmarks/rust-external/src/split64.rs": "58ad834bbad0408d8f9e9aa9cc5700d91b37b1212fe0f5becfb70e781c9b572f",
+    "rust/Cargo.toml": "c933d5b3b323a2f0959ff5a32ee6725c661e8316e3a11416f0dcf1fd7198306a",
+    "rust/Cargo.lock": "9463976a7e2fe1f4c1c0fa289ea3444dbb7bf1fdeedbe73e1e53ce600ac8938a",
+    "rust/LICENSE-MIT": "396b9a45f46ed8a8bcd7c1ac83d5af587240d2093e3a02275bfe486867df8177",
+    "rust/LICENSE-APACHE": "3f1c443ccd7c4e45549fb7f32e499fe63eab4a5876cf9772c185e087808f4957",
+    "rust/NOTICE": "d81571b80f8e2f3e0e17875ade27739fb51e9e9e3f2319f9179e15cae5f31099",
+    "benchmarks/rust-external/Cargo.toml": "b04a2625d9b22d2806ee7c61ddc1a986c2bdc6afc4531d82a7393fe5b71d36eb",
+    "benchmarks/rust-external/Cargo.lock": "3c4403278e6561a75efba5e963312b21de6ed122239b34dfd0dbf99ddce8511e",
+    "include/byte_split_bloom.h": "46d285a1676b0613a0759d9786d2d8afe67d75b5fc64ca839305922627fa332f",
+    "experiments/2026-10-29-direct-split/direct_split.hpp": "16335440fb9c71ea076b317f96caf26da374a615c3677d0348f9746ce1bfbf58"
+  },
+  "binary_sha256": {
+    "/tmp/fastest-bf-rust-byte-native/release/compare_benchmark": "3db8786bcc9983ba3887a645c9bcd0093bd5507d5b1466dc857857529fc251e2",
+    "/tmp/fastest-bf-rust-byte-native/release/parallel_benchmark": "9f98e6e5b05f89202c31f448125454a04f2640a197de70390b62eefc20eaaecf",
+    "/tmp/fastest-bf-rust-byte-external/release/compare_benchmark": "1feb195b8123bb480131836c95b90350f8a67170f7e03d9212b13420ab0f92de",
+    "build/byte-split-native/compare_benchmark": "4a7fd65768e5e3dccb00816729ee2a62174ea09c8294a07f0856561167e2119b"
+  },
+  "preserved_binary_sha256": {
+    "benchmarks/rust-external/target/release/compare_benchmark": "8fe9b4903c6c9165eb4b7def6a921294937e8e4a3a77146fea22647ddd4c7c3e",
+    "build/native-layout-base/parallel_benchmark-rust": "3439043e9b16ad0f3120b4e2b2039330ea9436f8e6964313194a0f65a3056ef6",
+    "rust/target/release/compare_benchmark": "f63cdae9596ebcd1c429c164ddec3c0ea5edf9afdd13dcf576c22b0e63837916"
+  },
+  "tests": {
+    "normal": 5,
+    "disable-avx512": 5,
+    "address-sanitizer": 5,
+    "full_byte_mask_oracle_hashes": 65542,
+    "query_tail_cases": 12672,
+    "cross_harness_cases": 25,
+    "cross_harness_rows": 75,
+    "cli_cases": 44
+  },
+  "performance_status": "No native Rust performance confirmation has run here. Primary confirmation is deferred to the parent preregistered protocol; correctness runs do not support speed claims.",
+  "review": "optimize_probe read-only review found mapping, target features, alignment, allocation provenance and owned-slice rebasing sound; no correctness changes requested.",
+  "initial_findings": "Initial grouped address expression did not fold in LLVM. AVX2 pointer arithmetic now uses one flat bucket*16 byte offset; normal/disable/ASan tests rerun. Initial Clippy found two test-only redundant casts, removed. Initial logs/assembly retained."
+}

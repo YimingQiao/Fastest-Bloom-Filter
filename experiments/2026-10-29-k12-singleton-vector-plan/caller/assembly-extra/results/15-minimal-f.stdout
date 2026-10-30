@@ -1,0 +1,250 @@
+
+/tmp/fastest-bf-k12-singleton-vector-v1-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000000c7a0 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj>:
+    c7a0:	push   %r15
+    c7a2:	push   %r14
+    c7a4:	push   %rbx
+    c7a5:	test   %esi,%esi
+    c7a7:	je     c985 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x1e5>
+    c7ad:	mov    %rcx,%rax
+    c7b0:	cmp    $0x3,%esi
+    c7b3:	ja     c992 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x1f2>
+    c7b9:	mov    (%rdi),%rcx
+    c7bc:	mov    (%rdx),%r8
+    c7bf:	mov    %r8,%r9
+    c7c2:	vpbroadcastd %r8d,%zmm1
+    c7c8:	shr    $0x20,%r8
+    c7cc:	vpbroadcastd %r8d,%zmm0
+    c7d2:	vpsrlvd -0x9fdc(%rip),%zmm0,%zmm2        # 2800 <_IO_stdin_used+0x1168>
+    c7dc:	vpxord %zmm2,%zmm0,%zmm2
+    c7e2:	shr    $0x28,%r9
+    c7e6:	mov    0x18(%rdi),%r8d
+    c7ea:	imul   %r9,%r8
+    c7ee:	shr    $0x12,%r8
+    c7f2:	and    $0xffffffffffffffc0,%r8
+    c7f6:	vmovdqa64 -0x9fc0(%rip),%zmm0        # 2840 <_IO_stdin_used+0x11a8>
+    c800:	vpternlogd $0xec,-0xb17f(%rip){1to16},%zmm0,%zmm2        # 168c <__abi_tag+0x13c8>
+    c80b:	vpermd (%rcx,%r8,1),%zmm2,%zmm2
+    c812:	vprorvd -0x9f9c(%rip),%zmm1,%zmm1        # 2880 <_IO_stdin_used+0x11e8>
+    c81c:	vpermd -0xa1e6(%rip),%zmm1,%zmm3        # 2640 <_IO_stdin_used+0xfa8>
+    c826:	vpsrld $0x4,%zmm1,%zmm1
+    c82d:	vprolvd %zmm1,%zmm3,%zmm1
+    c833:	vpandd %zmm2,%zmm1,%zmm2
+    c839:	vpcmpneqd %zmm1,%zmm2,%k0
+    c840:	kmovw  %k0,%r8d
+    c844:	xor    %r9d,%r9d
+    c847:	test   $0xf,%r8b
+    c84b:	sete   %r9b
+    c84f:	mov    %r9d,(%rax)
+    c852:	cmp    $0x1,%esi
+    c855:	je     c987 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x1e7>
+    c85b:	movabs $0x3fffffffc0,%r8
+    c865:	mov    0x8(%rdx),%r9
+    c869:	mov    %r9,%r10
+    c86c:	vpbroadcastd %r9d,%zmm1
+    c872:	shr    $0x20,%r9
+    c876:	vpbroadcastd %r9d,%zmm2
+    c87c:	vpsrlvd -0xa086(%rip),%zmm2,%zmm3        # 2800 <_IO_stdin_used+0x1168>
+    c886:	vpxord %zmm3,%zmm2,%zmm2
+    c88c:	shr    $0x28,%r10
+    c890:	mov    0x18(%rdi),%r9d
+    c894:	imul   %r10,%r9
+    c898:	shr    $0x12,%r9
+    c89c:	and    %r8,%r9
+    c89f:	vpternlogd $0xec,-0xb21e(%rip){1to16},%zmm0,%zmm2        # 168c <__abi_tag+0x13c8>
+    c8aa:	vpermd (%rcx,%r9,1),%zmm2,%zmm2
+    c8b1:	vprorvd -0xa03b(%rip),%zmm1,%zmm1        # 2880 <_IO_stdin_used+0x11e8>
+    c8bb:	vpermd -0xa285(%rip),%zmm1,%zmm3        # 2640 <_IO_stdin_used+0xfa8>
+    c8c5:	vpsrld $0x4,%zmm1,%zmm1
+    c8cc:	vprolvd %zmm1,%zmm3,%zmm1
+    c8d2:	vpandd %zmm2,%zmm1,%zmm2
+    c8d8:	vpcmpneqd %zmm1,%zmm2,%k0
+    c8df:	kmovw  %k0,%r9d
+    c8e3:	xor    %r10d,%r10d
+    c8e6:	test   $0xf,%r9b
+    c8ea:	sete   %r10b
+    c8ee:	mov    %r10d,0x4(%rax)
+    c8f2:	cmp    $0x2,%esi
+    c8f5:	je     c987 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x1e7>
+    c8fb:	mov    0x10(%rdx),%rdx
+    c8ff:	mov    %rdx,%r9
+    c902:	vpbroadcastd %edx,%zmm1
+    c908:	shr    $0x20,%rdx
+    c90c:	vpbroadcastd %edx,%zmm2
+    c912:	vpsrlvd -0xa11c(%rip),%zmm2,%zmm3        # 2800 <_IO_stdin_used+0x1168>
+    c91c:	vpxord %zmm3,%zmm2,%zmm2
+    c922:	shr    $0x28,%r9
+    c926:	mov    0x18(%rdi),%edx
+    c929:	imul   %r9,%rdx
+    c92d:	shr    $0x12,%rdx
+    c931:	and    %r8,%rdx
+    c934:	vpternlogd $0xf8,-0xb2b3(%rip){1to16},%zmm2,%zmm0        # 168c <__abi_tag+0x13c8>
+    c93f:	vpermd (%rcx,%rdx,1),%zmm0,%zmm0
+    c946:	vprorvd -0xa0d0(%rip),%zmm1,%zmm1        # 2880 <_IO_stdin_used+0x11e8>
+    c950:	vpermd -0xa31a(%rip),%zmm1,%zmm2        # 2640 <_IO_stdin_used+0xfa8>
+    c95a:	vpsrld $0x4,%zmm1,%zmm1
+    c961:	vprolvd %zmm1,%zmm2,%zmm1
+    c967:	vpandd %zmm0,%zmm1,%zmm0
+    c96d:	vpcmpneqd %zmm1,%zmm0,%k0
+    c974:	kmovw  %k0,%ecx
+    c978:	xor    %edx,%edx
+    c97a:	test   $0xf,%cl
+    c97d:	sete   %dl
+    c980:	mov    %edx,0x8(%rax)
+    c983:	jmp    c987 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x1e7>
+    c985:	xor    %esi,%esi
+    c987:	mov    %esi,%eax
+    c989:	pop    %rbx
+    c98a:	pop    %r14
+    c98c:	pop    %r15
+    c98e:	vzeroupper
+    c991:	ret
+    c992:	mov    (%rdi),%rcx
+    c995:	mov    0x10(%rdi),%r9
+    c999:	sub    %rcx,%r9
+    c99c:	cmp    $0x3f,%esi
+    c99f:	ja     ca52 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x2b2>
+    c9a5:	mov    %esi,%r8d
+    c9a8:	cmp    $0x200001,%r9
+    c9af:	jb     ca6c <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x2cc>
+    c9b5:	mov    0x18(%rdi),%r9d
+    c9b9:	mov    %esi,%ebx
+    c9bb:	and    $0x3e,%ebx
+    c9be:	shl    $0x3,%ebx
+    c9c1:	xor    %r11d,%r11d
+    c9c4:	movabs $0x3ffffffc0,%r10
+    c9ce:	xchg   %ax,%ax
+    c9d0:	mov    (%rdx,%r11,1),%r14
+    c9d4:	mov    %r14,%r15
+    c9d7:	shr    $0x20,%r15
+    c9db:	shr    $0x28,%r14
+    c9df:	imul   %r9,%r14
+    c9e3:	and    $0x3,%r15d
+    c9e7:	shr    $0x12,%r14
+    c9eb:	and    %r10,%r14
+    c9ee:	add    %rcx,%r14
+    c9f1:	prefetcht0 (%r14,%r15,4)
+    c9f6:	mov    0x8(%rdx,%r11,1),%r14
+    c9fb:	mov    %r14,%r15
+    c9fe:	shr    $0x20,%r15
+    ca02:	shr    $0x28,%r14
+    ca06:	imul   %r9,%r14
+    ca0a:	and    $0x3,%r15d
+    ca0e:	shr    $0x12,%r14
+    ca12:	and    %r10,%r14
+    ca15:	add    %rcx,%r14
+    ca18:	prefetcht0 (%r14,%r15,4)
+    ca1d:	add    $0x10,%r11
+    ca21:	cmp    %r11,%rbx
+    ca24:	jne    c9d0 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x230>
+    ca26:	test   $0x1,%r8b
+    ca2a:	je     ca75 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x2d5>
+    ca2c:	mov    (%rdx,%r11,1),%r11
+    ca30:	mov    %r11,%rbx
+    ca33:	shr    $0x20,%rbx
+    ca37:	shr    $0x28,%r11
+    ca3b:	imul   %r9,%r11
+    ca3f:	and    $0x3,%ebx
+    ca42:	shr    $0x12,%r11
+    ca46:	and    %r10,%r11
+    ca49:	add    %r11,%rcx
+    ca4c:	prefetcht0 (%rcx,%rbx,4)
+    ca50:	jmp    ca75 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x2d5>
+    ca52:	cmp    $0x200001,%r9
+    ca59:	jb     cc55 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x4b5>
+    ca5f:	mov    %rax,%rcx
+    ca62:	pop    %rbx
+    ca63:	pop    %r14
+    ca65:	pop    %r15
+    ca67:	jmp    cc70 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment12LookupVectorILb1EEEjjPKmPj>
+    ca6c:	cmp    $0x9,%esi
+    ca6f:	jae    cc55 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x4b5>
+    ca75:	vbroadcasti64x4 -0x9eff(%rip),%zmm0        # 2b80 <_IO_stdin_used+0x14e8>
+    ca7f:	vbroadcasti64x4 -0x9ee9(%rip),%zmm1        # 2ba0 <_IO_stdin_used+0x1508>
+    ca89:	xor    %r9d,%r9d
+    ca8c:	vmovdqa64 -0xa496(%rip),%zmm2        # 2600 <_IO_stdin_used+0xf68>
+    ca96:	vmovdqa64 -0xa460(%rip),%zmm3        # 2640 <_IO_stdin_used+0xfa8>
+    caa0:	vmovdqa64 -0xa42a(%rip),%zmm4        # 2680 <_IO_stdin_used+0xfe8>
+    caaa:	vpbroadcastd -0xb428(%rip),%zmm5        # 168c <__abi_tag+0x13c8>
+    cab4:	vmovdqa64 -0xa3fe(%rip),%zmm6        # 26c0 <_IO_stdin_used+0x1028>
+    cabe:	vmovdqa64 -0xa3c8(%rip),%zmm7        # 2700 <_IO_stdin_used+0x1068>
+    cac8:	vmovdqa64 -0xa392(%rip),%zmm8        # 2740 <_IO_stdin_used+0x10a8>
+    cad2:	vmovdqa64 -0xa35c(%rip),%zmm9        # 2780 <_IO_stdin_used+0x10e8>
+    cadc:	vmovdqa64 -0xa326(%rip),%zmm10        # 27c0 <_IO_stdin_used+0x1128>
+    cae6:	mov    %r8,%r10
+    cae9:	jmp    cc26 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x486>
+    caee:	xchg   %ax,%ax
+    caf0:	kmovw  %r11d,%k1
+    caf5:	vmovdqu64 (%rdx,%r9,8),%zmm11{%k1}{z}
+    cafc:	vpermd %zmm11,%zmm0,%zmm12
+    cb02:	vpermd %zmm11,%zmm1,%zmm11
+    cb08:	vprorvd %zmm2,%zmm12,%zmm13
+    cb0e:	vpermd %zmm3,%zmm13,%zmm14
+    cb14:	vpsrld $0x4,%zmm13,%zmm13
+    cb1b:	vprolvd %zmm13,%zmm14,%zmm13
+    cb21:	vpsrld $0x8,%zmm11,%zmm14
+    cb28:	vpbroadcastd 0x18(%rdi),%zmm15
+    cb2f:	vpmuludq %zmm14,%zmm15,%zmm14
+    cb35:	vpsrlq $0x18,%zmm14,%zmm14
+    cb3c:	vpsrlq $0x28,%zmm11,%zmm16
+    cb43:	vpmuludq %zmm16,%zmm15,%zmm15
+    cb49:	vpsllq $0x8,%zmm15,%zmm15
+    cb50:	vpternlogd $0xec,%zmm4,%zmm14,%zmm15
+    cb57:	vpslld $0x4,%zmm15,%zmm14
+    cb5e:	vpternlogd $0xf8,%zmm5,%zmm11,%zmm14
+    cb65:	vpsrld $0x2,%zmm11,%zmm15
+    cb6c:	vpandd %zmm6,%zmm15,%zmm15
+    cb72:	vpternlogd $0x36,%zmm7,%zmm14,%zmm15
+    cb79:	mov    %r11d,%ecx
+    cb7c:	shl    $0x8,%ecx
+    cb7f:	add    %r11d,%ecx
+    cb82:	mov    (%rdi),%rbx
+    cb85:	kmovw  %ecx,%k1
+    cb89:	kmovw  %k1,%k2
+    cb8d:	vpxord %zmm16,%zmm16,%zmm16
+    cb93:	vpgatherdd (%rbx,%zmm15,4),%zmm16{%k2}
+    cb9a:	vpsrlvd %zmm8,%zmm11,%zmm11
+    cba0:	vpandd %zmm5,%zmm11,%zmm11
+    cba6:	vpternlogd $0x36,%zmm9,%zmm14,%zmm11
+    cbad:	vprolvd %zmm10,%zmm12,%zmm12
+    cbb3:	vpermd %zmm3,%zmm12,%zmm14
+    cbb9:	vpsrld $0x4,%zmm12,%zmm12
+    cbc0:	vprolvd %zmm12,%zmm14,%zmm12
+    cbc6:	vpxor  %xmm14,%xmm14,%xmm14
+    cbcb:	vpgatherdd (%rbx,%zmm11,4),%zmm14{%k1}
+    cbd2:	vpandd %zmm16,%zmm13,%zmm11
+    cbd8:	vpcmpeqd %zmm13,%zmm11,%k1
+    cbde:	vpandd %zmm12,%zmm14,%zmm11
+    cbe4:	vpcmpeqd %zmm12,%zmm11,%k0{%k1}
+    cbea:	kmovw  %k0,%ecx
+    cbee:	kmovw  %k0,%ebx
+    cbf2:	shr    $0x8,%ecx
+    cbf5:	and    %ebx,%ecx
+    cbf7:	kmovw  %ecx,%k1
+    cbfb:	vpternlogd $0xff,%zmm11,%zmm11,%zmm11{%k1}{z}
+    cc02:	vpsrld $0x1f,%zmm11,%zmm11
+    cc09:	kmovw  %r11d,%k1
+    cc0e:	vmovdqu32 %zmm11,(%rax,%r9,4){%k1}
+    cc15:	add    $0x8,%r9
+    cc19:	add    $0xfffffffffffffff8,%r10
+    cc1d:	cmp    %r8,%r9
+    cc20:	jae    c987 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x1e7>
+    cc26:	cmp    $0x8,%r10
+    cc2a:	mov    $0x8,%ecx
+    cc2f:	cmovb  %r10,%rcx
+    cc33:	mov    $0xffffffff,%r11d
+    cc39:	shl    %cl,%r11d
+    cc3c:	not    %r11d
+    cc3f:	cmp    $0x8,%r10
+    cc43:	jb     caf0 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x350>
+    cc49:	vmovdqu64 (%rdx,%r9,8),%zmm11
+    cc50:	jmp    cafc <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment6LookupEjPKmPj+0x35c>
+    cc55:	mov    %rax,%rcx
+    cc58:	pop    %rbx
+    cc59:	pop    %r14
+    cc5b:	pop    %r15
+    cc5d:	jmp    d340 <_ZNK13bloom_filters42FourSectorRange12SingletonVectorExperiment12LookupVectorILb0EEEjjPKmPj>

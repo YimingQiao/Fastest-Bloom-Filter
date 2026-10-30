@@ -1,0 +1,43 @@
+warning: binary `compare_benchmark` should have a kebab-case name
+  |
+1 | /tmp/fastest-bf-rust-split-native-asan/.../compare_benchmark
+  |                                            ^^^^^^^^^^^^^^^^^
+  |
+  = note: `cargo::non_kebab_case_bins` is set to `warn` by default
+help: to change the binary name to `compare-benchmark`, convert the file stem
+  |
+1 - src/bin/compare_benchmark.rs
+1 + src/bin/compare-benchmark.rs
+  |
+warning: binary `parallel_benchmark` should have a kebab-case name
+  |
+1 | /tmp/fastest-bf-rust-split-native-asan/.../parallel_benchmark
+  |                                            ^^^^^^^^^^^^^^^^^^
+  |
+help: to change the binary name to `parallel-benchmark`, convert the file stem
+  |
+1 - src/bin/parallel_benchmark.rs
+1 + src/bin/parallel-benchmark.rs
+  |
+warning: `fastest-bloom-filter` (manifest) generated 2 warnings
+   Compiling fastest-bloom-filter v0.1.0 (/home/yiming/projects/fastest-bf-lab/rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.83s
+     Running unittests src/lib.rs (/tmp/fastest-bf-rust-split-native-asan/x86_64-unknown-linux-gnu/debug/build/fastest-bloom-filter/e8934549ac13f140/out/fastest_bloom_filter-e8934549ac13f140)
+
+running 7 tests
+test split64::tests::all_backends_parallel_match_serial ... ok
+test split64::tests::allocation_and_alignment_match_cpp ... ok
+test split64::tests::empty_small_and_large_owned_slices ... ok
+test split64::tests::rejects_mismatched_output_before_writing - should panic ... 
+thread 'split64::tests::rejects_mismatched_output_before_writing' (3622217) panicked at src/split64.rs:123:9:
+assertion `left == right` failed: one output is required per input
+  left: 1
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ok
+test split64::tests::scalar_and_runtime_paths_match_at_batch_boundaries ... ok
+test split64::tests::short_queries_match_scalar_and_previous_kernel ... ok
+test split64::tests::wide_mask_is_identical_to_original_and_scalar ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 33.90s
+

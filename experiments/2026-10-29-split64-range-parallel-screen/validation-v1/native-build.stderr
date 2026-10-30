@@ -1,0 +1,168 @@
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:51:9: error: reference to 'array' is ambiguous
+   51 |         array(outputs);std::cout<<",\"calibration_outputs\":";array(calibration);std::cout<<"}\n";
+      |         ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:20:13: note: candidate found by name lookup is 'array'
+   20 | static void array(const std::vector<uint32_t>& values) {
+      |             ^
+/usr/lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/array:99:12: note: candidate found by name lookup is 'std::array'
+   99 |     struct array
+      |            ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:51:63: error: reference to 'array' is ambiguous
+   51 |         array(outputs);std::cout<<",\"calibration_outputs\":";array(calibration);std::cout<<"}\n";
+      |                                                               ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:20:13: note: candidate found by name lookup is 'array'
+   20 | static void array(const std::vector<uint32_t>& values) {
+      |             ^
+/usr/lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/array:99:12: note: candidate found by name lookup is 'std::array'
+   99 |     struct array
+      |            ^
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:5:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../geometry.hpp:3:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../adapters.hpp:2:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../exact-adapters.hpp:3:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../boost-adapters.hpp:4:
+In file included from /home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom.hpp:15:
+In file included from /home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/fast_multiblock32.hpp:17:
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/fast_multiblock32_avx2.hpp:42:18: warning: array index 1 is past the end of the array (that has type '__m256i[1]') [-Warray-bounds]
+   42 |       mark_m256i(x[k/8],hash,k%8);
+      |                  ^ ~~~
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:881:16: note: in instantiation of member function 'boost::bloom::fast_multiblock32<8>::mark' requested here
+  881 |     subfilter::mark(*reinterpret_cast<block_type*>(p),hash);
+      |                ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:874:12: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock32<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::set' requested here
+  874 |     return set(p,hash,std::integral_constant<bool,are_blocks_aligned>{});
+      |            ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:431:7: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock32<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::set' requested here
+  431 |       set(p,hash);
+      |       ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/filter.hpp:238:12: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock32<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::insert' requested here
+  238 |     super::insert(hash_for(x));
+      |            ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../boost-adapters.hpp:98:12: note: in instantiation of member function 'boost::bloom::filter<unsigned long, 1, boost::bloom::fast_multiblock32<8>, 0, boost_baseline::IdentityHash, boost_baseline::CountingAllocator<unsigned char>>::insert' requested here
+   98 |                         filter_.insert(*keys);
+      |                                 ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:41:20: note: in instantiation of member function 'boost_baseline::Adapter<1, boost::bloom::fast_multiblock32<8>>::Insert' requested here
+   41 |             filter.Insert(n,inserted.data());
+      |                    ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:57:21: note: in instantiation of function template specialization 'fixture<boost_baseline::Adapter<1, boost::bloom::fast_multiblock32<8>>>' requested here
+   57 |         BF_RETAINED(ADD);
+      |                     ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/retained.hpp:6:5: note: expanded from macro 'BF_RETAINED'
+    6 |     ADD(Boost192Multi32K8, uint64_t); \
+      |     ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:56:18: note: expanded from macro 'ADD'
+   56 | #define ADD(T,H) fixture<T>(#T)
+      |                  ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/fast_multiblock32_avx2.hpp:35:38: note: array 'x' declared here
+   35 |   static BOOST_FORCEINLINE void mark(value_type& x,std::uint64_t hash)
+      |                                      ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/fast_multiblock32_avx2.hpp:54:24: warning: array index 1 is past the end of the array (that has type 'const __m256i[1]') [-Warray-bounds]
+   54 |       res&=check_m256i(x[k/8],hash,k%8);
+      |                        ^ ~~~
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:860:23: note: in instantiation of member function 'boost::bloom::fast_multiblock32<8>::check' requested here
+  860 |     return subfilter::check(*reinterpret_cast<const block_type*>(p),hash);
+      |                       ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:853:12: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock32<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::get' requested here
+  853 |     return get(p,hash,std::integral_constant<bool,are_blocks_aligned>{});
+      |            ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:554:11: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock32<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::get' requested here
+  554 |       if(!get(p,hash0))return false;
+      |           ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/filter.hpp:296:19: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock32<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::may_contain' requested here
+  296 |     return super::may_contain(hash_for(x));
+      |                   ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../boost-adapters.hpp:104:19: note: in instantiation of member function 'boost::bloom::filter<unsigned long, 1, boost::bloom::fast_multiblock32<8>, 0, boost_baseline::IdentityHash, boost_baseline::CountingAllocator<unsigned char>>::may_contain' requested here
+  104 |                         *out = filter_.may_contain(*keys);
+      |                                        ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:42:20: note: in instantiation of member function 'boost_baseline::Adapter<1, boost::bloom::fast_multiblock32<8>>::Lookup' requested here
+   42 |             filter.Lookup(n,inserted.data(),positive.data());
+      |                    ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:57:21: note: in instantiation of function template specialization 'fixture<boost_baseline::Adapter<1, boost::bloom::fast_multiblock32<8>>>' requested here
+   57 |         BF_RETAINED(ADD);
+      |                     ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/retained.hpp:6:5: note: expanded from macro 'BF_RETAINED'
+    6 |     ADD(Boost192Multi32K8, uint64_t); \
+      |     ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:56:18: note: expanded from macro 'ADD'
+   56 | #define ADD(T,H) fixture<T>(#T)
+      |                  ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/fast_multiblock32_avx2.hpp:46:39: note: array 'x' declared here
+   46 |   static BOOST_FORCEINLINE bool check(const value_type& x,std::uint64_t hash)
+      |                                       ^
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:5:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../geometry.hpp:3:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../adapters.hpp:2:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../exact-adapters.hpp:3:
+In file included from /home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../boost-adapters.hpp:4:
+In file included from /home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom.hpp:16:
+In file included from /home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/fast_multiblock64.hpp:15:
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/fast_multiblock64_avx2.hpp:51:20: warning: array index 1 is past the end of the array (that has type 'detail::m256ix2[1]') [-Warray-bounds]
+   51 |       mark_m256ix2(x[k/8],hash,k%8);
+      |                    ^ ~~~
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:881:16: note: in instantiation of member function 'boost::bloom::fast_multiblock64<8>::mark' requested here
+  881 |     subfilter::mark(*reinterpret_cast<block_type*>(p),hash);
+      |                ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:874:12: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock64<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::set' requested here
+  874 |     return set(p,hash,std::integral_constant<bool,are_blocks_aligned>{});
+      |            ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:431:7: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock64<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::set' requested here
+  431 |       set(p,hash);
+      |       ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/filter.hpp:238:12: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock64<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::insert' requested here
+  238 |     super::insert(hash_for(x));
+      |            ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../boost-adapters.hpp:98:12: note: in instantiation of member function 'boost::bloom::filter<unsigned long, 1, boost::bloom::fast_multiblock64<8>, 0, boost_baseline::IdentityHash, boost_baseline::CountingAllocator<unsigned char>>::insert' requested here
+   98 |                         filter_.insert(*keys);
+      |                                 ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:41:20: note: in instantiation of member function 'boost_baseline::Adapter<1, boost::bloom::fast_multiblock64<8>>::Insert' requested here
+   41 |             filter.Insert(n,inserted.data());
+      |                    ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:57:21: note: in instantiation of function template specialization 'fixture<boost_baseline::Adapter<1, boost::bloom::fast_multiblock64<8>>>' requested here
+   57 |         BF_RETAINED(ADD);
+      |                     ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/retained.hpp:7:5: note: expanded from macro 'BF_RETAINED'
+    7 |     ADD(Boost192Multi64K8, uint64_t); \
+      |     ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:56:18: note: expanded from macro 'ADD'
+   56 | #define ADD(T,H) fixture<T>(#T)
+      |                  ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/fast_multiblock64_avx2.hpp:44:38: note: array 'x' declared here
+   44 |   static BOOST_FORCEINLINE void mark(value_type& x,std::uint64_t hash)
+      |                                      ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/fast_multiblock64_avx2.hpp:63:26: warning: array index 1 is past the end of the array (that has type 'const detail::m256ix2[1]') [-Warray-bounds]
+   63 |       res&=check_m256ix2(x[k/8],hash,k%8);
+      |                          ^ ~~~
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:860:23: note: in instantiation of member function 'boost::bloom::fast_multiblock64<8>::check' requested here
+  860 |     return subfilter::check(*reinterpret_cast<const block_type*>(p),hash);
+      |                       ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:853:12: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock64<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::get' requested here
+  853 |     return get(p,hash,std::integral_constant<bool,are_blocks_aligned>{});
+      |            ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/core.hpp:554:11: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock64<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::get' requested here
+  554 |       if(!get(p,hash0))return false;
+      |           ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/filter.hpp:296:19: note: in instantiation of member function 'boost::bloom::detail::filter_core<1, boost::bloom::fast_multiblock64<8>, 0, boost_baseline::CountingAllocator<unsigned char>>::may_contain' requested here
+  296 |     return super::may_contain(hash_for(x));
+      |                   ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/../boost-adapters.hpp:104:19: note: in instantiation of member function 'boost::bloom::filter<unsigned long, 1, boost::bloom::fast_multiblock64<8>, 0, boost_baseline::IdentityHash, boost_baseline::CountingAllocator<unsigned char>>::may_contain' requested here
+  104 |                         *out = filter_.may_contain(*keys);
+      |                                        ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:42:20: note: in instantiation of member function 'boost_baseline::Adapter<1, boost::bloom::fast_multiblock64<8>>::Lookup' requested here
+   42 |             filter.Lookup(n,inserted.data(),positive.data());
+      |                    ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:57:21: note: in instantiation of function template specialization 'fixture<boost_baseline::Adapter<1, boost::bloom::fast_multiblock64<8>>>' requested here
+   57 |         BF_RETAINED(ADD);
+      |                     ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/retained.hpp:7:5: note: expanded from macro 'BF_RETAINED'
+    7 |     ADD(Boost192Multi64K8, uint64_t); \
+      |     ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-split64-range-parallel-screen/preflight/dense.cpp:56:18: note: expanded from macro 'ADD'
+   56 | #define ADD(T,H) fixture<T>(#T)
+      |                  ^
+/home/yiming/projects/fastest-bf-lab/benchmarks/boost-external/.deps/boost_1_92_0/boost/bloom/detail/fast_multiblock64_avx2.hpp:55:39: note: array 'x' declared here
+   55 |   static BOOST_FORCEINLINE bool check(const value_type& x,std::uint64_t hash)
+      |                                       ^
+4 warnings and 2 errors generated.
+gmake[2]: *** [CMakeFiles/dense_current.dir/build.make:76: CMakeFiles/dense_current.dir/dense.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:140: CMakeFiles/dense_current.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

@@ -1,0 +1,113 @@
+
+/tmp/fastest-bf-k12-singleton-vector-v1-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000000c710 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj>:
+    c710:	test   %rsi,%rsi
+    c713:	je     c921 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x211>
+    c719:	push   %rbx
+    c71a:	movabs $0x3fffffffc0,%r9
+    c724:	mov    (%rdi),%r8
+    c727:	cmp    $0x1,%rsi
+    c72b:	jne    c734 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x24>
+    c72d:	xor    %eax,%eax
+    c72f:	jmp    c885 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x175>
+    c734:	mov    %rsi,%r10
+    c737:	and    $0xfffffffffffffffe,%r10
+    c73b:	xor    %eax,%eax
+    c73d:	vbroadcasti32x4 -0x9bc7(%rip),%zmm0        # 2b80 <_IO_stdin_used+0x14e8>
+    c747:	vpbroadcastd -0xb0c5(%rip),%zmm1        # 168c <__abi_tag+0x13c8>
+    c751:	vbroadcasti32x4 -0x9b9b(%rip),%zmm2        # 2bc0 <_IO_stdin_used+0x1528>
+    c75b:	vbroadcasti32x4 -0x9bc5(%rip),%zmm3        # 2ba0 <_IO_stdin_used+0x1508>
+    c765:	vmovdqa64 -0xa6ef(%rip),%zmm4        # 2080 <_IO_stdin_used+0x9e8>
+    c76f:	nop
+    c770:	mov    (%rdx,%rax,8),%r11
+    c774:	mov    %r11,%rbx
+    c777:	vpbroadcastd %r11d,%zmm5
+    c77d:	shr    $0x20,%r11
+    c781:	vpbroadcastd %r11d,%zmm6
+    c787:	vpsrlvd %zmm0,%zmm6,%zmm7
+    c78d:	vpxord %zmm7,%zmm6,%zmm6
+    c793:	shr    $0x28,%rbx
+    c797:	mov    0x18(%rdi),%r11d
+    c79b:	imul   %rbx,%r11
+    c79f:	shr    $0x12,%r11
+    c7a3:	and    %r9,%r11
+    c7a6:	vpternlogd $0xec,%zmm1,%zmm2,%zmm6
+    c7ad:	vpermd (%r8,%r11,1),%zmm6,%zmm6
+    c7b4:	vprorvd %zmm3,%zmm5,%zmm5
+    c7ba:	vpxor  %xmm7,%xmm7,%xmm7
+    c7be:	vpermd %zmm4,%zmm5,%zmm7
+    c7c4:	vpsrld $0x4,%zmm5,%zmm5
+    c7cb:	vprolvd %zmm5,%zmm7,%zmm5
+    c7d1:	vpandd %zmm6,%zmm5,%zmm6
+    c7d7:	vpcmpneqd %zmm5,%zmm6,%k0
+    c7de:	kmovd  %k0,%r11d
+    c7e2:	xor    %ebx,%ebx
+    c7e4:	test   $0xf,%r11b
+    c7e8:	sete   %bl
+    c7eb:	mov    %ebx,(%rcx,%rax,4)
+    c7ee:	mov    0x8(%rdx,%rax,8),%r11
+    c7f3:	mov    %r11,%rbx
+    c7f6:	vpbroadcastd %r11d,%zmm5
+    c7fc:	shr    $0x20,%r11
+    c800:	vpbroadcastd %r11d,%zmm6
+    c806:	vpsrlvd %zmm0,%zmm6,%zmm7
+    c80c:	vpxord %zmm7,%zmm6,%zmm6
+    c812:	shr    $0x28,%rbx
+    c816:	mov    0x18(%rdi),%r11d
+    c81a:	imul   %rbx,%r11
+    c81e:	shr    $0x12,%r11
+    c822:	and    %r9,%r11
+    c825:	vpternlogd $0xec,%zmm1,%zmm2,%zmm6
+    c82c:	vpermd (%r8,%r11,1),%zmm6,%zmm6
+    c833:	vprorvd %zmm3,%zmm5,%zmm5
+    c839:	vpxor  %xmm7,%xmm7,%xmm7
+    c83d:	vpermd %zmm4,%zmm5,%zmm7
+    c843:	vpsrld $0x4,%zmm5,%zmm5
+    c84a:	vprolvd %zmm5,%zmm7,%zmm5
+    c850:	vpandd %zmm6,%zmm5,%zmm6
+    c856:	vpcmpneqd %zmm5,%zmm6,%k0
+    c85d:	kmovd  %k0,%r11d
+    c861:	xor    %ebx,%ebx
+    c863:	test   $0xf,%r11b
+    c867:	sete   %bl
+    c86a:	mov    %ebx,0x4(%rcx,%rax,4)
+    c86e:	add    $0x2,%rax
+    c872:	cmp    %rax,%r10
+    c875:	jne    c770 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x60>
+    c87b:	test   $0x1,%sil
+    c87f:	je     c920 <_Z20inline_single_kernelILb0EN13bloom_filters42FourSectorRange12SingletonVectorExperimentEmEvRKT0_mPKmPj+0x210>
+    c885:	mov    (%rdx,%rax,8),%rdx
+    c889:	mov    %rdx,%rsi
+    c88c:	vpbroadcastd %edx,%zmm0
+    c892:	shr    $0x20,%rdx
+    c896:	vpbroadcastd %edx,%zmm1
+    c89c:	vpsrlvd -0xa7e6(%rip),%zmm1,%zmm2        # 20c0 <_IO_stdin_used+0xa28>
+    c8a6:	vpxord %zmm2,%zmm1,%zmm1
+    c8ac:	shr    $0x28,%rsi
+    c8b0:	mov    0x18(%rdi),%edx
+    c8b3:	imul   %rsi,%rdx
+    c8b7:	shr    $0x12,%rdx
+    c8bb:	and    %r9,%rdx
+    c8be:	vbroadcasti32x4 -0x9d08(%rip),%zmm2        # 2bc0 <_IO_stdin_used+0x1528>
+    c8c8:	vpternlogd $0xf8,-0xb247(%rip){1to16},%zmm1,%zmm2        # 168c <__abi_tag+0x13c8>
+    c8d3:	vpxor  %xmm1,%xmm1,%xmm1
+    c8d7:	vpermd (%r8,%rdx,1),%zmm2,%zmm1
+    c8de:	vprorvd -0xa7a8(%rip),%zmm0,%zmm0        # 2140 <_IO_stdin_used+0xaa8>
+    c8e8:	vpxor  %xmm2,%xmm2,%xmm2
+    c8ec:	vpermd -0xa876(%rip),%zmm0,%zmm2        # 2080 <_IO_stdin_used+0x9e8>
+    c8f6:	vpsrld $0x4,%zmm0,%zmm0
+    c8fd:	vprolvd %zmm0,%zmm2,%zmm0
+    c903:	vpandd %zmm1,%zmm0,%zmm1
+    c909:	vpcmpneqd %zmm0,%zmm1,%k0
+    c910:	kmovd  %k0,%edx
+    c914:	xor    %esi,%esi
+    c916:	test   $0xf,%dl
+    c919:	sete   %sil
+    c91d:	mov    %esi,(%rcx,%rax,4)
+    c920:	pop    %rbx
+    c921:	vzeroupper
+    c924:	ret

@@ -1,0 +1,19 @@
+{
+  "complete": false,
+  "attempt": 1,
+  "loader_commit": "f692681654ea68c31870d9684c8c90c839a629f6",
+  "anchor_commit": "9cc55171729dd33affb1570a2344e6be851df941",
+  "raw_commit": "66168c56a24f688f4f700b6cb9eb8a85810abd64",
+  "failure": "ValueError: uninventoried local Python source",
+  "failure_stage": "Caller source inventory verification, before verify_proof and before raw anchor/artifact loading or analysis.calculate.",
+  "report_created": false,
+  "retry_executed": false,
+  "extra_python_source": {
+    "path": "experiments/2026-10-30-independent32-range/caller/seal.py",
+    "bytes": 4898,
+    "sha256": "add8f032e280892dcb5268401e7736c5085c2f5f57cd976de8e5cc68445e4959",
+    "commit": "aa21a91a8290ed31fdcfc5390cc548f9ec73a282",
+    "bound_by": "caller/COMPLETE_PROOF_ARCHIVE.json"
+  },
+  "diagnosis": "The caller source PREPARATION predates the additive proof sealer. manifest_files applies the import-directory inventory rule to the caller directory even though caller Python is not imported. The sealer is an exact committed artifact in the already-bound proof archive."
+}

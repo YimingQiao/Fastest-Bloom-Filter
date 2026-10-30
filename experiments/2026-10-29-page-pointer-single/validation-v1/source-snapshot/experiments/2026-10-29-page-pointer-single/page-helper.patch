@@ -1,0 +1,10 @@
+--- frozen-v2-RawPage-fragment
++++ RawPage-with-public-pointer-forwarder
+@@ -13,6 +13,7 @@
+   Geometry Info()const{return geometry_;}
+   void Insert(uint32_t n,const uint32_t* raw){for(size_t i=0;i<n;++i)filter_.set(reinterpret_cast<const uint8_t*>(raw+i),sizeof(uint32_t));}
+   bool Single(uint32_t key)const{return filter_.test(reinterpret_cast<const uint8_t*>(&key),sizeof(uint32_t));}
++  bool SinglePointer(const uint32_t* key)const{return filter_.test(reinterpret_cast<const uint8_t*>(key),sizeof(uint32_t));}
+   void Dense(uint32_t n,const uint32_t* raw,uint32_t* out)const{for(size_t i=0;i<n;++i)out[i]=filter_.test(reinterpret_cast<const uint8_t*>(raw+i),sizeof(uint32_t));}
+   void Prepare(Mode){}
+   size_t QueryScratchBytes()const{return 0;}

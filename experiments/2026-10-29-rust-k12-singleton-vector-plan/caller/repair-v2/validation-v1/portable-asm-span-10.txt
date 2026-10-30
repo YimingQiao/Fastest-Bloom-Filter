@@ -1,0 +1,53 @@
+   1b2f0:	push   %rbx
+   1b2f1:	cmp    %rdx,%r8
+   1b2f4:	cmovb  %r8,%rdx
+   1b2f8:	test   %rdx,%rdx
+   1b2fb:	je     1b3e4 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_tiny_avx512+0xf4>
+   1b301:	mov    0x18(%rdi),%r8d
+   1b305:	mov    0x8(%rdi),%r9
+   1b309:	mov    0x10(%rdi),%rax
+   1b30d:	vmovdqa64 -0x132d7(%rip),%zmm0        # 8040 <anon.16f56ecd2c7bffacf69562dbd0b44b6b.11.llvm.15448142832521594973+0x80>
+   1b317:	xor    %r10d,%r10d
+   1b31a:	vmovdqa64 -0x138a4(%rip),%zmm1        # 7a80 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x5b0>
+   1b324:	vmovdqa64 -0x1386e(%rip),%zmm2        # 7ac0 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x5f0>
+   1b32e:	vpbroadcastd -0x13604(%rip),%zmm3        # 7d34 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x864>
+   1b338:	vmovdqa64 -0x13842(%rip),%zmm4        # 7b00 <anon.35274091df3394f4211c680a8c77ed4a.33.llvm.9036914972901821666+0x630>
+   1b342:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   1b350:	mov    (%rsi,%r10,8),%r11
+   1b354:	mov    %r11,%rdi
+   1b357:	shr    $0x28,%rdi
+   1b35b:	imul   %r8,%rdi
+   1b35f:	shr    $0x18,%rdi
+   1b363:	and    $0xfffffff,%edi
+   1b369:	cmp    %rax,%rdi
+   1b36c:	jae    1b3e9 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_tiny_avx512+0xf9>
+   1b36e:	mov    %r11,%rbx
+   1b371:	shr    $0x20,%rbx
+   1b375:	shl    $0x6,%rdi
+   1b379:	vpbroadcastd %ebx,%zmm5
+   1b37f:	vpsrlvd %zmm1,%zmm5,%zmm6
+   1b385:	vpxord %zmm5,%zmm6,%zmm5
+   1b38b:	vpternlogd $0xec,%zmm3,%zmm2,%zmm5
+   1b392:	vpermd (%r9,%rdi,1),%zmm5,%zmm5
+   1b399:	vpbroadcastd %r11d,%zmm6
+   1b39f:	vprorvd %zmm4,%zmm6,%zmm6
+   1b3a5:	vpermd %zmm0,%zmm6,%zmm7
+   1b3ab:	vpsrld $0x4,%zmm6,%zmm6
+   1b3b2:	vprolvd %zmm6,%zmm7,%zmm6
+   1b3b8:	vpandd %zmm5,%zmm6,%zmm5
+   1b3be:	vpcmpneqd %zmm6,%zmm5,%k0
+   1b3c5:	kmovw  %k0,%edi
+   1b3c9:	xor    %r11d,%r11d
+   1b3cc:	test   $0xf,%dil
+   1b3d0:	sete   %r11b
+   1b3d4:	mov    %r11d,(%rcx,%r10,4)
+   1b3d8:	inc    %r10
+   1b3db:	cmp    %r10,%rdx
+   1b3de:	jne    1b350 <<candidate_native::four_sector_range12::FourSectorRange12BloomFilter>::lookup_tiny_avx512+0x60>
+   1b3e4:	pop    %rbx
+   1b3e5:	vzeroupper
+   1b3e8:	ret
+   1b3e9:	lea    0x50080(%rip),%rdx        # 6b470 <anon.8b8f2e7a3508a3fdcfe9dcf6f9603a73.20.llvm.3671060894988460240+0x170>
+   1b3f0:	mov    %rax,%rsi
+   1b3f3:	vzeroupper
+   1b3f6:	call   *0x5303c(%rip)        # 6e438 <_DYNAMIC+0x220>

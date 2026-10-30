@@ -1,0 +1,91 @@
+--- frozen-proof/preflight.py
++++ collector-resume/resume.py
+@@ -1,6 +1,8 @@
+ #!/usr/bin/env python3
+-"""Focused actual-native caller validation only; no formal96-pair matrix."""
++"""Resume ASan after retaining all successful normal work; collector-only repair."""
+ import sys
++from pathlib import Path
++sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "proof"))
+ if not __debug__:
+     raise SystemExit("Python -O is forbidden before execution")
+ import argparse
+@@ -11,7 +13,9 @@
+ import subprocess
+ from contract import SEMANTICS, audit, need, plan, validate
+ from lease import require_lease
+-from source_guard import HERE, ROOT, STAGE, sha, verify
++from repair_guard import HERE, ROOT, RESUME, ORIGINAL, sha, verify, reused_normal
++import source_guard as original_guard
++from dependencies import collect
+ 
+ 
+ def dump(path, obj):
+@@ -53,11 +57,18 @@
+     need(args.execute_correctness, "Explicit correctness flag required")
+     lease = require_lease(args.cpu)
+     sources = verify(args.source_commit)
+-    output = HERE / "validation-v1"
++    output = RESUME / "validation-v2"
+     need(not output.exists() and not output.is_symlink(), "Preserve all previous attempts")
+     output.mkdir()
+     meta = dict(complete=False, formal_performance_run=False, source_commit=args.source_commit,
+                 source_sha256=sources, lease=lease, commands=[], binaries={}, boundary_tests={}, consumed_inputs={}, records=[])
++    prior, reuse = reused_normal(original_guard.verify(ORIGINAL))
++    meta["reused_normal"] = dict(source_commit=ORIGINAL, metadata_path=str(HERE / "validation-v1/commands.json"),
++        metadata_sha256=sha(HERE / "validation-v1/commands.json"), commands=34)
++    meta["records"] = prior["records"]
++    meta["binaries"] = prior["binaries"]
++    meta["boundary_tests"] = prior["boundary_tests"]
++    meta["consumed_inputs"] = {"normal": reuse["consumed_inputs"]}
+     dump(output / "commands.json", meta)
+ 
+     def run(label, argv, extra=None, valid=True, diagnostic=None):
+@@ -79,14 +90,14 @@
+         return result.stdout.decode()
+ 
+     try:
+-        run("offline-guards", [sys.executable, "-m", "unittest", "discover", "-s", HERE, "-p", "test_contract.py"])
++        run("offline-guards", [sys.executable, "-m", "unittest", "discover", "-s", RESUME, "-p", "test_*.py"])
+         run("clang-version", ["clang++", "--version"])
+         run("rust-version", ["rustc", "-Vv"])
+         run("nightly-version", ["rustc", "+nightly", "-Vv"])
+-        references = {}
+-        for backend in ("normal", "asan"):
+-            build = ROOT / "build" / f"native-build-policy-port-v1-cpu{args.cpu}-{backend}"
+-            target = Path(f"/tmp/fastest-bf-native-build-policy-port-v1-cpu{args.cpu}") / backend
++        references = {(row["family"], row["scenario"]): tuple(row[k] for k in SEMANTICS) for row in meta["records"]}
++        for backend in ("asan",):
++            build = ROOT / "build" / f"native-build-policy-port-v2-cpu{args.cpu}-{backend}"
++            target = Path(f"/tmp/fastest-bf-native-build-policy-port-v2-cpu{args.cpu}") / backend
+             need(not build.exists() and not build.is_symlink() and not target.exists() and not target.is_symlink(), "Fresh build paths required")
+             run(backend + "-cpp-configure", ["cmake", "-S", HERE, "-B", build, "-DCMAKE_CXX_COMPILER=clang++",
+                 "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON", "-DPOLICY_ASAN=" + ("ON" if backend == "asan" else "OFF")])
+@@ -130,22 +141,11 @@
+                     for i, (index, value) in enumerate(((-6, "Unknown"), (-5, "6"), (-4, "3"), (-3, "42"), (-1, "--unknown"))):
+                         invalid = original.copy(); invalid[index] = value
+                         run(f"{language}-invalid{i}", invalid, valid=False)
+-            consumed = {}
+-            dependencies = list(build.rglob("*.o.d")) + list(target.rglob("*.d"))
+-            need(dependencies, "Actual dependency files missing")
+-            for i, path in enumerate(dependencies):
+-                text = path.read_text(); (output / f"{backend}-dependency-{i}.d").write_text(text)
+-                first = text.replace("\\\n", " ").splitlines()[0]
+-                need(": " in first, "Malformed actual dependency rule")
+-                for item in shlex.split(first.split(": ", 1)[1]):
+-                    source = Path(item)
+-                    if not source.is_absolute():
+-                        source = (HERE / "rust" / source) if path.is_relative_to(target) else ROOT / source
+-                    source = source.resolve(); need(source.is_file(), "Missing actual compiler input")
+-                    digest = sha(source)
+-                    if source.is_relative_to(ROOT):
+-                        need(sources.get(str(source.relative_to(ROOT))) == digest, "Unprepared repository compiler input " + str(source))
+-                    consumed[str(source)] = digest
++            consumed, rules = collect(build, target, [text, test_text], sources, ROOT)
++            for i, rule in enumerate(rules):
++                (output / f"{backend}-dependency-{i}.d").write_text(rule.pop("text"))
++                rule["archived_path"] = f"{backend}-dependency-{i}.d"
++            dump(output / (backend + "-dependency-identities.json"), rules)
+             required = [HERE / "cpp/main.cpp", HERE / "rust/src/main.rs", HERE / "rust/src/bindings.rs",
+                         HERE / "native/after/tests/test_split64_build_policy.cpp"]
+             for label in ("before", "after"):

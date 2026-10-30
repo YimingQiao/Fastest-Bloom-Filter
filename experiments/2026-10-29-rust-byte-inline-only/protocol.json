@@ -1,0 +1,91 @@
+{
+  "status": "Correctness and codegen preflight passed; frozen proposed performance protocol pending parent review/commit",
+  "source_commit": "9011d5228118373f89786d3a1a304f83ea689a85",
+  "production_changed": false,
+  "cpu": 3,
+  "numa_node": 1,
+  "affinity_claim": "CPU3 pinning only; no NUMA memory-policy claim",
+  "socket_lock": "/tmp/fastest-bf-socket1.lock",
+  "filters": [
+    "ByteSplitBloomFilter",
+    "ByteTripleHintControl",
+    "ByteOnlyInlineV1"
+  ],
+  "key_powers": [
+    16,
+    25
+  ],
+  "requested_bpk": [
+    8,
+    16
+  ],
+  "actual_bpk": [
+    16,
+    32
+  ],
+  "batches": [
+    1,
+    3,
+    31,
+    4096
+  ],
+  "seeds": [
+    2000003,
+    2000015
+  ],
+  "query_power": 22,
+  "hit_percent": 50,
+  "repeats": 8,
+  "calibration_power": 24,
+  "insert_batch": "whole input",
+  "workloads": 32,
+  "rows": 96,
+  "query_modes": [
+    "old_prehashed",
+    "old_hash_staged",
+    "visible_prehashed",
+    "visible_hash_fused"
+  ],
+  "schedule": [
+    [
+      0,
+      1,
+      3,
+      2
+    ],
+    [
+      1,
+      2,
+      0,
+      3
+    ],
+    [
+      2,
+      3,
+      1,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      1
+    ]
+  ],
+  "label_permutation": "SplitMix64(seed xor 0x6a09e667f3bcc909), same four-mode source-derived oracle",
+  "compiler_flags": "-C target-cpu=native -C symbol-mangling-version=v0",
+  "binary": "/tmp/fastest-bf-rust-byte-inline-only/release/compare_benchmark",
+  "binary_sha256": "e07494fceb045dacea9942e03a9edbb850e49a56a701616ce78dea0a320cac12",
+  "filter_order": "All three configurations at every batch; seeded full-workload shuffle. Selected seed pair reverses all three rows at each n.",
+  "comparisons": [
+    "ByteOnlyInlineV1 versus immutable original source",
+    "ByteOnlyInlineV1 versus triple-hint control",
+    "Triple-hint control versus immutable original source"
+  ],
+  "ranking_scope": "Native annotation/placement comparison only. No external filters or external-leadership claim. Every per-seed loss retained.",
+  "statistical_scope": "Descriptive two-seed paired measurements, not a statistical superiority test. Phase balance is within each row; filter order is pairwise balanced but absolute middle position is not.",
+  "quality_scope": "All three map identically. Compare exact false-positive counts/checksums and report one original calibration record per size/budget/seed; no reuse pooling.",
+  "authorization": "Requires completed preflight/source and executable freeze, parent review+commit and an explicit matching whole-matrix socket lease. This file does not authorize execution.",
+  "preflight_cpu": 3,
+  "timing_cpu_revision": "Changed from initial CPU2 proposal to CPU3 before any throughput; same-process ratios only, no comparison of timings across CPUs or binaries"
+}

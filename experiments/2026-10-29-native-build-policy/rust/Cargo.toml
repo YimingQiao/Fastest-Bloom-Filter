@@ -1,0 +1,16 @@
+[package]
+name = "native-build-policy-experiment"
+version = "0.0.0"
+edition = "2021"
+license = "MIT AND Apache-2.0"
+publish = false
+
+[dependencies]
+fastest-bloom-filter = { path = "../../2026-10-29-split64-range-native-scaling/rust/native" }
+
+[features]
+disable-avx512 = ["fastest-bloom-filter/disable-avx512"]
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

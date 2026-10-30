@@ -1,0 +1,101 @@
+--- frozen-cpp616-geometry.hpp
++++ same-recipes-independent32-panel.hpp
+@@ -42,14 +42,6 @@
+         return BF(n, bpk);
+     }
+ };
+-template<> struct Traits<external_bloom::SimdBlock> : ExternalMake<external_bloom::SimdBlock> {
+-    static Geometry Plan(size_t n, uint32_t bpk) {
+-        const size_t budget = Bytes(n, bpk), allocated = FloorPower2(AtLeast(budget, 64));
+-        Geometry g{budget, allocated, allocated, 32, allocated / 32, 8, "simd_pow2_buckets"};
+-        g.constructor_argument = external_bloom::LogBytes(allocated);
+-        return g;
+-    }
+-};
+ template<class BF, size_t Width, size_t Scale, int Probes> struct FixedTraits : ExternalMake<BF> {
+     static Geometry Plan(size_t n, uint32_t bpk) {
+         const size_t budget = Bytes(n, bpk), allocated = FloorUnits(budget, Width);
+@@ -60,30 +52,8 @@
+     }
+ };
+ template<> struct Traits<external_bloom::Fixed16> : FixedTraits<external_bloom::Fixed16, 16, 10, -1> {};
+-template<bool Bulk> struct Traits<external_bloom::Fixed32<Bulk>> : FixedTraits<external_bloom::Fixed32<Bulk>, 32, 24, 8> {};
+-template<> struct Traits<external_bloom::Fixed64> : FixedTraits<external_bloom::Fixed64, 64, 50, 8> {};
+ template<class Base> struct Traits<external_bloom::SingleShortcutV1<Base>> : ExternalMake<external_bloom::SingleShortcutV1<Base>> {
+     static Geometry Plan(size_t n, uint32_t bpk) { return Traits<Base>::Plan(n, bpk); }
+-};
+-template<int K, bool Branchless, bool Bulk> struct Traits<external_bloom::Classical<K, Branchless, Bulk>>
+-    : ExternalMake<external_bloom::Classical<K, Branchless, Bulk>> {
+-    static Geometry Plan(size_t n, uint32_t bpk) {
+-        const size_t budget = Bytes(n, bpk), allocated = FloorUnits(budget, 8);
+-        Geometry g{budget, allocated, allocated, 8, allocated / 8, K, "classical_words"};
+-        g.constructor_argument = allocated;
+-        return g;
+-    }
+-};
+-template<unsigned K, bool Compact> struct Traits<external_bloom::Page<K, Compact>> : ExternalMake<external_bloom::Page<K, Compact>> {
+-    static Geometry Plan(size_t n, uint32_t bpk) {
+-        const size_t budget = Bytes(n, bpk);
+-        const unsigned level = PageLevel<K, Compact>(budget);
+-        const size_t unit = size_t{1} << level, count = budget / unit;
+-        Geometry g{budget, count * unit, count * unit, unit, count, K, "page_raw_bytes"};
+-        g.page_level = level;
+-        g.constructor_argument = count;
+-        return g;
+-    }
+ };
+ template<size_t K, class Sub, size_t Stride> struct Traits<boost_baseline::Adapter<K, Sub, Stride>>
+     : ExternalMake<boost_baseline::Adapter<K, Sub, Stride>> {
+@@ -105,44 +75,20 @@
+         return g;
+     }
+ };
+-template<int K, bool Bulk> struct Traits<rocksdb_external::FastLocalBloom64<K, Bulk>>
+-    : ExternalMake<rocksdb_external::FastLocalBloom64<K, Bulk>> {
++template<> struct Traits<Independent32BloomFilter> : NativeTraits<Independent32BloomFilter, 8> {
+     static Geometry Plan(size_t n, uint32_t bpk) {
+-        const size_t budget = Bytes(n, bpk), allocated = FloorUnits(budget, 64);
+-        const int probes = K ? K : ROCKSDB_NAMESPACE::FastLocalBloomImpl::ChooseNumProbes(static_cast<int>(
+-            std::min<uint64_t>(uint64_t{allocated} * 8000 / n, INT_MAX)));
+-        Geometry g{budget, allocated, allocated, 64, allocated / 64, probes, "rocks_core_lines"};
+-        g.constructor_argument = allocated;
++        auto g = NativeTraits<Independent32BloomFilter, 8>::Plan(n, bpk);
++        g.unit_bytes = 32; g.units = g.allocated_bytes / 32;
++        g.kind = "independent32_pow2_buckets"; g.origin = "retained_project";
+         return g;
+     }
+ };
+-template<class BF, size_t Width, int Probes> struct RangeTraits : ExternalMake<BF> {
++template<> struct Traits<Independent32RangeBloomFilter> : ExternalMake<Independent32RangeBloomFilter> {
+     static Geometry Plan(size_t n, uint32_t bpk) {
+-        const size_t budget = Bytes(n, bpk), allocation = FloorUnits(AtLeast(budget, 128), 64);
+-        Geometry g{budget, allocation, allocation, Width, allocation / Width, Probes, "project_range_buckets"};
+-        g.constructor_argument = budget;
+-        g.origin = "project_experiment";
+-        if constexpr (Probes == -1) g.probe_policy = "variable_byte_mask_0_16";
++        const size_t budget = Bytes(n, bpk), allocated = FloorUnits(AtLeast(budget, 128), 64);
++        Geometry g{budget, allocated, allocated, 32, allocated / 32, 8, "independent32_range_buckets"};
++        g.constructor_argument = bpk; g.origin = "project_experiment";
+         return g;
+     }
+ };
+-template<class BF, int K> struct NativeRangeTraits : RangeTraits<BF, 64, K> {
+-    static Geometry Plan(size_t n, uint32_t bpk) {
+-        auto g = RangeTraits<BF, 64, K>::Plan(n, bpk);
+-        // Public BF(real_n,bpk) constructor argument, not the derived byte budget.
+-        g.constructor_argument = bpk;
+-        g.kind = "native_range_lines";
+-        return g;
+-    }
+-};
+-template<> struct Traits<Split64Range> : NativeRangeTraits<Split64Range, 8> {};
+-template<> struct Traits<K12Control> : NativeRangeTraits<K12Control, 12> {};
+-template<> struct Traits<K12SingletonVector> : NativeRangeTraits<K12SingletonVector, 12> {};
+-inline const char *GeometryHeader() {
+-    return "budget_bytes,logical_bytes,geometry_kind,unit_bytes,unit_count,effective_probes,probe_policy,constructor_argument,page_level,native_constructor_bpk,implementation_origin";
+-}
+-inline void PrintGeometry(std::ostream &out, const Geometry &g) {
+-    out << g.budget_bytes << ',' << g.logical_bytes << ',' << g.kind << ',' << g.unit_bytes << ',' << g.units
+-        << ',' << g.probes << ',' << g.probe_policy << ',' << g.constructor_argument << ',' << g.page_level << ',' << g.native_bpk << ',' << g.origin;
+-}
+ } // namespace exact_budget

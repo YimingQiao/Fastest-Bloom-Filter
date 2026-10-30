@@ -1,0 +1,81 @@
+--- parent_guard.py
++++ guard.py
+@@ -9,7 +9,10 @@
+ EXTERNAL = {'Fastbloom017', 'BloomsdayPinned', 'SbbfSafePinned'} | FIXED
+ RANGE = 'Split64RangeBloomFilter'
+ K12 = 'FourSectorRange12BloomFilter'
+-NAMES = NATIVE | EXTERNAL | {RANGE, K12}
++from bindings import SELECTION
++import json
++POPPY_POINTS = {p['filter']: p for p in json.loads(SELECTION.read_text())['configurations'] if p['owner'] == 'poppy_external'}
++NAMES = NATIVE | EXTERNAL | {RANGE, K12} | set(POPPY_POINTS)
+ METRICS = ('lookup', 'hash_lookup', 'inline_lookup', 'inline_hash_lookup')
+ BUILD = ('insert_ns', 'allocate_insert_ns', 'hash_insert_ns', 'allocate_hash_insert_ns')
+ MASK = (1 << 64) - 1
+@@ -41,7 +44,7 @@
+     match = re.search(r'const FILTER_NAMES: &\[&str\] = &\[(.*?)\];', source, re.S)
+     require(match is not None, 'Missing source registry')
+     names = re.findall(r'"([A-Za-z0-9_]+)"', match[1])
+-    require(len(names) == len(set(names)) == 21 and set(names) == NAMES, 'Wrong source registry')
++    require(len(names) == len(set(names)) == 68 and set(names) == NAMES, 'Wrong source registry')
+     return names
+ 
+ 
+@@ -90,7 +93,8 @@
+     present = q // 100 * hit + min(q % 100, hit)
+     # One key_base, n-1 insertion shuffle, present positive draws, q-1 query shuffle.
+     state = (case['seed'] + STEP * (1 + n - 1 + present + q - 1)) & MASK
+-    return shuffled([name for name in source_registry(source) if name in case['filters']], state)
++    values = shuffled([name for name in source_registry(source) if name in case['filters']], state)
++    return values[::-1] if case.get('order', 'original') == 'reverse' else values
+ 
+ 
+ def expected_phases(seed, repeats):
+@@ -100,6 +104,14 @@
+ 
+ 
+ def expected_geometry(name, n, cap):
++    if name in POPPY_POINTS:
++        p = POPPY_POINTS[name]; c = p['canonical_constructor']
++        require(n == p['keys'] and cap == p['run_budget_bpk'], 'Wrong frozen Poppy constructor')
++        return dict(filter_bytes=p['actual_bytes'], actual_bpk=p['actual_bpk'], budget_bytes=n*cap//8,
++                    logical_bytes=c['buckets']*4096, geometry_kind='public_poppy_v2_bucket_plus_cache',
++                    unit_bytes=4096, unit_count=c['buckets'], effective_probes=c['probes'],
++                    probe_policy='bucket_probes_plus_cache' if c['cache_bytes'] else 'bucket_probes_no_cache', constructor_argument=int(c['fpp_bits'], 16),
++                    implementation_origin='poppy_external', size_contract='exact_byte_ceiling_v1')
+     actual = 16 if name in NATIVE and cap == 24 else cap
+     backing, budget = n * actual // 8, n * cap // 8
+     unit, kind, probes, policy, argument = 64, 'range_lines', 8, 'fixed', budget
+@@ -138,11 +150,13 @@
+         expected = dict(keys=n, queries=q, requested_bpk=case['budget_bpk'], hash_bits=64,
+                         hit_percent=hit, present_queries=present, absent_queries=q-present,
+                         batch=case['batch'], repeats=repeats, seed=case['seed'], insert_batch=n,
+-                        calibration_absent_queries=1 << protocol['calibration_power'])
++                        calibration_absent_queries=(1 << protocol['calibration_power'] if protocol['calibration_power'] else 0))
+         expected.update(expected_geometry(row['filter'], n, case['budget_bpk']))
+         for field, value in expected.items():
+             if isinstance(value, int):
+                 require(int(row[field]) == value, 'Wrong ' + field + ': ' + row['filter'])
++            elif isinstance(value, float):
++                require(math.isclose(float(row[field]), value, rel_tol=1e-12), 'Wrong numeric geometry '+field)
+             else:
+                 require(row[field] == value, 'Wrong ' + field + ': ' + row['filter'])
+         require(row['language'] == 'rust' and row['input_mode'] == 'prehashed'
+@@ -150,7 +164,7 @@
+         require(0 <= int(row['result_checksum']) <= MASK, 'Invalid checksum')
+         fp, absent = int(row['false_positives']), q - present
+         require(0 <= fp <= absent and math.isclose(float(row['fpr']), fp / absent, rel_tol=1e-12, abs_tol=1e-15), 'Invalid mixed FPR')
+-        require(0 <= int(row['calibration_false_positives']) <= 1 << protocol['calibration_power'], 'Invalid independent FP count')
++        require(0 <= int(row['calibration_false_positives']) <= (1 << protocol['calibration_power'] if protocol['calibration_power'] else 0), 'Invalid independent FP count')
+         phase = expected_phases(case['seed'], repeats)
+         require(row['query_phase_order'] == phase, 'Wrong source-derived phase order')
+         orders = [list(map(int, part.split('|'))) for part in phase.split(';')]
+@@ -191,7 +205,7 @@
+ 
+ 
+ def raw_intervals(case, protocol):
+-    n, q, cal = 1 << case['key_power'], 1 << protocol['query_power'], 1 << protocol['calibration_power']
++    n, q, cal = 1 << case['key_power'], 1 << protocol['query_power'], (1 << protocol['calibration_power'] if protocol['calibration_power'] else 0)
+     _, first = next_value(case['seed'])
+     base = first % ((1 << 32) - n - q)
+     return dict(inserted=[base, base + n], timed_negative_envelope=[base+n, base+n+q],

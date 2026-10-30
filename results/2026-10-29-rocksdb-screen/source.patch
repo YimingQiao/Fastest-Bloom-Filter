@@ -1,0 +1,176 @@
+diff --git a/benchmarks/rust-external/src/main.rs b/benchmarks/rust-external/src/main.rs
+index 772a4d2..76cb618 100644
+--- a/benchmarks/rust-external/src/main.rs
++++ b/benchmarks/rust-external/src/main.rs
+@@ -274,7 +274,7 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
+     }
+     let mut times = vec![];
+     let mut total = vec![];
+-    for _ in 0..c.repeats {
++    for trial in 0..c.repeats {
+         let start = Instant::now();
+         for (input, out) in hashes
+             .chunks(c.batch)
+@@ -283,6 +283,9 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
+             lookup(&bf, input, out);
+         }
+         times.push(start.elapsed().as_secs_f64() * 1e9 / c.q as f64);
++        if trial == 0 {
++            query_validation::verify_output(&output[..c.q], checksum, "timed prehashed query");
++        }
+         consume(&output[..c.q]);
+         let start = Instant::now();
+         for (input, out) in raw_query
+@@ -295,6 +298,9 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
+             lookup(&bf, &scratch[..input.len()], out);
+         }
+         total.push(start.elapsed().as_secs_f64() * 1e9 / c.q as f64);
++        if trial == 0 {
++            query_validation::verify_output(&output[..c.q], checksum, "timed hash+query");
++        }
+         consume(&output[..c.q]);
+     }
+     // Separate negative calibration runs after all timing, reusing only one
+@@ -352,6 +358,19 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
+         c.insert_batch
+     );
+ }
++#[path = "../../../rust/src/bin/support/filter_selection.rs"]
++mod filter_selection;
++#[path = "../../../rust/src/bin/support/query_validation.rs"]
++mod query_validation;
++
++const FILTER_NAMES: &[&str] = &[
++    "Fastbloom017",
++    "FastPatternBF",
++    "BloomsdayPinned",
++    "Split64Experimental",
++    "FourSector16K8Experimental",
++];
++
+ fn main() {
+     let args: Vec<_> = std::env::args().collect();
+     let number = |i: usize, default: u64| -> u64 {
+@@ -388,6 +407,14 @@ fn main() {
+             && args.len() <= 11,
+         "invalid arguments"
+     );
++    let mut jobs = filter_selection::select_filters(
++        args.get(8).map(String::as_str).unwrap_or(""),
++        FILTER_NAMES,
++    )
++    .unwrap_or_else(|error| {
++        eprintln!("{error}");
++        std::process::exit(2);
++    });
+     let n = 1usize << power;
+     let q = 1usize << qp;
+     assert!(n * (bpk as usize) < (1usize << 31), "size overflow");
+@@ -419,20 +446,6 @@ fn main() {
+         key_base,
+     };
+     println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,allocate_hash_insert_ns,insert_batch,hash_lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives");
+-    let selection = args.get(8).map(String::as_str).unwrap_or("");
+-    let mut jobs = vec![];
+-    for name in [
+-        "Fastbloom017",
+-        "FastPatternBF",
+-        "BloomsdayPinned",
+-        "Split64Experimental",
+-        "FourSector16K8Experimental",
+-    ] {
+-        if selection.is_empty() || selection.split(',').any(|x| x == name) {
+-            jobs.push(name);
+-        }
+-    }
+-    assert!(!jobs.is_empty(), "no matching filters");
+     shuffle(&mut jobs, &mut rng);
+     for name in jobs {
+         match name {
+diff --git a/rust/src/bin/compare_benchmark.rs b/rust/src/bin/compare_benchmark.rs
+index 91edc1e..7e5e022 100644
+--- a/rust/src/bin/compare_benchmark.rs
++++ b/rust/src/bin/compare_benchmark.rs
+@@ -228,7 +228,7 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
+     }
+     let mut times = vec![];
+     let mut total = vec![];
+-    for _ in 0..c.repeats {
++    for trial in 0..c.repeats {
+         let start = Instant::now();
+         for (input, out) in hashes
+             .chunks(c.batch)
+@@ -237,6 +237,9 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
+             lookup(&bf, input, out);
+         }
+         times.push(start.elapsed().as_secs_f64() * 1e9 / c.q as f64);
++        if trial == 0 {
++            query_validation::verify_output(&output[..c.q], checksum, "timed prehashed query");
++        }
+         consume(&output[..c.q]);
+         let start = Instant::now();
+         for (input, out) in raw_query
+@@ -249,6 +252,9 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
+             lookup(&bf, &scratch[..input.len()], out);
+         }
+         total.push(start.elapsed().as_secs_f64() * 1e9 / c.q as f64);
++        if trial == 0 {
++            query_validation::verify_output(&output[..c.q], checksum, "timed hash+query");
++        }
+         consume(&output[..c.q]);
+     }
+     // Separate negative calibration runs after all timing, reusing only one
+@@ -306,6 +312,18 @@ fn run<F: Filter>(name: &str, raw_insert: &[u64], raw_query: &[u64], c: &Config)
+         c.insert_batch
+     );
+ }
++#[path = "support/filter_selection.rs"]
++mod filter_selection;
++#[path = "support/query_validation.rs"]
++mod query_validation;
++
++const FILTER_NAMES: &[&str] = &[
++    "CacheSectorizedBF32Bit",
++    "FastPatternBF",
++    "FourSectorBloomFilter",
++    "Split64BloomFilter",
++];
++
+ fn main() {
+     let args: Vec<_> = std::env::args().collect();
+     let number = |i: usize, default: u64| -> u64 {
+@@ -342,6 +360,14 @@ fn main() {
+             && args.len() <= 11,
+         "invalid arguments"
+     );
++    let mut jobs = filter_selection::select_filters(
++        args.get(8).map(String::as_str).unwrap_or(""),
++        FILTER_NAMES,
++    )
++    .unwrap_or_else(|error| {
++        eprintln!("{error}");
++        std::process::exit(2);
++    });
+     let n = 1usize << power;
+     let q = 1usize << qp;
+     assert!(n * (bpk as usize) < (1usize << 31), "size overflow");
+@@ -373,19 +399,6 @@ fn main() {
+         key_base,
+     };
+     println!("language,filter,keys,queries,requested_bpk,filter_bytes,actual_bpk,hash_bits,hit_percent,present_queries,batch,repeats,seed,insert_ns,allocate_insert_ns,lookup_ns,hash_lookup_ns,absent_queries,false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,allocate_hash_insert_ns,insert_batch,hash_lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives");
+-    let selection = args.get(8).map(String::as_str).unwrap_or("");
+-    let mut jobs = vec![];
+-    for name in [
+-        "CacheSectorizedBF32Bit",
+-        "FastPatternBF",
+-        "FourSectorBloomFilter",
+-        "Split64BloomFilter",
+-    ] {
+-        if selection.is_empty() || selection.split(',').any(|x| x == name) {
+-            jobs.push(name);
+-        }
+-    }
+-    assert!(!jobs.is_empty(), "no matching filters");
+     shuffle(&mut jobs, &mut rng);
+     for name in jobs {
+         match name {

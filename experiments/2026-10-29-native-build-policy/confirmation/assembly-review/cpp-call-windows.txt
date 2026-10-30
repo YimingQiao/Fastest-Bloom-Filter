@@ -1,0 +1,351 @@
+0000000000007b70 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)>:
+    8c31:	vpxor  %xmm0,%xmm0,%xmm0
+    8c35:	vmovdqu %ymm0,0x360(%rsp)
+    8c3e:	vmovdqu %ymm0,0x340(%rsp)
+    8c47:	vmovdqu %ymm0,0x320(%rsp)
+    8c50:	vmovdqu %ymm0,0x300(%rsp)
+    8c59:	cmp    %rcx,%rax
+    8c5c:	mov    $0x1,%edi
+    8c61:	jne    8dbd <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x124d>
+    8c67:	mov    $0x80,%esi
+    8c6c:	xor    %edi,%edi
+    8c6e:	lea    0x300(%rsp),%rdx
+    8c76:	vzeroupper
+    8c79:	call   20070 <sched_setaffinity@plt>
+    8c7e:	test   %eax,%eax
+    8c80:	jne    c16d <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x45fd>
+    8c86:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    8c8b:	mov    %rax,%rbx
+    8c8e:	mov    0x8(%r14),%rsi
+    8c92:	lea    0x20(%rsp),%rdi
+    8c97:	call   19000 <bloom_filters::Split64Range::Split64Range(bloom_filters::RangeBytes)>
+    8c9c:	mov    0x10(%r14),%esi
+    8ca0:	mov    0x80(%rsp),%rdx
+    8ca8:	mov    0x18(%r14),%rax
+    8cac:	mov    0x30(%rsp),%rcx
+    8cb1:	sub    0x20(%rsp),%rcx
+    8cb6:	cmp    $0x40001,%rcx
+    8cbd:	mov    %rax,%rcx
+    8cc0:	mov    $0x1,%edi
+    8cc5:	cmovb  %rdi,%rcx
+    8cc9:	cmp    $0x10001,%esi
+    8ccf:	cmovae %rax,%rcx
+    8cd3:	lea    0x20(%rsp),%rdi
+    8cd8:	call   19db0 <bloom_filters::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    8cdd:	mov    $0x1,%r12d
+    8ce3:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    8ce8:	mov    0x40(%r14),%rcx
+    8cec:	mov    (%rcx),%ecx
+    8cee:	vpxor  %xmm0,%xmm0,%xmm0
+    8cf2:	vmovdqu %ymm0,0x360(%rsp)
+    8cfb:	vmovdqu %ymm0,0x340(%rsp)
+    8d04:	mov    %rax,%r15
+    8d07:	vmovdqu %ymm0,0x320(%rsp)
+
+0000000000007b70 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)>:
+    8e2f:	cmpq   $0x0,0x20(%r14)
+    8e34:	jne    c14c <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x45dc>
+    8e3a:	cmpq   $0x0,0x70(%rsp)
+    8e40:	je     8e9b <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x132b>
+    8e42:	mov    0x40(%r14),%rax
+    8e46:	mov    0x48(%r14),%rcx
+    8e4a:	vpxor  %xmm0,%xmm0,%xmm0
+    8e4e:	vmovdqu %ymm0,0x360(%rsp)
+    8e57:	vmovdqu %ymm0,0x340(%rsp)
+    8e60:	vmovdqu %ymm0,0x320(%rsp)
+    8e69:	vmovdqu %ymm0,0x300(%rsp)
+    8e72:	cmp    %rcx,%rax
+    8e75:	mov    $0x1,%edi
+    8e7a:	jne    8ee9 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x1379>
+    8e7c:	mov    $0x80,%esi
+    8e81:	xor    %edi,%edi
+    8e83:	lea    0x300(%rsp),%rdx
+    8e8b:	vzeroupper
+    8e8e:	call   20070 <sched_setaffinity@plt>
+    8e93:	test   %eax,%eax
+    8e95:	jne    c2a6 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x4736>
+    8e9b:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    8ea0:	mov    %rax,%rbx
+    8ea3:	mov    0x8(%r14),%rsi
+    8ea7:	lea    0x20(%rsp),%rdi
+    8eac:	call   19000 <bloom_filters::Split64Range::Split64Range(bloom_filters::RangeBytes)>
+    8eb1:	mov    0x10(%r14),%rsi
+    8eb5:	mov    0x80(%rsp),%rdx
+    8ebd:	cmpq   $0x0,0x70(%rsp)
+    8ec3:	je     a1e4 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2674>
+    8ec9:	mov    0x18(%r14),%rcx
+    8ecd:	lea    0x20(%rsp),%rdi
+    8ed2:	call   19db0 <bloom_filters::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    8ed7:	jmp    abf0 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x3080>
+    8edc:	nopl   0x0(%rax)
+    8ee0:	add    $0x4,%rax
+    8ee4:	cmp    %rcx,%rax
+    8ee7:	je     8e7c <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x130c>
+    8ee9:	mov    (%rax),%edx
+    8eeb:	cmp    $0x3ff,%rdx
+    8ef2:	ja     8ee0 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x1370>
+    8ef4:	shlx   %rdx,%rdi,%rsi
+
+0000000000007b70 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)>:
+    9f4c:	mov    0x48(%r14),%rdx
+    9f50:	vpxor  %xmm0,%xmm0,%xmm0
+    9f54:	vmovdqu %ymm0,0x360(%rsp)
+    9f5d:	vmovdqu %ymm0,0x340(%rsp)
+    9f66:	mov    %rax,%rbp
+    9f69:	vmovdqu %ymm0,0x320(%rsp)
+    9f72:	vmovdqu %ymm0,0x300(%rsp)
+    9f7b:	cmp    %rdx,%rcx
+    9f7e:	mov    $0x1,%edi
+    9f83:	jne    a0ad <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x253d>
+    9f89:	mov    $0x80,%esi
+    9f8e:	xor    %edi,%edi
+    9f90:	lea    0x300(%rsp),%rdx
+    9f98:	vzeroupper
+    9f9b:	call   20070 <sched_setaffinity@plt>
+    9fa0:	test   %eax,%eax
+    9fa2:	jne    c18e <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x461e>
+    9fa8:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    9fad:	mov    $0x1,%edi
+    9fb2:	mov    %rax,%r15
+    9fb5:	mov    0x10(%r14),%esi
+    9fb9:	mov    0x80(%rsp),%rdx
+    9fc1:	mov    0x18(%r14),%rax
+    9fc5:	mov    0x30(%rsp),%rcx
+    9fca:	sub    0x20(%rsp),%rcx
+    9fcf:	cmp    $0x40001,%rcx
+    9fd6:	mov    %rax,%rcx
+    9fd9:	mov    $0x1,%r12d
+    9fdf:	cmovb  %rdi,%rcx
+    9fe3:	cmp    $0x10001,%esi
+    9fe9:	cmovae %rax,%rcx
+    9fed:	lea    0x20(%rsp),%rdi
+    9ff2:	call   19db0 <bloom_filters::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    9ff7:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    9ffc:	mov    0x40(%r14),%rcx
+    a000:	mov    (%rcx),%ecx
+    a002:	vpxor  %xmm0,%xmm0,%xmm0
+    a006:	vmovdqu %ymm0,0x360(%rsp)
+    a00f:	vmovdqu %ymm0,0x340(%rsp)
+    a018:	mov    %rax,%rbx
+    a01b:	vmovdqu %ymm0,0x320(%rsp)
+    a024:	vmovdqu %ymm0,0x300(%rsp)
+
+0000000000007b70 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)>:
+    a0bc:	shr    $0x6,%eax
+    a0bf:	or     %rsi,0x300(%rsp,%rax,8)
+    a0c7:	jmp    a0a0 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2530>
+    a0c9:	nopl   0x0(%rax)
+    a0d0:	vzeroupper
+    a0d3:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    a0d8:	mov    %rax,%rbx
+    a0db:	cmpq   $0x0,0x70(%rsp)
+    a0e1:	je     a196 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2626>
+    a0e7:	mov    0x40(%r14),%rax
+    a0eb:	mov    0x48(%r14),%rcx
+    a0ef:	vpxor  %xmm0,%xmm0,%xmm0
+    a0f3:	vmovdqu %ymm0,0x360(%rsp)
+    a0fc:	vmovdqu %ymm0,0x340(%rsp)
+    a105:	vmovdqu %ymm0,0x320(%rsp)
+    a10e:	vmovdqu %ymm0,0x300(%rsp)
+    a117:	cmp    %rcx,%rax
+    a11a:	mov    $0x1,%edi
+    a11f:	jne    a179 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2609>
+    a121:	mov    $0x80,%esi
+    a126:	xor    %edi,%edi
+    a128:	lea    0x300(%rsp),%rdx
+    a130:	vzeroupper
+    a133:	call   20070 <sched_setaffinity@plt>
+    a138:	test   %eax,%eax
+    a13a:	jne    c2d8 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x4768>
+    a140:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    a145:	mov    %rax,%rbp
+    a148:	mov    0x10(%r14),%esi
+    a14c:	mov    0x80(%rsp),%rdx
+    a154:	mov    0x18(%r14),%rcx
+    a158:	lea    0x20(%rsp),%rdi
+    a15d:	call   19db0 <bloom_filters::ParallelSplit64RangeBloomFilter::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    a162:	jmp    a7b0 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2c40>
+    a167:	nopw   0x0(%rax,%rax,1)
+    a170:	add    $0x4,%rax
+    a174:	cmp    %rcx,%rax
+    a177:	je     a121 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x25b1>
+    a179:	mov    (%rax),%edx
+    a17b:	cmp    $0x3ff,%rdx
+    a182:	ja     a170 <void (anonymous namespace)::Run<true>((anonymous namespace)::Case const&, bool)+0x2600>
+    a184:	shlx   %rdx,%rdi,%rsi
+
+000000000000c7d0 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)>:
+    d80f:	vmovdqu %ymm0,0x320(%rsp)
+    d818:	vmovdqu %ymm0,0x300(%rsp)
+    d821:	cmp    %rcx,%rax
+    d824:	lea    0x20(%rsp),%r14
+    d829:	jne    d98d <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x11bd>
+    d82f:	mov    $0x80,%esi
+    d834:	xor    %edi,%edi
+    d836:	lea    0x300(%rsp),%rdx
+    d83e:	vzeroupper
+    d841:	call   20070 <sched_setaffinity@plt>
+    d846:	test   %eax,%eax
+    d848:	jne    10dae <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x45de>
+    d84e:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    d853:	mov    %rax,%rbx
+    d856:	mov    0x8(%r13),%rsi
+    d85a:	shr    %rsi
+    d85d:	mov    %r14,%rdi
+    d860:	mov    $0x8,%edx
+    d865:	call   1c410 <bloom_filters::Split64BloomFilter::Split64BloomFilter(unsigned long, unsigned int)>
+    d86a:	mov    0x10(%r13),%esi
+    d86e:	mov    0x80(%rsp),%rdx
+    d876:	mov    0x18(%r13),%rax
+    d87a:	mov    0x28(%rsp),%rcx
+    d87f:	sub    0x20(%rsp),%rcx
+    d884:	cmp    $0x40001,%rcx
+    d88b:	mov    %rax,%rcx
+    d88e:	mov    $0x1,%edi
+    d893:	cmovb  %rdi,%rcx
+    d897:	cmp    $0x10001,%esi
+    d89d:	cmovae %rax,%rcx
+    d8a1:	lea    0x20(%rsp),%rbp
+    d8a6:	mov    %rbp,%rdi
+    d8a9:	call   1d910 <bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    d8ae:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    d8b3:	mov    0x40(%r13),%rcx
+    d8b7:	mov    (%rcx),%ecx
+    d8b9:	vpxor  %xmm0,%xmm0,%xmm0
+    d8bd:	vmovdqu %ymm0,0x360(%rsp)
+    d8c6:	vmovdqu %ymm0,0x340(%rsp)
+    d8cf:	mov    %rax,%r14
+    d8d2:	vmovdqu %ymm0,0x320(%rsp)
+    d8db:	vmovdqu %ymm0,0x300(%rsp)
+
+000000000000c7d0 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)>:
+    ea48:	mov    0x40(%r13),%rcx
+    ea4c:	mov    0x48(%r13),%rdx
+    ea50:	vpxor  %xmm0,%xmm0,%xmm0
+    ea54:	vmovdqu %ymm0,0x360(%rsp)
+    ea5d:	vmovdqu %ymm0,0x340(%rsp)
+    ea66:	mov    %rax,%r14
+    ea69:	vmovdqu %ymm0,0x320(%rsp)
+    ea72:	vmovdqu %ymm0,0x300(%rsp)
+    ea7b:	cmp    %rdx,%rcx
+    ea7e:	lea    0x20(%rsp),%rbp
+    ea83:	jne    ebad <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x23dd>
+    ea89:	mov    $0x80,%esi
+    ea8e:	xor    %edi,%edi
+    ea90:	lea    0x300(%rsp),%rdx
+    ea98:	vzeroupper
+    ea9b:	call   20070 <sched_setaffinity@plt>
+    eaa0:	test   %eax,%eax
+    eaa2:	jne    10e33 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x4663>
+    eaa8:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    eaad:	mov    %rax,%r15
+    eab0:	mov    0x10(%r13),%esi
+    eab4:	mov    0x80(%rsp),%rdx
+    eabc:	mov    0x18(%r13),%rax
+    eac0:	mov    0x28(%rsp),%rcx
+    eac5:	sub    0x20(%rsp),%rcx
+    eaca:	cmp    $0x40001,%rcx
+    ead1:	mov    %rax,%rcx
+    ead4:	mov    $0x1,%edi
+    ead9:	cmovb  %rdi,%rcx
+    eadd:	cmp    $0x10001,%esi
+    eae3:	cmovae %rax,%rcx
+    eae7:	mov    %rbp,%rdi
+    eaea:	call   1d910 <bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    eaef:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    eaf4:	mov    0x40(%r13),%rcx
+    eaf8:	mov    (%rcx),%ecx
+    eafa:	vpxor  %xmm0,%xmm0,%xmm0
+    eafe:	vmovdqu %ymm0,0x360(%rsp)
+    eb07:	vmovdqu %ymm0,0x340(%rsp)
+    eb10:	mov    %rax,%rbx
+    eb13:	vmovdqu %ymm0,0x320(%rsp)
+    eb1c:	vmovdqu %ymm0,0x300(%rsp)
+
+000000000000c7d0 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)>:
+    ebc1:	shr    $0x6,%eax
+    ebc4:	or     %rsi,0x300(%rsp,%rax,8)
+    ebcc:	jmp    eba0 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x23d0>
+    ebce:	xchg   %ax,%ax
+    ebd0:	vzeroupper
+    ebd3:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    ebd8:	mov    %rax,%r15
+    ebdb:	cmpq   $0x0,0x60(%rsp)
+    ebe1:	je     ecfd <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x252d>
+    ebe7:	mov    0x40(%r13),%rax
+    ebeb:	mov    0x48(%r13),%rcx
+    ebef:	vpxor  %xmm0,%xmm0,%xmm0
+    ebf3:	vmovdqu %ymm0,0x360(%rsp)
+    ebfc:	vmovdqu %ymm0,0x340(%rsp)
+    ec05:	vmovdqu %ymm0,0x320(%rsp)
+    ec0e:	vmovdqu %ymm0,0x300(%rsp)
+    ec17:	cmp    %rcx,%rax
+    ec1a:	lea    0x20(%rsp),%rbp
+    ec1f:	jne    ec79 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x24a9>
+    ec21:	mov    $0x80,%esi
+    ec26:	xor    %edi,%edi
+    ec28:	lea    0x300(%rsp),%rdx
+    ec30:	vzeroupper
+    ec33:	call   20070 <sched_setaffinity@plt>
+    ec38:	test   %eax,%eax
+    ec3a:	jne    10f4b <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x477b>
+    ec40:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    ec45:	mov    %rax,%rbx
+    ec48:	mov    0x10(%r13),%esi
+    ec4c:	mov    0x80(%rsp),%rdx
+    ec54:	mov    0x18(%r13),%rcx
+    ec58:	mov    %rbp,%rdi
+    ec5b:	call   1d910 <bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    ec60:	jmp    f2f0 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x2b20>
+    ec65:	data16 cs nopw 0x0(%rax,%rax,1)
+    ec70:	add    $0x4,%rax
+    ec74:	cmp    %rcx,%rax
+    ec77:	je     ec21 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x2451>
+    ec79:	mov    (%rax),%edx
+    ec7b:	cmp    $0x3ff,%rdx
+    ec82:	ja     ec70 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x24a0>
+    ec84:	mov    $0x1,%esi
+
+000000000000c7d0 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)>:
+    ec65:	data16 cs nopw 0x0(%rax,%rax,1)
+    ec70:	add    $0x4,%rax
+    ec74:	cmp    %rcx,%rax
+    ec77:	je     ec21 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x2451>
+    ec79:	mov    (%rax),%edx
+    ec7b:	cmp    $0x3ff,%rdx
+    ec82:	ja     ec70 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x24a0>
+    ec84:	mov    $0x1,%esi
+    ec89:	shlx   %rdx,%rsi,%rsi
+    ec8e:	shr    $0x6,%edx
+    ec91:	or     %rsi,0x300(%rsp,%rdx,8)
+    ec99:	jmp    ec70 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x24a0>
+    ec9b:	mov    $0x80,%esi
+    eca0:	xor    %edi,%edi
+    eca2:	lea    0x300(%rsp),%rdx
+    ecaa:	vzeroupper
+    ecad:	call   20070 <sched_setaffinity@plt>
+    ecb2:	test   %eax,%eax
+    ecb4:	jne    10f19 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x4749>
+    ecba:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    ecbf:	mov    %rax,%rbx
+    ecc2:	mov    0x8(%r13),%rsi
+    ecc6:	shr    %rsi
+    ecc9:	mov    %r14,%rdi
+    eccc:	mov    $0x8,%edx
+    ecd1:	call   1c410 <bloom_filters::Split64BloomFilter::Split64BloomFilter(unsigned long, unsigned int)>
+    ecd6:	mov    0x10(%r13),%rsi
+    ecda:	mov    0x80(%rsp),%rdx
+    ece2:	cmpq   $0x0,0x60(%rsp)
+    ece8:	je     ed50 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x2580>
+    ecea:	mov    0x18(%r13),%rcx
+    ecee:	lea    0x20(%rsp),%rdi
+    ecf3:	call   1d910 <bloom_filters::ParallelLayoutBloomFilter<bloom_filters::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    ecf8:	jmp    f6f0 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x2f20>
+    ecfd:	call   20080 <std::chrono::_V2::steady_clock::now()@plt>
+    ed02:	mov    %rax,%rbx
+    ed05:	mov    0x10(%r13),%rdx
+    ed09:	mov    %edx,%eax
+    ed0b:	mov    0x80(%rsp),%rcx
+    ed13:	cmp    $0x21,%edx
+    ed16:	lea    0x20(%rsp),%rbp
+    ed1b:	jb     f146 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x2976>

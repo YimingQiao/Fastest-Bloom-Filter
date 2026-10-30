@@ -1,0 +1,11 @@
+# Actual SingleLine caller focused proof
+
+The independently frozen native proposal `0c0eb382a817245e379b01339ecd71b747bd5cea` is the only new native implementation. The actual benchmark derives original21 public configurations from `72625673e6b5bb57874a5fa53e04d23ffb8c6ab2` and adds `FourSectorRange12SingleLineV1` through its public API. Every old adapter and the complete timed/workload/validation body are byte-identical. The rejected two-hint candidate is not linked.
+
+The focused driver reuses the reviewed compiler-closure and tiny-caller contract from the earlier hint experiment. Its only new execution is one private physical-line invariant test per mode. Normal and ASan compile the actual caller and native test executable, then verify all structured Cargo package/artifact identities and `.d` inputs **before** any filter/test execution. Six executables are retained. No network/dependency update, implicit compiler override or old target reuse is allowed.
+
+Each mode runs the new invariant plus three existing focused checks: complete old/new public bitmaps and outputs, actual timed-tail corruption detection, and balanced four-mode scheduling. Four3-row old/new/Range cases use seed42, n1024, q4096, actual24 bpk, batches1/3/31/4096 and calibration0; one22-row case checks the retained registry at budget16/b3. Total68 actual tiny rows,29 old-binary references,58 retained semantic comparisons, eight focused test executions, six malformed CLI rejections. Prior broad backend/parallel correctness tests are compiled as part of the native test crate but **not executed**.
+
+Full normal/ASan fixture outputs, actual compiler inputs, tools, flags, binaries and all failed attempts remain. Native and caller tests run serially onCPU3 under the inherited whole socket1 flock; no new parallel-executor claim is made. Normal linked query bodies are captured by actual address ranges with real-instruction assertions. Capture does not require automatic inlining: review must record helper calls, checked-line accesses, frame/code-size costs and whether the intended one-line property survives compilation. No further body/hint search follows a failed code-generation hypothesis.
+
+No performance or FPR calibration occurs here. The fixed72 internal protocol remains separately gated on the actual caller proof and assembly review.

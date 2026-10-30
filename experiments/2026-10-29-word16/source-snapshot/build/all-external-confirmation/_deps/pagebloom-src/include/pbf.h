@@ -1,0 +1,265 @@
+// Copyright (c) 2023, Ruan Kunliang.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+#pragma once
+#ifndef PAGE_BLOOM_FILTER_H
+#define PAGE_BLOOM_FILTER_H
+
+#include <cmath>
+#include <cstdint>
+#include <cstddef>
+#include <cassert>
+#include <memory>
+#include <algorithm>
+#include <type_traits>
+
+#if defined(_MSC_VER)
+#include <intrin.h>
+#endif
+
+namespace pbf {
+
+namespace detail {
+
+template <typename Word>
+struct MultiplyHigh;
+
+template <>
+struct MultiplyHigh<uint16_t> {
+	static uint16_t get(uint16_t a, uint16_t b) noexcept {
+		return static_cast<uint16_t>((static_cast<uint32_t>(a) * b) >> 16U);
+	}
+};
+
+template <>
+struct MultiplyHigh<uint32_t> {
+	static uint32_t get(uint32_t a, uint32_t b) noexcept {
+		return static_cast<uint32_t>((static_cast<uint64_t>(a) * b) >> 32U);
+	}
+};
+
+template <>
+struct MultiplyHigh<uint64_t> {
+	static uint64_t get(uint64_t a, uint64_t b) noexcept {
+#if defined(_MSC_VER)
+		return __umulh(a, b);
+#else
+		return static_cast<uint64_t>((static_cast<unsigned __int128>(a) * b) >> 64U);
+#endif
+	}
+};
+
+} // detail
+
+//Lemire-Kaser-Kurz
+template <typename Word>
+class Divisor {
+private:
+	static_assert(std::is_same<Word, uint8_t>::value || std::is_same<Word, uint16_t>::value
+				  || std::is_same<Word, uint32_t>::value, "");
+	Word m_val = 0;
+#ifndef DISABLE_SOFT_DIVIDE
+	using DoubleWord = typename std::conditional<std::is_same<Word,uint8_t>::value, uint16_t,
+			typename std::conditional<std::is_same<Word,uint16_t>::value, uint32_t, uint64_t>::type>::type;
+	DoubleWord m_fac = 0;
+#endif
+
+public:
+	Word value() const noexcept { return m_val; }
+	Divisor() noexcept = default;
+	explicit Divisor(Word n) noexcept { *this = n; }
+
+	Divisor& operator=(Word n) noexcept {
+		m_val = n;
+#ifndef DISABLE_SOFT_DIVIDE
+		if (n == 0) {
+			m_fac = 0;
+		} else {
+			constexpr DoubleWord zero = 0;
+			m_fac = (DoubleWord)~zero / n + 1;
+		}
+#endif
+		return *this;
+	}
+
+	Word div(Word m) const noexcept {
+#ifdef DISABLE_SOFT_DIVIDE
+		return m / m_val;
+#else
+		Word q = static_cast<Word>(detail::MultiplyHigh<DoubleWord>::get(
+				static_cast<DoubleWord>(m), m_fac));
+		if (m_fac == 0) {
+			q = m;
+		}
+		return q;
+#endif
+	}
+
+	Word mod(Word m) const noexcept {
+#ifdef DISABLE_SOFT_DIVIDE
+		return m % m_val;
+#else
+		return static_cast<Word>(detail::MultiplyHigh<DoubleWord>::get(
+				static_cast<DoubleWord>(m_val), static_cast<DoubleWord>(m * m_fac)));
+#endif
+	}
+};
+
+template <typename Word>
+static inline Word operator/(Word m, const Divisor<Word>& d) noexcept {
+	return d.div(m);
+}
+
+template <typename Word>
+static inline Word operator%(Word m, const Divisor<Word>& d) noexcept {
+	return d.mod(m);
+}
+
+
+static constexpr unsigned kMaxPageNum = 1u << 18;
+
+class _PageBloomFilter {
+public:
+	bool operator!() const noexcept { return m_space == nullptr; }
+	unsigned page_level() const noexcept { return m_page_level; }
+	unsigned page_num() const noexcept { return m_page_num.value(); }
+	size_t unique_cnt() const noexcept { return m_unique_cnt; }
+	const uint8_t* data() const noexcept { return m_space.get(); }
+	size_t data_size() const noexcept {
+		return static_cast<size_t>(m_page_num.value()) << m_page_level;
+	}
+	void clear() noexcept;
+
+protected:
+	unsigned m_page_level = 0;
+	Divisor<uint32_t> m_page_num;
+	size_t m_unique_cnt = 0;
+	std::unique_ptr<uint8_t[]> m_space;
+
+	void init(unsigned page_level, unsigned page_num, size_t unique_cnt, const uint8_t* data);
+};
+
+template <unsigned N>
+class PageBloomFilter final : public _PageBloomFilter {
+public:
+	static_assert(N >= 4 && N <= 8, "N should be 4-8");
+
+	// page_level should be (8-8/N) ~ 13
+	PageBloomFilter(unsigned page_level, unsigned page_num, size_t unique_cnt=0, const uint8_t* data=nullptr) {
+		if (page_level < (8-8/N) || page_level > 13 || page_num == 0 || page_num >= kMaxPageNum) {
+			return;
+		}
+		init(page_level, page_num, unique_cnt, data);
+	}
+
+	// unique_cnt/capacity should be 50%-80%
+	size_t capacity() const noexcept {
+		return data_size() * 8 / N;
+	}
+	size_t virtual_capacity(float fpr) const noexcept {
+		assert(fpr > 0.0f && fpr < 1.0f);
+		auto t = std::log1p(-std::pow(static_cast<double>(fpr), 1.0 / N)) / std::log1p(-1.0 / (data_size()*8));
+		return static_cast<size_t>(t) / N;
+	}
+	unsigned way() const noexcept { return N; }
+
+	bool test(const uint8_t* data, unsigned len) const noexcept;
+	bool set(const uint8_t* data, unsigned len) noexcept;
+};
+
+extern template class PageBloomFilter<4>;
+extern template class PageBloomFilter<5>;
+extern template class PageBloomFilter<6>;
+extern template class PageBloomFilter<7>;
+extern template class PageBloomFilter<8>;
+
+static constexpr unsigned BestWay(float fpr) noexcept {
+	fpr = std::min(std::max(fpr, 0.0005f), 0.1f);
+	// Approximate ceil(log2(2 / fpr)) with integer bit checks to keep this
+	// selector constexpr-friendly and aligned with the Rust implementation.
+	auto n = static_cast<unsigned>(2.0f / fpr);
+	n += 1;
+	for (unsigned i = 1; i < 32; i++) {
+		if ((n & (0xfffffffe << i)) == 0) {
+			return std::min(std::max(i, 4u), 8u);
+		}
+	}
+	return 0;
+}
+
+template <unsigned N>
+static PageBloomFilter<N> Create(size_t item, float fpr) {
+	assert(N == BestWay(fpr));
+	item = std::max<size_t>(item, 1);
+	fpr = std::min(std::max(fpr, 0.0005f), 0.1f);
+	auto w = -std::log2(fpr);
+	auto bpi = w / (std::log(2) * 8);
+	if (w > 9) {
+		auto x = w - 7;
+		bpi *= 1 + 0.0025*x*x;
+	} else if (w > 3) {
+		bpi *= 1.01;
+	}
+	auto n = static_cast<size_t>(bpi * static_cast<double>(item));
+	unsigned page_level = 0;
+	for (unsigned i = 6; i < 12; i++) {
+		if (n < (1UL << (i + 4))) {
+			page_level = i;
+			if (page_level < (8 - 8/N)) {
+				page_level++;
+			}
+			break;
+		}
+	}
+	if (page_level == 0) {
+		page_level = 12;
+	}
+	size_t page_num = (n + (1UL << page_level) - 1) >> page_level;
+	page_num = std::max<size_t>(page_num, 1);
+	if (page_num >= kMaxPageNum) {
+		page_num = 0;
+	}
+	return PageBloomFilter<N>(page_level, page_num);
+}
+
+struct BloomFilter : public _PageBloomFilter {
+	virtual ~BloomFilter() = default;
+	virtual size_t capacity() const noexcept = 0;
+	virtual size_t virtual_capacity(float fpr) const noexcept = 0;
+	virtual unsigned way() const noexcept = 0;
+	virtual bool test(const uint8_t* data, unsigned len) const noexcept = 0;
+	virtual bool set(const uint8_t* data, unsigned len) noexcept = 0;
+};
+
+extern std::unique_ptr<BloomFilter> New(size_t item, float fpr);
+// Restore a BloomFilter from raw bitmap data.
+// `page_num` must match the supplied bitmap length and `unique_cnt` is trusted
+// as caller-provided metadata rather than recomputed from the bitmap.
+extern std::unique_ptr<BloomFilter> New(unsigned way, unsigned page_level, unsigned page_num,
+										size_t unique_cnt=0, const uint8_t* data=nullptr);
+
+// Convenience overload for restoring from a contiguous bitmap buffer.
+// `data_size` must be an exact multiple of `(1 << page_level)` bytes; otherwise
+// the computed page count would be truncated before dispatching to `New(...)`.
+static inline std::unique_ptr<BloomFilter> New(unsigned way, unsigned page_level,
+                                               const uint8_t* data, size_t data_size, size_t unique_cnt) {
+	if (data == nullptr || data_size == 0 || page_level > 13) {
+		return nullptr;
+	}
+	const size_t page_size = size_t{1} << page_level;
+	if (data_size % page_size != 0) {
+		return nullptr;
+	}
+	const size_t page_num = data_size / page_size;
+	if (page_num >= kMaxPageNum) {
+		return nullptr;
+	}
+	return New(way, page_level, static_cast<unsigned>(page_num), unique_cnt, data);
+}
+
+} //pbf
+
+#define NEW_BLOOM_FILTER(item, fpr) pbf::Create<pbf::BestWay(fpr)>(item, fpr)
+
+#endif //PAGE_BLOOM_FILTER_H

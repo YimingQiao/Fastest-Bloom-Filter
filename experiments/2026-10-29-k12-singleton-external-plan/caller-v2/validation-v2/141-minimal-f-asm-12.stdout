@@ -1,0 +1,34 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004cce0 <_Z13lookup_kernelIN14external_bloom7Fixed16EmEvRT_mPKT0_Pj>:
+   4cce0:	mov    $0xffffffff,%eax
+   4cce5:	and    %rsi,%rax
+   4cce8:	je     4cd4c <_Z13lookup_kernelIN14external_bloom7Fixed16EmEvRT_mPKT0_Pj+0x6c>
+   4ccea:	xor    %esi,%esi
+   4ccec:	vmovdqa -0x4acc4(%rip),%xmm0        # 2030 <_IO_stdin_used+0x138>
+   4ccf4:	vmovdqa -0x4acdc(%rip),%xmm1        # 2020 <_IO_stdin_used+0x128>
+   4ccfc:	nopl   0x0(%rax)
+   4cd00:	mov    (%rdx,%rsi,8),%r8
+   4cd04:	vmovd  %r8d,%xmm2
+   4cd09:	shr    $0x20,%r8
+   4cd0d:	mov    (%rdi),%r9d
+   4cd10:	imul   %r8,%r9
+   4cd14:	vpbroadcastd %xmm2,%xmm2
+   4cd19:	vpmulhw %xmm0,%xmm2,%xmm2
+   4cd1d:	vpshufb %xmm2,%xmm1,%xmm2
+   4cd22:	mov    0x8(%rdi),%r8
+   4cd26:	shr    $0x1c,%r9
+   4cd2a:	and    $0xfffffffffffffff0,%r9
+   4cd2e:	vmovdqu (%r8,%r9,1),%xmm3
+   4cd34:	xor    %r8d,%r8d
+   4cd37:	vptest %xmm2,%xmm3
+   4cd3c:	setb   %r8b
+   4cd40:	mov    %r8d,(%rcx,%rsi,4)
+   4cd44:	inc    %rsi
+   4cd47:	cmp    %rsi,%rax
+   4cd4a:	jne    4cd00 <_Z13lookup_kernelIN14external_bloom7Fixed16EmEvRT_mPKT0_Pj+0x20>
+   4cd4c:	ret

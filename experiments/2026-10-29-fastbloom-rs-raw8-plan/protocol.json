@@ -1,0 +1,72 @@
+{
+  "status": "Source-only adapter, geometry and raw-contract proposal; no build/BF/timing authorized",
+  "upstream_repository": "https://github.com/yankun1992/fastbloom",
+  "upstream_commit": "ea18d38eca9cb3a48f395f28ab67004b6f1ab83e",
+  "upstream_package": "fastbloom-rs",
+  "upstream_version": "0.5.10",
+  "new_keys": [
+    65536,
+    33554432
+  ],
+  "new_actual_bpk": [
+    16,
+    24,
+    32
+  ],
+  "new_public_k_inclusive": [
+    1,
+    24
+  ],
+  "new_geometries": 144,
+  "retained_geometries": 118,
+  "all_geometry_records": 262,
+  "quality_caps_bpk": [
+    16,
+    24,
+    32
+  ],
+  "quality_upper_fraction": [
+    0.01,
+    0.001,
+    0.0001
+  ],
+  "quality_policy": "two-sided95% Wilson upper on each construction separately; no pooling; every failed geometry retained",
+  "query_contracts": [
+    "raw_batched_public",
+    "raw_visible_public"
+  ],
+  "build_contracts": [
+    "raw_insert",
+    "allocate_filter_and_scratch_raw_insert"
+  ],
+  "input_contract": "Original raw u64 stream; DirectRaw8 sends to_le_bytes directly to upstream public add/contains, CommonHash applies native hash64 inside each raw operation",
+  "identity_copy_control": false,
+  "prehash_column": false,
+  "query_phase_schedule": "seeded label permutation of two phases; AB,BA,BA,AB cycles with eight samples per phase",
+  "retained_geometry_choice": "all112 committed constructor records plus six actual native K12 geometries; no timing or quality based pruning",
+  "all_k_retention": "All24 counts remain, including failures; optimal real-n K12/K17/K23 already included as ordinary fixed-K entries, no duplicate sample",
+  "possible_future_batches": [
+    1,
+    31,
+    4096
+  ],
+  "possible_full_future_rows": 786,
+  "future_execution_status": "Not frozen or authorized. Exact commands, seed/domain ledger, complete dependency lock and CPU placement require a later reviewed caller protocol after source/semantic/ASM proof.",
+  "poppy_status": "No Poppy measurements are read. Poppy is not included in this initial full old-public-family panel; any completed-evidence addition must be prespecified before execution. No strongest-of-all-external claim.",
+  "native_status": "Actual public current native library snapshot at ba5530a4fc38930a9da4593f2a8af7d1de3c853a, including proved optional K12 SingleLine; no private kernel bypass",
+  "scratch_policy": {
+    "CommonHash": "input_len u64 words; query batch and insertion batch computed independently",
+    "DirectRaw8": "zero words and zero allocation; no identity copy",
+    "complete_build_clock": "starts before required scratch allocation/initialization and F::new; ends after raw insertion",
+    "raw_insert_clock": "starts when scratch and filter are ready; retains all required hashing and public insertion",
+    "lifetime": "each build scratch is released after that build validation, before next build/query; canonical build scratch also dropped before query",
+    "reported_bytes": [
+      "actual_filter_bytes",
+      "build_scratch_bytes",
+      "query_scratch_bytes"
+    ],
+    "query": "only scratch_words(query_batch), allocated outside query timers and reported separately"
+  },
+  "insert_batch_policy": "Independent configurable parameter; neither whole-input nor4096 is selected as the sole optimum. The later finite execution protocol must fix it before data.",
+  "output_validation": "Before every timed query (outside clock), warmup, build-validation chunk and calibration chunk, poison its output region with non-0/1; validate full outputs/guards after call. Required actual-caller faults: skip-last-write and wrong-value."
+}

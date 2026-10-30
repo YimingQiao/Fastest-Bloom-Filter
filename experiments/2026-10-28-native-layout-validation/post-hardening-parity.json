@@ -1,0 +1,30 @@
+{
+  "command": [
+    "taskset",
+    "-c",
+    "3",
+    "g++",
+    "-std=c++17",
+    "-O2",
+    "-pthread",
+    "-march=x86-64",
+    "-mavx2",
+    "-mno-avx512f",
+    "-Iinclude",
+    "-Iexperiments/2026-10-28-four-sector",
+    "-Iexperiments/2026-10-28-split64",
+    "/tmp/bf-native-frozen-parity.cpp",
+    "-o",
+    "/tmp/bf-native-frozen-final"
+  ],
+  "run": [
+    "taskset",
+    "-c",
+    "3",
+    "/tmp/bf-native-frozen-final"
+  ],
+  "exit_code": 0,
+  "stdout": "2018356366237207559\n7874112049163596729\n",
+  "stderr": "",
+  "note": "Actual final rerun after CounterStride, uint64 range split, and checked scratch changes; source-manifest.json identifies audited sources."
+}

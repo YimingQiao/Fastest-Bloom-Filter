@@ -1,0 +1,46 @@
+{
+  "scope": "Read-only actual normal-C++ machine-code audit, no performance or compilation",
+  "binary_sha256": "586fcceb6a9540187e2f9915053682ded6ec91775800e0695ebcb5a25c3c20ef",
+  "candidate_paths": [
+    {
+      "family": "Split64Range",
+      "contract": "insert",
+      "clock_start": "0x9fa8",
+      "bytes_compare": "0x9fcf",
+      "n_compare": "0x9fe3",
+      "native_insert_parallel": "0x9ff2",
+      "clock_stop": "0x9ff7"
+    },
+    {
+      "family": "Split64Range",
+      "contract": "allocate_insert",
+      "clock_start": "0x8c86",
+      "constructor": "0x8c97",
+      "bytes_compare": "0x8cb6",
+      "n_compare": "0x8cc9",
+      "native_insert_parallel": "0x8cd8",
+      "clock_stop": "0x8ce3"
+    },
+    {
+      "family": "Split64",
+      "contract": "insert",
+      "clock_start": "0xeaa8",
+      "bytes_compare": "0xeaca",
+      "n_compare": "0xeadd",
+      "native_insert_parallel": "0xeaea",
+      "clock_stop": "0xeaef"
+    },
+    {
+      "family": "Split64",
+      "contract": "allocate_insert",
+      "clock_start": "0xd84e",
+      "constructor": "0xd865",
+      "bytes_compare": "0xd884",
+      "n_compare": "0xd897",
+      "native_insert_parallel": "0xd8a9",
+      "clock_stop": "0xd8ae"
+    }
+  ],
+  "findings": "All four candidate paths load the actual bitmap extent/current batch count, compare against0x40001 and0x10001, and select original-request versus1 between the clock calls. Preclock Observe did not eliminate/hoist this code in this exact executable.",
+  "limitations": "Specific compiled binary and compiler settings only; this does not prove every source statement costs an instruction or that other builds behave identically. Whole public-call/constructor timings include normal compiler-generated caller bookkeeping."
+}

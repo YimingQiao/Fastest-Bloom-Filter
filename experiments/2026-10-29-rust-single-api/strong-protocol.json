@@ -1,0 +1,99 @@
+{
+  "utc": "2026-10-28T18:34:38Z",
+  "prior_initial": "initial/results.csv and original freeze.json remain unchanged; source at benchmark/ retains all12 original controls.",
+  "hypotheses": [
+    "Symmetric explicit len1 paths for native and external APIs remove generic-loop/dispatch overhead without changing bitmaps.",
+    "An inline public length-check/singleton facade plus noinline original bulk method should transfer native SingleApiV1 gains to the production API shape.",
+    "Split ShortEntryV2 and Split SingleApiV1 use scalar-source contains_hash, which native LLVM auto-vectorizes; this also changes generated kernel.",
+    "Inline-only controls retained in registry but excluded from selected held-out shortlist because they did not remove six-register prologue."
+  ],
+  "registered_filters": [
+    "Fastbloom017",
+    "FastPatternBF",
+    "BloomsdayPinned",
+    "Split64Experimental",
+    "FourSector16K8Experimental",
+    "ByteSplitBloomFilter",
+    "FourSectorBloomFilter",
+    "Split64BloomFilter",
+    "ByteNativeSingleApiV1",
+    "ByteInlineLookupV1",
+    "SplitNativeSingleApiV1",
+    "SplitInlineLookupV1",
+    "BloomsdaySingleApiV1",
+    "FastbloomSingleApiV1",
+    "ByteShortEntryV2",
+    "SplitShortEntryV2"
+  ],
+  "confirmation_filters": [
+    "ByteSplitBloomFilter",
+    "ByteNativeSingleApiV1",
+    "ByteShortEntryV2",
+    "Split64BloomFilter",
+    "SplitNativeSingleApiV1",
+    "SplitShortEntryV2",
+    "BloomsdayPinned",
+    "BloomsdaySingleApiV1",
+    "Fastbloom017",
+    "FastbloomSingleApiV1"
+  ],
+  "confirmation": {
+    "key_powers": [
+      16,
+      25
+    ],
+    "requested_bpk": [
+      8,
+      16
+    ],
+    "batches": [
+      1,
+      4096
+    ],
+    "seeds": [
+      7919,
+      104729
+    ],
+    "query_power": 22,
+    "repeats": 5,
+    "hit_percent": 50,
+    "insert_batch": "all",
+    "calibration_power": 24
+  },
+  "precondition": "Normal/disable/ASan exact outputs, guard words and mismatch-before-write tests; codegen confirms no callee-saved prologue on public len1 path;16-row semantic smoke.",
+  "excluded_seeds": [
+    2309,
+    6311,
+    10007,
+    1019,
+    4093
+  ],
+  "production_changed": false,
+  "scope": "No baseline original disappears from the corresponding comparison;14 earlier configurations remain registered plus2 production-shaped controls. Held-out shortlist intentionally focuses on these two native layouts and both external families.",
+  "smoke": {
+    "key_powers": [
+      12
+    ],
+    "requested_bpk": [
+      8,
+      16
+    ],
+    "batches": [
+      1,
+      3,
+      4,
+      8,
+      31,
+      4096
+    ],
+    "seeds": [
+      42
+    ],
+    "query_power": 12,
+    "repeats": 1,
+    "hit_percent": 50,
+    "insert_batch": "all",
+    "calibration_power": 12,
+    "timing_scope": "Semantic smoke only; incidental timings not claimed."
+  }
+}

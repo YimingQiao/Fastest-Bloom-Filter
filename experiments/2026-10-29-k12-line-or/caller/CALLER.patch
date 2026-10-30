@@ -1,0 +1,114 @@
+--- frozen-parent.cpp
++++ compare_benchmark.cpp
+@@ -11,38 +11,9 @@
+ #include <sstream>
+ #include <string>
+ #include <vector>
+-#include "fast_pattern_BF.h"
+-#ifndef BF_EXTERNAL_ONLY
+-#include "four_sector_bloom.h"
+-#include "split64_bloom.h"
+-#include "byte_split_bloom.h"
+-#endif
+-#ifdef BF_EXPERIMENTS
+-#include "direct_split_BF.h"
+-#include "pattern_sectorized_BF.h"
+-#include "pattern32_BF.h"
+-#include "pipelined_sectorized_BF.h"
+-#endif
+-#include "cache_sectorized_BF_32bit.h"
+-#include "new_cache_sectorized_BF_32bit.h"
+-#include "register_blocked_BF_32bit.h"
+-#include "register_blocked_BF_32bit_Masks.h"
+-#include "register_blocked_BF_64bit.h"
+-#include "register_blocked_BF_64bit_Masks.h"
+-#include "register_blocked_BF_2x32bit.h"
+-#include "impala_blocked_BF_64bit.h"
+-#ifdef __AVX512F__
+-#include "impala_blocked_BF_64bit_avx512.h"
+-#endif
+-
+-#ifdef BF_EXTERNAL_HEADER
+-#include BF_EXTERNAL_HEADER
+-#endif
+-
++#include "../control.hpp"
++#include "../candidate.hpp"
+ #include "geometry.hpp"
+-#ifdef BF_EXACT_TESTS
+-#include "test-fixtures.hpp"
+-#endif
+ using namespace bloom_filters;
+ template <class BF, class = void>
+ struct RawKeyApi : std::false_type {};
+@@ -306,6 +277,10 @@
+     };
+     trials(lookup, RawKeyApi<BF>::value); std::cout << ',';
+     trials(total, false); std::cout << ',' << phase_order << ',';
++    trials(insert_times, false); std::cout << ',';
++    trials(build_times, false); std::cout << ',';
++    trials(hash_insert_times, false); std::cout << ',';
++    trials(hash_build_times, false); std::cout << ',';
+     exact_budget::PrintGeometry(std::cout, geometry);
+     std::cout << '\n';
+ }
+@@ -374,48 +349,8 @@
+ 	jobs.emplace_back(                                                                                                 \
+ 	    [&] { run<T, H>(#T, ins, query, bpk, hit, batch, repeats, seed, key_base, insert_batch, calibration_power, build_repeats); }); }
+ 
+-#ifdef BF_EXACT_TESTS
+-        ADD(QueryOnceFixture, uint64_t);
+-        ADD(LatePureFault, uint64_t);
+-        ADD(LateHashFault, uint64_t);
+-        ADD(LateGuardFault, uint64_t);
+-#else
+-
+-#ifndef BF_EXTERNAL_ONLY
+-		ADD(FourSectorBloomFilter, uint64_t);
+-		ADD(Split64BloomFilter, uint64_t);
+-			ADD(ByteSplitBloomFilter, uint64_t);
+-		ADD(RegisterBlockedBF32Bit, uint32_t);
+-		ADD(RegisterBlockedBF32BitMasks, uint32_t);
+-		ADD(RegisterBlockedBF64Bit, uint64_t);
+-		ADD(RegisterBlockedBF64BitMasks, uint64_t);
+-		ADD(RegisterBlockedBF2x32Bit, uint64_t);
+-		ADD(CacheSectorizedBF32Bit, uint64_t);
+-#ifdef BF_EXPERIMENTS
+-		ADD(PipelinedSectorizedBF, uint64_t);
+-#endif
+-#ifdef BF_EXPERIMENTS
+-		ADD(DirectSplitBF, uint64_t);
+-#endif
+-#ifdef BF_EXPERIMENTS
+-		ADD(PatternSectorizedBF, uint64_t);
+-#endif
+-#ifdef BF_EXPERIMENTS
+-		ADD(Pattern32BF, uint64_t);
+-#endif
+-#endif
+-		ADD(FastPatternBF, uint64_t);
+-#ifdef BF_REGISTER_EXTERNAL_FILTERS
+-		BF_REGISTER_EXTERNAL_FILTERS(ADD);
+-#endif
+-#ifndef BF_EXTERNAL_ONLY
+-		ADD(NewCacheSectorizedBF32Bit, uint64_t);
+-		ADD(ImpalaBlockedBF64Bit, uint64_t);
+-#ifdef __AVX512F__
+-		ADD(ImpalaBlockedBF64BitAVX512, uint64_t);
+-#endif
+-#endif
+-#endif
++		ADD(K12ScalarOrControl, uint64_t);
++		ADD(K12LineOrCandidate, uint64_t);
+ #undef ADD
+ 		if (!unmatched.empty())
+ 			throw std::invalid_argument("unknown filter name: " + *unmatched.begin());
+@@ -436,7 +371,7 @@
+ 		             "false_positives,fpr,lookup_min_ns,lookup_max_ns,result_checksum,input_mode,hash_insert_ns,"
+ 		             "allocate_hash_insert_ns,insert_batch,filter_build_scratch_bytes,harness_hash_scratch_bytes,hash_"
+ 		             "lookup_min_ns,hash_lookup_max_ns,calibration_absent_queries,calibration_false_positives,"
+-                     "budget_mode,measurement_mode,query_repeats,build_repeats,lookup_trials_ns,hash_lookup_trials_ns,query_phase_order,"
++                     "budget_mode,measurement_mode,query_repeats,build_repeats,lookup_trials_ns,hash_lookup_trials_ns,query_phase_order,insert_trials_ns,allocate_insert_trials_ns,hash_insert_trials_ns,allocate_hash_insert_trials_ns,"
+                   << exact_budget::GeometryHeader() << '\n';
+ 		shuffle(jobs, rng);
+ 		for (auto &job : jobs)

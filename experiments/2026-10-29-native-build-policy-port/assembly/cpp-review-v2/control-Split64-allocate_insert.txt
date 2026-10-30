@@ -1,0 +1,35 @@
+    f780:	c5 f8 77             	vzeroupper
+    f783:	e8 78 97 01 00       	call   28f00 <sched_setaffinity@plt>
+    f788:	85 c0                	test   %eax,%eax
+    f78a:	0f 85 4d 37 00 00    	jne    12edd <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x49ed>
+    f790:	e8 7b 97 01 00       	call   28f10 <std::chrono::_V2::steady_clock::now()@plt>
+    f795:	48 89 c3             	mov    %rax,%rbx
+    f798:	48 8b 75 08          	mov    0x8(%rbp),%rsi
+    f79c:	48 d1 ee             	shr    %rsi
+    f79f:	48 8d 7c 24 30       	lea    0x30(%rsp),%rdi
+    f7a4:	ba 08 00 00 00       	mov    $0x8,%edx
+    f7a9:	e8 32 21 01 00       	call   218e0 <native_before::Split64BloomFilter::Split64BloomFilter(unsigned long, unsigned int)>
+    f7ae:	48 8b 75 10          	mov    0x10(%rbp),%rsi
+    f7b2:	48 8b 54 24 78       	mov    0x78(%rsp),%rdx
+    f7b7:	48 83 7c 24 60 00    	cmpq   $0x0,0x60(%rsp)
+    f7bd:	0f 84 ae 12 00 00    	je     10a71 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x2581>
+    f7c3:	48 8b 4d 18          	mov    0x18(%rbp),%rcx
+    f7c7:	48 8d 7c 24 30       	lea    0x30(%rsp),%rdi
+    f7cc:	e8 ef 6e 01 00       	call   266c0 <native_before::ParallelLayoutBloomFilter<native_before::Split64BloomFilter>::InsertParallel(unsigned int, unsigned long const*, unsigned long)>
+    f7d1:	e9 fa 1d 00 00       	jmp    115d0 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x30e0>
+    f7d6:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+    f7dd:	00 00 00 
+    f7e0:	48 83 c0 04          	add    $0x4,%rax
+    f7e4:	48 39 c8             	cmp    %rcx,%rax
+
+SHARED STOP-CLOCK TARGET
+   115bf:	75 bf                	jne    11580 <void (anonymous namespace)::Run<false>((anonymous namespace)::Case const&, bool)+0x3090>
+   115c1:	66 66 66 66 66 66 2e 	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   115c8:	0f 1f 84 00 00 00 00 
+   115cf:	00 
+   115d0:	c5 f8 77             	vzeroupper
+   115d3:	e8 38 79 01 00       	call   28f10 <std::chrono::_V2::steady_clock::now()@plt>
+   115d8:	48 8b 4d 40          	mov    0x40(%rbp),%rcx
+   115dc:	8b 09                	mov    (%rcx),%ecx
+   115de:	c5 f9 ef c0          	vpxor  %xmm0,%xmm0,%xmm0
+   115e2:	c5 fe 7f 84 24 60 03 	vmovdqu %ymm0,0x360(%rsp)

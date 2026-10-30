@@ -1,0 +1,11 @@
+# Completed historical bridge selection
+
+The fixed selector retains 14 of the 47 original Poppy constructions: seven at each size. Each receives both proposed natural public input forms, for 28 entries requiring new proof and observations. All 864 historical views, 20,304 alternatives, 47 unpooled formal cal26 quality records, exact ties and 96 null views are retained in [selection-v2/REPORT.md](selection-v2/REPORT.md) and its tables. The independent selection agrees with every archived Poppy leader set and formal quality tuple.
+
+All 14 selected constructions include a cache. This is an outcome of the prescribed historical union across eight contracts and two rounds, not a new choice to omit no-cache APIs. The complete 47-construction catalog, aliases, exact FPP bits, public policy and original over-cap exclusions remain in `selection-v2/all-records.json`. Historical byte8 results on common prehashed values cannot establish the strongest geometry for either natural raw byte8 or the previously unmeasured typed-u64 mapping. Expanding beyond this shortlist, if needed for a broader claim, requires a separate fixed coverage decision.
+
+No old count or latency qualifies the future 28 entries. They must preserve original real n, exact public constructor arguments, cache plus bucket backing, upstream hash/Result costs and zero common-hash scratch, then receive fresh separate semantic/allocation and quality/performance evidence under the raw8 contracts. Old construction clocks excluded whole-input hash scratch and later repeats validated only min(n,batch), so no old construction time is transferred.
+
+The first offline attempt (source `228cf5f`, session 73941) failed a cache-unit assertion after complete raw replay and before any selection/output. It is preserved at commit `3efa4a9`. Additive source `1c17eb5` changes only the source-mapping assertion from cache bits to cache bytes; focused nonzero-cache and all 47 source-constructor checks pass. Corrected session 52760 completed exit0 with empty stderr. No BF/compiler/calibration/throughput run occurred.
+
+The running raw8 experiment is not an input. Its eventual complete-only leader union and any shared natural-input confirmation remain separate work. This report makes no external/global leadership or production-promotion claim.

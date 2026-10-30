@@ -1,0 +1,30 @@
+--- preflight/contract.py
++++ screening/row_guard.py
+@@ -1,6 +1,6 @@
+-"""Fixed tiny raw-only CLI schema/order/geometry/trials; no performance ranking."""
++"""Exact-derived formal raw-only schema/geometry/trials; frozen planned job order."""
+ import json,math,re,statistics
+-from bindings import CALLER,need
++from pins import CALLER,PLAN,need
+ METRICS=['raw_batched_public','raw_visible_public','raw_insert','allocate_filter_and_scratch_raw_insert']
+ BASE_FIELDS=['language','filter','keys','queries','requested_bpk','filter_bytes','actual_bpk','hit_percent','present_queries','batch','insert_batch','repeats','seed','key_base','raw_hash_contract','build_scratch_bytes','query_scratch_bytes','absent_queries','false_positives','result_checksum','calibration_absent_queries','calibration_false_positives']
+ GEOMETRY_FIELDS=['budget_bytes','logical_bytes','geometry_kind','unit_bytes','unit_count','effective_probes','probe_policy','constructor_argument','implementation_origin','size_contract']
+@@ -20,13 +20,11 @@
+     plan=json.loads((CALLER/'PREFLIGHT_PLAN.json').read_text());values=plan['caller_cli_arguments_per_profile'];need(len(values)==3 and plan['total_tiny_rows']==122,'Wrong finite plan');return values
+ def argv(binary,case):return [str(binary),*case]
+ def row_order(case):
+-    n=1<<int(case[0]);q=1<<int(case[3]);hit=int(case[2]);r=Random(int(case[6]));base=r.next()%((1<<32)-n-q)
+-    hits=q//100*hit+min(q%100,hit)
+-    for _ in range(n-1+hits+q-1):r.next()
+-    requested=case[7].split(',')if case[7]else None
+-    names=[name for name in registry()if requested is None or name in requested]
+-    if requested is not None:need(len(names)==len(requested),'Invalid fixed subset')
+-    r.shuffle(names);return names,base,hits
++    plans=json.loads((PLAN/'commands.json').read_text())['cases']
++    matches=[p for p in plans if p['binary_arguments']==case]
++    need(len(matches)==1,'Unplanned formal command')
++    plan=matches[0]
++    return plan['row_order'],plan['key_base'],plan['positive_query_count']
+ def phase_order(seed,repeats):
+     labels=[0,1];Random(seed^0x6a09e667f3bcc909).shuffle(labels)
+     return ';'.join('|'.join(str(labels[i])for i in ([0,1]if j%4 in [0,3]else[1,0]))for j in range(repeats))

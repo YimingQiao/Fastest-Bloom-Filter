@@ -1,0 +1,44 @@
+{
+  "stage": "fixed eight-workload training screen; no new candidate or tuning",
+  "proposal_commit": "5cb840406f1b4c48763bd660246e51c03bfe56c2",
+  "proof_commit": "422e2512932ac2d23b21ade9ae45e58e93bce6f2",
+  "normal_binary_sha256": "46c593a4740f161fac09e78e2b745f9b2aba7f2ea34ac6f4d7e06ec0061461cf",
+  "cpu": 3,
+  "socket": 1,
+  "numa_node": 1,
+  "lock": "/tmp/fastest-bf-socket1.lock",
+  "child_placement": [
+    "/usr/bin/numactl",
+    "--physcpubind=3",
+    "--membind=1"
+  ],
+  "workload_source": "../plan.json at proposal_commit, exact eight cases",
+  "filter_rows": 16,
+  "query_repeats": 2,
+  "build_repeats": 5,
+  "build_metric_vectors": 64,
+  "build_metric_samples": 320,
+  "timed_bitmap_lifetimes": 160,
+  "canonical_validation_bitmaps": 16,
+  "build_order": "prehashed then common-hash every repetition; one fresh bitmap per contract",
+  "filter_order": "Original source shuffle followed by explicit reversal for seed6011 only. Each geometry/chunk has control-first and candidate-first once.",
+  "case_order": "Seed5011 four cells forward, seed6011 four cells reverse, as already frozen",
+  "order_limit": "Relative filter position is balanced across two seeds; pure/common build phase order stays fixed, as does code placement. No independent order-effect or significance claim.",
+  "analysis": {
+    "metrics": [
+      "insert_ns",
+      "allocate_insert_ns",
+      "hash_insert_ns",
+      "allocate_hash_insert_ns"
+    ],
+    "ratio": "candidate latency / control latency; >1 is slower",
+    "comparisons": 32,
+    "priority": "Report whole allocation-plus-build as well as insert-only; never infer construction superiority from insertion-only improvement",
+    "retention": "All per-size/chunk/seed/metric medians, every trial, every loss/tie; no pooled significance calculation",
+    "shared_samples": "Insert and allocate-plus-insert are nested intervals of the same build operation, not independent samples",
+    "query_role": "Semantic validation only; do not rank query latencies",
+    "quality_role": "Exact bitmap mapping proof and equal same-input FP/output records; no new calibration or FPR advantage claim",
+    "decision": "Reject if not useful; any promising screen still requires a separately frozen confirmation before production promotion"
+  },
+  "order_correction_source": "7546719bf38b77b4d12ca8d9cc829a09a96e459b"
+}

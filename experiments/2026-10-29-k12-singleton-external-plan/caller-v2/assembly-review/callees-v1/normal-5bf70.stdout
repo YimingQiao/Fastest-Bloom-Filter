@@ -1,0 +1,245 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/normal/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000005bf70 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj>:
+   5bf70:	push   %rbp
+   5bf71:	push   %r15
+   5bf73:	push   %r14
+   5bf75:	push   %rbx
+   5bf76:	mov    %rcx,%rax
+   5bf79:	mov    (%rdi),%r8
+   5bf7c:	mov    %esi,%r9d
+   5bf7f:	cmp    $0x10,%esi
+   5bf82:	jae    5bfa8 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x38>
+   5bf84:	xor    %r11d,%r11d
+   5bf87:	lea    0x8(%r11),%r14
+   5bf8b:	cmp    %r9,%r14
+   5bf8e:	jbe    5c1df <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x26f>
+   5bf94:	mov    %r11,%r14
+   5bf97:	mov    %r9,%rcx
+   5bf9a:	sub    %r14,%rcx
+   5bf9d:	ja     5c27b <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x30b>
+   5bfa3:	jmp    5c409 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x499>
+   5bfa8:	vmovdqu64 (%r8),%zmm0
+   5bfae:	vmovdqu64 0x40(%r8),%zmm1
+   5bfb5:	mov    0x10(%rdi),%rcx
+   5bfb9:	mov    0x8(%rdi),%esi
+   5bfbc:	vpbroadcastd %esi,%zmm2
+   5bfc2:	xor    %r10d,%r10d
+   5bfc5:	vmovdqa64 -0x59a8f(%rip),%zmm3        # 2540 <_IO_stdin_used+0x648>
+   5bfcf:	vmovdqa64 -0x59a59(%rip),%zmm4        # 2580 <_IO_stdin_used+0x688>
+   5bfd9:	vpbroadcastd -0x5a123(%rip),%zmm5        # 1ec0 <__abi_tag+0x1bfc>
+   5bfe3:	vpbroadcastd -0x5a0f9(%rip),%zmm6        # 1ef4 <__abi_tag+0x1c30>
+   5bfed:	jmp    5c0cd <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x15d>
+   5bff2:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   5c000:	vmovdqu64 (%rdx,%r10,8),%zmm7
+   5c007:	vmovdqu64 0x40(%rdx,%r10,8),%zmm8
+   5c00f:	vmovdqa64 %zmm7,%zmm9
+   5c015:	vpermt2d %zmm8,%zmm3,%zmm9
+   5c01b:	vpermt2d %zmm8,%zmm4,%zmm7
+   5c021:	vpandd %zmm7,%zmm2,%zmm7
+   5c027:	kxnorw %k0,%k0,%k1
+   5c02b:	vpxor  %xmm8,%xmm8,%xmm8
+   5c030:	vpgatherdd (%rcx,%zmm7,4),%zmm8{%k1}
+   5c037:	vpsrld $0x14,%zmm9,%zmm10
+   5c03e:	vpandd %zmm5,%zmm10,%zmm10
+   5c044:	vmovdqa64 %zmm0,%zmm11
+   5c04a:	vpternlogd $0x36,%zmm6,%zmm7,%zmm10
+   5c051:	kxnorw %k0,%k0,%k1
+   5c055:	vpxor  %xmm7,%xmm7,%xmm7
+   5c059:	vpgatherdd (%rcx,%zmm10,4),%zmm7{%k1}
+   5c060:	vpermt2d %zmm1,%zmm9,%zmm11
+   5c066:	vpsrld $0x5,%zmm9,%zmm10
+   5c06d:	vprolvd %zmm10,%zmm11,%zmm10
+   5c073:	vpsrld $0xa,%zmm9,%zmm11
+   5c07a:	vpermi2d %zmm1,%zmm0,%zmm11
+   5c080:	vpsrld $0xf,%zmm9,%zmm9
+   5c087:	vprolvd %zmm9,%zmm11,%zmm9
+   5c08d:	vpandd %zmm10,%zmm8,%zmm8
+   5c093:	vpcmpeqd %zmm10,%zmm8,%k1
+   5c099:	vpandd %zmm9,%zmm7,%zmm7
+   5c09f:	vpcmpeqd %zmm9,%zmm7,%k0{%k1}
+   5c0a5:	vpmovm2d %k0,%zmm7
+   5c0ab:	vpsrld $0x1f,%zmm7,%zmm7
+   5c0b2:	vmovdqu64 %zmm7,(%rax,%r10,4)
+   5c0b9:	lea    0x10(%r10),%r11
+   5c0bd:	add    $0x20,%r10
+   5c0c1:	cmp    %r9,%r10
+   5c0c4:	mov    %r11,%r10
+   5c0c7:	ja     5bf87 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x17>
+   5c0cd:	lea    0x50(%r10),%r11
+   5c0d1:	cmp    %r9,%r11
+   5c0d4:	ja     5c000 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x90>
+   5c0da:	mov    0x204(%rdx,%r10,8),%r11d
+   5c0e2:	and    %esi,%r11d
+   5c0e5:	prefetcht0 (%rcx,%r11,4)
+   5c0ea:	mov    0x20c(%rdx,%r10,8),%r11d
+   5c0f2:	and    %esi,%r11d
+   5c0f5:	prefetcht0 (%rcx,%r11,4)
+   5c0fa:	mov    0x214(%rdx,%r10,8),%r11d
+   5c102:	and    %esi,%r11d
+   5c105:	prefetcht0 (%rcx,%r11,4)
+   5c10a:	mov    0x21c(%rdx,%r10,8),%r11d
+   5c112:	and    %esi,%r11d
+   5c115:	prefetcht0 (%rcx,%r11,4)
+   5c11a:	mov    0x224(%rdx,%r10,8),%r11d
+   5c122:	and    %esi,%r11d
+   5c125:	prefetcht0 (%rcx,%r11,4)
+   5c12a:	mov    0x22c(%rdx,%r10,8),%r11d
+   5c132:	and    %esi,%r11d
+   5c135:	prefetcht0 (%rcx,%r11,4)
+   5c13a:	mov    0x234(%rdx,%r10,8),%r11d
+   5c142:	and    %esi,%r11d
+   5c145:	prefetcht0 (%rcx,%r11,4)
+   5c14a:	mov    0x23c(%rdx,%r10,8),%r11d
+   5c152:	and    %esi,%r11d
+   5c155:	prefetcht0 (%rcx,%r11,4)
+   5c15a:	mov    0x244(%rdx,%r10,8),%r11d
+   5c162:	and    %esi,%r11d
+   5c165:	prefetcht0 (%rcx,%r11,4)
+   5c16a:	mov    0x24c(%rdx,%r10,8),%r11d
+   5c172:	and    %esi,%r11d
+   5c175:	prefetcht0 (%rcx,%r11,4)
+   5c17a:	mov    0x254(%rdx,%r10,8),%r11d
+   5c182:	and    %esi,%r11d
+   5c185:	prefetcht0 (%rcx,%r11,4)
+   5c18a:	mov    0x25c(%rdx,%r10,8),%r11d
+   5c192:	and    %esi,%r11d
+   5c195:	prefetcht0 (%rcx,%r11,4)
+   5c19a:	mov    0x264(%rdx,%r10,8),%r11d
+   5c1a2:	and    %esi,%r11d
+   5c1a5:	prefetcht0 (%rcx,%r11,4)
+   5c1aa:	mov    0x26c(%rdx,%r10,8),%r11d
+   5c1b2:	and    %esi,%r11d
+   5c1b5:	prefetcht0 (%rcx,%r11,4)
+   5c1ba:	mov    0x274(%rdx,%r10,8),%r11d
+   5c1c2:	and    %esi,%r11d
+   5c1c5:	prefetcht0 (%rcx,%r11,4)
+   5c1ca:	mov    0x27c(%rdx,%r10,8),%r11d
+   5c1d2:	and    %esi,%r11d
+   5c1d5:	prefetcht0 (%rcx,%r11,4)
+   5c1da:	jmp    5c000 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x90>
+   5c1df:	vmovdqu64 (%rdx,%r11,8),%zmm0
+   5c1e6:	vpshufd $0xf5,%zmm0,%zmm1
+   5c1ed:	vpsllq $0xc,%zmm0,%zmm2
+   5c1f4:	vpshufd $0xa0,%zmm0,%zmm0
+   5c1fb:	vpsrlvd -0x59c45(%rip),%zmm0,%zmm3        # 25c0 <_IO_stdin_used+0x6c8>
+   5c205:	vmovdqu64 (%r8),%zmm4
+   5c20b:	vpermt2d 0x40(%r8),%zmm3,%zmm4
+   5c212:	vpsrlvd -0x59c1c(%rip),%zmm0,%zmm0        # 2600 <_IO_stdin_used+0x708>
+   5c21c:	vprolvd %zmm0,%zmm4,%zmm0
+   5c222:	vpbroadcastq -0x5a244(%rip),%zmm3        # 1fe8 <_IO_stdin_used+0xf0>
+   5c22c:	vpternlogq $0xf8,-0x5a2e7(%rip){1to8},%zmm2,%zmm3        # 1f50 <_IO_stdin_used+0x58>
+   5c237:	mov    0x10(%rdi),%rcx
+   5c23b:	vpternlogd $0x78,0x8(%rdi){1to16},%zmm1,%zmm3
+   5c243:	kxnorw %k0,%k0,%k1
+   5c247:	vpxor  %xmm1,%xmm1,%xmm1
+   5c24b:	vpgatherdd (%rcx,%zmm3,4),%zmm1{%k1}
+   5c252:	vpandd %zmm0,%zmm1,%zmm1
+   5c258:	vpcmpeqq %zmm0,%zmm1,%k0
+   5c25e:	vpmovm2d %k0,%zmm0
+   5c264:	vpsrld $0x1f,%ymm0,%ymm0
+   5c269:	vmovdqu %ymm0,(%rax,%r11,4)
+   5c26f:	mov    %r9,%rcx
+   5c272:	sub    %r14,%rcx
+   5c275:	jbe    5c409 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x499>
+   5c27b:	mov    0x8(%rdi),%esi
+   5c27e:	mov    0x10(%rdi),%rdi
+   5c282:	cmp    $0x4,%rcx
+   5c286:	jae    5c290 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x320>
+   5c288:	mov    %r14,%r10
+   5c28b:	jmp    5c3a0 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x430>
+   5c290:	mov    %ecx,%r11d
+   5c293:	and    $0xfffffffc,%r11d
+   5c297:	lea    (%r14,%r11,1),%r10
+   5c29b:	vpbroadcastd %esi,%xmm0
+   5c2a1:	lea    (%rax,%r14,4),%rbx
+   5c2a5:	lea    (%rdx,%r14,8),%r14
+   5c2a9:	xor    %r15d,%r15d
+   5c2ac:	vpbroadcastq -0x5a2fd(%rip),%ymm1        # 1fb8 <_IO_stdin_used+0xc0>
+   5c2b5:	vpbroadcastd -0x5a3fe(%rip),%xmm2        # 1ec0 <__abi_tag+0x1bfc>
+   5c2be:	vpbroadcastd -0x5a3d3(%rip),%xmm3        # 1ef4 <__abi_tag+0x1c30>
+   5c2c7:	nopw   0x0(%rax,%rax,1)
+   5c2d0:	vmovdqu (%r14,%r15,8),%ymm4
+   5c2d6:	vpand  %ymm1,%ymm4,%ymm5
+   5c2da:	kxnorw %k0,%k0,%k1
+   5c2de:	vpxor  %xmm6,%xmm6,%xmm6
+   5c2e2:	vpgatherqd (%r8,%ymm5,4),%xmm6{%k1}
+   5c2e9:	vpsrlq $0x20,%ymm4,%ymm5
+   5c2ee:	vpsrlq $0xa,%ymm4,%ymm7
+   5c2f3:	vpand  %ymm1,%ymm7,%ymm7
+   5c2f7:	kxnorw %k0,%k0,%k1
+   5c2fb:	vpxor  %xmm8,%xmm8,%xmm8
+   5c300:	vpgatherqd (%r8,%ymm7,4),%xmm8{%k1}
+   5c307:	vpmovqd %ymm5,%xmm5
+   5c30d:	vpand  %xmm5,%xmm0,%xmm5
+   5c311:	vpmovzxdq %xmm5,%ymm7
+   5c316:	kxnorw %k0,%k0,%k1
+   5c31a:	vpxor  %xmm9,%xmm9,%xmm9
+   5c31f:	vpgatherqd (%rdi,%ymm7,4),%xmm9{%k1}
+   5c326:	vpmovqd %ymm4,%xmm4
+   5c32c:	vpsrld $0x5,%xmm4,%xmm7
+   5c331:	vprolvd %xmm7,%xmm6,%xmm6
+   5c337:	vpsrld $0x14,%xmm4,%xmm7
+   5c33c:	vpand  %xmm2,%xmm7,%xmm7
+   5c340:	vpternlogd $0x36,%xmm3,%xmm5,%xmm7
+   5c347:	vpmovzxdq %xmm7,%ymm5
+   5c34c:	kxnorw %k0,%k0,%k1
+   5c350:	vpxor  %xmm7,%xmm7,%xmm7
+   5c354:	vpgatherqd (%rdi,%ymm5,4),%xmm7{%k1}
+   5c35b:	vpsrld $0xf,%xmm4,%xmm4
+   5c360:	vprolvd %xmm4,%xmm8,%xmm4
+   5c366:	vpand  %xmm6,%xmm9,%xmm5
+   5c36a:	vpcmpeqd %xmm6,%xmm5,%k1
+   5c370:	vpand  %xmm4,%xmm7,%xmm5
+   5c374:	vpcmpeqd %xmm4,%xmm5,%k0{%k1}
+   5c37a:	vpmovm2d %k0,%xmm4
+   5c380:	vpsrld $0x1f,%xmm4,%xmm4
+   5c385:	vmovdqu %xmm4,(%rbx,%r15,4)
+   5c38b:	add    $0x4,%r15
+   5c38f:	cmp    %r15,%r11
+   5c392:	jne    5c2d0 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x360>
+   5c398:	cmp    %r11d,%ecx
+   5c39b:	je     5c409 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x499>
+   5c39d:	nopl   (%rax)
+   5c3a0:	mov    (%rdx,%r10,8),%r11
+   5c3a4:	mov    %r11,%rbx
+   5c3a7:	shr    $0x20,%rbx
+   5c3ab:	and    %esi,%ebx
+   5c3ad:	mov    %r11d,%ecx
+   5c3b0:	and    $0x1f,%ecx
+   5c3b3:	mov    (%r8,%rcx,4),%ebp
+   5c3b7:	mov    %r11d,%ecx
+   5c3ba:	shr    $0x5,%ecx
+   5c3bd:	rol    %cl,%ebp
+   5c3bf:	mov    %r11d,%ecx
+   5c3c2:	shr    $0x8,%ecx
+   5c3c5:	and    $0x7c,%ecx
+   5c3c8:	mov    (%r8,%rcx,1),%r14d
+   5c3cc:	mov    %r11d,%ecx
+   5c3cf:	shr    $0xf,%ecx
+   5c3d2:	rol    %cl,%r14d
+   5c3d5:	mov    (%rdi,%rbx,4),%ecx
+   5c3d8:	andn   %ebp,%ecx,%ecx
+   5c3dd:	shr    $0x14,%r11d
+   5c3e1:	and    $0x7,%r11d
+   5c3e5:	or     $0x8,%r11d
+   5c3e9:	xor    %ebx,%r11d
+   5c3ec:	mov    (%rdi,%r11,4),%r11d
+   5c3f0:	andn   %r14d,%r11d,%r11d
+   5c3f5:	xor    %ebx,%ebx
+   5c3f7:	or     %ecx,%r11d
+   5c3fa:	sete   %bl
+   5c3fd:	mov    %ebx,(%rax,%r10,4)
+   5c401:	inc    %r10
+   5c404:	cmp    %r10,%r9
+   5c407:	jne    5c3a0 <_ZNK13bloom_filters13FastPatternBF10LookupImplILb1EEEvjPKmPj+0x430>
+   5c409:	pop    %rbx
+   5c40a:	pop    %r14
+   5c40c:	pop    %r15
+   5c40e:	pop    %rbp
+   5c40f:	vzeroupper
+   5c412:	ret

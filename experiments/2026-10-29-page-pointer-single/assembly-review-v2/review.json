@@ -1,0 +1,138 @@
+{
+  "scope": "Manual review of all six typed pointer and six value branches; supporting exact instruction observations; no performance claim",
+  "binary": "/home/yiming/projects/fastest-bf-lab/build/page-pointer-preflight-v1/native/worker/page_pointer_control",
+  "binary_sha256": "2ed675b3edde017c51fcebf77ff6d2c89ea39f52e5e1229e29379c2f034e9dd5",
+  "review_complete": true,
+  "all_six_pointer_branches_use_input_address": true,
+  "all_six_densecall_targets_match_value": true,
+  "underlying_public_test_remains_out_of_line": true,
+  "timing_authorized": false,
+  "pairs": [
+    {
+      "pointer_artifact": "validation-v1/assembly/query00.asm",
+      "value_artifact": "validation-v1/assembly/query10.asm",
+      "public_test_target": "pbf::PageBloomFilter<4u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "identical_densecall_target": "void vldb_stage2::DenseCall<raw32_stage3::RawPage<4u, false> >(raw32_stage3::RawPage<4u, false> const&, unsigned int, unsigned int const*, unsigned int*)",
+      "input_pointer_register": "rbx initialized from incoming rcx, advanced4 bytes per key",
+      "public_key_pointer_argument": "rsi <- rbx",
+      "pointer_key_stack_copy": false,
+      "value_key_stack_copy": "mov eax,0x1c(rsp)",
+      "pointer_outer_stack_reservation_bytes": 24,
+      "value_outer_stack_reservation_bytes": 40
+    },
+    {
+      "pointer_artifact": "validation-v1/assembly/query01.asm",
+      "value_artifact": "validation-v1/assembly/query11.asm",
+      "public_test_target": "pbf::PageBloomFilter<4u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "identical_densecall_target": "void vldb_stage2::DenseCall<raw32_stage3::RawPage<4u, true> >(raw32_stage3::RawPage<4u, true> const&, unsigned int, unsigned int const*, unsigned int*)",
+      "input_pointer_register": "rbx initialized from incoming rcx, advanced4 bytes per key",
+      "public_key_pointer_argument": "rsi <- rbx",
+      "pointer_key_stack_copy": false,
+      "value_key_stack_copy": "mov eax,0x1c(rsp)",
+      "pointer_outer_stack_reservation_bytes": 24,
+      "value_outer_stack_reservation_bytes": 40
+    },
+    {
+      "pointer_artifact": "validation-v1/assembly/query02.asm",
+      "value_artifact": "validation-v1/assembly/query12.asm",
+      "public_test_target": "pbf::PageBloomFilter<6u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "identical_densecall_target": "void vldb_stage2::DenseCall<raw32_stage3::RawPage<6u, false> >(raw32_stage3::RawPage<6u, false> const&, unsigned int, unsigned int const*, unsigned int*)",
+      "input_pointer_register": "rbx initialized from incoming rcx, advanced4 bytes per key",
+      "public_key_pointer_argument": "rsi <- rbx",
+      "pointer_key_stack_copy": false,
+      "value_key_stack_copy": "mov eax,0x1c(rsp)",
+      "pointer_outer_stack_reservation_bytes": 24,
+      "value_outer_stack_reservation_bytes": 40
+    },
+    {
+      "pointer_artifact": "validation-v1/assembly/query03.asm",
+      "value_artifact": "validation-v1/assembly/query13.asm",
+      "public_test_target": "pbf::PageBloomFilter<6u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "identical_densecall_target": "void vldb_stage2::DenseCall<raw32_stage3::RawPage<6u, true> >(raw32_stage3::RawPage<6u, true> const&, unsigned int, unsigned int const*, unsigned int*)",
+      "input_pointer_register": "rbx initialized from incoming rcx, advanced4 bytes per key",
+      "public_key_pointer_argument": "rsi <- rbx",
+      "pointer_key_stack_copy": false,
+      "value_key_stack_copy": "mov eax,0x1c(rsp)",
+      "pointer_outer_stack_reservation_bytes": 24,
+      "value_outer_stack_reservation_bytes": 40
+    },
+    {
+      "pointer_artifact": "validation-v1/assembly/query04.asm",
+      "value_artifact": "validation-v1/assembly/query14.asm",
+      "public_test_target": "pbf::PageBloomFilter<8u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "identical_densecall_target": "void vldb_stage2::DenseCall<raw32_stage3::RawPage<8u, false> >(raw32_stage3::RawPage<8u, false> const&, unsigned int, unsigned int const*, unsigned int*)",
+      "input_pointer_register": "rbx initialized from incoming rcx, advanced4 bytes per key",
+      "public_key_pointer_argument": "rsi <- rbx",
+      "pointer_key_stack_copy": false,
+      "value_key_stack_copy": "mov eax,0x1c(rsp)",
+      "pointer_outer_stack_reservation_bytes": 24,
+      "value_outer_stack_reservation_bytes": 40
+    },
+    {
+      "pointer_artifact": "validation-v1/assembly/query05.asm",
+      "value_artifact": "validation-v1/assembly/query15.asm",
+      "public_test_target": "pbf::PageBloomFilter<8u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "identical_densecall_target": "void vldb_stage2::DenseCall<raw32_stage3::RawPage<8u, true> >(raw32_stage3::RawPage<8u, true> const&, unsigned int, unsigned int const*, unsigned int*)",
+      "input_pointer_register": "rbx initialized from incoming rcx, advanced4 bytes per key",
+      "public_key_pointer_argument": "rsi <- rbx",
+      "pointer_key_stack_copy": false,
+      "value_key_stack_copy": "mov eax,0x1c(rsp)",
+      "pointer_outer_stack_reservation_bytes": 24,
+      "value_outer_stack_reservation_bytes": 40
+    }
+  ],
+  "public_callees": [
+    {
+      "symbol": "pbf::PageBloomFilter<4u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "artifact": "test0.asm",
+      "command": [
+        "taskset",
+        "-c",
+        "4",
+        "objdump",
+        "-dC",
+        "--no-show-raw-insn",
+        "--start-address=41152",
+        "--stop-address=41404",
+        "/home/yiming/projects/fastest-bf-lab/build/page-pointer-preflight-v1/native/worker/page_pointer_control"
+      ],
+      "sha256": "eb383de11dec6d16fecd0f0fc5a143b6cd9c37390f86de7a23c9327bc57956f7"
+    },
+    {
+      "symbol": "pbf::PageBloomFilter<6u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "artifact": "test1.asm",
+      "command": [
+        "taskset",
+        "-c",
+        "4",
+        "objdump",
+        "-dC",
+        "--no-show-raw-insn",
+        "--start-address=41408",
+        "--stop-address=41659",
+        "/home/yiming/projects/fastest-bf-lab/build/page-pointer-preflight-v1/native/worker/page_pointer_control"
+      ],
+      "sha256": "c496cb1a0665a702a4578d7861988d80aea06da45cb3dea0076430ae1c3df5ad"
+    },
+    {
+      "symbol": "pbf::PageBloomFilter<8u>::test(unsigned char const*, unsigned int) const [clone .constprop.0]",
+      "artifact": "test2.asm",
+      "command": [
+        "taskset",
+        "-c",
+        "4",
+        "objdump",
+        "-dC",
+        "--no-show-raw-insn",
+        "--start-address=41664",
+        "--stop-address=41907",
+        "/home/yiming/projects/fastest-bf-lab/build/page-pointer-preflight-v1/native/worker/page_pointer_control"
+      ],
+      "sha256": "1c8eff52baf9de4afa48ed86aaca124cb9503d6eba72e6121484d0720ade8453"
+    }
+  ],
+  "limitations": [
+    "Outer prologue/register/branch/code-layout differs, so unchanged dense semantic contract does not imply identical dense performance.",
+    "Constprop public test retains unchanged upstream implementation; this is a caller-contract control, not an algorithm change."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "status": "one source-only candidate; no build or BF authorization",
+  "native_commit": "ba5530a4fc38930a9da4593f2a8af7d1de3c853a",
+  "candidate_count": 1,
+  "public_changes": ["runtime-gated contains_hash", "runtime-gated lookup_hashes lengths1..3 after output-length assertion"],
+  "helper_target_features": "avx512f",
+  "runtime_gate": "existing avx512 flag; existing AVX2+AVX512F detection and disable-avx512 behavior unchanged",
+  "inline_policy": "ordinary inline on both new helpers; no always_inline and no existing hint change",
+  "preserve": ["scalar/probe oracle", ">=4 query bodies", "allocation", "dictionary", "insertion", "top24 address", "parallel ownership", "public type/signatures"],
+  "focused_correctness_plan": {
+    "profiles": ["native target-cpu=native", "portable x86_64 runtime dispatch", "portable disable-avx512", "portable ASan"],
+    "line_counts": [2, 3, 17, 32769],
+    "hash_fields": "all256 low high32 offset bytes; dictionary16 and rotation32 codes with all four scalar wrap rotations; edge hashes including0 andu64::MAX",
+    "required_checks": [
+      "independent u128 address/per-bit oracle, complete inserted bitmap and public scalar/vector answers",
+      "controlled bitmap missing each of twelve required bits, not only positive all-ones fixtures",
+      "public singleton and batches0..131 plus4096, offsets0/1/3/7, dense0/1 and output sentinels",
+      "mismatched output lengths reject before any write",
+      "disable/non-AVX512 path stays scalar; no unsupported target helper execution",
+      "input immutability and unchanged bitmap after lookup"
+    ],
+    "broad_native_or_mt_retest": false
+  },
+  "tiny_actual_caller_plan": {
+    "seed": 74381,
+    "n_exponent": 8,
+    "query_exponent": 12,
+    "repeats": 4,
+    "actual_bpk": 24,
+    "hit_percent": [0, 50, 100],
+    "batches": [1, 3, 31, 4096],
+    "api_order": ["Control", "Candidate"],
+    "cases_per_profile": 12,
+    "rows_per_profile": 24,
+    "calibration_queries": 0,
+    "purpose": "bounded correctness and actual public clock/dispatch proof only; no ranking",
+    "contracts": ["generic pure", "generic staged common hash", "visible public pure and fused at batch1"],
+    "semantics": "same full input/output/bitmap per arm; every timed output poisoned and validated outside clock; all inserted checks",
+    "faults": "late skipped output and wrong output after valid warmups, exercising both generic and visible paths"
+  },
+  "actual_assembly_plan": {
+    "contexts": ["portable runtime-dispatch binary", "native-feature binary"],
+    "identity": "ELF FUNC address+size with folded aliases and necessary relocation binding; not display labels",
+    "roles": ["each arm public contains_hash/lookup_hashes", "candidate private singleton/tiny target helper if outlined", "visible pure/fused whole-array loops", "generic batch helper and actual public callee", "clock windows"],
+    "inspect": ["one legal full-line load", "dictionary selection and variable rotations", "actual feature tests and per-key/per-batch calls", "bounds checks, frames and loop unrolling", "common hash and dense stores inside clock", "no per-key type-erasure boundary"]
+  },
+  "future_timing": "not authorized, selected or frozen; no C++-derived speed assumption, external/FPR claim or promotion"
+}

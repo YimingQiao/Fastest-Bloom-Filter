@@ -1,0 +1,17 @@
+[package]
+name = "native-build-policy-port-proof"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+before_native = { package = "fastest-bloom-filter-before", path = "../native/before/rust" }
+after_native = { package = "fastest-bloom-filter-after", path = "../native/after/rust" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[[bin]]
+name = "policy_confirmation"
+path = "src/main.rs"

@@ -1,0 +1,38 @@
+name: correctness
+on: [push, pull_request]
+jobs:
+  cpp:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [g++, clang++]
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} -DBF_NATIVE=ON -DBF_EXPERIMENTS=ON
+      - run: cmake --build build -j 2
+      - run: ctest --test-dir build --output-on-failure
+  sanitizers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DCMAKE_CXX_COMPILER=clang++ -DBF_NATIVE=ON -DBF_SANITIZERS=ON -DCMAKE_BUILD_TYPE=Debug
+      - run: cmake --build build -j 2
+      - run: ctest --test-dir build --output-on-failure
+  rust-and-parity:
+    runs-on: ubuntu-latest
+    env:
+      RUSTFLAGS: -C target-cpu=native
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - run: cargo fmt --check --manifest-path rust/Cargo.toml
+      - run: cargo test --locked --manifest-path rust/Cargo.toml
+      - run: cargo test --locked --manifest-path rust/Cargo.toml --features disable-avx512
+      - run: cargo clippy --locked --manifest-path rust/Cargo.toml --all-targets -- -D warnings
+      - run: cargo build --release --locked --manifest-path rust/Cargo.toml
+      - run: cmake -S . -B build/native -DCMAKE_CXX_COMPILER=clang++ -DBF_NATIVE=ON
+      - run: cmake --build build/native -j 2
+      - run: python3 scripts/check_cross_language.py
+      - run: python3 scripts/check_parallel_parity.py

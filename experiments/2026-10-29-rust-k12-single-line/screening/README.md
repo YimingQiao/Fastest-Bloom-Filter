@@ -1,0 +1,11 @@
+# Fixed72 safe SingleLine comparison
+
+Use only the actual normal executable proved in `2adefb87cd03051df163803e8710a5f0375573b1` (SHA `64ecc64b307f32dc5ff215720c608d9423abdc55d54536034ecbebe0334f91a3`). Original K12 and unchanged Split64Range remain same-process controls. The rejected two-hint implementation is not linked. There is no rebuild or annotation/body search.
+
+The24 fixed commands measure all72 rows: n2^16/2^25, actual24 bits/key, batches1/3/31/4096, three previously observed Rust108 seeds, q2^22, hit50%, eight balanced query repetitions and full-input insertion. Four query contracts and four serial build boundaries retain the exact old caller code. Calibration0 is mandatory. The initial native proposal/protocol is unchanged; the source-derived order ledger is additive here. Every pair has both directions; the candidate is first/middle/last per size. Three seeds cannot give perfect pair balance.
+
+The runner is an exact structural reuse of the completed inline72 integrity contract with candidate names, source/binary pins and nested caller paths changed. It validates the actual four-mode trial vectors, phase/row order, all prior mixed-output identities, old/new complete semantic equality and exact allocation. The12 historical unpooled size/seed/family quality samples are context only after full source/bitmap/output equivalence. No new calibration, external measurement or fresh-seed leadership claim is made.
+
+All intended commands are persisted before launch, all stdout/stderr are preserved, successful stderr must equal the passed caller's known informational line, and raw/aggregate rows are reconstructed at completion. Cases remain a list with separate case_count; there is no implicit resume. Source/proof/binary/host/environment and actual inherited socket1 lease are verified before and after the whole matrix. CPU3 affinity is required; no NUMA memory policy is claimed. Raw evidence must be sealed and committed before interpretation.
+
+Actual assembly shows one global line check and automatic singleton-chain expansion under ordinary hints. It still shows six saved registers, a104-byte fused frame and larger batch code. None of these observations substitutes for the fixed performance/regression measurement. Execution requires the root's reviewed source/lease authorization.

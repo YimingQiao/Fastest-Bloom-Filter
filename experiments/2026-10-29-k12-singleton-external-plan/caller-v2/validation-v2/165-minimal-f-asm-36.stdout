@@ -1,0 +1,43 @@
+
+/tmp/fastest-bf-k12-singleton-external-v2-cpu3/minimal-f/main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000004f870 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj>:
+   4f870:	test   %rsi,%rsi
+   4f873:	je     4f915 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0xa5>
+   4f879:	xor    %eax,%eax
+   4f87b:	vmovdqa -0x4ae43(%rip),%ymm0        # 4a40 <_IO_stdin_used+0x2b48>
+   4f883:	vmovdqa -0x4b04b(%rip),%ymm1        # 4840 <_IO_stdin_used+0x2948>
+   4f88b:	vpbroadcastd -0x4d9ac(%rip),%ymm2        # 1ee8 <__abi_tag+0x1c24>
+   4f894:	data16 data16 cs nopw 0x0(%rax,%rax,1)
+   4f8a0:	mov    (%rdx,%rax,8),%r8
+   4f8a4:	mov    (%rdi),%r9
+   4f8a7:	mov    %r8d,%r10d
+   4f8aa:	mov    0x18(%rdi),%r11d
+   4f8ae:	shr    $0x6,%r11d
+   4f8b2:	imul   %r10,%r11
+   4f8b6:	shr    $0x1a,%r11
+   4f8ba:	and    $0xffffffc0,%r11d
+   4f8be:	shr    $0x20,%r8
+   4f8c2:	vmovd  %r8d,%xmm3
+   4f8c7:	vpbroadcastd %xmm3,%ymm3
+   4f8cc:	vpmulld %ymm0,%ymm3,%ymm4
+   4f8d1:	vpsrld $0x1c,%ymm4,%ymm5
+   4f8d6:	vpermd (%r9,%r11,1),%ymm5,%ymm6
+   4f8dc:	vpermd 0x20(%r9,%r11,1),%ymm5,%ymm5
+   4f8e3:	vpsrad $0x1f,%ymm4,%ymm4
+   4f8e8:	vpblendvb %ymm4,%ymm5,%ymm6,%ymm4
+   4f8ee:	vpmulld %ymm1,%ymm3,%ymm3
+   4f8f3:	vpsrld $0x1b,%ymm3,%ymm3
+   4f8f8:	vpsllvd %ymm3,%ymm2,%ymm3
+   4f8fd:	xor    %r8d,%r8d
+   4f900:	vptest %ymm3,%ymm4
+   4f905:	setb   %r8b
+   4f909:	mov    %r8d,(%rcx,%rax,4)
+   4f90d:	inc    %rax
+   4f910:	cmp    %rax,%rsi
+   4f913:	jne    4f8a0 <_Z20inline_single_kernelILb0EN16rocksdb_external16FastLocalBloom64ILi8ELb0EEEmEvRKT0_mPKmPj+0x30>
+   4f915:	vzeroupper
+   4f918:	ret

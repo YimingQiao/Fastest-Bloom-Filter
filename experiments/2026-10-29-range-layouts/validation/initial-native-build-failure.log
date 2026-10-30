@@ -1,0 +1,32 @@
+-- The CXX compiler identification is Clang 23.0.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/yiming/projects/fastest-bf-lab/build/range-layouts-native
+[ 50%] Building CXX object CMakeFiles/check.dir/check.cpp.o
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-range-layouts/check.cpp:10:8: error: redefinition of 'RangeLayoutInspector' as different kind of symbol
+   10 | struct RangeLayoutInspector {
+      |        ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-range-layouts/byte_split_bloom.h:25:16: note: previous definition is here
+   25 |         friend struct RangeLayoutInspector;
+      |                       ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-range-layouts/check.cpp:82:13: error: use of undeclared identifier 'RangeLayoutInspector'
+   82 |     require(RangeLayoutInspector::lines(bf) == line_count && bf.SizeInBytes() == bytes,
+      |             ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-range-layouts/check.cpp:100:17: error: use of undeclared identifier 'RangeLayoutInspector'
+  100 |         require(RangeLayoutInspector::owner(bf, h) == at / 64, "physical owner differs");
+      |                 ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-range-layouts/check.cpp:106:40: error: use of undeclared identifier 'RangeLayoutInspector'
+  106 |     require(std::memcmp(bitmap.data(), RangeLayoutInspector::data(bf), bytes) == 0,
+      |                                        ^
+/home/yiming/projects/fastest-bf-lab/experiments/2026-10-29-range-layouts/check.cpp:134:20: error: use of undeclared identifier 'RangeLayoutInspector'
+  134 |     auto *actual = RangeLayoutInspector::data(bf);
+      |                    ^
+5 errors generated.
+gmake[2]: *** [CMakeFiles/check.dir/build.make:76: CMakeFiles/check.dir/check.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/check.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

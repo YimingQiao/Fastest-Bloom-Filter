@@ -1,0 +1,134 @@
+--- frozen-parent/rust
++++ four-arm/rust
+@@ -5,8 +5,8 @@
+ const BLOCK: usize = 4096;
+ const QUERIES: usize = 32771;
+ const GUARD: u32 = 0xfeed;
+-const SCHEDULE: [[usize; 3]; 4] = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [1, 2, 0]];
+-const ARMS: [&str; 3] = ["serial", "control", "candidate"];
++const SCHEDULE: [[usize; 4]; 4] = [[0, 1, 3, 2], [1, 2, 0, 3], [2, 3, 1, 0], [3, 0, 2, 1]];
++const ARMS: [&str; 4] = ["A0", "A1", "Clone", "Policy"];
+ extern "C" {
+     fn sched_setaffinity(pid: i32, bytes: usize, mask: *const usize) -> i32;
+     fn sched_getaffinity(pid: i32, bytes: usize, mask: *mut usize) -> i32;
+@@ -53,7 +53,7 @@
+     let large = if range { 100663296 } else { 67108864 };
+     let g = [(262144, 65536, 0, false), (262144, 65537, 0, false),
+         (262144, 65536, 131072, true), (if range { 262208 } else { 524288 }, 65536, 0, false),
+-        (large, 65536, 0, false), (large, 65536, large / 2, true)][id];
++        (large, 65536, 0, false)][id];
+     Case { id, bytes: g.0, n: g.1, requested, history: g.2, seed, base: seed << 42, hotspot: g.3, cpus }
+ }
+ fn make<F: Native>(c: &Case) -> F { F::make(c.bytes) }
+@@ -111,50 +111,49 @@
+ }
+ #[derive(Default)]
+ struct Stats { effective: usize, workers: usize, scratch: usize }
+-fn observe<F: Native>(filter: &F, c: &Case, serial: bool) -> Stats {
++fn observe<F: Native>(filter: &F, c: &Case) -> Stats {
+     assert_eq!(filter.size_in_bytes(), c.bytes);
+     let effective = if F::BOUNDED && c.n <= 65536 && c.bytes <= 262144 { 1 } else { c.requested };
+     let w = effective; // Fixed cases exceed native fallback/count bounds.
+     let scratch = if w == 1 { 0 } else { c.n * 8 + w * w.div_ceil(8) * 64 + (w + 1) * 8 + w * w * 24 + w * 48 };
+     assert_eq!(filter.build_workers(c.n, c.requested), w);
+     assert_eq!(filter.build_scratch_bytes(c.n, c.requested), scratch);
+-    if serial { Stats { effective: 1, workers: 1, scratch: 0 } }
+-    else { Stats { effective, workers: w, scratch } }
++    Stats { effective, workers: w, scratch }
+ }
+ #[derive(Default)]
+ struct Samples { stats: Stats, ns: [Vec<u128>; 2], setup_ns: [Vec<u128>; 2] }
++#[inline(never)]
+ fn trial<F: Native>(c: &Case, d: &Data, expected: &[u32], out: &mut [u32],
+-                                      serial: bool, allocate: bool, samples: &mut Samples) {
++                                      allocate: bool, samples: &mut Samples) {
+     affinity(&[c.cpus[0]]);
+     if !allocate {
+         let mut filter = make::<F>(c);
+-        samples.stats = observe(&filter, c, serial);
++        samples.stats = observe(&filter, c);
+         let setup_start = Instant::now(); prefill(&mut filter, c); let setup = setup_start.elapsed();
+-        if !serial { affinity(&c.cpus); }
++        affinity(&c.cpus);
+         let start = Instant::now();
+-        if serial { filter.insert_hashes(black_box(&d.batch)); }
+-        else { filter.insert_hashes_parallel(black_box(&d.batch), c.requested); }
++        filter.insert_hashes_parallel(black_box(&d.batch), c.requested);
+         let elapsed = start.elapsed();
+         affinity(&[c.cpus[0]]); samples.ns[0].push(elapsed.as_nanos());
+         samples.setup_ns[0].push(if c.history == 0 { 0 } else { setup.as_nanos() });
+         validate(&filter, c, d, expected, out);
+     } else {
+         assert_eq!(c.history, 0, "populated allocation+build is unavailable");
+-        if !serial { affinity(&c.cpus); }
++        affinity(&c.cpus);
+         let start = Instant::now();
+         let mut filter = make::<F>(c);
+-        if serial { filter.insert_hashes(black_box(&d.batch)); }
+-        else { filter.insert_hashes_parallel(black_box(&d.batch), c.requested); }
++        filter.insert_hashes_parallel(black_box(&d.batch), c.requested);
+         let elapsed = start.elapsed();
+         affinity(&[c.cpus[0]]); samples.ns[1].push(elapsed.as_nanos()); samples.setup_ns[1].push(0);
+-        samples.stats = observe(&filter, c, serial); validate(&filter, c, d, expected, out);
++        samples.stats = observe(&filter, c); validate(&filter, c, d, expected, out);
+     } // The bitmap is dropped before the next arm and outside every clock.
+ }
+ fn array(values: &[u128]) { print!("["); for (i, v) in values.iter().enumerate() { if i != 0 { print!(","); } print!("{v}"); } print!("]"); }
+-fn run<Before: Native, After: Native>(family: &str, c: &Case, corrupt: bool) {
++fn run<Before: Native, Clone: Native, After: Native>(family: &str, c: &Case, corrupt: bool, repeats: usize) {
++    let cycles = repeats / 4;
+     let d = workload(c); let batch_before = digest(&d.batch); let query_before = digest(&d.query);
+     let mut expected = vec![0u32; QUERIES]; let mut out = vec![GUARD; QUERIES + 32];
+-    let mut samples: [Samples; 3] = std::array::from_fn(|_| Samples::default());
++    let mut samples: [Samples; 4] = std::array::from_fn(|_| Samples::default());
+     let mut executed = Vec::new();
+     affinity(&[c.cpus[0]]);
+     { let mut oracle = make::<Before>(c); assert_eq!(oracle.size_in_bytes(), c.bytes);
+@@ -162,14 +161,16 @@
+       validate(&oracle, c, &d, &expected, &mut out); }
+     assert!(expected.iter().all(|&x| x <= 1));
+     if corrupt { expected[0] ^= 1; }
+-    for (repeat, schedule) in SCHEDULE.iter().enumerate() {
+-        let allocation_first = repeat == 1 || repeat == 2;
++    for repeat in 0..repeats {
++        let schedule = &SCHEDULE[repeat % 4];
++        let allocation_first = (repeat / 4 + repeat) % 2 != 0;
+         let phases = if c.history == 0 { 2 } else { 1 };
+         for phase in 0..phases {
+             let allocate = c.history == 0 && if phase == 0 { allocation_first } else { !allocation_first };
+             for &arm in schedule {
+-                if arm == 2 { trial::<After>(c, &d, &expected, &mut out, false, allocate, &mut samples[arm]); }
+-                else { trial::<Before>(c, &d, &expected, &mut out, arm == 0, allocate, &mut samples[arm]); }
++                if arm == 3 { trial::<After>(c, &d, &expected, &mut out, allocate, &mut samples[arm]); }
++                else if arm == 2 { trial::<Clone>(c, &d, &expected, &mut out, allocate, &mut samples[arm]); }
++                else { trial::<Before>(c, &d, &expected, &mut out, allocate, &mut samples[arm]); }
+                 executed.push(format!("{repeat}:{}:{}", if allocate { "allocate_insert" } else { "insert" }, ARMS[arm]));
+             }
+         }
+@@ -177,7 +178,7 @@
+     assert_eq!(digest(&d.batch), batch_before, "input mutated"); assert_eq!(digest(&d.query), query_before, "input mutated");
+     let mut checksum = 14695981039346656037u64; let mut positives = 0usize;
+     for &x in &expected { checksum = (checksum ^ x as u64).wrapping_mul(1099511628211); positives += x as usize; }
+-    print!("{{\"language\":\"rust\",\"family\":\"{family}\",\"scenario\":{},\"bytes\":{},\"batch_n\":{},\"requested\":{},\"history_n\":{},\"hotspot\":{},\"seed\":{},\"input_base\":{},\"query_n\":{QUERIES},\"checksum\":{checksum},\"positives\":{positives},\"batch_checksum\":{batch_before},\"query_checksum\":{query_before},\"repeats\":4,\"phase_order\":\"serial_pair_abba4\",\"scheduler\":\"scoped_workers_plus_caller_or_serial_fallback\",\"time_unit\":\"absolute_ns\",\"cpus\":[",
++    print!("{{\"language\":\"rust\",\"family\":\"{family}\",\"scenario\":{},\"bytes\":{},\"batch_n\":{},\"requested\":{},\"history_n\":{},\"hotspot\":{},\"seed\":{},\"input_base\":{},\"query_n\":{QUERIES},\"checksum\":{checksum},\"positives\":{positives},\"batch_checksum\":{batch_before},\"query_checksum\":{query_before},\"repeats\":{repeats},\"cycles\":{cycles},\"phase_order\":\"four_arm_williams\",\"scheduler\":\"scoped_workers_plus_caller_or_serial_fallback\",\"time_unit\":\"absolute_ns\",\"cpus\":[",
+         c.id, c.bytes, c.n, c.requested, c.history, c.hotspot, c.seed, c.base);
+     for (i, cpu) in c.cpus.iter().enumerate() { if i != 0 { print!(","); } print!("{cpu}"); }
+     print!("],\"executed_order\":[");
+@@ -197,10 +198,12 @@
+     assert!(["Split64", "Split64Range"].contains(&args[1].as_str()), "unknown family");
+     let number = |i: usize| { let s = &args[i]; assert!(!s.is_empty() && s.bytes().all(|c| c.is_ascii_digit())); s.parse::<u64>().unwrap() };
+     let (scenario, requested, seed) = (number(2), number(3), number(4));
+-    assert!(scenario < 6 && [4, 8].contains(&requested) && [74381, 164321].contains(&seed), "unregistered workload");
+-    assert!(["--measure", "--check-bad-output"].contains(&args[6].as_str()), "unknown mode");
++    assert!(scenario < 5 && requested == 8, "unregistered workload");
++    assert!(["--measure", "--caller-check", "--check-bad-output"].contains(&args[6].as_str()), "unknown mode");
++    let measure = args[6] == "--measure";
++    assert!(if measure { [2694173, 3819257].contains(&seed) } else { seed == 74381 }, "wrong stage input seed");
+     let cpus = parse_cpus(&args[5], requested as usize);
+     let c = case(args[1] == "Split64Range", scenario as usize, requested as usize, seed, cpus);
+-    if args[1] == "Split64Range" { run::<before_native::Split64RangeBloomFilter, after_native::Split64RangeBloomFilter>(&args[1], &c, args[6] == "--check-bad-output"); }
+-    else { run::<before_native::Split64BloomFilter, after_native::Split64BloomFilter>(&args[1], &c, args[6] == "--check-bad-output"); }
+-}
++    if args[1] == "Split64Range" { run::<before_native::Split64RangeBloomFilter, clone_native::Split64RangeBloomFilter, after_native::Split64RangeBloomFilter>(&args[1], &c, args[6] == "--check-bad-output", if measure { 32 } else { 4 }); }
++    else { run::<before_native::Split64BloomFilter, clone_native::Split64BloomFilter, after_native::Split64BloomFilter>(&args[1], &c, args[6] == "--check-bad-output", if measure { 32 } else { 4 }); }
++}

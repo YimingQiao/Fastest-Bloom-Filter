@@ -1,0 +1,32 @@
+{
+  "scope": "Public metadata diagnostic only; no throughput",
+  "compiler_command": [
+    "g++",
+    "-O3",
+    "-march=native",
+    "-std=gnu++17",
+    "-include",
+    "benchmarks/vldb-original-external/compat.hpp",
+    "-Ibenchmarks/vldb-original-external/.deps/dtl/src",
+    "-Ibenchmarks/vldb-original-external/.deps/dtl/thirdparty",
+    "-I/home/yiming/.local/boost-1.83/include",
+    "benchmarks/vldb-original-external/compatibility-v2/names.cpp",
+    "build/vldb-public-preflight-v2-gcc/native/libvldb_pinned.a",
+    "-pthread",
+    "-ldl",
+    "-o",
+    "benchmarks/vldb-original-external/compatibility-v2/names"
+  ],
+  "run_command": [
+    "benchmarks/vldb-original-external/compatibility-v2/names"
+  ],
+  "exit_code": 0,
+  "lease": "socket0 whole flock",
+  "cpu": 2,
+  "sha256": {
+    "names": "0adac782fd7b675aa995d99b9008b566230b4b8b32288737dd62e8e907503ecb",
+    "names.log": "e36bb1f03bde3231adc7ec478c7cd6cb80a17aa4a9e0c80478b4a982765cd1c7",
+    "names.cpp": "16f38a7f811c9840a48b532642825b237c932ee2d14b31324d3cfcb7915f35c5"
+  },
+  "finding": "force_unroll_factor inserts transient map entries without overwriting; later U requests retain the first U"
+}

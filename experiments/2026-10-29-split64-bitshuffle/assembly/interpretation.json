@@ -1,0 +1,90 @@
+{
+  "finding": "Original Clang code already uses variable right-shift of line words plus test of low bit, rather than building left-shifted masks. Candidate emits unmasked bitshuffle followed by kmovq/GPR and/compare reduction; potential register-pressure and reduction cost must be measured.",
+  "functions": [
+    {
+      "symbol": "000000000000ebb0 <void lookup_kernel<bloom_filters::FastPatternBF, unsigned long>(bloom_filters::FastPatternBF&, unsigned long, unsigned long const*, unsigned int*)>:",
+      "opcode_counts": {
+        "vpsrlvq": 0,
+        "vpsllvq": 0,
+        "vptestnmq": 0,
+        "kortestb": 0,
+        "vpshufbitqmb": 0,
+        "kmovq": 0,
+        "and": 0,
+        "cmp": 0,
+        "push": 0
+      }
+    },
+    {
+      "symbol": "000000000000f820 <bloom_filters::FastPatternBF::Lookup(unsigned int, unsigned long const*, unsigned int*) const>:",
+      "opcode_counts": {
+        "vpsrlvq": 0,
+        "vpsllvq": 0,
+        "vptestnmq": 0,
+        "kortestb": 0,
+        "vpshufbitqmb": 0,
+        "kmovq": 0,
+        "and": 18,
+        "cmp": 12,
+        "push": 5
+      }
+    },
+    {
+      "symbol": "00000000000151e0 <void lookup_kernel<bloom_filters::Split64BitShuffleOriginal, unsigned long>(bloom_filters::Split64BitShuffleOriginal&, unsigned long, unsigned long const*, unsigned int*)>:",
+      "opcode_counts": {
+        "vpsrlvq": 8,
+        "vpsllvq": 0,
+        "vptestnmq": 8,
+        "kortestb": 8,
+        "vpshufbitqmb": 0,
+        "kmovq": 0,
+        "and": 13,
+        "cmp": 9,
+        "push": 2
+      }
+    },
+    {
+      "symbol": "0000000000019ab0 <void lookup_kernel<bloom_filters::Split64BitShuffleCandidate<0>, unsigned long>(bloom_filters::Split64BitShuffleCandidate<0>&, unsigned long, unsigned long const*, unsigned int*)>:",
+      "opcode_counts": {
+        "vpsrlvq": 0,
+        "vpsllvq": 0,
+        "vptestnmq": 0,
+        "kortestb": 0,
+        "vpshufbitqmb": 8,
+        "kmovq": 8,
+        "and": 21,
+        "cmp": 17,
+        "push": 4
+      }
+    },
+    {
+      "symbol": "000000000001e370 <void lookup_kernel<bloom_filters::Split64BitShuffleCandidate<1>, unsigned long>(bloom_filters::Split64BitShuffleCandidate<1>&, unsigned long, unsigned long const*, unsigned int*)>:",
+      "opcode_counts": {
+        "vpsrlvq": 0,
+        "vpsllvq": 0,
+        "vptestnmq": 0,
+        "kortestb": 0,
+        "vpshufbitqmb": 8,
+        "kmovq": 8,
+        "and": 21,
+        "cmp": 17,
+        "push": 4
+      }
+    },
+    {
+      "symbol": "0000000000022c30 <void lookup_kernel<bloom_filters::Split64BitShuffleCandidate<2>, unsigned long>(bloom_filters::Split64BitShuffleCandidate<2>&, unsigned long, unsigned long const*, unsigned int*)>:",
+      "opcode_counts": {
+        "vpsrlvq": 0,
+        "vpsllvq": 0,
+        "vptestnmq": 0,
+        "kortestb": 0,
+        "vpshufbitqmb": 8,
+        "kmovq": 8,
+        "and": 21,
+        "cmp": 17,
+        "push": 5
+      }
+    }
+  ],
+  "no_speed_claim": true
+}

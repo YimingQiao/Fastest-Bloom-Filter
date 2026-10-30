@@ -1,0 +1,30 @@
+{
+  "parent_commit": "d0b9a90ab75efa63c866fd4f4ffdd8ef27885d06",
+  "parent_path": "experiments/2026-10-29-k12-singleton-external-plan/caller/contract.py",
+  "substitutions": [
+    {
+      "before": "\"\"\"Focused public caller proof only. No formal input is consumed here.\"\"\"",
+      "after": "\"\"\"Exact-derived formal row guard; unused proof helpers retain their parent bytes.\"\"\""
+    },
+    {
+      "before": "PLAN=json.loads((HERE.parent/'selection.json').read_text())",
+      "after": "PLAN=json.loads((HERE/'selection.json').read_text())"
+    },
+    {
+      "before": "for key,value in dict(queries=q,hit=case['hit'],batch=case['batch'],repeats=4,seed=74381,",
+      "after": "for key,value in dict(queries=q,hit=case['hit'],batch=case['batch'],repeats=case['repeats'],seed=case['seed'],"
+    },
+    {
+      "before": "reverse_jobs=bool(case['order']),measure=False,",
+      "after": "reverse_jobs=bool(case['order']),measure=True,"
+    },
+    {
+      "before": "row['phase_order']==[m for r in schedule for m in r]",
+      "after": "row['phase_order']==[m for r in range(case['repeats']) for m in schedule[r%4]]"
+    },
+    {
+      "before": "len(values)==(4 if index<2 or case['batch']==1 else 0)",
+      "after": "len(values)==(case['repeats'] if index<2 or case['batch']==1 else 0)"
+    }
+  ]
+}

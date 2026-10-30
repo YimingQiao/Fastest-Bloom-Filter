@@ -1,0 +1,9 @@
+# Preserved source-membership failure before compilation
+
+The single authorized V1 invocation used committed driver `8d533d9711f5d4cb30f7496dcf29860b35359bca`. Its outer `numactl --physcpubind=3 --membind=1` probe confirmed bind policy, physical CPU3 and memory node1. The actual terminal tool result was exit1 with empty output (chunk25a61b); exact launch argv, tool hash, placement output, stdout/stderr and outcome remain under execution-v1.
+
+`bindings.verify()` stopped on the prepared file-membership comparison for registry cc1.10.0, before creating validation-v1 or the fresh target, and before any compiler, test, filter or calibration command. No runtime proof passed or failed. The whole socket1 lease exited and was explicitly released. No retry occurred in V1.
+
+The post-resolution source inventory omitted four legitimate files named `src/target/apple.rs`, `src/target/generated.rs`, `src/target/llvm.rs` and `src/target/parser.rs`. Its directory exclusion had treated a source directory named `target` as generated build output. These are the only membership differences among all87 prepared package trees. The current files exactly match the cached cc-1.10.0.crate members; that archive's SHA256 `86e055fa6e3e40ad6187ba25b6855eeb635d5271f8e0f0e1e9a5826b8d75bea0` matches the immutable combined Cargo.lock checksum. They were not newly changed dependencies. The initial 4,483-file inventory and completed resolution archive remain unchanged historical evidence.
+
+A separate repair source can add exactly those four checksum-verified source members, retain strict complete membership and actual consumed-input checks, and use fresh target/output paths. It must preserve all Rust source, public methods, fixtures, compiler modes and finite counts. This failure does not authorize a retry by itself.
