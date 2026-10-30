@@ -10,11 +10,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ALIASES = {
-    'FourSectorRange12Experiment': 'FourSectorRange12',
-    'FourSectorRange12BloomFilter': 'FourSectorRange12',
-    'Split64RangeNative': 'Split64Range',
-    'Split64RangeExperiment': 'Split64Range',
-    'Split64RangeBloomFilter': 'Split64Range',
+    'FourSectorRange12Experiment': 'FourSectorRange12 (ours)',
+    'FourSectorRange12BloomFilter': 'FourSectorRange12 (ours)',
+    'Split64RangeNative': 'Split64Range (ours)',
+    'Split64RangeExperiment': 'Split64Range (ours)',
+    'Split64RangeBloomFilter': 'Split64Range (ours)',
+    'FastFilterFixed64': 'FastFilter · Fixed64',
+    'Boost192Multi64K8': 'Boost.Bloom · Multi64, k=8',
+    'RocksDBFastLocalBloom64K8Batch32': 'RocksDB · FastLocalBloom64, k=8, batch32',
+    'Fastbloom017K7': 'fastbloom 0.17.0 · k=7',
+    'FastbloomRsRawK7': 'fastbloom-rs 0.5.10 · k=7',
 }
 FIELDS = ['panel', 'keys', 'batch', 'cap_bpk', 'fpr_ceiling', 'metric', 'threads']
 LABELS = {
@@ -75,7 +80,18 @@ def headline(data, panel, metric, paired=None):
     for s in data['scenarios']:
         if s['panel'] != panel or s['metric'] != metric or s['cap_bpk'] != 24 or s['fpr_ceiling'] != .0001:
             continue
-        for row in s['top3']:
+        rows = s['top3']
+        if panel == 'CPP_K12_primary24':
+            rows = [r for r in data['all_eligible_configurations'] if key(r) == key(s)]
+        elif panel == 'Rust786':
+            eligible = [r for r in data['all_eligible_configurations'] if key(r) == key(s)]
+            rows = [r for r in eligible if r['method'] in {
+                'FourSectorRange12BloomFilter', 'Split64RangeBloomFilter'}]
+            for prefix in ['Fastbloom017', 'FastbloomRsRaw']:
+                candidates = [r for r in eligible if r['method'].startswith(prefix)]
+                rows.append(min(candidates, key=lambda r: (r['ns_per_key'], r['method'], r['actual_bytes'])))
+            rows.sort(key=lambda r: r['ns_per_key'])
+        for row in rows:
             if paired:
                 pure = next(r for r in data['all_eligible_configurations'] if
                             r['panel'] == panel and r['keys'] == s['keys'] and r['metric'] == paired and
@@ -86,6 +102,58 @@ def headline(data, panel, metric, paired=None):
                 values = f"{row['ns_per_key']:.4f}"
             lines.append(f"| {s['keys']:,} | {name(row)} | {values} |")
     return '\n'.join(lines)
+
+
+
+NATIVE = {'FastPatternBF', 'FourSectorBloomFilter', 'Split64BloomFilter',
+          'ByteSplitBloomFilter', 'Split64RangeBloomFilter', 'Split64RangeExperiment',
+          'FourSectorRange12BloomFilter'}
+FAMILIES = {
+    'CPP988': [('Our best measured layout', None), ('Boost.Bloom 1.92.0', 'Boost192'),
+               ('RocksDB v11.12', 'RocksDB'), ('FastFilter', 'FastFilter'), ('PageBloomFilter', 'PageBloom')],
+    'Rust786': [('Our best measured layout', None), ('fastbloom 0.17.0', 'Fastbloom017'),
+                ('fastbloom-rs 0.5.10', 'FastbloomRsRaw'), ('Bloomsday', 'BloomsdayPinned'),
+                ('sbbf-rs-safe 0.3.2', 'SbbfSafePinned')],
+}
+
+
+def library_rows(data, panel):
+    metric = 'hash_lookup_ns' if panel == 'CPP988' else 'raw_batched_public'
+    rows = [r for r in data['all_eligible_configurations'] if r['panel'] == panel and
+            r['metric'] == metric and r['cap_bpk'] == 16 and r['fpr_ceiling'] == .01]
+    result = []
+    for label, prefix in FAMILIES[panel]:
+        winners = []
+        for n in [65536, 33554432]:
+            candidates = [r for r in rows if r['keys'] == n and
+                          (r['method'] in NATIVE if prefix is None else r['method'].startswith(prefix))]
+            assert candidates, (panel, label, n)
+            winners.append(min(candidates, key=lambda r: (r['ns_per_key'], r['method'], r['actual_bytes'])))
+        result.append((label, winners))
+    return result
+
+
+def library_table(data, panel):
+    lines = ['| Library | 65,536 keys · ns/key | 33,554,432 keys · ns/key |',
+             '| :--- | ---: | ---: |']
+    for label, winners in library_rows(data, panel):
+        lines.append(f"| {label} | {winners[0]['ns_per_key']:.4f} | {winners[1]['ns_per_key']:.4f} |")
+    return '\n'.join(lines)
+
+
+def library_details(data):
+    lines = ['', '<!-- BEGIN LIBRARY_CONFIGURATIONS -->',
+             '## Configurations behind the README library tables', '',
+             'Each library contributes its fastest qualifying measured configuration at each size, under 16 actual bits/key and a 1% FPR ceiling. This is a same-data selection within each panel, not a new confirmation. All queries use batch4096. Hashing is included. Exact bytes and method identifiers below resolve every README cell.', '']
+    for panel, title in [('CPP988', 'C++'), ('Rust786', 'Rust')]:
+        lines += [f'### {title}', '', '| Library | Keys | Exact measured method | Actual bytes | Actual bits/key | ns/key |',
+                  '| :--- | ---: | :--- | ---: | ---: | ---: |']
+        for label, winners in library_rows(data, panel):
+            for row in winners:
+                lines.append(f"| {label} | {row['keys']:,} | `{row['method']}` | {row['actual_bytes']:,} | {row['actual_bpk']:.6f} | {row['ns_per_key']:.4f} |")
+        lines.append('')
+    lines.append('<!-- END LIBRARY_CONFIGURATIONS -->')
+    return '\n'.join(lines) + '\n'
 
 
 def report(data):
@@ -148,12 +216,18 @@ def outputs(data):
         before, rest = readme.split(begin)
         _, after = rest.split(end)
         readme = before + begin + '\n' + headline(data, *args) + '\n' + end + after
+    for marker, panel in [('CPP_LIBRARIES', 'CPP988'), ('RUST_LIBRARIES', 'Rust786')]:
+        begin, end = f'<!-- BEGIN {marker} -->', f'<!-- END {marker} -->'
+        before, rest = readme.split(begin)
+        _, after = rest.split(end)
+        readme = before + begin + '\n' + library_table(data, panel) + '\n' + end + after
+    details = (ROOT / 'docs/external-baselines.md').read_text().split('<!-- BEGIN LIBRARY_CONFIGURATIONS -->')[0].rstrip() + '\n' + library_details(data)
     stream = io.StringIO(newline='')
     fields = FIELDS + ['cells', 'method', 'actual_bytes', 'actual_bpk', 'ns_per_key', 'configuration_rank', 'relative_throughput']
     writer = csv.DictWriter(stream, fieldnames=fields, extrasaction='ignore', lineterminator='\n')
     writer.writeheader()
     writer.writerows(data['all_eligible_configurations'])
-    return {'README.md': readme, 'docs/performance.md': report(data), 'benchmarks/results/batch4096.csv': stream.getvalue()}
+    return {'README.md': readme, 'docs/performance.md': report(data), 'benchmarks/results/batch4096.csv': stream.getvalue(), 'docs/external-baselines.md': details}
 
 
 def main():
